@@ -1,6 +1,6 @@
 <div align="center">
   <h1>truelecter's infra</h1>
-  <img alt="hosts build" src="https://img.shields.io/github/actions/workflow/status/truelecter/infra/build-nixos-hosts.yaml?branch=master&event=push&style=for-the-badge&logo=github&label=hosts&labelColor=303446&color=40a02b" />
+  <img alt="hosts build" src="https://img.shields.io/github/actions/workflow/status/truelecter/infra/build-hosts.yaml?branch=master&event=push&style=for-the-badge&logo=github&label=hosts&labelColor=303446&color=40a02b" />
   <img alt="shells build" src="https://img.shields.io/github/actions/workflow/status/truelecter/infra/build-devshell.yaml?branch=master&event=push&style=for-the-badge&logo=github&label=shells&labelColor=303446&color=40a02b" />
   <img alt="nixos 24.11" src="https://img.shields.io/badge/NixOS-24.11-4bb7c9?style=for-the-badge&logo=nixos&logoColor=white&labelColor=303446" />
 </div>
