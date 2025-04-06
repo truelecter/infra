@@ -48,6 +48,13 @@ in {
         ];
       }
       {
+        maxJobs = 10;
+        hostName = "tl-mm4";
+        systems = [
+          "aarch64-darwin"
+        ];
+      }
+      {
         maxJobs = 4;
         hostName = "depsos";
         systems = [
