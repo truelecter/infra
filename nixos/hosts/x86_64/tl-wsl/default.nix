@@ -7,8 +7,7 @@
   imports =
     suites.wsl
     ++ [
-      profiles.common.remote-builders.x86
-      profiles.common.remote-builders.aarch
+      profiles.common.build-machines
 
       ./secrets.nix
     ];
@@ -19,7 +18,7 @@
 
   system.stateVersion = "22.11";
 
-  services.openssh.enable = false;
+  services.openssh.enable = true;
 
   home-manager.users.truelecter = {
     imports = [

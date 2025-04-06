@@ -44,6 +44,10 @@ in {
       category = "secrets";
     }
     {
+      package = ssh-to-age;
+      category = "secrets";
+    }
+    {
       package = pkgs.gnupg;
       category = "secrets";
     }
@@ -52,7 +56,7 @@ in {
       name = "sops-reencrypt";
       help = "update keys for all sops file";
       command = ''
-        ${pkgs.fd}/bin/fd '.*' -E '*.pub' $PRJ_ROOT/secrets --exec sops updatekeys --yes
+        ${pkgs.fd}/bin/fd -t file '.*' -E '*.pub' $PRJ_ROOT/secrets --exec sops updatekeys --yes
       '';
     }
     {
@@ -66,6 +70,14 @@ in {
       name = "fetch-sops-nix-age-key";
       help = "Fetch target host info for sops (age)";
       package = fetch-sops-nix-age-key;
+    }
+    {
+      package = pkgs.age;
+      category = "secrets";
+    }
+    {
+      package = pkgs.age-plugin-yubikey;
+      category = "secrets";
     }
   ];
 }

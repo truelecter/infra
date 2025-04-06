@@ -1,23 +1,17 @@
 keys:
   - &truelecter A35AABA719FAC1A001E375F8EEF7F5B1C5AB1F74
-  - &server-nas 70732b3ee3a1c10a8b6b849a959a413b28c00df9
-  - &squadbook 4b2db161a7459a355a6f7b3006f1ae8861b01531
-  - &octoprint 50b24bfd5de5ee6397d7138de6f9c0f528fd86f3
-  - &hyperos 51add5cfe4c21755f8685d7372065280e76b908e
-  - &depsos 356a82c0e351bd86b093e96706f5748b0e47bff0
-  - &oracle 70e8bfb15ea96c3752baafcfc43cfc3d2c42d68e
-  - &tl-wsl ceb6cea45e8d7d34c25d166868696097610a4f62
-  - &voron ad74ae276ddcd3b8c05242fc537e0afff9393519
-  - &rockiosk ef5e9b1601de92796784e3cd146a31ffb1cc2f5d
-  - &pikiosk 2994ee04eda55d05dae7019ed74ef11ed4a030bc
-  - &trizero 626de251782cdf224d7f89a4277110395ef8b6e3
-  - &print-farm 3901b2e5705df031bb41338c5ba8634804f9940d
-  - &sirius age1vpflrapt4lz5akw8jcft6lhhq0h26ptjq6ce8da27gzuvfdmtqvs8rk8h6
-  - &nas 70732b3ee3a1c10a8b6b849a959a413b28c00df9
-  - &vzbot235 age1whtmnnc0ar8u0htwayr4qkukeyq05jt397prfzkkak0aec29ystsyfzdkt
-  - &tinym age1ygjayuhd3sx0xnxlxuhftz0qj79j95x4cewfj2e5ux9k7f335v2sul9u97
-  - &bttpi age1pcvq86sasvxdqceyjcgxr7lppugasqsfdwt3ewnlufn9xyel5u8qeu0hn5
-  - &tl-mm4 age13xs4xvwm0ythks33uvgv7v9gnqhn9mvhqgyzg8u94060pxjc3urq3ht6r8
+
+  - &squadbook age1zltjqzpr3du45xnsy85q80nafejrvhlat2ugs8pysf763fm6spxsjk29eg
+  - &tl-wsl    age1qmurstgayt65a8r7j9nnf9mpz7wffxht2j8uadxy9pupylrqscyqv5m7zk
+  - &depsos    age17k6xap8v8ys080dx5jen9pycnkzjrdgnxzyqyv0lz34auspg4g8qykuuev
+  - &oracle    age1yk5h5m3uqzsedlc433n0p2aph6cdvuxvvr9nrrr3mtzmj22k3vmqp7ndhy
+  - &voron     age1q56y2fganxr7af2tel0pcpzueps4ttlyja3ysxxrtq5cs9cmr57q5e3fwf
+  - &nas       age12d0vn4m8dygjjjgx8s5zdm0lkk6qfcyk35u9lgj6d6cw7753gs0s049uz9
+  - &sirius    age1vpflrapt4lz5akw8jcft6lhhq0h26ptjq6ce8da27gzuvfdmtqvs8rk8h6
+  - &vzbot235  age1whtmnnc0ar8u0htwayr4qkukeyq05jt397prfzkkak0aec29ystsyfzdkt
+  - &tinym     age1ygjayuhd3sx0xnxlxuhftz0qj79j95x4cewfj2e5ux9k7f335v2sul9u97
+  - &bttpi     age1pcvq86sasvxdqceyjcgxr7lppugasqsfdwt3ewnlufn9xyel5u8qeu0hn5
+  - &tl-mm4    age13xs4xvwm0ythks33uvgv7v9gnqhn9mvhqgyzg8u94060pxjc3urq3ht6r8
 
 creation_rules:
   - path_regex: secrets/envs.yaml
@@ -29,24 +23,19 @@ creation_rules:
     key_groups:
       - pgp:
           - *truelecter
+        age:
           - *oracle
 
   - path_regex: secrets/nixos-common.yaml
     key_groups:
       - pgp:
           - *truelecter
-          - *server-nas
-          - *octoprint
-          - *hyperos
+        age:
+          - *nas
           - *depsos
           - *oracle
           - *tl-wsl
           - *voron
-          - *rockiosk
-          - *pikiosk
-          - *trizero
-          - *print-farm
-        age:
           - *sirius
           - *vzbot235
           - *tinym
@@ -57,45 +46,35 @@ creation_rules:
     key_groups:
       - pgp:
           - *truelecter
+        age:
           - *depsos
 
   - path_regex: secrets/external-ips.yaml
     key_groups:
       - pgp:
           - *truelecter
+        age:
           - *depsos
 
   - path_regex: secrets/wifi.yaml
     key_groups:
       - pgp:
           - *truelecter
-          - *squadbook
-          - *octoprint
-          - *voron
-          - *rockiosk
-          - *pikiosk
-          - *trizero
-          - *print-farm
-          - *nas
         age:
+          - *squadbook
+          - *voron
+          - *nas
           - *sirius
           - *vzbot235
           - *tinym
           - *bttpi
           - *tl-mm4
 
-  - path_regex: secrets/ssh.*$
+  - path_regex: secrets/ssh/remote-builder$
     key_groups:
       - pgp:
           - *truelecter
+        age:
           - *squadbook
           - *tl-wsl
-        age:
           - *tl-mm4
-
-  - path_regex: secrets/weather-kiosk.yaml
-    key_groups:
-      - pgp:
-          - *truelecter
-          - *rockiosk
-          - *pikiosk

@@ -15,8 +15,7 @@
       profiles.darwin.three-d-print
 
       profiles.common.remote-builder
-      profiles.common.remote-builders.x86
-      profiles.common.remote-builders.aarch
+      profiles.common.build-machines
 
       users.darwin."andrii.panasiuk"
 

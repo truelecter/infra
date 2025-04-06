@@ -31,7 +31,7 @@ jobs:
           git commit -am "deps(sources): Updated cell sources" || true
       - name: Update deps hashes packages
         run: |
-          nix run '.#mainsail.npmDepsHash' > cells/klipper/packages/_deps-hash/mainsail-npm.nix
+          nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
           git commit -am "deps(sources): Updated deps hash" || true
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v21

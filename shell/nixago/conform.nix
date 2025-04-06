@@ -29,6 +29,9 @@ exts.conform {
           "ci"
           "flake"
           "repo"
+          "nixos"
+          "darwin"
+          "home"
         ]
         ++ (builtins.attrNames self.nixosConfigurations)
         ++ (builtins.attrNames self.darwinConfigurations);
