@@ -1,16 +1,26 @@
-let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   username = "remote-builder";
 in {
   users = {
-    users.${username} = {
-      group = "remote-builders";
-      isSystemUser = true;
+    users.${username} =
+      {
+        openssh.authorizedKeys.keys = [
+          (builtins.readFile ../../secrets/ssh/remote-builder.pub)
+        ];
+      }
+      // lib.optionalAttrs (pkgs.stdenv.isLinux) {
+        # nix-darwin does not have this properties
+        isNormalUser = true;
+        group = "remote-builders";
+      };
 
-      openssh.authorizedKeys.keys = [
-        (builtins.readFile ../../secrets/ssh/remote-builder.pub)
-      ];
+    groups.remote-builders = {
+      members = [username];
     };
-    groups.remote-builders = {};
   };
 
   nix.settings = {
