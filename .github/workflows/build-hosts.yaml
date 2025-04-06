@@ -70,7 +70,7 @@ jobs:
           echo "  IdentityFile /etc/nix/builder_ed25519" | sudo tee -a /etc/ssh/ssh_config
           echo "  User gha-builder"                      | sudo tee -a /etc/ssh/ssh_config
 
-          echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee machines
+          echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
 
           sudo nix store info --store ssh://linux-builder
 
