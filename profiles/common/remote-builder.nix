@@ -25,6 +25,9 @@ in {
         // lib.optionalAttrs (pkgs.stdenv.isDarwin) {
           uid = lib.mkDefault defaultUid;
           gid = lib.mkDefault config.users.groups.${groupname}.gid;
+          createHome = true;
+          shell = "/bin/bash";
+          home = "/Users/${username}";
         };
 
       groups.${groupname} =
