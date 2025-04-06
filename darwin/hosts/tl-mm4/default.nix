@@ -23,6 +23,8 @@
     nixpkgs = inputs.nixos;
   };
 
+  services.openssh.enable = true;
+
   networking = {
     computerName = "TL-MM4";
     knownNetworkServices = [

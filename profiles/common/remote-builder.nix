@@ -26,7 +26,7 @@ in {
           uid = lib.mkDefault defaultUid;
           gid = lib.mkDefault config.users.groups.${groupname}.gid;
           createHome = true;
-          shell = "/bin/bash";
+          shell = "/bin/zsh";
           home = "/Users/${username}";
         };
 
@@ -45,5 +45,12 @@ in {
 
   nix.settings = {
     trusted-users = [username];
+  };
+
+  system = lib.optionalAttrs (pkgs.stdenv.isDarwin) {
+    activationScripts.postActivation.text = ''
+      # Allow remote builder to access ssh
+      dseditgroup -o edit -a ${username} -t user com.apple.access_ssh
+    '';
   };
 }
