@@ -32,6 +32,9 @@ exts.conform {
           "nixos"
           "darwin"
           "home"
+          "common"
+          "minecraft-servers"
+          "klipper"
         ]
         ++ (builtins.attrNames self.nixosConfigurations)
         ++ (builtins.attrNames self.darwinConfigurations);

@@ -88,6 +88,7 @@ in {
     };
   };
 
+  # FIXME: convert this giant mess into lib.mkMerge for each instance
   config = let
     enabledInstances = l.filterAttrs (_: x: x.enable) cfg.instances;
 
@@ -95,8 +96,10 @@ in {
 
     # Attrset options
     eachEnabledInstanceFrom = instances: f: l.mapAttrs' (i: c: let n = mkInstanceName i; in l.nameValuePair n (f n c)) instances;
-
     eachEnabledInstance = f: eachEnabledInstanceFrom enabledInstances f;
+
+    eachEnabledInstanceFrom' = instances: f: l.concatMapAttrs (i: c: let name = mkInstanceName i; in f name c) instances;
+    eachEnabledInstance' = f: eachEnabledInstanceFrom' enabledInstances f;
 
     serverPorts = l.mapAttrsToList (_: v: v.serverProperties.server-port) enabledInstances;
     rconPorts =
@@ -165,71 +168,87 @@ in {
     networking.firewall.allowedTCPPorts = serverPorts ++ queryPorts ++ openRconPorts;
 
     systemd.services =
-      eachEnabledInstance (name: icfg: {
-        description = "Minecraft Server ${name}";
-        wantedBy = ["multi-user.target"];
-        after = ["network.target"];
+      eachEnabledInstance' (
+        name: icfg:
+          {
+            ${name} = {
+              description = "Minecraft Server ${name}";
+              wantedBy = ["multi-user.target"];
+              after = ["network.target"];
 
-        path = [
-          icfg.jvmPackage
-          pkgs.bash
-        ];
+              path = [
+                icfg.jvmPackage
+                pkgs.bash
+              ];
 
-        environment = {
-          JVM_ARGS = icfg.jvmOptString;
-          SERVER_ARGS = icfg.serverOpts;
-          MCRCON_PORT = toString icfg.serverProperties.rcon-port;
-          MCRCON_PASS = icfg.serverProperties.rcon-password;
-        };
+              environment = {
+                JVM_ARGS = icfg.jvmOptString;
+                SERVER_ARGS = icfg.serverOpts;
+                MCRCON_PORT = toString icfg.serverProperties.rcon-port;
+                MCRCON_PASS = icfg.serverProperties.rcon-password;
+              };
 
-        serviceConfig = let
-          rmState = l.escapeShellArg "${icfg.dirnames.overlayRemove}";
-          workdir = l.escapeShellArg "${icfg.dirnames.overlayWorkdirRemove}";
-          rmTarget = l.escapeShellArg "${icfg.dirnames.overlayTargetRemove}";
-          serverTarget = l.escapeShellArg "${icfg.dirnames.overlayCombined}";
+              serviceConfig = {
+                Restart = "always";
+                ExecStart = "${icfg.dirnames.workdir}/start.sh";
+                ExecStop = "${pkgs.mcrcon}/bin/mcrcon stop";
+                TimeoutStopSec = "60";
+                User = name;
+                WorkingDirectory = icfg.dirnames.workdir;
+                EnvironmentFile = l.optionalString (l.isPath icfg.environmentFile) icfg.environmentFile;
+              };
 
-          removeCommandsScript = pkgs.writeShellScript "${name}-remove-generator" ''
-            # Try to umount in case of disaster
-            trap "${pkgs.umount}/bin/umount ${rmTarget}" EXIT
+              unitConfig = {
+                RequiresMountsFor = [icfg.dirnames.workdir];
+              };
 
-            # Clear rm state
-            rm -rf ${rmState}/*
+              preStart = ''
+                rm eula.txt || echo no eula yet
 
-            # Mount to temporary directories to create required whiteouts
-            ${pkgs.mount}/bin/mount -t overlay overlay -o lowerdir=${icfg.serverPackage},upperdir=${rmState},workdir=${workdir} ${rmTarget}
+                # Ensure EULA is accepted
+                ln -sf ${eulaFile} eula.txt
 
-            # Remove files
-            ${lib.concatMapStrings (path: "\n rm -rf ${l.escapeShellArg "${icfg.dirnames.overlayTargetRemove}/${path}"}") icfg.customization.remove}
+                # This file must be writeable, because Mojang.
+                cp ${serverPropertiesFile icfg.serverProperties} server.properties
+                chmod 644 server.properties
+              '';
+            };
+          }
+          # FIXME: get rid of this condition in favor of noop service
+          // l.optionalAttrs (l.length icfg.customization.remove > 0) {
+            "${name}-rm-init" = let
+              rmState = l.escapeShellArg "${icfg.dirnames.overlayRemove}";
+              workdir = l.escapeShellArg "${icfg.dirnames.overlayWorkdirRemove}";
+              rmTarget = l.escapeShellArg "${icfg.dirnames.overlayTargetRemove}";
 
-            # Reload main overlay
-            ${pkgs.mount}/bin/mount -oremount ${serverTarget}
-          '';
-        in {
-          Restart = "always";
-          ExecStartPre = lib.optionals (l.length icfg.customization.remove > 0) ["+${removeCommandsScript}"];
-          ExecStart = "${icfg.dirnames.workdir}/start.sh";
-          ExecStop = "${pkgs.mcrcon}/bin/mcrcon stop";
-          TimeoutStopSec = "60";
-          User = name;
-          WorkingDirectory = icfg.dirnames.workdir;
-          EnvironmentFile = l.optionalString (l.isPath icfg.environmentFile) icfg.environmentFile;
-        };
+              removeCommandsScript = pkgs.writeShellScript "${name}-remove-generator" ''
+                # Try to umount in case of disaster
+                trap "${pkgs.umount}/bin/umount ${rmTarget}" EXIT
 
-        unitConfig = {
-          RequiresMountsFor = [icfg.dirnames.workdir];
-        };
+                # Clear rm state
+                rm -rf ${rmState}/*
 
-        preStart = ''
-          rm eula.txt || echo no eula yet
+                # Mount to temporary directories to create required whiteouts
+                ${pkgs.mount}/bin/mount -t overlay overlay -o lowerdir=${icfg.serverPackage},upperdir=${rmState},workdir=${workdir} ${rmTarget}
 
-          # Ensure EULA is accepted
-          ln -sf ${eulaFile} eula.txt
+                # Remove files
+                ${lib.concatMapStrings (path: "\n rm -rf ${l.escapeShellArg "${icfg.dirnames.overlayTargetRemove}/${path}"}") icfg.customization.remove}
 
-          # This file must be writeable, because Mojang.
-          cp ${serverPropertiesFile icfg.serverProperties} server.properties
-          chmod 644 server.properties
-        '';
-      })
+                ${pkgs.umount}/bin/umount ${rmTarget}
+              '';
+            in {
+              description = "Minecraft Server ${name} remove overlay generator";
+              wantedBy = ["multi-user.target"];
+
+              serviceConfig = {
+                ExecStart = "+${removeCommandsScript}";
+                User = name;
+              };
+
+              restartTriggers = icfg.customization.remove;
+            };
+          }
+      )
       // l.mapAttrs' (
         n: icfg: let
           b = "restic-backups-${mkInstanceName n}";
@@ -316,9 +335,13 @@ in {
           '';
         in [
           {
-            after = [
-              "systemd-tmpfiles-setup.service"
-            ];
+            after =
+              [
+                "systemd-tmpfiles-setup.service"
+              ]
+              ++ l.optionals (l.length icfg.customization.remove > 0) [
+                "${name}-rm-init.service"
+              ];
 
             what = "overlay";
             type = "overlay";
