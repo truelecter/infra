@@ -11,9 +11,8 @@
     package = pkgs.code-cursor;
     enableExtensionUpdateCheck = false;
     enableUpdateCheck = false;
-    # TODO split extensions based on active modules
-    extensions =
-      (with pkgs.vscode-marketplace; [
+    extensions = with pkgs.vscode-marketplace;
+      [
         coolbear.systemd-unit-file
         davidanson.vscode-markdownlint
         christian-kohler.path-intellisense
@@ -27,7 +26,7 @@
         plorefice.devicetree
         redhat.vscode-commons
         redhat.vscode-xml
-        redhat.vscode-yaml
+        eamodio.gitlens
         whi-tw.klipper-config-syntax
         roscop.activefileinstatusbar
         pkief.material-icon-theme
@@ -39,9 +38,10 @@
         likec4.likec4-vscode
         ms-vscode-remote.remote-ssh
         ms-vscode-remote.remote-ssh-edit
-      ])
-      ++ (with pkgs.vscode-marketplace-release; [
-        eamodio.gitlens
+      ]
+      ++ (with pkgs.vscode-extensions; [
+        #FIXME: for whatever reason, it is not in nix4vscode generated.nix
+        redhat.vscode-yaml
       ]);
     userSettings = builtins.fromJSON (builtins.readFile ./_files/vscode-settings.json);
   };

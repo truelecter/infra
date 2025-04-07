@@ -183,7 +183,7 @@
           ./parts/rockchip
           ./parts/k8s
           ./parts/deploy-rs.nix
-          # ./parts/vscode-plugins
+          ./parts/vscode-plugins
 
           ./shell
 

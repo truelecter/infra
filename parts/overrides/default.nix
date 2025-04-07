@@ -62,6 +62,7 @@ in {
         ffmpeg_5-full
         code-cursor
         tailscale
+        vscode-extensions
         ;
     };
 

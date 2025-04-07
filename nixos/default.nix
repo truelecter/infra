@@ -109,11 +109,11 @@
               nixpkgs = {
                 hostPlatform = system;
                 overlays = [
-                  inputs.nix-vscode-extensions.overlays.default
+                  # inputs.nix-vscode-extensions.overlays.default
                   self.overlays.latest-packages
 
                   inputs.nix4vscode.overlays.forVscode
-                  # self.overlays.vscode-extensions
+                  self.overlays.vscode-extensions
                 ];
                 config.allowUnfree = true;
               };

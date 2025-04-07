@@ -3,7 +3,7 @@
 
 let
   inherit (pkgs.stdenv) isDarwin isLinux isi686 isx86_64 isAarch32 isAarch64;
-  inherit (pkgs) vscode-utils;
+  vscode-utils = pkgs.vscode-utils;
   merge = lib.attrsets.recursiveUpdate;
 in
 merge
@@ -30,6 +30,13 @@ merge
           publisher = "bbenoist";
           version = "1.0.1";
           sha256 = "0zd0n9f5z1f0ckzfjr38xw2zzmcxg1gjrava7yahg5cvdcw6l35b";
+
+        };
+        "catppuccin"."catppuccin-vsc" = vscode-utils.extensionFromVscodeMarketplace {
+          name = "catppuccin-vsc";
+          publisher = "catppuccin";
+          version = "3.17.0";
+          sha256 = "167nb7s9m999j98frfr0xyxhybqadyhg2535vlnrbc04f2qxpl5r";
 
         };
         "christian-kohler"."path-intellisense" = vscode-utils.extensionFromVscodeMarketplace {
@@ -70,8 +77,8 @@ merge
         "eamodio"."gitlens" = vscode-utils.extensionFromVscodeMarketplace {
           name = "gitlens";
           publisher = "eamodio";
-          version = "17.0.0";
-          sha256 = "1vpxhl31vipzkf9lcvi3mzisi503mdjkr62j5fkrsgcbz0hh49wx";
+          version = "17.0.1";
+          sha256 = "0s22bqy2k971h1iv1fq28c4lh72x53fx6304il2vmavxaisn216k";
 
         };
         "editorconfig"."editorconfig" = vscode-utils.extensionFromVscodeMarketplace {
@@ -196,8 +203,15 @@ merge
         "ms-python"."vscode-pylance" = vscode-utils.extensionFromVscodeMarketplace {
           name = "vscode-pylance";
           publisher = "ms-python";
-          version = "2025.3.2";
-          sha256 = "0sa1xznwd0f8kq326siyipd25a2jsqj66ykap3hk9cqqbf40gzif";
+          version = "2025.4.1";
+          sha256 = "0ldgacr9yqaj9zmxnj5rkkamr1044cf9rfjqsv7qkvpyw4f397ax";
+
+        };
+        "ms-vscode-remote"."remote-ssh" = vscode-utils.extensionFromVscodeMarketplace {
+          name = "remote-ssh";
+          publisher = "ms-vscode-remote";
+          version = "0.119.0";
+          sha256 = "0zqw0iq4z6q8p47x01cb3lp5pkmn0fdls9i3mg424da3z4qaxajb";
 
         };
         "ms-vscode-remote"."remote-ssh-edit" = vscode-utils.extensionFromVscodeMarketplace {
@@ -224,8 +238,8 @@ merge
         "pkief"."material-icon-theme" = vscode-utils.extensionFromVscodeMarketplace {
           name = "material-icon-theme";
           publisher = "pkief";
-          version = "5.20.0";
-          sha256 = "1nhmb5x773s23i2clbwqagzhz5zm0v19779kkcqpg6gwyxfcbkb7";
+          version = "5.21.2";
+          sha256 = "00p10xzccy6y3qk2fsa21jibkq9335ac9sl9abwwg8l2wimhaiqw";
 
         };
         "plorefice"."devicetree" = vscode-utils.extensionFromVscodeMarketplace {
@@ -301,11 +315,27 @@ merge
             arch = "linux-x64";
 
           };
+          "ms-python"."python" = vscode-utils.extensionFromVscodeMarketplace {
+            name = "python";
+            publisher = "ms-python";
+            version = "2025.4.0";
+            sha256 = "149hpb3927mk0fmx9hj7whgbrfw5g4a38ka583a25c5pwr75rs00";
+            arch = "linux-x64";
+
+          };
           "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
             name = "vscode-xml";
             publisher = "redhat";
             version = "0.28.0";
             sha256 = "0pipcl1r6sngf6dq3cmz3g56ww78r10r8acqjzmri6l5kxpx22ah";
+            arch = "linux-x64";
+
+          };
+          "rust-lang"."rust-analyzer" = vscode-utils.extensionFromVscodeMarketplace {
+            name = "rust-analyzer";
+            publisher = "rust-lang";
+            version = "0.3.2370";
+            sha256 = "0rndfyi85167hgz8nhv1ipwzjyk8814779f7sl0qcz9ydxqgsima";
             arch = "linux-x64";
 
           };
@@ -319,6 +349,22 @@ merge
           arch = "linux-arm64";
 
         };
+        "ms-python"."python" = vscode-utils.extensionFromVscodeMarketplace {
+          name = "python";
+          publisher = "ms-python";
+          version = "2025.4.0";
+          sha256 = "118lq055dxv0j9cv67frayhzmd1w1rq27a34s60i00ljc46vr26h";
+          arch = "linux-arm64";
+
+        };
+        "rust-lang"."rust-analyzer" = vscode-utils.extensionFromVscodeMarketplace {
+          name = "rust-analyzer";
+          publisher = "rust-lang";
+          version = "0.3.2370";
+          sha256 = "1kr6q783ma0aylagyzhcc4l5fxzx7giwa1alhmmn89lrja4j349n";
+          arch = "linux-arm64";
+
+        };
       }))
     (lib.attrsets.optionalAttrs (isDarwin && (isi686 || isx86_64)) {
       "hashicorp"."terraform" = vscode-utils.extensionFromVscodeMarketplace {
@@ -329,11 +375,27 @@ merge
         arch = "darwin-x64";
 
       };
+      "ms-python"."python" = vscode-utils.extensionFromVscodeMarketplace {
+        name = "python";
+        publisher = "ms-python";
+        version = "2025.4.0";
+        sha256 = "1yj06cqaj41apm7gg03csjklr253bsv4fd8bmp0afa8j4mqj744s";
+        arch = "darwin-x64";
+
+      };
       "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
         name = "vscode-xml";
         publisher = "redhat";
         version = "0.28.0";
         sha256 = "1mdjb3app4b34fzxi34rqgz4jjn0vhwjyhlgh7rlcnavqsk4amzg";
+        arch = "darwin-x64";
+
+      };
+      "rust-lang"."rust-analyzer" = vscode-utils.extensionFromVscodeMarketplace {
+        name = "rust-analyzer";
+        publisher = "rust-lang";
+        version = "0.3.2370";
+        sha256 = "1zmqkr0imzvjrw33ih1wyyw6aysp7vn6fjwb7msadbhag3x94gy5";
         arch = "darwin-x64";
 
       };
@@ -347,11 +409,27 @@ merge
       arch = "darwin-arm64";
 
     };
+    "ms-python"."python" = vscode-utils.extensionFromVscodeMarketplace {
+      name = "python";
+      publisher = "ms-python";
+      version = "2025.4.0";
+      sha256 = "16pzq9sm4lmknv960pacr9i90v5mk1zbp2wi2r8i03y32ig489f5";
+      arch = "darwin-arm64";
+
+    };
     "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
       name = "vscode-xml";
       publisher = "redhat";
       version = "0.28.0";
       sha256 = "1wzb8rxf420ggrnl4z83zps2n6k02mqk32yxvaa8fqcvscf0c7jw";
+      arch = "darwin-arm64";
+
+    };
+    "rust-lang"."rust-analyzer" = vscode-utils.extensionFromVscodeMarketplace {
+      name = "rust-analyzer";
+      publisher = "rust-lang";
+      version = "0.3.2370";
+      sha256 = "0jwhbqxjhxwz6a9285k96pdbjmfc1sqzib6qwjhkiszss84856ml";
       arch = "darwin-arm64";
 
     };

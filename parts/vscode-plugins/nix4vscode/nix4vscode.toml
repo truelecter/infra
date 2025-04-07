@@ -13,6 +13,10 @@ publisher_name = "bbenoist"
 extension_name = "nix"
 
 [[extensions]]
+publisher_name = "catppuccin"
+extension_name = "catppuccin-vsc"
+
+[[extensions]]
 publisher_name = "christian-kohler"
 extension_name = "path-intellisense"
 
@@ -110,7 +114,15 @@ extension_name = "vscode-kubernetes-tools"
 
 [[extensions]]
 publisher_name = "ms-python"
+extension_name = "python"
+
+[[extensions]]
+publisher_name = "ms-python"
 extension_name = "vscode-pylance"
+
+[[extensions]]
+publisher_name = "ms-vscode-remote"
+extension_name = "remote-ssh"
 
 [[extensions]]
 publisher_name = "ms-vscode-remote"
@@ -151,6 +163,10 @@ extension_name = "vscode-yaml"
 [[extensions]]
 publisher_name = "roscop"
 extension_name = "activefileinstatusbar"
+
+[[extensions]]
+publisher_name = "rust-lang"
+extension_name = "rust-analyzer"
 
 [[extensions]]
 publisher_name = "systemticks"
