@@ -7,30 +7,24 @@
 }: {
   imports =
     suites.base
-    ++ suites.k8s-node
     ++ [
       profiles.common.remote-builder
+      profiles.nixos.containers.docker
 
       ./hardware-configuration.nix
-      ./k8s
       ./postgres.nix
       ./mongo.nix
       ./wireguard.nix
       ./tailscale-exit-node.nix
       ./zabbix.nix
       ./journal.nix
+
+      ./pandora
+      ./asf.nix
     ];
 
   networking.networkmanager = {
     enable = false;
-    unmanaged = [
-      "interface-name:cali*"
-      "interface-name:tunl*"
-      "interface-name:vxlan.calico"
-      "interface-name:vxlan-v6.calico"
-      "interface-name:wireguard.cali"
-      "interface-name:wg-v6.cali"
-    ];
   };
 
   # we are in tight free space situation

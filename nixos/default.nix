@@ -47,12 +47,6 @@
       nixos.faster-linux
     ];
 
-    k8s-node = with profiles; [
-      nixos.secrets.k8s
-      nixos.containers.docker
-      {imports = [self.modules.nixos.k8s-with-overlay];}
-    ];
-
     wsl = with profiles;
       [
         common.core

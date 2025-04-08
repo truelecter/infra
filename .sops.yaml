@@ -14,11 +14,6 @@ keys:
   - &tl-mm4    age13xs4xvwm0ythks33uvgv7v9gnqhn9mvhqgyzg8u94060pxjc3urq3ht6r8
 
 creation_rules:
-  - path_regex: secrets/envs.yaml
-    key_groups:
-      - pgp:
-          - *truelecter
-
   - path_regex: secrets/minecraft-server.yaml
     key_groups:
       - pgp:
@@ -42,14 +37,14 @@ creation_rules:
           - *bttpi
           - *tl-mm4
 
-  - path_regex: secrets/k3s.yaml
+  - path_regex: secrets/bots/.*
     key_groups:
       - pgp:
           - *truelecter
         age:
           - *depsos
 
-  - path_regex: secrets/external-ips.yaml
+  - path_regex: secrets/wireguard.yaml
     key_groups:
       - pgp:
           - *truelecter

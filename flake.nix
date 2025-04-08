@@ -5,7 +5,6 @@
   inputs = {
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     latest.url = "github:nixos/nixpkgs/nixos-unstable";
-    k8s.url = "github:nixos/nixpkgs/9b5328b7f761a7bbdc0e332ac4cf076a3eedb89b";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixos.follows = "nixpkgs";
     # nixos.follows = "latest";
@@ -181,7 +180,6 @@
           ./parts/overrides
           ./parts/raspberry-pi
           ./parts/rockchip
-          ./parts/k8s
           ./parts/deploy-rs.nix
           ./parts/vscode-plugins
 

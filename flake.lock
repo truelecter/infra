@@ -232,22 +232,6 @@
         "type": "github"
       }
     },
-    "k8s": {
-      "locked": {
-        "lastModified": 1717696253,
-        "narHash": "sha256-1+ua0ggXlYYPLTmMl3YeYYsBXDSCqT+Gw3u6l4gvMhA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "9b5328b7f761a7bbdc0e332ac4cf076a3eedb89b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "9b5328b7f761a7bbdc0e332ac4cf076a3eedb89b",
-        "type": "github"
-      }
-    },
     "latest": {
       "locked": {
         "lastModified": 1743827369,
@@ -550,7 +534,6 @@
         "haumea": "haumea",
         "home": "home",
         "home-unstable": "home-unstable",
-        "k8s": "k8s",
         "latest": "latest",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nix4vscode": "nix4vscode",
