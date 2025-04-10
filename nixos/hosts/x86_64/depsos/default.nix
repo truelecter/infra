@@ -12,15 +12,19 @@
       profiles.nixos.containers.docker
 
       ./hardware-configuration.nix
-      ./postgres.nix
-      ./mongo.nix
-      ./wireguard.nix
-      ./tailscale-exit-node.nix
-      ./zabbix.nix
-      ./journal.nix
 
-      ./pandora
-      ./asf.nix
+      ./db/postgres.nix
+      ./db/mongo.nix
+
+      ./vpn/wireguard.nix
+      ./vpn/tailscale-exit-node.nix
+
+      ./zabbix.nix
+
+      ./bots/pandora
+      ./bots/asf.nix
+
+      ./ssl.nix
     ];
 
   networking.networkmanager = {
@@ -34,6 +38,10 @@
     min-free = 100 * MB;
     max-free = 500 * MB;
   };
+
+  services.journald.extraConfig = ''
+    SystemMaxUse=512M
+  '';
 
   systemd.services.NetworkManager-wait-online.enable = false;
   services.openssh.ports = [22 2265];

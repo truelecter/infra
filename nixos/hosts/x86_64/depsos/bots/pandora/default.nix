@@ -4,14 +4,24 @@
   ...
 }: let
   web-container-port = "8911";
+  domainName = "data.fenrir.moe";
 in {
   services.nginx = {
     enable = true;
-    # defaultHTTPListenPort = 8089;
-    virtualHosts."data.fenrir.moe".locations."/" = {
-      proxyPass = "http://localhost:${web-container-port}/";
+
+    virtualHosts.${domainName} = {
+      # useACMEHost = domainName;
+      enableACME = true;
+      forceSSL = true;
+      kTLS = true;
+
+      locations."/" = {
+        proxyPass = "http://localhost:${web-container-port}/";
+      };
     };
   };
+
+  # security.acme.certs.${domainName} = {};
 
   # TODO: if this is ever needed, convert to plain nix service
   virtualisation.oci-containers.containers = {
@@ -56,7 +66,7 @@ in {
   };
 
   sops.secrets.pandora-envs = {
-    sopsFile = ../../../../../secrets/bots/pandora-envs.env;
+    sopsFile = ../../../../../../secrets/bots/pandora-envs.env;
     key = "";
     format = "dotenv";
   };

@@ -51,6 +51,13 @@ creation_rules:
         age:
           - *depsos
 
+  - path_regex: secrets/cloudflare.env
+    key_groups:
+      - pgp:
+          - *truelecter
+        age:
+          - *depsos
+
   - path_regex: secrets/wifi.yaml
     key_groups:
       - pgp:

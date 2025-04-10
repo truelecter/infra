@@ -45,6 +45,6 @@
 
   sops.secrets.depsos-wg-pk = {
     key = "depsos-pk";
-    sopsFile = ../../../../secrets/wireguard.yaml;
+    sopsFile = ../../../../../secrets/wireguard.yaml;
   };
 }

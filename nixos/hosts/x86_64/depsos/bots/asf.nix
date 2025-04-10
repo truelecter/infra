@@ -1,13 +1,23 @@
 {config, ...}: let
   asfPort = "1242";
+  domainName = "asf.tenma.moe";
 in {
   services.nginx = {
     enable = true;
-    # defaultHTTPListenPort = 8089;
-    virtualHosts."asf.tenma.moe".locations."/" = {
-      proxyPass = "http://localhost:${asfPort}/";
+
+    virtualHosts.${domainName} = {
+      # useACMEHost = domainName;
+      enableACME = true;
+      forceSSL = true;
+      kTLS = true;
+
+      locations."/" = {
+        proxyPass = "http://localhost:${asfPort}/";
+      };
     };
   };
+
+  # security.acme.certs.${domainName} = {};
 
   services.archisteamfarm = let
     inherit (config.sops.secrets) asf-tl-pw asf-oni-pw ipc-pw;
@@ -67,7 +77,7 @@ in {
   sops.secrets = let
     inherit (config.services.archisteamfarm) dataDir;
 
-    sopsFile = ../../../../secrets/bots/archi-steam-farm.yaml;
+    sopsFile = ../../../../../secrets/bots/archi-steam-farm.yaml;
     owner = "archisteamfarm";
   in {
     asf-tl-pw = {
