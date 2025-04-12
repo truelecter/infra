@@ -77,8 +77,8 @@ merge
         "eamodio"."gitlens" = vscode-utils.extensionFromVscodeMarketplace {
           name = "gitlens";
           publisher = "eamodio";
-          version = "17.0.1";
-          sha256 = "0s22bqy2k971h1iv1fq28c4lh72x53fx6304il2vmavxaisn216k";
+          version = "17.0.2";
+          sha256 = "0dhzghr46jqy4b3xy6ypcbb6x9iwspjzpq4zkca0ycfc7fzv179v";
 
         };
         "editorconfig"."editorconfig" = vscode-utils.extensionFromVscodeMarketplace {
@@ -133,8 +133,8 @@ merge
         "likec4"."likec4-vscode" = vscode-utils.extensionFromVscodeMarketplace {
           name = "likec4-vscode";
           publisher = "likec4";
-          version = "1.27.3";
-          sha256 = "02l335k4ri9wlni0s58bvf3nn2y3dx4dlsdc8s65x5z5pc6h5jz0";
+          version = "1.28.1";
+          sha256 = "0q6mmcpbl820ar8m3d4pphkf4f0iqsyz34mq577jrp8wp6609qy3";
 
         };
         "lunuan"."kubernetes-templates" = vscode-utils.extensionFromVscodeMarketplace {
@@ -326,8 +326,8 @@ merge
           "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
             name = "vscode-xml";
             publisher = "redhat";
-            version = "0.28.0";
-            sha256 = "0pipcl1r6sngf6dq3cmz3g56ww78r10r8acqjzmri6l5kxpx22ah";
+            version = "0.28.1";
+            sha256 = "1q6xxzm3r83b6mgxkcj1lagj8wq5sbninvja06m8hp9393bj6lks";
             arch = "linux-x64";
 
           };
@@ -386,8 +386,8 @@ merge
       "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
         name = "vscode-xml";
         publisher = "redhat";
-        version = "0.28.0";
-        sha256 = "1mdjb3app4b34fzxi34rqgz4jjn0vhwjyhlgh7rlcnavqsk4amzg";
+        version = "0.28.1";
+        sha256 = "02p9w0ckb0dx2z383xgyf6a0awlpwh9gn2w5zx7j64zlhb3x03ml";
         arch = "darwin-x64";
 
       };
@@ -420,8 +420,8 @@ merge
     "redhat"."vscode-xml" = vscode-utils.extensionFromVscodeMarketplace {
       name = "vscode-xml";
       publisher = "redhat";
-      version = "0.28.0";
-      sha256 = "1wzb8rxf420ggrnl4z83zps2n6k02mqk32yxvaa8fqcvscf0c7jw";
+      version = "0.28.1";
+      sha256 = "0zgnkazh0y1nxihdryxp6b6lghl50jj2xmramyrvzavsaq019x13";
       arch = "darwin-arm64";
 
     };
