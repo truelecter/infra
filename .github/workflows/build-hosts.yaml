@@ -7,6 +7,7 @@ on:
 jobs:
   build_system:
     strategy:
+      fail-fast: false
       matrix:
         host:
         - os: ubuntu-22.04-arm
@@ -78,3 +79,18 @@ jobs:
         run: |
           [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
           nix build ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
+
+  aggregate:
+      runs-on: ubuntu-latest
+      needs: build_system
+      steps:
+      - run: exit 0
+
+  results:
+      runs-on: ubuntu-latest
+      needs: [build_system, aggregate]
+      if: ${{ !cancelled() }}
+      steps:
+      - if: ${{ needs.build.result != 'skipped' && needs.aggregate.result != 'success' }}
+        run: exit 1
+      - run: exit 0
