@@ -50,15 +50,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "1f5783a25056669a3d158fa0cf05271ef7f3a3fc";
+    version = "f2b27d17b78c138e09a7997730c22e19dd6d8476";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "1f5783a25056669a3d158fa0cf05271ef7f3a3fc";
+      rev = "f2b27d17b78c138e09a7997730c22e19dd6d8476";
       fetchSubmodules = false;
-      sha256 = "sha256-CyMx0foOYAJu5lSHaodEwbKtIPmUzkjSylCiBcbqMm4=";
+      sha256 = "sha256-LDrsExT5tX17TYSJC+dAZKb1LunO44fyJ6OajxLJ9tY=";
     };
-    date = "2025-04-18";
+    date = "2025-04-19";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -110,15 +110,15 @@
   };
   klipper-happy-hare = {
     pname = "klipper-happy-hare";
-    version = "3d367ce6f9c3c5ae5303e0e4ef4ee0316995d554";
+    version = "9061cae96e15d3b91d2cf24649091cd2c71e4d53";
     src = fetchFromGitHub {
       owner = "moggieuk";
       repo = "Happy-Hare";
-      rev = "3d367ce6f9c3c5ae5303e0e4ef4ee0316995d554";
+      rev = "9061cae96e15d3b91d2cf24649091cd2c71e4d53";
       fetchSubmodules = false;
-      sha256 = "sha256-50SzD9M/iw/CL+d/kiKw7tDAdD8sdODLXW3ZHbzuHJw=";
+      sha256 = "sha256-CS43D6HgdcbX2pyrcXecsks8W4oHM01hwNrGvCqIRaI=";
     };
-    date = "2025-04-01";
+    date = "2025-04-19";
   };
   klipper-kamp = {
     pname = "klipper-kamp";
@@ -282,15 +282,15 @@
   };
   moonraker = {
     pname = "moonraker";
-    version = "7cdcca3cb4b7caf27d511d1c4e32fa3297391709";
+    version = "5ee0adc553c1ac55d47e0372faa957a5a3fcdd68";
     src = fetchFromGitHub {
       owner = "Arksine";
       repo = "moonraker";
-      rev = "7cdcca3cb4b7caf27d511d1c4e32fa3297391709";
+      rev = "5ee0adc553c1ac55d47e0372faa957a5a3fcdd68";
       fetchSubmodules = false;
-      sha256 = "sha256-fjmbmv+0y/NsgvrscaA2gv9Tv8esWiMpbA35LuzFfFg=";
+      sha256 = "sha256-hF9XhYSnAGCNaQA9FvbctzVpxlsLte2KCGv6dnFmrhc=";
     };
-    date = "2025-04-03";
+    date = "2025-04-19";
   };
   python-networkmanager = {
     pname = "python-networkmanager";
