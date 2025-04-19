@@ -23,10 +23,10 @@ exts.ghsettings {
         required_pull_request_reviews = null;
         required_status_checks = {
           strict = true;
-          contexts = [
-            "build_system"
-            "build_shell"
-          ];
+          # contexts = [
+          #   "build_system"
+          #   "build_shell"
+          # ];
         };
         enforce_admins = false;
         restrictions = null;

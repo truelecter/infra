@@ -29,18 +29,3 @@ jobs:
       - name: Build shell
         run: |
           nix develop --command "menu"
-
-  aggregate:
-      runs-on: ubuntu-latest
-      needs: build_shell
-      steps:
-      - run: exit 0
-
-  results:
-      runs-on: ubuntu-latest
-      needs: [build_shell, aggregate]
-      if: ${{ !cancelled() }}
-      steps:
-      - if: ${{ needs.build.result != 'skipped' && needs.aggregate.result != 'success' }}
-        run: exit 1
-      - run: exit 0

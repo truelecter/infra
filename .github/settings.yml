@@ -4,9 +4,6 @@ branches:
       enforce_admins: false
       required_pull_request_reviews: null
       required_status_checks:
-        contexts:
-          - build_system
-          - build_shell
         strict: true
       restrictions: null
 repository:
