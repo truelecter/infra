@@ -80,10 +80,9 @@ jobs:
           [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
           nix build ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
 
-  hosts_results:
+  hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    name: Final Results
     needs: [build_system]
     steps:
       - run: exit 1

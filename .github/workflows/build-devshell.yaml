@@ -30,10 +30,9 @@ jobs:
         run: |
           nix develop --command "menu"
 
-  shell_results:
+  shells_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    name: Final Results
     needs: [build_shell]
     steps:
       - run: exit 1

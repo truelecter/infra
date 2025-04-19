@@ -24,8 +24,8 @@ exts.ghsettings {
         required_status_checks = {
           strict = true;
           contexts = [
-            "build_system"
-            "build_shell"
+            "shells_aggregated"
+            "hosts_aggregated"
           ];
         };
         enforce_admins = false;
