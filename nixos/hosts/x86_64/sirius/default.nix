@@ -8,7 +8,7 @@
       ./network-switch.nix
       ./spoolman.nix
       ./home-assistant
-      ./ide.nix
+      # ./ide.nix
     ];
 
   networking.firewall.enable = false;
