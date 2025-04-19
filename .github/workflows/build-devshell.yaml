@@ -30,7 +30,7 @@ jobs:
         run: |
           nix develop --command "menu"
 
-  results:
+  shell_results:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     name: Final Results
