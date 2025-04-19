@@ -26,15 +26,15 @@
   };
   kalico = {
     pname = "kalico";
-    version = "492a4306185e0a37bd073e45e6dcec95f8394c47";
+    version = "23937fad39212584c104889cd850caa26d0db328";
     src = fetchFromGitHub {
       owner = "KalicoCrew";
       repo = "kalico";
-      rev = "492a4306185e0a37bd073e45e6dcec95f8394c47";
+      rev = "23937fad39212584c104889cd850caa26d0db328";
       fetchSubmodules = false;
-      sha256 = "sha256-3XH84HCvNUQPpT4qJ08S0mc42U8zke09YSqPLbJ8fn0=";
+      sha256 = "sha256-xxPn6BFFdj2bOIH/SPYF1stJHOqDiWB05exAp1fFsPI=";
     };
-    date = "2025-04-09";
+    date = "2025-04-18";
   };
   katapult = {
     pname = "katapult";
@@ -50,15 +50,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "61c0c8d2ef40340781835dd53fb04cc7a454e37a";
+    version = "1f5783a25056669a3d158fa0cf05271ef7f3a3fc";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "61c0c8d2ef40340781835dd53fb04cc7a454e37a";
+      rev = "1f5783a25056669a3d158fa0cf05271ef7f3a3fc";
       fetchSubmodules = false;
-      sha256 = "sha256-nctW2ZPvQlBJUKonGTFyXe797JnPMapGUI64ajYr0Oc=";
+      sha256 = "sha256-CyMx0foOYAJu5lSHaodEwbKtIPmUzkjSylCiBcbqMm4=";
     };
-    date = "2025-04-11";
+    date = "2025-04-18";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -145,15 +145,15 @@
   };
   klipper-klippain-shaketune = {
     pname = "klipper-klippain-shaketune";
-    version = "d59da30ae568706335d10563338dd11e15e74889";
+    version = "c8ef451ec4153af492193ac31ed7eea6a52dbe4e";
     src = fetchFromGitHub {
       owner = "Frix-x";
       repo = "klippain-shaketune";
-      rev = "d59da30ae568706335d10563338dd11e15e74889";
+      rev = "c8ef451ec4153af492193ac31ed7eea6a52dbe4e";
       fetchSubmodules = false;
-      sha256 = "sha256-l0OmFsRLul0Dmxgc9uABqkVbIWx/6oD8wxt6pzy1K8Y=";
+      sha256 = "sha256-zzskp7ZiwR7nJ2e5eTCyEilctDoRxZdBn90zncFm0Rw=";
     };
-    date = "2025-02-26";
+    date = "2025-04-18";
   };
   klipper-led_effect = {
     pname = "klipper-led_effect";

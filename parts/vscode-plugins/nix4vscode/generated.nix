@@ -77,8 +77,8 @@ merge
         "eamodio"."gitlens" = vscode-utils.extensionFromVscodeMarketplace {
           name = "gitlens";
           publisher = "eamodio";
-          version = "17.0.2";
-          sha256 = "0dhzghr46jqy4b3xy6ypcbb6x9iwspjzpq4zkca0ycfc7fzv179v";
+          version = "17.0.3";
+          sha256 = "1vf49mz20zmfpfkq325c762x34qz017s1gfm93rphmvqsbk4skcd";
 
         };
         "editorconfig"."editorconfig" = vscode-utils.extensionFromVscodeMarketplace {
@@ -133,8 +133,8 @@ merge
         "likec4"."likec4-vscode" = vscode-utils.extensionFromVscodeMarketplace {
           name = "likec4-vscode";
           publisher = "likec4";
-          version = "1.28.1";
-          sha256 = "0q6mmcpbl820ar8m3d4pphkf4f0iqsyz34mq577jrp8wp6609qy3";
+          version = "1.29.0";
+          sha256 = "1rfx3z3i8dprspnps7f4k013p3g64c7lxzaz0w9fwza9lyicmm1v";
 
         };
         "lunuan"."kubernetes-templates" = vscode-utils.extensionFromVscodeMarketplace {

@@ -43,7 +43,7 @@
     },
     "kalico": {
         "cargoLocks": null,
-        "date": "2025-04-09",
+        "date": "2025-04-18",
         "extract": null,
         "name": "kalico",
         "passthru": null,
@@ -55,12 +55,12 @@
             "name": null,
             "owner": "KalicoCrew",
             "repo": "kalico",
-            "rev": "492a4306185e0a37bd073e45e6dcec95f8394c47",
-            "sha256": "sha256-3XH84HCvNUQPpT4qJ08S0mc42U8zke09YSqPLbJ8fn0=",
+            "rev": "23937fad39212584c104889cd850caa26d0db328",
+            "sha256": "sha256-xxPn6BFFdj2bOIH/SPYF1stJHOqDiWB05exAp1fFsPI=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "492a4306185e0a37bd073e45e6dcec95f8394c47"
+        "version": "23937fad39212584c104889cd850caa26d0db328"
     },
     "katapult": {
         "cargoLocks": null,
@@ -85,7 +85,7 @@
     },
     "klipper": {
         "cargoLocks": null,
-        "date": "2025-04-11",
+        "date": "2025-04-18",
         "extract": null,
         "name": "klipper",
         "passthru": null,
@@ -97,12 +97,12 @@
             "name": null,
             "owner": "Klipper3d",
             "repo": "klipper",
-            "rev": "61c0c8d2ef40340781835dd53fb04cc7a454e37a",
-            "sha256": "sha256-nctW2ZPvQlBJUKonGTFyXe797JnPMapGUI64ajYr0Oc=",
+            "rev": "1f5783a25056669a3d158fa0cf05271ef7f3a3fc",
+            "sha256": "sha256-CyMx0foOYAJu5lSHaodEwbKtIPmUzkjSylCiBcbqMm4=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "61c0c8d2ef40340781835dd53fb04cc7a454e37a"
+        "version": "1f5783a25056669a3d158fa0cf05271ef7f3a3fc"
     },
     "klipper-cartographer": {
         "cargoLocks": null,
@@ -253,7 +253,7 @@
     },
     "klipper-klippain-shaketune": {
         "cargoLocks": null,
-        "date": "2025-02-26",
+        "date": "2025-04-18",
         "extract": null,
         "name": "klipper-klippain-shaketune",
         "passthru": null,
@@ -265,12 +265,12 @@
             "name": null,
             "owner": "Frix-x",
             "repo": "klippain-shaketune",
-            "rev": "d59da30ae568706335d10563338dd11e15e74889",
-            "sha256": "sha256-l0OmFsRLul0Dmxgc9uABqkVbIWx/6oD8wxt6pzy1K8Y=",
+            "rev": "c8ef451ec4153af492193ac31ed7eea6a52dbe4e",
+            "sha256": "sha256-zzskp7ZiwR7nJ2e5eTCyEilctDoRxZdBn90zncFm0Rw=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "d59da30ae568706335d10563338dd11e15e74889"
+        "version": "c8ef451ec4153af492193ac31ed7eea6a52dbe4e"
     },
     "klipper-led_effect": {
         "cargoLocks": null,
