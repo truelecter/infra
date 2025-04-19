@@ -1,5 +1,5 @@
 let
-  hass-version = "2024.11.1";
+  hass-version = "2025.4.1";
 in {
   virtualisation.oci-containers = {
     containers.homeassistant = {
@@ -7,7 +7,7 @@ in {
       environment = {
         TZ = "Europe/Kyiv";
         # This is for HACS
-        PYTHONPATH = "/usr/local/lib/python3.12:/config/deps";
+        # PYTHONPATH = "/usr/local/lib/python3.12:/config/deps";
       };
       image = "ghcr.io/home-assistant/home-assistant:${hass-version}";
       extraOptions = ["--network=host"];
