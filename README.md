@@ -7,7 +7,7 @@
 
 ## Introduction
 
-This repository contains the Nix code that builds my systems using flake-parts. None of these NixOS and Darwin configurations will work out of the box for you (unless do not have my keys 😱).<br/>
+This repository contains the Nix code that builds my systems using flake-parts. None of these NixOS and Darwin configurations will work out of the box for you (unless you have my keys 😱).<br/>
 This repo is intended for sharing some interesting parts of my infra and for some inspiration for how I was inspired myself based on other similar repos.<br/>
 
 ## Why Nix?
