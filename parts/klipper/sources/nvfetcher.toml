@@ -78,9 +78,8 @@ src.github = "protoloft/klipper_z_calibration"
 fetch.github = "protoloft/klipper_z_calibration"
 
 [klipper-klicky-probe]
-src.git = "https://github.com/truelecter/Klicky-Probe"
-src.branch = "patch-1"
-fetch.github = "truelecter/Klicky-Probe"
+src.git = "https://github.com/jlas1/Klicky-Probe"
+fetch.github = "jlas1/Klicky-Probe"
 
 [klipper-gcode_shell_command]
 src.git = "https://github.com/dw-0/kiauh"
