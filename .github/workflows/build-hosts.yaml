@@ -35,61 +35,61 @@ jobs:
 
     runs-on: ${{ matrix.host.os }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
-        with:
-          nix_path: nixpkgs=channel:nixos-24.11
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+    - name: Install Nix
+      uses: cachix/install-nix-action@v30
+      with:
+        nix_path: nixpkgs=channel:nixos-24.11
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - uses: cachix/cachix-action@v15
-        with:
-          name: truelecter
-          extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+    - uses: cachix/cachix-action@v15
+      with:
+        name: truelecter
+        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Create aarch64-linux builder
-        if: ${{ startsWith(matrix.host.os, 'macos') }}
-        env:
-          BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
-          BUILDER_HOST: ${{secrets.AARCH64_BUILDER_HOSTNAME}}
-        run: |
-          echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
-          sudo chmod 600 /etc/nix/builder_ed25519
+    - name: Create aarch64-linux builder
+      if: ${{ startsWith(matrix.host.os, 'macos') }}
+      env:
+        BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
+        BUILDER_HOST: ${{secrets.AARCH64_BUILDER_HOSTNAME}}
+      run: |
+        echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
+        sudo chmod 600 /etc/nix/builder_ed25519
 
-          sudo mkdir -p /var/root/.ssh
-          ssh-keyscan -H "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
+        sudo mkdir -p /var/root/.ssh
+        ssh-keyscan -H "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
-          mkdir -p /etc/ssh/
-          echo "Host linux-builder"                      | sudo tee -a /etc/ssh/ssh_config
-          echo "  Hostname $BUILDER_HOST"                | sudo tee -a /etc/ssh/ssh_config > /dev/null
-          echo "  Port 22"                               | sudo tee -a /etc/ssh/ssh_config
-          echo "  HostKeyAlias $BUILDER_HOST"            | sudo tee -a /etc/ssh/ssh_config > /dev/null
-          echo "  IdentityFile /etc/nix/builder_ed25519" | sudo tee -a /etc/ssh/ssh_config
-          echo "  User gha-builder"                      | sudo tee -a /etc/ssh/ssh_config
+        mkdir -p /etc/ssh/
+        echo "Host linux-builder"                      | sudo tee -a /etc/ssh/ssh_config
+        echo "  Hostname $BUILDER_HOST"                | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  Port 22"                               | sudo tee -a /etc/ssh/ssh_config
+        echo "  HostKeyAlias $BUILDER_HOST"            | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  IdentityFile /etc/nix/builder_ed25519" | sudo tee -a /etc/ssh/ssh_config
+        echo "  User gha-builder"                      | sudo tee -a /etc/ssh/ssh_config
 
-          echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
+        echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
 
-          sudo nix store info --store ssh://linux-builder
+        sudo nix store info --store ssh://linux-builder
 
-      - name: Build system configuration
-        run: |
-          [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
-          nix build ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
+    - name: Build system configuration
+      run: |
+        [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
+        nix build ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
 
   hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs: [build_system]
     steps:
-      - run: exit 1
-        # see https://stackoverflow.com/a/67532120/4907315
-        if: >-
-          ${{
-               contains(needs.*.result, 'failure')
-            || contains(needs.*.result, 'cancelled')
-            || contains(needs.*.result, 'skipped')
-          }}
+    - run: exit 1
+      # see https://stackoverflow.com/a/67532120/4907315
+      if: >-
+        ${{
+              contains(needs.*.result, 'failure')
+          || contains(needs.*.result, 'cancelled')
+          || contains(needs.*.result, 'skipped')
+        }}

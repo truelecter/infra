@@ -2,55 +2,62 @@ name: Update flake.lock
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 6" # At 00:00 on Saturday
+  - cron: "0 0 * * 6" # At 00:00 on Saturday
 
 jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install Nix
-        uses: cachix/install-nix-action@v26
-        with:
-          nix_path: nixpkgs=channel:nixos-24.11
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - uses: cachix/cachix-action@v15
-        with:
-          name: truelecter
-          extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: Configure git
-        run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-      - name: Update nvfetcher packages
-        run: |
-          nix develop '.#ci' --command bash -c "update-sources ALL"
-          git commit -am "deps(sources): Updated cell sources" || true
-      - name: Update deps hashes packages
-        run: |
-          nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
-          git commit -am "deps(sources): Updated deps hash" || true
-      - name: Update vscode extensions
-        run: |
-          nix develop '.#ci' --command nix4vscode parts/vscode-plugins/nix4vscode/nix4vscode.toml -o parts/vscode-plugins/nix4vscode/generated.nix
-          git commit -am "deps(sources): Updated vscode extensions" || true
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v21
-        id: ufl
-        with:
-          commit-msg: "deps(flake-lock): Updated flake.lock"
-          pr-title: "[Automated] Update 'flake.lock' and sources"
-          branch: "auto/upgrade-dependencies"
-          token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
-          pr-labels: |
-            dependencies
-            automated
-      - name: Enable auto-merge
-        uses: peter-evans/enable-pull-request-automerge@v3
-        if: ${{ steps.ufl.outputs.pull-request-number }}
-        with:
-          token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
-          pull-request-number: ${{ steps.ufl.outputs.pull-request-number }}
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        nix_path: nixpkgs=channel:nixos-24.11
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: cachix/cachix-action@v16
+      with:
+        name: truelecter
+        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+    - name: Configure git
+      run: |
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+
+    - name: Update nvfetcher packages
+      run: |
+        nix develop '.#ci' --command bash -c "update-sources ALL"
+        git commit -am "deps(sources): Updated cell sources" || true
+
+    - name: Update deps hashes packages
+      run: |
+        nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
+        git commit -am "deps(sources): Updated deps hash" || true
+
+    - name: Update vscode extensions
+      run: |
+        nix develop '.#ci' --command nix4vscode parts/vscode-plugins/nix4vscode/nix4vscode.toml -o parts/vscode-plugins/nix4vscode/generated.nix
+        git commit -am "deps(sources): Updated vscode extensions" || true
+
+    - name: Update flake.lock
+      uses: DeterminateSystems/update-flake-lock@v21
+      id: ufl
+      with:
+        token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
+        pr-title: "[Automated] Update 'flake.lock' and sources"
+        branch: "auto/upgrade-dependencies"
+        commit-msg: "deps(flake-lock): Updated flake.lock"
+        pr-labels: |
+          dependencies
+          automated
+
+    - name: Enable auto-merge
+      run: |
+        gh pr merge --merge --squash --auto "$PR_NUMBER" --body "deps(repo): update packages"
+      env:
+        GH_TOKEN: ${{ secrets.PR_WF_ENABLED_TOKEN }}
+        PR_NUMBER: ${{ steps.ufl.outputs.pull-request-number }}

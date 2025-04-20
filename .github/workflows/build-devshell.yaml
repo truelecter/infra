@@ -13,33 +13,33 @@ jobs:
         - macos-14
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
-        with:
-          nix_path: nixpkgs=channel:nixos-24.11
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - uses: cachix/cachix-action@v15
-        with:
-          name: truelecter
-          extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: Build shell
-        run: |
-          nix develop --command "menu"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Install Nix
+      uses: cachix/install-nix-action@v30
+      with:
+        nix_path: nixpkgs=channel:nixos-24.11
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+    - uses: cachix/cachix-action@v15
+      with:
+        name: truelecter
+        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+    - name: Build shell
+      run: |
+        nix develop --command "menu"
 
   shells_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs: [build_shell]
     steps:
-      - run: exit 1
-        # see https://stackoverflow.com/a/67532120/4907315
-        if: >-
-          ${{
-               contains(needs.*.result, 'failure')
-            || contains(needs.*.result, 'cancelled')
-            || contains(needs.*.result, 'skipped')
-          }}
+    - run: exit 1
+      # see https://stackoverflow.com/a/67532120/4907315
+      if: >-
+        ${{
+              contains(needs.*.result, 'failure')
+          || contains(needs.*.result, 'cancelled')
+          || contains(needs.*.result, 'skipped')
+        }}
