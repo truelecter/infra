@@ -57,7 +57,7 @@ jobs:
 
     - name: Enable auto-merge
       run: |
-        gh pr merge --merge --squash --auto "$PR_NUMBER" --body "deps(repo): update packages"
+        gh pr merge --squash --auto "$PR_NUMBER" --body "deps(repo): update packages"
       env:
         GH_TOKEN: ${{ secrets.PR_WF_ENABLED_TOKEN }}
         PR_NUMBER: ${{ steps.ufl.outputs.pull-request-number }}
