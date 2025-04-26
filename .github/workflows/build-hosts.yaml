@@ -78,7 +78,7 @@ jobs:
     - name: Build system configuration
       run: |
         [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
-        nix build ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
+        nix build -L ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
 
   hosts_aggregated:
     if: ${{ always() }}

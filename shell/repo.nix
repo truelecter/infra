@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  inherit (pkgs) writeScriptBin nvfetcher-bin nix4vscode;
+  inherit (pkgs) writeScriptBin nvfetcher-bin nix4vscode cachix;
 
   update-sources = writeScriptBin "update-sources" ''
     function updatePartsSources {
@@ -64,6 +64,11 @@ in {
     {
       category = "repo";
       package = nix4vscode;
+    }
+
+    {
+      category = "nix";
+      package = cachix;
     }
   ];
 }
