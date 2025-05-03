@@ -4,6 +4,7 @@
     ++ suites._3d-printing
     ++ suites.raspberry
     ++ [
+      ./camera.nix
       ./hardware-configuration.nix
       ./wifi.nix
       ./klipper
