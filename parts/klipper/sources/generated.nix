@@ -26,15 +26,15 @@
   };
   kalico = {
     pname = "kalico";
-    version = "bb7522e9cd0af9d39d0f9ac27117177c98df5dfc";
+    version = "afd799416d81fc668dbcc734b6e4b1e25c118089";
     src = fetchFromGitHub {
       owner = "KalicoCrew";
       repo = "kalico";
-      rev = "bb7522e9cd0af9d39d0f9ac27117177c98df5dfc";
+      rev = "afd799416d81fc668dbcc734b6e4b1e25c118089";
       fetchSubmodules = false;
-      sha256 = "sha256-2UeE1+DKCsaYYudKrMy5E87/pl8xKJiDArvy0ANQuVc=";
+      sha256 = "sha256-AquUzMBVnfTBPu7EufAhQU830fzBuq4SYGzXcu+AILc=";
     };
-    date = "2025-05-03";
+    date = "2025-05-13";
   };
   katapult = {
     pname = "katapult";
@@ -50,15 +50,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "6f87a4e685f5ba1291f31f37d8fad8fe0551930f";
+    version = "841a9ca2f7f9a4c4dda7a3bcd1f703c863a50e75";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "6f87a4e685f5ba1291f31f37d8fad8fe0551930f";
+      rev = "841a9ca2f7f9a4c4dda7a3bcd1f703c863a50e75";
       fetchSubmodules = false;
-      sha256 = "sha256-x2LF8evaihRx1auHDaifYPMqRWo8lr53t4Ca7IbSVCE=";
+      sha256 = "sha256-THHp5rOBJjI62du46LRMPiplZAekiSSY+Xn/OFNk8Sk=";
     };
-    date = "2025-05-09";
+    date = "2025-05-16";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -110,15 +110,15 @@
   };
   klipper-happy-hare = {
     pname = "klipper-happy-hare";
-    version = "532f1c289d2bf9bc79035d5404a4cfe0ba68e0b9";
+    version = "f92502f8e66b55f2d76790d96c7a791be3a54f7b";
     src = fetchFromGitHub {
       owner = "moggieuk";
       repo = "Happy-Hare";
-      rev = "532f1c289d2bf9bc79035d5404a4cfe0ba68e0b9";
+      rev = "f92502f8e66b55f2d76790d96c7a791be3a54f7b";
       fetchSubmodules = false;
-      sha256 = "sha256-t/9BfD1J+YpNwR+FNW6Rqj2eA+6YSOZB8TH5wZrXN9s=";
+      sha256 = "sha256-fBhVVBGsXVCwFp6+KZ0aO70coS42Irh2/rQsvtCtgvs=";
     };
-    date = "2025-05-07";
+    date = "2025-05-13";
   };
   klipper-kamp = {
     pname = "klipper-kamp";
@@ -193,15 +193,15 @@
   };
   klipper-screen = {
     pname = "klipper-screen";
-    version = "2916c9f35c9fcc3d93441be1ab4ae49282357e97";
+    version = "8aa2fcc019ae8ac49b614431edac764860395a43";
     src = fetchFromGitHub {
       owner = "jordanruthe";
       repo = "KlipperScreen";
-      rev = "2916c9f35c9fcc3d93441be1ab4ae49282357e97";
+      rev = "8aa2fcc019ae8ac49b614431edac764860395a43";
       fetchSubmodules = false;
-      sha256 = "sha256-L0lcWiSOz7GzsiFT/gtbQ7UJ/OnbZAzBoGEvBhKowaI=";
+      sha256 = "sha256-PJRU0ai8nFE72zkKcPRkkMPqulRAtB5B4ZhivsC6Tk8=";
     };
-    date = "2025-03-31";
+    date = "2025-05-15";
   };
   klipper-z-calibration = {
     pname = "klipper-z-calibration";
