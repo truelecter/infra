@@ -46,6 +46,8 @@
     fsType = "ext4";
   };
 
+  virtualisation.containers.storage.settings.storage.graphroot = "/srv/containsers/storage";
+
   swapDevices = [
     {
       device = "/dev/disk/by-label/swap";

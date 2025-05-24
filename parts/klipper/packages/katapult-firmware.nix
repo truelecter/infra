@@ -9,7 +9,7 @@
   libusb1,
   wxGTK32,
   python3,
-  gcc-arm-embedded-11,
+  gcc-arm-embedded,
   sources,
   avrdude,
   stm32flash,
@@ -27,7 +27,7 @@ in
     nativeBuildInputs = [
       python3
       pkgsCross.avr.stdenv.cc
-      gcc-arm-embedded-11
+      gcc-arm-embedded
       bintools-unwrapped
       libffi
       libusb1
@@ -58,7 +58,7 @@ in
 
     strictDeps = true;
     disallowedReferences = [
-      gcc-arm-embedded-11
+      gcc-arm-embedded
     ];
 
     dontFixup = true;

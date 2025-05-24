@@ -93,10 +93,6 @@
         };
 
         users.${username} = {
-          disabledModules = [
-            "${inputs.home}/modules/programs/vscode.nix"
-          ];
-
           imports = modulesImportables;
 
           home.stateVersion = lib.mkDefault "22.11";

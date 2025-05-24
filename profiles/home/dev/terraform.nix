@@ -5,7 +5,7 @@
 }: let
   vs-exts = pkgs.vscode-marketplace;
 in {
-  programs.vscode = {
+  programs.vscode.profiles.default = {
     extensions = with vs-exts; [
       vs-exts."4ops".packer
       hashicorp.terraform

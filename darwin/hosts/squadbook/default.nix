@@ -34,4 +34,6 @@
   };
 
   system.stateVersion = 4;
+
+  system.primaryUser = "andrii.panasiuk";
 }

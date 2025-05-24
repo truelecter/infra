@@ -32,22 +32,24 @@
       ];
     };
 
-    initExtraBeforeCompInit = ''
-      export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
+    initContent = lib.mkMerge [
+      (lib.mkOrder 550 ''
+        export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
 
-      (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+        (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
 
-      # p10k instant prompt
-      P10K_INSTANT_PROMPT="''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
+        # p10k instant prompt
+        P10K_INSTANT_PROMPT="''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
 
-      (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
-    '';
+        (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+      '')
 
-    initExtra = ''
-      [[ -f "$HOME/.sh.local" ]] && source "$HOME/.sh.local"
-      export GPG_TTY=$TTY
-    '';
+      (lib.mkOrder 1000 ''
+        [[ -f "$HOME/.sh.local" ]] && source "$HOME/.sh.local"
+        export GPG_TTY=$TTY
+      '')
+    ];
 
     plugins = [
       {

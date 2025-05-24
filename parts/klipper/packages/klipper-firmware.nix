@@ -9,7 +9,7 @@
   libusb1,
   wxGTK32,
   python3,
-  gcc-arm-embedded-11,
+  gcc-arm-embedded,
   klipper,
   avrdude,
   stm32flash,
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     python3
     pkgsCross.avr.stdenv.cc
-    gcc-arm-embedded-11
+    gcc-arm-embedded
     bintools-unwrapped
     libffi
     libusb1
@@ -56,7 +56,7 @@ stdenv.mkDerivation rec {
 
   strictDeps = true;
   disallowedReferences = [
-    gcc-arm-embedded-11
+    gcc-arm-embedded
   ];
 
   dontFixup = true;

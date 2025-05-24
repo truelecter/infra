@@ -1,12 +1,12 @@
 {pkgs, ...}: {
-  programs.vscode = {
+  programs.vscode.profiles.default = {
     extensions = with pkgs.vscode-marketplace; [
       ms-python.python
       ms-python.vscode-pylance
     ];
 
     userSettings = {
-      "python.defaultInterpreterPath" = "${pkgs.python39}/bin/python3";
+      "python.defaultInterpreterPath" = "${pkgs.python3}/bin/python3";
     };
   };
 }

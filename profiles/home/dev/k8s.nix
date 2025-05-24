@@ -1,7 +1,7 @@
 {pkgs, ...}: let
   helm-wrapped = pkgs.wrapHelm pkgs.kubernetes-helm {plugins = [pkgs.kubernetes-helmPlugins.helm-diff];};
 in {
-  programs.vscode = {
+  programs.vscode.profiles.default = {
     extensions = with pkgs.vscode-marketplace; [
       lunuan.kubernetes-templates
       ipedrazas.kubernetes-snippets

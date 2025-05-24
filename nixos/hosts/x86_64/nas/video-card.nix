@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   hardware = {
     graphics = {
       enable = true;
@@ -7,6 +7,7 @@
     nvidia = {
       nvidiaSettings = false;
       open = true;
+      # package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
     nvidia-container-toolkit.enable = true;
   };

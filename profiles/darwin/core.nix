@@ -5,14 +5,13 @@
   ...
 }: {
   programs.zsh.enable = true;
-  services.nix-daemon.enable = true;
 
   environment = {
     systemPackages = with pkgs; [
       m-cli
       terminal-notifier
       duti
-      darwin.iproute2mac
+      iproute2mac
     ];
 
     # darwinConfig = "${self}/lib/compat";
@@ -57,8 +56,6 @@
 
       sandbox = "relaxed";
     };
-
-    configureBuildUsers = true;
   };
 
   sops.gnupg.sshKeyPaths = lib.mkDefault [

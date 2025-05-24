@@ -9,7 +9,6 @@
     suites.base
     ++ [
       profiles.common.remote-builder
-      profiles.nixos.containers.docker
 
       ./hardware-configuration.nix
 

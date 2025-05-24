@@ -137,7 +137,7 @@ in {
       (mkSystemdSocketService "gpg")
       (
         lib.mkIf cfg.sockets.ssh.enable {
-          programs.zsh.initExtra = lib.mkAfter ''
+          programs.zsh.initContent = lib.mkAfter ''
             ${
               if cfg.wslSocketsPath != null
               then "__W_GPG_UNIX_SOCKET_BASE_DIR=\"${cfg.wslSocketsPath}\""

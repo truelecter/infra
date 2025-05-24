@@ -96,5 +96,5 @@ in {
     self.lib.merge
   ];
 
-  flake.modules.darwin = self.lib.rakeLeaves ./modules;
+  flake.modules.darwin = {};
 }
