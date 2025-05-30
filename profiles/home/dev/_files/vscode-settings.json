@@ -67,5 +67,7 @@
 
   "direnv.restart.automatic": true,
   "c4.diagram.renderer": "structurizr",
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+
+  "cursor.chat.terminalShowHoverHint": false
 }
