@@ -50,15 +50,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "b1011e3fb14df7470d9b74e59042383012b199c6";
+    version = "1f3b4cc749be7b0ad1a4e60d4b9c3eb3c0a4167c";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "b1011e3fb14df7470d9b74e59042383012b199c6";
+      rev = "1f3b4cc749be7b0ad1a4e60d4b9c3eb3c0a4167c";
       fetchSubmodules = false;
-      sha256 = "sha256-gDOGGTS0UPe0ni+zcRUz9CRhkL6hq1PXCzYC9RpqNU8=";
+      sha256 = "sha256-1qLPtQKyGHAJ1pWgv4EwjvSfV8myHtbHLERDdV5No0Q=";
     };
-    date = "2025-05-22";
+    date = "2025-05-30";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -110,15 +110,15 @@
   };
   klipper-happy-hare = {
     pname = "klipper-happy-hare";
-    version = "f92502f8e66b55f2d76790d96c7a791be3a54f7b";
+    version = "e6e20562a73c19f0191c609330390928c2dd7b47";
     src = fetchFromGitHub {
       owner = "moggieuk";
       repo = "Happy-Hare";
-      rev = "f92502f8e66b55f2d76790d96c7a791be3a54f7b";
+      rev = "e6e20562a73c19f0191c609330390928c2dd7b47";
       fetchSubmodules = false;
-      sha256 = "sha256-fBhVVBGsXVCwFp6+KZ0aO70coS42Irh2/rQsvtCtgvs=";
+      sha256 = "sha256-wAPHe1Zt6of6Dsz9Bt0+WaksHiEbCrlOGndYGiuxyUk=";
     };
-    date = "2025-05-13";
+    date = "2025-05-30";
   };
   klipper-kamp = {
     pname = "klipper-kamp";
@@ -193,15 +193,15 @@
   };
   klipper-screen = {
     pname = "klipper-screen";
-    version = "8aa2fcc019ae8ac49b614431edac764860395a43";
+    version = "2397a44ae3b1ed18e29cc429754e466c904e0462";
     src = fetchFromGitHub {
       owner = "jordanruthe";
       repo = "KlipperScreen";
-      rev = "8aa2fcc019ae8ac49b614431edac764860395a43";
+      rev = "2397a44ae3b1ed18e29cc429754e466c904e0462";
       fetchSubmodules = false;
-      sha256 = "sha256-PJRU0ai8nFE72zkKcPRkkMPqulRAtB5B4ZhivsC6Tk8=";
+      sha256 = "sha256-wQ4jkaliim0bez5XvAaO1KWLaLF4enJlN7aKZz+vLOs=";
     };
-    date = "2025-05-15";
+    date = "2025-05-25";
   };
   klipper-z-calibration = {
     pname = "klipper-z-calibration";
