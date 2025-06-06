@@ -44,6 +44,13 @@ creation_rules:
         age:
           - *depsos
 
+  - path_regex: secrets/matrix/.*
+    key_groups:
+      - pgp:
+          - *truelecter
+        age:
+          - *depsos
+
   - path_regex: secrets/wireguard.yaml
     key_groups:
       - pgp:
