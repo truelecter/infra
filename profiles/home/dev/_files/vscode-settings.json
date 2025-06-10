@@ -69,5 +69,7 @@
   "c4.diagram.renderer": "structurizr",
   "workbench.startupEditor": "none",
 
-  "cursor.chat.terminalShowHoverHint": false
+  "cursor.chat.terminalShowHoverHint": false,
+
+  "extensions.ignoreRecommendations": true
 }

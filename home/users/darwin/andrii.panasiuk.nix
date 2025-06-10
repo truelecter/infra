@@ -13,7 +13,8 @@
   };
 
   system.defaults.dock.persistent-apps = [
-    "/Applications/Arc.app"
+    "/Applications/Zen.app"
+    # "/Applications/Arc.app"
     "/Applications/iTerm.app"
     "${pkgs.code-cursor}/Applications/Cursor.app"
     "/Applications/Telegram Desktop.app"

@@ -141,6 +141,13 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+
+    zen-flake = {
+      url = "gitlab:InvraNet/zen-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:

@@ -41,6 +41,18 @@
         "type": "github"
       }
     },
+    "darwin-src": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-pUDZCUeous6G4YvV3jlzuuWbTP+e3NM0EY38peZF+ZM=",
+        "type": "file",
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.12.10b/zen.macos-universal.dmg"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.12.10b/zen.macos-universal.dmg"
+      }
+    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -246,6 +258,19 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "linux-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748796643,
+        "narHash": "sha256-7ZDsGG11g6Dfm++3DrPGxWLk4cIgaVBeYo+uvdHZ9Vk=",
+        "type": "tarball",
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.12.10b/zen.linux-x86_64.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.12.10b/zen.linux-x86_64.tar.xz"
       }
     },
     "nix-vscode-extensions": {
@@ -550,7 +575,8 @@
         "nixpkgs-master": "nixpkgs-master",
         "nvfetcher": "nvfetcher",
         "pyproject-nix": "pyproject-nix",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "zen-flake": "zen-flake"
       }
     },
     "rust-overlay": {
@@ -620,6 +646,28 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "zen-flake": {
+      "inputs": {
+        "darwin-src": "darwin-src",
+        "linux-src": "linux-src",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749037993,
+        "narHash": "sha256-5KUZDP91PpbU5uWPVzuEqbvsM4EQ1hc8t2pDyUKRTZE=",
+        "owner": "InvraNet",
+        "repo": "zen-flake",
+        "rev": "b493d25e44243dc2153b2984a3351670dbeaf11f",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "InvraNet",
+        "repo": "zen-flake",
+        "type": "gitlab"
       }
     }
   },
