@@ -14,6 +14,9 @@
     # Configures the trackpad corner click behavior. Mode 1 enables right click.
     # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.NSGlobalDomain.com.apple.trackpad.trackpadCornerClickBehavior
     "com.apple.trackpad.trackpadCornerClickBehavior" = null;
+
+    # Trackpad -> Swipe between pages = Scroll left/right with two fingers
+    AppleEnableSwipeNavigateWithScrolls = true;
   };
 
   system.defaults.trackpad = {
