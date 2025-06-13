@@ -51,6 +51,7 @@
       [
         common.core
         common.cachix
+        common.networking.tailscale
 
         nixos.core
 
