@@ -1,4 +1,3 @@
-# https://github.com/NixOS/nixpkgs/pull/404871
 {
   lib,
   config,
@@ -18,17 +17,25 @@ in {
     services.mautrix-discord = {
       enable = lib.mkEnableOption "Mautrix-Discord, a Matrix-Discord puppeting/relay-bot bridge";
 
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.mautrix-discord;
+        defaultText = lib.literalExpression "pkgs.mautrix-discord";
+        description = ''
+          The mautrix-discord package to use.
+        '';
+      };
+
       settings = lib.mkOption {
         type = lib.types.submodule {
           freeformType = format.type;
 
-          # Pass `cfg` into the module so we can refer to other values within
-          # this submodule definition.
-          # This gives us access to `config.settings.appservice.port`, etc.
-          _module.args = {inherit cfg lib;};
+          config = {
+            _module.args = {inherit cfg lib;};
+          };
 
           options = {
-            homeserver = {
+            homeserver = lib.mkOption {
               type = lib.types.attrs;
               default = {
                 software = "standard";
@@ -42,6 +49,49 @@ in {
                 fullDataDiration.
                                 See [example-config.yaml](https://github.com/mautrix/discord/blob/main/example-config.yaml)
                                 for more information.
+              '';
+            };
+
+            appservice = lib.mkOption {
+              type = lib.types.attrs;
+              default = {
+                address = "http://localhost:8009";
+                port = 8009;
+                id = "discord";
+                bot = {
+                  username = "discordbot";
+                  displayname = "Discord bridge bot";
+                  avatar = "mxc://maunium.net/nIdEykemnwdisvHbpxflpDlC";
+                };
+                as_token = "generate";
+                hs_token = "generate";
+                database = {
+                  type = "sqlite3";
+                  uri = "file:/var/lib/mautrix-discord/mautrix-discord.db?_txlock=immediate";
+                };
+              };
+              defaultText = lib.literalExpression ''
+                {
+                  address = "http://localhost:8009";
+                  port = 8009;
+                  id = "discord";
+                  bot = {
+                    username = "discordbot";
+                    displayname = "Discord bridge bot";
+                    avatar = "mxc://maunium.net/nIdEykemnwdisvHbpxflpDlC";
+                  };
+                  as_token = "generate";
+                  hs_token = "generate";
+                  database = {
+                    type = "sqlite3";
+                    uri = "file:''${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
+                  };
+                }
+              '';
+              description = ''
+                Appservice configuration.
+                See [example-config.yaml](https://github.com/mautrix/discord/blob/main/example-config.yaml)
+                for more information.
               '';
             };
 
@@ -219,6 +269,31 @@ in {
         '';
       };
 
+      serviceUnit = lib.mkOption {
+        type = lib.types.str;
+        readOnly = true;
+        default = "mautrix-discord.service";
+        description = ''
+          The systemd unit (a service or a target) for other services to depend on if they
+          need to be started after matrix-synapse.
+          This option is useful as the actual parent unit for all matrix-synapse processes
+          changes when configuring workers.
+        '';
+      };
+
+      registrationServiceUnit = lib.mkOption {
+        type = lib.types.str;
+        readOnly = true;
+        default = "mautrix-discord-registration.service";
+        description = ''
+          The registration service that generates the registration file.
+          Systemd unit (a service or a target) for other services to depend on if they
+          need to be started after mautrix-discord registration service.
+          This option is useful as the actual parent unit for all matrix-synapse processes
+          changes when configuring workers.
+        '';
+      };
+
       serviceDependencies = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default =
@@ -235,29 +310,6 @@ in {
         '';
         description = ''
           List of Systemd services to require and wait for when starting the application service.
-        '';
-      };
-
-      serviceUnit = lib.mkOption {
-        type = lib.types.str;
-        readOnly = true;
-        description = ''
-          The systemd unit (a service or a target) for other services to depend on if they
-          need to be started after matrix-synapse.
-          This option is useful as the actual parent unit for all matrix-synapse processes
-          changes when configuring workers.
-        '';
-      };
-
-      registrationServiceUnit = lib.mkOption {
-        type = lib.types.str;
-        readOnly = true;
-        description = ''
-          The registration service that generates the registration file.
-          Systemd unit (a service or a target) for other services to depend on if they
-          need to be started after mautrix-discord registration service.
-          This option is useful as the actual parent unit for all matrix-synapse processes
-          changes when configuring workers.
         '';
       };
     };
@@ -316,11 +368,17 @@ in {
 
     systemd.services = {
       matrix-synapse = lib.mkIf cfg.registerToSynapse {
-        serviceConfig.SupplementaryGroups = ["mautrix-discord"];
+        serviceConfig.SupplementaryGroups = ["mautrix-discord-registration"];
+        # Make synapse depend on the registration service when auto-registering
+        wants = ["mautrix-discord-registration.service"];
+        after = ["mautrix-discord-registration.service"];
       };
 
       mautrix-discord-registration = {
         description = "Mautrix-Discord registration generation service";
+
+        wantedBy = lib.mkIf cfg.registerToSynapse ["multi-user.target"];
+        before = lib.mkIf cfg.registerToSynapse ["matrix-synapse.service"];
 
         path = [
           pkgs.yq
@@ -331,14 +389,14 @@ in {
         script = ''
           # substitute the settings file by environment variables
           # in this case read from EnvironmentFile
-          rm -f '${settingsFile cfg}'
+          rm -f '${settingsFile}'
           old_umask=$(umask)
           umask 0177
           envsubst \
-            -o '${settingsFile cfg}' \
-            -i '${settingsFileUnformatted cfg}'
-          config_has_tokens=$(yq '.appservice | has("as_token") and has("hs_token")' '${settingsFile cfg}')
-          registration_already_exists=$([[ -f '${cfg.registrationFile}' ]] && echo "true" || echo "false")
+            -o '${settingsFile}' \
+            -i '${settingsFileUnformatted}'
+          config_has_tokens=$(yq '.appservice | has("as_token") and has("hs_token")' '${settingsFile}')
+          registration_already_exists=$([[ -f '${registrationFile}' ]] && echo "true" || echo "false")
           echo "There are tokens in the config: $config_has_tokens"
           echo "Registration already existed: $registration_already_exists"
           # tokens not configured from config/environment file, and registration file
@@ -347,43 +405,61 @@ in {
             echo "Copying as_token, hs_token from registration into configuration"
             yq -sY '.[0].appservice.as_token = .[1].as_token
               | .[0].appservice.hs_token = .[1].hs_token
-              | .[0]' '${settingsFile cfg}' '${cfg.registrationFile}' \
-              > '${settingsFile cfg}.tmp'
-            mv '${settingsFile cfg}.tmp' '${settingsFile cfg}'
+              | .[0]' '${settingsFile}' '${registrationFile}' \
+              > '${settingsFile}.tmp'
+            mv '${settingsFile}.tmp' '${settingsFile}'
           fi
           # make sure --generate-registration does not affect config.yaml
-          cp '${settingsFile cfg}' '${settingsFile cfg}.tmp'
+          cp '${settingsFile}' '${settingsFile}.tmp'
           echo "Generating registration file"
           mautrix-discord \
             --generate-registration \
-            --config='${settingsFile cfg}.tmp' \
-            --registration='${cfg.registrationFile}'
-          rm '${settingsFile cfg}.tmp'
+            --config='${settingsFile}.tmp' \
+            --registration='${registrationFile}'
+          rm '${settingsFile}.tmp'
           # no tokens configured, and new were just generated by generate registration for first time
           if [[ $config_has_tokens == "false" && $registration_already_exists == "false" ]]; then
             echo "Copying newly generated as_token, hs_token from registration into configuration"
             yq -sY '.[0].appservice.as_token = .[1].as_token
               | .[0].appservice.hs_token = .[1].hs_token
-              | .[0]' '${settingsFile cfg}' '${cfg.registrationFile}' \
-              > '${settingsFile cfg}.tmp'
-            mv '${settingsFile cfg}.tmp' '${settingsFile cfg}'
+              | .[0]' '${settingsFile}' '${registrationFile}' \
+              > '${settingsFile}.tmp'
+            mv '${settingsFile}.tmp' '${settingsFile}'
+          fi
+          # make sure --generate-registration does not affect config.yaml
+          cp '${settingsFile}' '${settingsFile}.tmp'
+          echo "Generating registration file"
+          mautrix-discord \
+            --generate-registration \
+            --config='${settingsFile}.tmp' \
+            --registration='${registrationFile}'
+          rm '${settingsFile}.tmp'
+          # no tokens configured, and new were just generated by generate registration for first time
+          if [[ $config_has_tokens == "false" && $registration_already_exists == "false" ]]; then
+            echo "Copying newly generated as_token, hs_token from registration into configuration"
+            yq -sY '.[0].appservice.as_token = .[1].as_token
+              | .[0].appservice.hs_token = .[1].hs_token
+              | .[0]' '${settingsFile}' '${registrationFile}' \
+              > '${settingsFile}.tmp'
+            mv '${settingsFile}.tmp' '${settingsFile}'
           fi
           # Make sure correct tokens are in the registration file
           if [[ $config_has_tokens == "true" || $registration_already_exists == "true" ]]; then
             echo "Copying as_token, hs_token from configuration to the registration file"
             yq -sY '.[1].as_token = .[0].appservice.as_token
               | .[1].hs_token = .[0].appservice.hs_token
-              | .[1]' '${settingsFile cfg}' '${cfg.registrationFile}' \
-              > '${cfg.registrationFile}.tmp'
-            mv '${cfg.registrationFile}.tmp' '${cfg.registrationFile}'
+              | .[1]' '${settingsFile}' '${registrationFile}' \
+              > '${registrationFile}.tmp'
+            mv '${registrationFile}.tmp' '${registrationFile}'
           fi
           umask $old_umask
-          chown :mautrix-discord-registration '${cfg.registrationFile}'
-          chmod 640 '${cfg.registrationFile}'
+          chown :mautrix-discord-registration '${registrationFile}'
+          chmod 640 '${registrationFile}'
         '';
 
         serviceConfig = {
           Type = "oneshot";
+          RemainAfterExit = true;
           UMask = 27;
 
           User = "mautrix-discord";
@@ -394,12 +470,12 @@ in {
           ProtectSystem = "strict";
           ProtectHome = true;
 
-          ReadWritePaths = dataDir cfg;
-          StateDirectory = cfg.dataDir;
+          ReadWritePaths = [dataDir];
+          StateDirectory = "mautrix-discord";
           EnvironmentFile = cfg.environmentFile;
         };
 
-        restartTriggers = [(settingsFileUnformatted cfg)];
+        restartTriggers = [settingsFileUnformatted];
       };
 
       mautrix-discord = {
@@ -422,7 +498,7 @@ in {
           RestartSec = 30;
           WorkingDirectory = dataDir;
           ExecStart = ''
-            ${lib.getExe pkgs.mautrix-discord} \
+            ${lib.getExe cfg.package} \
               --config='${settingsFile}'
           '';
           EnvironmentFile = cfg.environmentFile;
@@ -447,31 +523,14 @@ in {
           ReadWritePaths = [cfg.dataDir];
         };
 
-        restartTriggers = [(settingsFileUnformatted cfg)];
+        restartTriggers = [settingsFileUnformatted];
       };
     };
 
-    # services.mautrix-discord = {
-    #   serviceUnit = "mautrix-discord.service";
-    #   registrationServiceUnit = "mautrix-discord-registration.service";
-    #   # registrationFile = registrationFile;
-    #   settings = let
-    #     inherit (lib.modules) mkDefault;
-    #   in {
-    #     bridge = {
-    #       username_template = mkDefault "discord_{{.}}";
-    #     };
-
-    #     appservice = {
-    #       id = mkDefault "discord";
-    #       port = mkDefault 29334;
-    #       bot = {
-    #         username = mkDefault "discordbot";
-    #         displayname = mkDefault "Discord bridge bot";
-    #         avatar = mkDefault "mxc://maunium.net/nIdEykemnwdisvHbpxflpDlC";
-    #       };
-    #     };
-    #   };
-    # };
+    meta = {
+      maintainers = with lib.maintainers; [
+        mistyttm
+      ];
+    };
   };
 }
