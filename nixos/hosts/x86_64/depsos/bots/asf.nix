@@ -64,6 +64,7 @@ in {
           ];
           "OnlineStatus" = 7;
           "SteamLogin" = username;
+          "RemoteCommunication" = 0; # TODO: research into RemoteCommunication -> PublicListing
         };
       };
     in {
