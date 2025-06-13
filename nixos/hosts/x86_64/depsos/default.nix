@@ -24,6 +24,8 @@
       ./bots/asf.nix
 
       ./ssl.nix
+
+      ./matrix
     ];
 
   networking.networkmanager = {
