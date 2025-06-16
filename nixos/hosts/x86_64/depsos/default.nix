@@ -25,7 +25,7 @@
 
       ./ssl.nix
 
-      ./matrix
+      # ./matrix
     ];
 
   networking.networkmanager = {

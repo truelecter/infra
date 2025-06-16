@@ -1,3 +1,4 @@
+# Taken from https://github.com/NixOS/nixpkgs/pull/404871
 {
   lib,
   config,
@@ -525,12 +526,6 @@ in {
 
         restartTriggers = [settingsFileUnformatted];
       };
-    };
-
-    meta = {
-      maintainers = with lib.maintainers; [
-        mistyttm
-      ];
     };
   };
 }

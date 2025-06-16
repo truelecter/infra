@@ -12,7 +12,7 @@ in {
 
     root = pkgs.element-web.override {
       conf = {
-        default_server_config = {"m.homeserver".base_url = "https://${sCfg.homeserver-hostname}";};
+        default_server_config = {"m.homeserver".base_url = "https://matrix.${sCfg.homeserver-hostname}";};
       };
     };
   };

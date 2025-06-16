@@ -31,12 +31,9 @@ in {
   services.mautrix-telegram = {
     enable = true;
 
-    # file containing the appservice and telegram tokens
     environmentFile = config.sops.secrets.mautrix-telegram.path;
     registerToSynapse = true;
 
-    # The appservice is pre-configured to use SQLite by default.
-    # It's also possible to use PostgreSQL.
     settings = {
       homeserver = {
         address = "http://localhost:8008";
@@ -71,6 +68,8 @@ in {
             background = "020202"; # only for gif, transparency not supported
           };
         };
+
+        double_puppet_allow_discovery = true;
       };
     };
   };
