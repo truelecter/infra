@@ -77,6 +77,14 @@
       sha256 = "sha256-StrvXb/5/6sf1vdEB3JUXAsuaRsWPXRcnvZkwMATHpQ=";
     };
   };
+  mcs-vault-hunters-3 = {
+    pname = "mcs-vault-hunters-3";
+    version = "3.18.3.1";
+    src = fetchurl {
+      url = "https://mediafilez.forgecdn.net/files/6654/829/Vault-Hunters-3rd-Edition-3.18.3.1-server-files.zip";
+      sha256 = "sha256-gG6eXp+0dVTRHRzerkRptW4tm2fqaDmvo5kwxlOmigc=";
+    };
+  };
   server-starter = {
     pname = "server-starter";
     version = "2.4.1";

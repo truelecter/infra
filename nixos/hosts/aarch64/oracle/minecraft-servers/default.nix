@@ -39,6 +39,7 @@ in {
     ./vanilla.nix
     ./litv3.nix
     ./cae.nix
+    ./vh3.nix
   ];
 
   users = {
@@ -86,6 +87,14 @@ in {
       };
     };
 
+    instances.vh3 = {
+      customization.create."config/bluemap/webserver.conf".text = bluemapConfig 8111;
+      serverProperties = {
+        server-port = 25571;
+        rcon-port = 25601;
+      };
+    };
+
     instances.sevtech.serverProperties = {
       server-port = 25565;
       rcon-port = 25595;
@@ -110,6 +119,7 @@ in {
     in {
       "litv3.tenma.moe" = bluemap 8109;
       "cae.tenma.moe" = bluemap 8110;
+      "vh3.tenma.moe" = bluemap 8111;
     };
   };
 

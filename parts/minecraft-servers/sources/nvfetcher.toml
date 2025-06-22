@@ -39,3 +39,7 @@ fetch.url = "https://mediafilez.forgecdn.net/files/3570/46/SevTech_Ages_Server_3
 [mcs-life-in-the-village-3]
 src.manual = "2.8"
 fetch.url = "https://mediafilez.forgecdn.net/files/5290/323/LITV3-1.19.2-Serverpack-2.8.zip"
+
+[mcs-vault-hunters-3]
+src.manual = "3.18.3.1"
+fetch.url = "https://mediafilez.forgecdn.net/files/6654/829/Vault-Hunters-3rd-Edition-3.18.3.1-server-files.zip"
