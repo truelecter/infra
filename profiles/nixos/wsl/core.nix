@@ -5,11 +5,12 @@
     startMenuLaunchers = true;
     # docker-native.enable = true;
     # docker-desktop.enable = true;
+    interop.register = true;
+
+    usbip.enable = true;
   };
 
-  environment.systemPackages = let
-    inherit (pkgs.linuxPackages) usbip;
-  in [
-    usbip
+  environment.systemPackages = [
+    pkgs.dbus
   ];
 }
