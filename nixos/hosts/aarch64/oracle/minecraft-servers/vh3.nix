@@ -76,7 +76,7 @@
     customization = {
       create = {
         "mods/bluemap.jar".source = mods.forge."1.18.1".bluemap;
-        # "mods/easier-sleeping.jar".source = mods.forge."1.18.2".easier-sleeping;
+        "mods/easier-sleeping.jar".source = mods.forge."1.18.2".easier-sleeping;
         # "mods/functionalstorage.jar".source = mods.forge."1.18.2".functional-storage;
         "config/bluemap/core.conf".text = ''
           accept-download: true
