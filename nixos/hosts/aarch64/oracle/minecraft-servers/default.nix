@@ -71,6 +71,14 @@ in {
       rcon-port = 25597;
     };
 
+    instances.e9e = {
+      customization.create."config/bluemap/webserver.conf".text = bluemapConfig 8112;
+      serverProperties = {
+        server-port = 25568;
+        rcon-port = 25598;
+      };
+    };
+
     instances.litv3 = {
       customization.create."config/bluemap/webserver.conf".text = bluemapConfig 8109;
       serverProperties = {
@@ -120,6 +128,7 @@ in {
       "litv3.tenma.moe" = bluemap 8109;
       "cae.tenma.moe" = bluemap 8110;
       "vh3.tenma.moe" = bluemap 8111;
+      "e9e.tenma.moe" = bluemap 8112;
     };
   };
 

@@ -71,7 +71,7 @@
       allow-flight = true;
       online-mode = true;
       difficulty = 3;
-      motd = "\\u00A7d\\u00A7oRealMineCock: Enigmatica 9 Expert\\u00A7r - \\u00A741.18.0";
+      motd = "\\u00A7d\\u00A7oRealMineCock: Enigmatica 9 Expert\\u00A7r - \\u00A741.25.0";
     };
   };
 }
