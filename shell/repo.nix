@@ -62,11 +62,6 @@ in {
       package = nvfetcher-bin;
     }
     {
-      category = "repo";
-      package = nix4vscode;
-    }
-
-    {
       category = "nix";
       package = cachix;
     }

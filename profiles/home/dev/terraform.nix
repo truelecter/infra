@@ -2,14 +2,14 @@
   config,
   pkgs,
   ...
-}: let
-  vs-exts = pkgs.vscode-marketplace;
-in {
+}: {
   programs.vscode.profiles.default = {
-    extensions = with vs-exts; [
-      vs-exts."4ops".packer
-      hashicorp.terraform
-    ];
+    extensions =
+      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
+      [
+        "4ops.packer"
+        "hashicorp.terraform"
+      ];
 
     userSettings = {
       "[terraform]" = {

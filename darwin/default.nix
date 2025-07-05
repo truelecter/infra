@@ -77,7 +77,6 @@
                   self.overlays.latest-packages
 
                   inputs.nix4vscode.overlays.forVscode
-                  self.overlays.vscode-extensions
 
                   inputs.zen-flake.overlay
                 ];

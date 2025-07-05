@@ -108,7 +108,6 @@
                   self.overlays.latest-packages
 
                   inputs.nix4vscode.overlays.forVscode
-                  self.overlays.vscode-extensions
                 ];
                 config.allowUnfree = true;
               };
