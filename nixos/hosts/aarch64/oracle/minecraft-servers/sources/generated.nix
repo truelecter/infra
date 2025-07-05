@@ -8,8 +8,8 @@
       url = "https://ci.codemc.io/job/Games647/job/ChangeSkin/474/artifact/core/target/ChangeSkinCore.jar";
       sha256 = "sha256-IR8thoPfzEkj+/BepSqZ8/Qs6s91C+r3HnuM71VUGkM=";
     };
-    mc-version = "7";
     mod = "sponge";
+    mc-version = "7";
     name = "change-skin-core";
   };
   mod-forge-18-bluemap = {
@@ -19,9 +19,20 @@
       url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v5.2/BlueMap-5.2-forge-1.18.1.jar";
       sha256 = "sha256-vZqqu3o0ooM5YxQ4w7zsfA8Eg4G/HG8L73iZofoUF3c=";
     };
-    mc-version = "1.18.1";
     mod = "forge";
+    mc-version = "1.18.1";
     name = "bluemap";
+  };
+  mod-forge-182-connectivity = {
+    pname = "mod-forge-182-connectivity";
+    version = "3.2";
+    src = fetchurl {
+      url = "https://mediafilez.forgecdn.net/files/3833/738/connectivity-1.18.2-3.2.jar";
+      sha256 = "sha256-AB5wh5jtGlJwiWtXWcPwmRpSNX3m5iz2fyaiZxl1kKw=";
+    };
+    mod = "forge";
+    mc-version = "1.18.2";
+    name = "connectivity";
   };
   mod-forge-182-easier-sleeping = {
     pname = "mod-forge-182-easier-sleeping";
@@ -30,8 +41,8 @@
       url = "https://mediafilez.forgecdn.net/files/3683/922/EasierSleeping-1.18.2-2.1.0.jar";
       sha256 = "sha256-AlCLZ6puDyhyi2YPLN2W/mkuS2enO3L88xC3z3kWlLw=";
     };
-    mc-version = "1.18.2";
     mod = "forge";
+    mc-version = "1.18.2";
     name = "easier-sleeping";
   };
   mod-forge-182-functional-storage = {
@@ -41,9 +52,20 @@
       url = "https://mediafilez.forgecdn.net/files/5271/589/functionalstorage-1.18.2-1.1.4.jar";
       sha256 = "sha256-FWW+Z+kRKNz167yjvkNbaij6V1+2VYTwLLsrPp9hMKo=";
     };
-    mc-version = "1.18.2";
     mod = "forge";
+    mc-version = "1.18.2";
     name = "functional-storage";
+  };
+  mod-forge-182-longer-login-times = {
+    pname = "mod-forge-182-longer-login-times";
+    version = "1.0.0";
+    src = fetchurl {
+      url = "https://mediafilez.forgecdn.net/files/3601/460/longerlogintimes-1.0.0-mc1.18.jar";
+      sha256 = "sha256-mmH5qy8bnYHLGFbDXnBN7xDjpuFtjrfdDlGQ2I3qGjU=";
+    };
+    mod = "forge";
+    mc-version = "1.18.2";
+    name = "longer-login-times";
   };
   mod-forge-19-2-dynmap = {
     pname = "mod-forge-19-2-dynmap";
@@ -52,8 +74,8 @@
       url = "https://mediafilez.forgecdn.net/files/4979/21/Dynmap-3.7-beta-4-forge-1.19.2.jar";
       sha256 = "sha256-f7O24vgIaySn9PrBtedr6mKCUX1i4J7FumZZeTHA5PQ=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "dynmap";
   };
   mod-forge-19-bluemap = {
@@ -63,8 +85,8 @@
       url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v3.13/BlueMap-3.13-forge-1.19.1.jar";
       sha256 = "sha256-iwH5m15LwobZviIlbwNdBBD1mrbgZ0TuYyAzXl3lWCY=";
     };
-    mc-version = "1.19.1";
     mod = "forge";
+    mc-version = "1.19.1";
     name = "bluemap";
   };
   mod-forge-19-dynmap-blockscan = {
@@ -74,8 +96,8 @@
       url = "https://dynmap.us/builds/DynmapBlockScan/DynmapBlockScan-3.7-SNAPSHOT-forge-1.19.jar";
       sha256 = "sha256-QNkIcV7DztQcvYvAabUh0X+N3vEJiRvMqJomvRt03LU=";
     };
-    mc-version = "1.19";
     mod = "forge";
+    mc-version = "1.19";
     name = "dynmap-block-scan";
   };
   mod-forge-192-carryon = {
@@ -85,8 +107,8 @@
       url = "https://mediafilez.forgecdn.net/files/5141/759/carryon-forge-1.19.2-2.1.2.23.jar";
       sha256 = "sha256-Webhy6ffb1SAdF6KRKVOKwdkXAUCXWc83BrzK6CKXQM=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "carryon";
   };
   mod-forge-192-corail-tombstone = {
@@ -96,8 +118,8 @@
       url = "https://mediafilez.forgecdn.net/files/5202/57/tombstone-1.19.2-8.2.16.jar";
       sha256 = "sha256-BvdVa4KAqMDI8SqnnZj14cDF2b7o/rhM6wc+GGuFBI8=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "corail-tombstone";
   };
   mod-forge-192-ftb-chunks = {
@@ -107,8 +129,8 @@
       url = "https://mediafilez.forgecdn.net/files/5001/266/ftb-chunks-forge-1902.4.4-build.326.jar";
       sha256 = "sha256-3HFeGoU6der00TZr0e7zLxVk9Lqg83xjC4Ms4Hu1fnY=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "ftb-chunks";
   };
   mod-forge-192-ftb-xmod-compat = {
@@ -118,8 +140,8 @@
       url = "https://mediafilez.forgecdn.net/files/4857/341/ftb-xmod-compat-forge-1.2.3.jar";
       sha256 = "sha256-1Wref9pIs2bONDUe84tmc+UyXEObqTH5ZqFTACM9TWg=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "ftb-xmod-compat";
   };
   mod-forge-192-kiwi = {
@@ -129,8 +151,8 @@
       url = "https://mediafilez.forgecdn.net/files/5063/293/Kiwi-1.19.2-forge-8.3.6.jar";
       sha256 = "sha256-dmcXgFHhNkSig4F+OlAXCKZxbf+iVac7t0JMPlK55Es=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "kiwi";
   };
   mod-forge-192-passablefolliage = {
@@ -140,8 +162,8 @@
       url = "https://mediafilez.forgecdn.net/files/4542/72/PassableFoliage-1.19.1-forge-5.2.1.jar";
       sha256 = "sha256-jjCXKTEV+HFo6yJ9840auq9i2R9ONSuGyLSwmmaSDNY=";
     };
-    mc-version = "1.19.2";
     mod = "forge";
+    mc-version = "1.19.2";
     name = "passable-foliage";
   };
   mod-forge-spongeforge = {
@@ -151,8 +173,8 @@
       url = "https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongeforge/1.12.2-2838-7.4.7/spongeforge-1.12.2-2838-7.4.7.jar";
       sha256 = "sha256-tK9S6r/ZYDw1eLFqSoMWUz38nzRHQZrs+CvT5/l+Jsk=";
     };
-    mc-version = "1.12.2";
     mod = "forge";
+    mc-version = "1.12.2";
     name = "spongeforge";
   };
   mod-sponge-changeskin = {
@@ -162,8 +184,8 @@
       url = "https://ci.codemc.io/job/Games647/job/ChangeSkin/474/artifact/sponge/target/ChangeSkinSponge.jar";
       sha256 = "sha256-rw0zwjPfEQv9Q9ThxQZalaCvoXgPFygAAtfHfoKqb7Y=";
     };
-    mc-version = "7";
     mod = "sponge";
+    mc-version = "7";
     name = "change-skin";
   };
   mp-server-pause-forge-1_16_5 = {
@@ -173,8 +195,8 @@
       url = "https://www.curseforge.com/api/v1/mods/556491/files/3803691/download";
       sha256 = "sha256-XhfCex4pwFM3TKQtF+1YdYeIPhR+5pITgKoR+BZN6EA=";
     };
-    mc-version = "1.16.5";
     mod = "forge";
+    mc-version = "1.16.5";
     name = "mp-server-pause";
   };
 }
