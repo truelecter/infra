@@ -21,7 +21,7 @@ in
 
     unpackPhase = ''
       mkdir -p $out
-      unzip $src -d $out
+      unzip -j $src -d $out
     '';
 
     installPhase = ''
@@ -29,6 +29,8 @@ in
 
       cp ${./_files/start-forge-1.18.sh} start.sh
       chmod +x start.sh
+
+      ls -la
 
       java -jar ${ss} install
     '';
@@ -41,7 +43,7 @@ in
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-inctI6SU2PgNiTcwUUIw6J2CIqyfbIXAsqDL0KDmus8=";
+    outputHash = "sha256-sjD5dNEHUNii4uyiHG17K0iMs2khYOcSd+6pcPWqhNY=";
 
     meta = with lib; {
       description = "Enigmatica 9 Expert is a quest-guided progression modpack for Minecraft 1.19.2";

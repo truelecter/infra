@@ -16,38 +16,23 @@
 
   wsl = {
     defaultUser = "truelecter";
+    wrapBinSh = true;
+
     extraBin = let
-      e = pkg: bin: {src = lib.getExe' pkg bin;};
-      e' = pkg: bins: builtins.map (e pkg) bins;
-    in
-      lib.flatten [
-        (e pkgs.bash "bash")
-        (e pkgs.gnugrep "grep")
-        (e pkgs.gawk "awk")
-        (e pkgs.gnused "sed")
-        (e pkgs.gnutar "tar")
-        (e pkgs.which "which")
-        (e pkgs.curl "curl")
-        (e pkgs.wget "wget")
-        (e pkgs.ps "ps")
-        (e pkgs.gzip "gzip")
-        (e' pkgs.coreutils [
-          "dirname"
-          "readlink"
-          "uname"
-          "rm"
-          "mkdir"
-          "mktemp"
-          "mv"
-          "cp"
-          "touch"
-          "tail"
-          "cat"
-          "sleep"
-          "ls"
-          "chmod"
-        ])
-      ];
+      bashWrapper = with pkgs;
+        runCommand "nixos-wsl-bash-wrapper"
+        {
+          nativeBuildInputs = [makeWrapper];
+        } ''
+          makeWrapper ${bashInteractive}/bin/bash $out/bin/bash \
+            --prefix PATH ':' ${lib.makeBinPath [systemd gnugrep coreutils gnutar gzip getconf gnused procps which gawk wget curl util-linux]}
+        '';
+    in [
+      {
+        name = "bash";
+        src = "${bashWrapper}/bin/bash";
+      }
+    ];
   };
 
   system.stateVersion = "22.11";
