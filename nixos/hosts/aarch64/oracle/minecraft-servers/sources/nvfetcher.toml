@@ -77,3 +77,13 @@ passthru = { mod = "forge", mc-version = "1.18.2", name = "functional-storage" }
 src.manual  = "2.1.0"
 fetch.url = "https://mediafilez.forgecdn.net/files/3683/922/EasierSleeping-1.18.2-2.1.0.jar"
 passthru = { mod = "forge", mc-version = "1.18.2", name = "easier-sleeping" }
+
+[mod-forge-182-longer-login-times]
+src.manual = "1.0.0"
+fetch.url = "https://mediafilez.forgecdn.net/files/3601/460/longerlogintimes-1.0.0-mc1.18.jar"
+passthru = { mod = "forge", mc-version = "1.18.2", name = "longer-login-times" }
+
+[mod-forge-182-connectivity]
+src.manual = "3.2"
+fetch.url = "https://mediafilez.forgecdn.net/files/3833/738/connectivity-1.18.2-3.2.jar"
+passthru = { mod = "forge", mc-version = "1.18.2", name = "connectivity" }

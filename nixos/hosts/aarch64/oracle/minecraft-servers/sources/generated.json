@@ -37,6 +37,25 @@
         },
         "version": "5.2"
     },
+    "mod-forge-182-connectivity": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "mod-forge-182-connectivity",
+        "passthru": {
+            "mc-version": "1.18.2",
+            "mod": "forge",
+            "name": "connectivity"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-AB5wh5jtGlJwiWtXWcPwmRpSNX3m5iz2fyaiZxl1kKw=",
+            "type": "url",
+            "url": "https://mediafilez.forgecdn.net/files/3833/738/connectivity-1.18.2-3.2.jar"
+        },
+        "version": "3.2"
+    },
     "mod-forge-182-easier-sleeping": {
         "cargoLocks": null,
         "date": null,
@@ -74,6 +93,25 @@
             "url": "https://mediafilez.forgecdn.net/files/5271/589/functionalstorage-1.18.2-1.1.4.jar"
         },
         "version": "1.1.4"
+    },
+    "mod-forge-182-longer-login-times": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "mod-forge-182-longer-login-times",
+        "passthru": {
+            "mc-version": "1.18.2",
+            "mod": "forge",
+            "name": "longer-login-times"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-mmH5qy8bnYHLGFbDXnBN7xDjpuFtjrfdDlGQ2I3qGjU=",
+            "type": "url",
+            "url": "https://mediafilez.forgecdn.net/files/3601/460/longerlogintimes-1.0.0-mc1.18.jar"
+        },
+        "version": "1.0.0"
     },
     "mod-forge-19-2-dynmap": {
         "cargoLocks": null,

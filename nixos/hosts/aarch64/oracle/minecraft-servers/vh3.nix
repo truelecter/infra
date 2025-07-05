@@ -6,7 +6,7 @@
   ...
 }: {
   services.minecraft-servers.instances.vh3 = {
-    enable = true;
+    enable = false;
     serverPackage = pkgs.mcs-vault-hunters-3;
     backup.restic = {
       enable = true;
@@ -77,6 +77,7 @@
       create = {
         "mods/bluemap.jar".source = mods.forge."1.18.1".bluemap;
         "mods/easier-sleeping.jar".source = mods.forge."1.18.2".easier-sleeping;
+        "mods/connectivity.jar".source = mods.forge."1.18.2".connectivity;
         # "mods/functionalstorage.jar".source = mods.forge."1.18.2".functional-storage;
         "config/bluemap/core.conf".text = ''
           accept-download: true
