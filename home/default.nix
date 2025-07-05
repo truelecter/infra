@@ -35,6 +35,7 @@
       with profiles.home;
         [
           dev.cursor
+          dev.core-extensions
           dev.android
         ]
         ++ suites.base

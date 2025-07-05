@@ -188,7 +188,6 @@
           ./parts/raspberry-pi
           ./parts/rockchip
           ./parts/deploy-rs.nix
-          ./parts/vscode-plugins
 
           ./shell
 

@@ -55,10 +55,10 @@
   };
   mcs-enigmatica-9-expert = {
     pname = "mcs-enigmatica-9-expert";
-    version = "1.22.1";
+    version = "1.25.0";
     src = fetchurl {
-      url = "https://mediafilez.forgecdn.net/files/5356/769/Enigmatica9ExpertServer-1.22.1.zip";
-      sha256 = "sha256-LgI2Rr+hjQcDXOZygxafXAcd7mvneZlkMHGC2tuI3dU=";
+      url = "https://mediafilez.forgecdn.net/files/6695/924/Enigmatica9ExpertServer-1.25.0.zip";
+      sha256 = "sha256-qyCdsaz/RhS07BeDCKMx5up/xE37RIFcselPQcPnC3Y=";
     };
   };
   mcs-life-in-the-village-3 = {

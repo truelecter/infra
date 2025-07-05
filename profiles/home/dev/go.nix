@@ -1,7 +1,13 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.vscode.profiles.default = {
-    extensions = with pkgs.vscode-marketplace; [
-      golang.go
-    ];
+    extensions =
+      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
+      [
+        "golang.go"
+      ];
   };
 }

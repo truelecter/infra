@@ -13,8 +13,8 @@ src.manual = "1.8.0"
 fetch.url = "https://mediafilez.forgecdn.net/files/4437/745/Enigmatica6ExpertServer-1.8.0.zip"
 
 [mcs-enigmatica-9-expert]
-src.manual = "1.22.1"
-fetch.url = "https://mediafilez.forgecdn.net/files/5356/769/Enigmatica9ExpertServer-1.22.1.zip"
+src.manual = "1.25.0"
+fetch.url = "https://mediafilez.forgecdn.net/files/6695/924/Enigmatica9ExpertServer-1.25.0.zip"
 
 [mcs-dawncraft]
 src.manual = "1.28_f2"

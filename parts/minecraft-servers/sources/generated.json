@@ -104,11 +104,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-LgI2Rr+hjQcDXOZygxafXAcd7mvneZlkMHGC2tuI3dU=",
+            "sha256": "sha256-qyCdsaz/RhS07BeDCKMx5up/xE37RIFcselPQcPnC3Y=",
             "type": "url",
-            "url": "https://mediafilez.forgecdn.net/files/5356/769/Enigmatica9ExpertServer-1.22.1.zip"
+            "url": "https://mediafilez.forgecdn.net/files/6695/924/Enigmatica9ExpertServer-1.25.0.zip"
         },
-        "version": "1.22.1"
+        "version": "1.25.0"
     },
     "mcs-life-in-the-village-3": {
         "cargoLocks": null,
