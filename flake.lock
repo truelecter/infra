@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751670728,
-        "narHash": "sha256-lh+Fjz110EZVsg72qWAE7yCtSOJiTnYCv14OgyCoRZw=",
+        "lastModified": 1752227483,
+        "narHash": "sha256-eetITGJfURryoHY5gfuE9/4sEV9aSgzhPxgsQgofNa8=",
         "owner": "catppuccin",
         "repo": "nix",
-        "rev": "f07078deae3c9f896ed3aa8bd4b114d9ab59dce8",
+        "rev": "5f431aac1a4038c385e6de2d2384d943e4802d61",
         "type": "github"
       },
       "original": {
@@ -44,13 +44,13 @@
     "darwin-universal-src": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-ZmLge9ywB7H4mSyLk7spMuyUYPyeiEeb7dbwGOOnm20=",
+        "narHash": "sha256-sI2UYlxTu9Mde5GVY7QTpH8WLe6tv31jFjBpfDUnwfo=",
         "type": "file",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.macos-universal.dmg"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.macos-universal.dmg"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.macos-universal.dmg"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.macos-universal.dmg"
       }
     },
     "deploy-rs": {
@@ -210,11 +210,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751468302,
-        "narHash": "sha256-tWosziZTT039x6PgEZUhzGlV8oLvdDmIgKTE8ESMaEA=",
+        "lastModified": 1752391422,
+        "narHash": "sha256-ReX0NG6nIAEtQQjLqeu1vUU2jjZuMlpymNtb4VQYeus=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "501cfec8277f931a9c9af9f23d3105c537faeafe",
+        "rev": "c26266790678863cce8e7460fdbf0d80991b1906",
         "type": "github"
       },
       "original": {
@@ -231,11 +231,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751676893,
-        "narHash": "sha256-kXlkCJcws234u4gLjtl07/U+8FV8/TBYoR14gXVRv0g=",
+        "lastModified": 1752449767,
+        "narHash": "sha256-P8mQIrgIImASTlNkHPfKwGTmyZgku8EUt6cF52s3N/Y=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "57d1027e1eaf1220342248ff18d34f42b0beea7b",
+        "rev": "1a4d8ffd320c2393b72e7ebc5b647122d5703056",
         "type": "github"
       },
       "original": {
@@ -246,11 +246,11 @@
     },
     "latest": {
       "locked": {
-        "lastModified": 1751792365,
-        "narHash": "sha256-J1kI6oAj25IG4EdVlg2hQz8NZTBNYvIS0l4wpr9KcUo=",
+        "lastModified": 1751984180,
+        "narHash": "sha256-LwWRsENAZJKUdD3SpLluwDmdXY9F45ZEgCb0X+xgOL0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1fd8bada0b6117e6c7eb54aad5813023eed37ccb",
+        "rev": "9807714d6944a957c2e036f84b0ff8caf9930bc0",
         "type": "github"
       },
       "original": {
@@ -263,27 +263,27 @@
     "linux-aarch-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1750115438,
-        "narHash": "sha256-QUquTsdigDt8ZKzGUlykTl9E+cRP5IlvvbUnDUH8Fbw=",
+        "lastModified": 1751570815,
+        "narHash": "sha256-PEUjGHZo5uD6xpDF3jGW8IjjK67EbGtMJKLJOb09OUE=",
         "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.linux-aarch64.tar.xz"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.linux-aarch64.tar.xz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.linux-aarch64.tar.xz"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.linux-aarch64.tar.xz"
       }
     },
     "linux-x86-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1750121517,
-        "narHash": "sha256-VMlvtmb1sJQeDkPjnUNEA0eR2arFZ8BMs8EkK/sfq0I=",
+        "lastModified": 1751580004,
+        "narHash": "sha256-AZKm7ByfPgY8MSU/g668Nr/cWqnCBsrR30ryJ/9J7VE=",
         "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.linux-x86_64.tar.xz"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.linux-x86_64.tar.xz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.13.2b/zen.linux-x86_64.tar.xz"
+        "url": "https://github.com/zen-browser/desktop/releases/download/1.14.2b/zen.linux-x86_64.tar.xz"
       }
     },
     "nix-vscode-extensions": {
@@ -296,11 +296,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751422033,
-        "narHash": "sha256-R6ZonDO1yldt3KUDi+u8irXo09+EjisiqK4s7Je46B4=",
+        "lastModified": 1752373577,
+        "narHash": "sha256-5ipIQ1dp4qLfgVOBRU3NqnESjF6CqD/HQVYlEXC4P0s=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "e3a859385648ba529eacc2efe61d529eef6f5485",
+        "rev": "b8780c4b346250b6e86a7127dbe5e43a4bb394eb",
         "type": "github"
       },
       "original": {
@@ -317,11 +317,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1751644872,
-        "narHash": "sha256-H65Q6I+qNiyWf6ABMcCAg9bdto1Y7RVN+MZwlr3tvMY=",
+        "lastModified": 1752372858,
+        "narHash": "sha256-0RA7LaZ4/qxa1YohXOKnc9QFUOghReRIw9YkTpJD/ro=",
         "owner": "nix-community",
         "repo": "nix4vscode",
-        "rev": "61a74ae3c49678ca87a9b7a22fbc62ada88a6a59",
+        "rev": "dcbf305ec2a854a3b0bf6c3bd400484895237824",
         "type": "github"
       },
       "original": {
@@ -384,11 +384,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1751432711,
-        "narHash": "sha256-136MeWtckSHTN9Z2WRNRdZ8oRP3vyx3L8UxeBYE+J9w=",
+        "lastModified": 1752048960,
+        "narHash": "sha256-gATnkOe37eeVwKKYCsL+OnS2gU4MmLuZFzzWCtaKLI8=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "497ae1357f1ac97f1aea31a4cb74ad0d534ef41f",
+        "rev": "7ced9122cff2163c6a0212b8d1ec8c33a1660806",
         "type": "github"
       },
       "original": {
@@ -410,11 +410,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1751307571,
-        "narHash": "sha256-YbS3zTJAqR3oH3mWwVsEZkz/f2LJLs40+Q60iBB+joA=",
+        "lastModified": 1751912379,
+        "narHash": "sha256-ZX1rWu+0tlf58HM90C/cZCVhxyJOh8igS864FXOMTK4=",
         "owner": "nabam",
         "repo": "nixos-rockchip",
-        "rev": "cb8d06012bebb7e5acc0768686684eb33a2d27bc",
+        "rev": "37fb4ffb7a922e707c8370d3d528322058ab7144",
         "type": "github"
       },
       "original": {
@@ -470,11 +470,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1751582995,
-        "narHash": "sha256-u7ubvtxdTnFPpV27AHpgoKn7qHuE7sgWgza/1oj5nzA=",
+        "lastModified": 1752308619,
+        "narHash": "sha256-pzrVLKRQNPrii06Rm09Q0i0dq3wt2t2pciT/GNq5EZQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7a732ed41ca0dd64b4b71b563ab9805a80a7d693",
+        "rev": "650e572363c091045cdbc5b36b0f4c1f614d3058",
         "type": "github"
       },
       "original": {
@@ -486,11 +486,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1751674675,
-        "narHash": "sha256-XnlCDd58iYO+aUBQIyxFOfkoFRDCq9ajaZFaaGwHc3Y=",
+        "lastModified": 1752453101,
+        "narHash": "sha256-eWnYawAQRYSqHHTuFpdhRiDgzxWoplz0dQJhXwMe2sc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b441e40fcd70ff4368df31a7d5dfcc79e3596504",
+        "rev": "4490d0597dfe3094daf8fffe612a1f9b04b5fd16",
         "type": "github"
       },
       "original": {
@@ -636,11 +636,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1750393044,
-        "narHash": "sha256-m+KXJCPzGJCJNRfpivazJOX+Kbipx4kxMvuDYTLhcjc=",
+        "lastModified": 1752086652,
+        "narHash": "sha256-kBakF0sJDCZWAJLo+amM05StkEh+n1UvQMsyK2CrsJc=",
         "owner": "InvraNet",
         "repo": "zen-flake",
-        "rev": "75ec9c652c1da6f1eb9702d5e3959d2bf947f00f",
+        "rev": "9c4348c605ceb411ad3c0a27ecfe26bfa96129b9",
         "type": "gitlab"
       },
       "original": {
