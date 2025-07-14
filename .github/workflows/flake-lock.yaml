@@ -38,11 +38,6 @@ jobs:
         nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
         git commit -am "deps(sources): Updated deps hash" || true
 
-    - name: Update vscode extensions
-      run: |
-        nix develop '.#ci' --command nix4vscode parts/vscode-plugins/nix4vscode/nix4vscode.toml -o parts/vscode-plugins/nix4vscode/generated.nix
-        git commit -am "deps(sources): Updated vscode extensions" || true
-
     - name: Update flake.lock
       uses: DeterminateSystems/update-flake-lock@v21
       id: ufl
