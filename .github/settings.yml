@@ -5,8 +5,8 @@ branches:
       required_pull_request_reviews: null
       required_status_checks:
         contexts:
-          - shells_aggregated
-          - hosts_aggregated
+          - build_system
+          - build_shell
         strict: true
       restrictions: null
 repository:
