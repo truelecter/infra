@@ -8,6 +8,7 @@
       ./network-switch.nix
       ./spoolman.nix
       ./home-assistant
+      ./unifi.nix
       # ./ide.nix
     ];
 
