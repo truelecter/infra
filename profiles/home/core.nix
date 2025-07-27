@@ -21,5 +21,6 @@
   catppuccin = {
     flavor = "mocha";
     enable = true;
+    vscode.profiles.default.icons.enable = false;
   };
 }
