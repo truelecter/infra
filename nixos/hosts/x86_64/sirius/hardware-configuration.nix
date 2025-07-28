@@ -23,6 +23,9 @@
         "sdhci_pci"
 
         "rtc_cmos"
+
+        "nvme"
+        "sr_mod"
       ];
       kernelModules = ["dm_mod"];
       supportedFilesystems = ["zfs"];

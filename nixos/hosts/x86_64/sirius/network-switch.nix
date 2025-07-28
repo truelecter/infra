@@ -1,8 +1,7 @@
 {config, ...}: let
   wifiInterface = "wifi-ext";
   wifiAPInterface = "wifi-ap";
-  leftEthernetInterface = "eth-l";
-  rightEthernetInterface = "eth-r";
+  lanEth = "lan-eth";
 in {
   networking.useDHCP = false;
 
@@ -60,23 +59,13 @@ in {
         };
       };
 
-      "10-eth-l" = {
+      "10-lan-eth" = {
         linkConfig = {
-          Name = leftEthernetInterface;
+          Name = lanEth;
         };
 
         matchConfig = {
-          PermanentMACAddress = "00:e0:4c:17:57:56";
-        };
-      };
-
-      "10-eth-r" = {
-        linkConfig = {
-          Name = rightEthernetInterface;
-        };
-
-        matchConfig = {
-          PermanentMACAddress = "00:e0:4c:17:57:54";
+          PermanentMACAddress = "e0:51:d8:1a:7a:87";
         };
       };
     };
@@ -106,8 +95,8 @@ in {
         };
       };
 
-      "40-eth-r" = {
-        matchConfig.Name = rightEthernetInterface;
+      "40-lan-eth" = {
+        matchConfig.Name = lanEth;
         address = [
           "10.3.0.129/27"
         ];
@@ -125,7 +114,7 @@ in {
       "net.ipv4.conf.all.rp_filter" = false;
       "net.ipv4.conf.${wifiInterface}.rp_filter" = false;
       "net.ipv4.conf.${wifiAPInterface}.rp_filter" = false;
-      "net.ipv4.conf.${rightEthernetInterface}.rp_filter" = false;
+      "net.ipv4.conf.${lanEth}.rp_filter" = false;
     };
   };
 
@@ -136,7 +125,7 @@ in {
         interfaces-config = {
           interfaces = [
             wifiAPInterface
-            rightEthernetInterface
+            lanEth
           ];
         };
         lease-database = {
@@ -192,7 +181,7 @@ in {
               }
             ];
 
-            interface = rightEthernetInterface;
+            interface = lanEth;
 
             option-data = [
               {
@@ -266,8 +255,8 @@ in {
       after = [(systemdNetdev wifiAPInterface)];
     };
     kea-dhcp4-server = {
-      bindsTo = [(systemdNetdev wifiAPInterface) (systemdNetdev rightEthernetInterface)];
-      after = [(systemdNetdev wifiAPInterface) (systemdNetdev rightEthernetInterface)];
+      bindsTo = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
+      after = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
     };
   };
 
