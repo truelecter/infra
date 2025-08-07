@@ -4,6 +4,7 @@
   profiles,
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports =
@@ -12,6 +13,7 @@
       profiles.common.build-machines
 
       ./secrets.nix
+      ./bluetooth.nix
     ];
 
   wsl = {

@@ -1,0 +1,25 @@
+{
+    "wsl-kernel-6-6-87-2": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "wsl-kernel-6-6-87-2",
+        "passthru": {
+            "tag": "6.6.87.2"
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "microsoft",
+            "repo": "WSL2-Linux-Kernel",
+            "rev": "linux-msft-wsl-6.6.87.2",
+            "sha256": "sha256-UYPqnn605nPplLqDnEKGZ625K+AahOqy3D1ENQE7d/8=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "linux-msft-wsl-6.6.87.2"
+    }
+}

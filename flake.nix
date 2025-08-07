@@ -75,7 +75,8 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/73b681db219446267eb323763319d9438f26faf7";
+      # url = "github:nix-community/NixOS-WSL/73b681db219446267eb323763319d9438f26faf7";
+      url = "github:nix-community/NixOS-WSL";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
@@ -188,6 +189,7 @@
           ./parts/raspberry-pi
           ./parts/rockchip
           ./parts/deploy-rs.nix
+          ./parts/wsl
 
           ./shell
 

@@ -1,0 +1,4 @@
+[wsl-kernel-6-6-87-2]
+fetch.github = "microsoft/WSL2-Linux-Kernel"
+src.manual = "linux-msft-wsl-6.6.87.2"
+passthru = { tag = "6.6.87.2" }
