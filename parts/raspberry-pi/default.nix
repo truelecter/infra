@@ -34,7 +34,12 @@ in {
     in
       pkgs
       // {
-        inherit (latest) raspberrypiWirelessFirmware raspberrypifw linuxPackages_rpi4;
+        inherit
+          (latest)
+          raspberrypiWirelessFirmware
+          raspberrypifw
+          # linuxPackages_rpi4
+          ;
 
         deviceTree =
           prev.deviceTree
