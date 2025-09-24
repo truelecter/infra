@@ -35,6 +35,7 @@ in {
     options cfg80211 ieee80211_regdom="US"
     options iwlwifi lar_disable=1
     options iwlmvm power_scheme=1
+    options rtw88_core disable_lps_deep=Y
   '';
 
   services.udev.extraRules = ''
@@ -43,11 +44,10 @@ in {
   '';
 
   boot.extraModulePackages = let
-    iwlifi = pkgs.callPackage ./kmod/iwlwifi.nix {inherit (config.boot.kernelPackages) kernel;};
-    iwlifi-larless = iwlifi.overrideAttrs (prev: {
-      patches = [./kmod/iwlwifi-lar_disable.patch];
-    });
-
+    # iwlifi = pkgs.callPackage ./kmod/iwlwifi.nix {inherit (config.boot.kernelPackages) kernel;};
+    # iwlifi-larless = iwlifi.overrideAttrs (prev: {
+    #   patches = [./kmod/iwlwifi-lar_disable.patch];
+    # });
     rtl8821au = config.boot.kernelPackages.rtl8821au.overrideAttrs {
       src = pkgs.fetchFromGitHub {
         owner = "morrownr";
@@ -57,12 +57,12 @@ in {
       };
     };
   in [
-    (lib.hiPrio iwlifi-larless)
+    # (lib.hiPrio iwlifi-larless)
     rtl8821au
   ];
 
   # TOOD: reset via uhubctl
 
   # ALFA awus036axml bluetooth stack does not work for some reason
-  boot.blacklistedKernelModules = ["btusb" "bluetooth"];
+  # boot.blacklistedKernelModules = ["btusb" "bluetooth"];
 }

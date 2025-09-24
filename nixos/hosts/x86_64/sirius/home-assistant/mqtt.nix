@@ -1,4 +1,4 @@
-{lib, ...}: {
+{
   services.mosquitto = {
     enable = true;
     dataDir = "/srv/home-assistant/mosquitto";

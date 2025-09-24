@@ -4,6 +4,7 @@
     ./home-assistant.nix
     ./mqtt.nix
     # ./matter.nix
+    ./dns.nix
   ];
 
   systemd.tmpfiles.rules = [

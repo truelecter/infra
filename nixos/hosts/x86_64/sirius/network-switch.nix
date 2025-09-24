@@ -169,6 +169,20 @@ in {
             hw-address = "d8:3a:dd:43:45:dc";
             ip-address = "10.3.0.131";
           }
+
+          # Oukitel BP2000
+          {
+            hw-address = "74:07:7e:67:6c:30";
+            ip-address = "10.3.0.164";
+
+            option-data = [
+              {
+                code = 6;
+                name = "domain-name-servers";
+                data = "10.3.0.161";
+              }
+            ];
+          }
         ];
 
         subnet4 = [

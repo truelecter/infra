@@ -9,7 +9,8 @@
       ./spoolman.nix
       ./home-assistant
       ./unifi.nix
-      # ./ide.nix
+      ./ide.nix
+      ./bluetooth.nix
     ];
 
   networking.firewall.enable = false;
