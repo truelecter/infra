@@ -33,35 +33,39 @@
     };
 
     initContent = lib.mkMerge [
-      (lib.mkOrder 550 ''
-        export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
+      (
+        lib.mkOrder 550 ''
+          export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
 
-        (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+          if [[ -z $CURSOR_AGENT ]]; then
+            # p10k instant prompt
+            P10K_INSTANT_PROMPT="''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+            [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
+          fi
+        ''
+      )
+      (
+        lib.mkOrder 1000 ''
+          [[ -f "$HOME/.sh.local" ]] && source "$HOME/.sh.local"
+          export GPG_TTY=$TTY
 
-        # p10k instant prompt
-        P10K_INSTANT_PROMPT="''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
+          (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
-        (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
-      '')
+          if [[ -n $CURSOR_AGENT ]]; then
+            ZSH_THEME="robbyrussell"  # Use a simpler theme in Cursor
+          else
+            ZSH_THEME="powerlevel10k/powerlevel10k"
 
-      (lib.mkOrder 1000 ''
-        [[ -f "$HOME/.sh.local" ]] && source "$HOME/.sh.local"
-        export GPG_TTY=$TTY
-      '')
+            source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
+            source ${./_files/p10k-config/p10k.zsh}
+          fi
+
+          (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+        ''
+      )
     ];
 
     plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "powerlevel10k-config";
-        src = lib.cleanSource ./_files/p10k-config;
-        file = "p10k.zsh";
-      }
       {
         name = "fast-syntax-highlighting";
         file = "F-Sy-H.plugin.zsh";
