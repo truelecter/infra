@@ -1,6 +1,6 @@
 {
     "s5cmd": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2025-06-13",
         "extract": null,
         "name": "s5cmd",
@@ -21,7 +21,7 @@
         "version": "54d6a8a955688f07e5acc40d61f9c42ceac6c33b"
     },
     "tfenv": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2025-07-11",
         "extract": null,
         "name": "tfenv",
@@ -42,7 +42,7 @@
         "version": "c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54"
     },
     "transmissionic": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "transmissionic",

@@ -1,6 +1,6 @@
 {
     "forge-server-14-23-5-2860": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "forge-server-14-23-5-2860",
@@ -15,7 +15,7 @@
         "version": "14.23.5.2860"
     },
     "forge-server-40-2-9": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "forge-server-40-2-9",
@@ -30,7 +30,7 @@
         "version": "40.2.9"
     },
     "knock": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2023-03-10",
         "extract": null,
         "name": "knock",
@@ -51,7 +51,7 @@
         "version": "a690305c6d960374fd9b1024db85a8cdfa0bf1a4"
     },
     "mcs-create-arcane-engineering": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-create-arcane-engineering",
@@ -66,7 +66,7 @@
         "version": "0.1.9.3"
     },
     "mcs-dawncraft": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-dawncraft",
@@ -81,7 +81,7 @@
         "version": "1.28_f2"
     },
     "mcs-enigmatica-6-expert": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-enigmatica-6-expert",
@@ -96,7 +96,7 @@
         "version": "1.8.0"
     },
     "mcs-enigmatica-9-expert": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-enigmatica-9-expert",
@@ -111,7 +111,7 @@
         "version": "1.25.0"
     },
     "mcs-life-in-the-village-3": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-life-in-the-village-3",
@@ -126,7 +126,7 @@
         "version": "2.8"
     },
     "mcs-sevtech-ages": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-sevtech-ages",
@@ -141,7 +141,7 @@
         "version": "3.2.3"
     },
     "mcs-vault-hunters-3": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "mcs-vault-hunters-3",
@@ -156,7 +156,7 @@
         "version": "3.18.3.1"
     },
     "server-starter": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "server-starter",

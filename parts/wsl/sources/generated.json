@@ -1,6 +1,6 @@
 {
     "wsl-kernel-6-6-87-2": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "wsl-kernel-6-6-87-2",
