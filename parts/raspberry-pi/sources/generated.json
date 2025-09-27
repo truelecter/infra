@@ -1,6 +1,6 @@
 {
     "libcamera": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2025-09-01",
         "extract": null,
         "name": "libcamera",
@@ -21,7 +21,7 @@
         "version": "bfd68f786964636b09f8122e6c09c230367390e7"
     },
     "libcamera-apps": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": "2025-09-23",
         "extract": null,
         "name": "libcamera-apps",
@@ -42,8 +42,8 @@
         "version": "fd3b2a70fcfa3be00ba21e31cec8864d76e492cf"
     },
     "mediamtx": {
-        "cargoLocks": null,
-        "date": "2025-09-23",
+        "cargoLock": null,
+        "date": "2025-09-25",
         "extract": null,
         "name": "mediamtx",
         "passthru": null,
@@ -55,11 +55,11 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx",
-            "rev": "5203a0f04b73bfe3ce22685c7c2e9a3ef74e6b5b",
-            "sha256": "sha256-aAi9iteRA/Y/7t1RT+WJJKVrBXTaqq6yHzJYqAHcuDQ=",
+            "rev": "ead4dcd6f80130b95a603eb53e953c4248bc5a19",
+            "sha256": "sha256-7RpuDn3pZl/noI0SlP7iL9dMqiPiBPQXOuq2U6FYPnM=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "5203a0f04b73bfe3ce22685c7c2e9a3ef74e6b5b"
+        "version": "ead4dcd6f80130b95a603eb53e953c4248bc5a19"
     }
 }
