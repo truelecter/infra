@@ -36,9 +36,10 @@ in {
       // {
         inherit
           (latest)
-          raspberrypiWirelessFirmware
-          raspberrypifw
+          # raspberrypiWirelessFirmware
+          # raspberrypifw
           # linuxPackages_rpi4
+          ubootRaspberryPi4_64bit
           ;
 
         deviceTree =
@@ -47,12 +48,17 @@ in {
             applyOverlays = final.callPackage ./extra/dtmerge.nix {};
           };
 
-        makeModulesClosure = x: prev.makeModulesClosure (x // {allowMissing = true;});
+        makeModulesClosure = x: prev.makeModulesClosure (x // {allowMissing = false;});
       };
 
     modules.nixos = {
       raspberry-pi-overlay = {
-        nixpkgs.overlays = [self.overlays.raspberry-pi];
+        nixpkgs.overlays = [
+          inputs.nixos-raspberrypi.overlays.vendor-firmware
+          inputs.nixos-raspberrypi.overlays.vendor-kernel
+          inputs.nixos-raspberrypi.overlays.kernel-and-firmware
+          self.overlays.raspberry-pi
+        ];
       };
     };
   };

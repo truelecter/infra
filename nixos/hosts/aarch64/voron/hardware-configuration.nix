@@ -16,27 +16,29 @@
       grub.enable = false;
       generic-extlinux-compatible = {
         enable = true;
-        configurationLimit = 5;
+        configurationLimit = 15;
       };
     };
     consoleLogLevel = 7;
-    initrd.availableKernelModules = [
-      "xhci_hcd"
-      "xhci-pci-renesas"
+    initrd = {
+      kernelModules = [
+        "xhci_hcd"
+        "xhci-pci-renesas"
 
-      "usbhid"
-      "usb_storage"
+        "usbhid"
+        "usb_storage"
 
-      "sdhci_pci"
-      "mmc_block"
+        "sdhci_pci"
+        "sdhci-iproc"
+        "mmc_block"
 
-      "simplefb"
-      "pcie-brcmstb"
+        "pcie-brcmstb"
 
-      "vc4"
-      "pcie_brcmstb" # required for the pcie bus to work
-      "reset-raspberrypi" # required for vl805 firmware to load
-    ];
+        "vc4"
+        "pcie_brcmstb" # required for the pcie bus to work
+        "reset-raspberrypi" # required for vl805 firmware to load
+      ];
+    };
     kernelParams = [
       "console=ttyS0,115200"
       "console=tty1"
@@ -59,4 +61,6 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   hardware.deviceTree.filter = "bcm2711-rpi-4-b.dtb";
+
+  environment.etc."uboot/u-boot.bin".source = "${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin";
 }

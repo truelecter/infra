@@ -96,6 +96,11 @@ in {
         enable = true;
         configFile = ./firmwares/klipper-stealthmax;
       };
+
+      octopus = {
+        enable = true;
+        configFile = ./firmwares/klipper-octopus-pro;
+      };
     };
 
     katapult = {
@@ -117,6 +122,11 @@ in {
       stealthmax = {
         enable = true;
         configFile = ./firmwares/katapult-stealthmax;
+      };
+
+      octopus = {
+        enable = true;
+        configFile = ./firmwares/katapult-octopus-pro;
       };
     };
   };
