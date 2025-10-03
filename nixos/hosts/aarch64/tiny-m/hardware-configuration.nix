@@ -30,7 +30,6 @@
       "sdhci_pci"
       "mmc_block"
 
-      "simplefb"
       "pcie-brcmstb"
 
       "vc4"
