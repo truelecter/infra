@@ -37,6 +37,8 @@
     ];
   };
 
+  programs.nix-ld.enable = true;
+
   system.stateVersion = "22.11";
 
   services.openssh.enable = true;
