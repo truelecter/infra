@@ -157,7 +157,11 @@ in {
             hw-address = "e4:5f:01:67:cc:6f";
             ip-address = "10.3.0.150";
           }
-
+          # Tiny-M
+          {
+            hw-address = "dc:a6:32:ff:8c:18";
+            ip-address = "10.3.0.132";
+          }
           # BBL
           {
             hw-address = "64:e8:33:77:71:b0";

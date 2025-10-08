@@ -7,7 +7,7 @@
       ./hardware-configuration.nix
       ./klipper
       ./network.nix
-      ./wifi.nix
+      # ./wifi.nix
     ];
 
   networking .firewall.enable = false;
