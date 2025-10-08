@@ -157,11 +157,13 @@ in {
             hw-address = "e4:5f:01:67:cc:6f";
             ip-address = "10.3.0.150";
           }
+
           # Tiny-M
           {
             hw-address = "dc:a6:32:ff:8c:18";
-            ip-address = "10.3.0.132";
+            ip-address = "10.3.0.149";
           }
+
           # BBL
           {
             hw-address = "64:e8:33:77:71:b0";
@@ -186,6 +188,12 @@ in {
                 data = "10.3.0.161";
               }
             ];
+          }
+
+          # NAS
+          {
+            hw-address = "f4:b5:20:45:4d:2e";
+            ip-address = "10.3.0.132";
           }
         ];
 
