@@ -1,0 +1,16 @@
+# Kindly taken from https://github.com/nuxencs/recyclarr-configs/blob/master/includes/sonarr-qp.yml
+quality_profiles:
+  - name: WEBDL
+    reset_unmatched_scores:
+      enabled: true
+    upgrade:
+      allowed: true
+      until_quality: WEBDL-1080p
+      until_score: 10000
+    min_format_score: 10
+    quality_sort: top
+    qualities:
+      - name: Bluray-1080p Remux
+        enabled: false
+      - name: WEBDL-1080p
+      - name: WEBRip-1080p

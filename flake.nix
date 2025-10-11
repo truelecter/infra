@@ -102,6 +102,13 @@
       url = "github:nvmd/nixos-raspberrypi/main";
     };
 
+    nixarr = {
+      url = "github:rasmus-kirk/nixarr";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+
     nixos-vscode-server = {
       url = "github:truelecter/nixos-vscode-server";
       inputs = {

@@ -64,6 +64,9 @@ in {
         tailscale
         vscode-extensions
         mosquitto
+        # nixarr
+        jellyseerr
+        prowlarr
         ;
 
       bluez = prev.bluez.overrideAttrs (old: {
