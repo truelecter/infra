@@ -1,7 +1,4 @@
-{
-  flake,
-  ...
-}: let
+{flake, ...}: let
   hostnames = builtins.attrNames flake.deploy.nodes;
 in {
   home.file = {

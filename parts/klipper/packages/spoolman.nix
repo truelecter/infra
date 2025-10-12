@@ -35,24 +35,24 @@
       psycopg2-binary = super.psycopg2;
 
       scheduler = super.buildPythonPackage {
-          inherit (sources.python-scheduler) pname version src;
+        inherit (sources.python-scheduler) pname version src;
 
-          pyproject = true;
-          propagatedBuildInputs = [
-            super.setuptools
-            super.typeguard
-          ];
-        };
+        pyproject = true;
+        propagatedBuildInputs = [
+          super.setuptools
+          super.typeguard
+        ];
+      };
 
       sqlalchemy-cockroachdb = super.buildPythonPackage {
-          inherit (sources.python-sqlalchemy-cockroachdb) pname version src;
+        inherit (sources.python-sqlalchemy-cockroachdb) pname version src;
 
-          doCheck = false;
-          # propagatedBuildInputs = [
-          #   dbus-python
-          #   six
-          # ];
-        };
+        doCheck = false;
+        # propagatedBuildInputs = [
+        #   dbus-python
+        #   six
+        # ];
+      };
     };
   };
 
