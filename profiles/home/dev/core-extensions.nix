@@ -36,6 +36,7 @@
           "ms-vscode-remote.remote-ssh"
           "ms-vscode-remote.remote-ssh-edit"
           "redhat.vscode-yaml"
+          "janisdd.vscode-edit-csv"
         ]
         # ++ (with pkgs.vscode-extensions; [
         #   #FIXME: for whatever reason, it is not in nix4vscode generated.nix
