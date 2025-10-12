@@ -5,7 +5,7 @@
   #   export NODE_PATH=${pkgs.nodePackages.prettier-plugin-toml}/lib/node_modules:''${NODE_PATH:-}
   # '';
   data = {
-    global.excludes = ["**/sources/generated.*" "secrets/*" "parts/vscode-plugins/nix4vscode/generated.nix"];
+    global.excludes = ["**/sources/generated.*" "secrets/*" "parts/vscode-plugins/nix4vscode/generated.nix" ".direnv" "result"];
     formatter = {
       nix = {
         command = "${pkgs.alejandra}/bin/alejandra";
