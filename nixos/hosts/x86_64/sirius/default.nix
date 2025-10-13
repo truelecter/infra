@@ -6,7 +6,7 @@
       ./hardware-configuration.nix
       ./wifi.nix
       ./network-switch.nix
-      ./spoolman.nix
+      ./3dprint
       ./home-assistant
       ./unifi.nix
       ./ide.nix
