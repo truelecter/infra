@@ -50,7 +50,8 @@
   security.sudo.wheelNeedsPassword = lib.mkForce false;
 
   console = {
-    font = "Lat2-Terminus16";
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-u16n.psf.gz";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";

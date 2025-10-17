@@ -20,28 +20,21 @@
   '';
 
   tl.services.camera-streamer.instances = {
-    printer = {
+    bbl = {
       enable = true;
       settings = {
         camera = {
-          type = "v4l2";
-          path = "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._USB_2.0_Camera_SN0001-video-index0";
+          type = "libcamera";
           width = 1280;
           height = 720;
           fps = 30;
           format = "MJPG";
           force_active = true;
           nbufs = 2;
-          options = {
-            exposure_dynamic_framerate = 0;
-            auto_exposure = 3;
-            backlight_compensation = 1;
-            brightness = -5;
-            contrast = 15;
-            gamma = 100;
-            sharpness = 6;
-            saturation = 60;
-          };
+          # options = {
+          #   whitebalanceautomatic = 0;
+          #   whitebalancetemperature = 5700;
+          # };
         };
         # webrtc.disable_client_ice = true;
         http.port = 8081;
@@ -50,15 +43,4 @@
       nginx.enable = true;
     };
   };
-
-  boot.kernelParams = [
-    "cma=256M"
-  ];
-
-  boot.blacklistedKernelModules = ["snd-usb-audio"]; # Disable mic on cameras for some USB bandwidth
-
-  # hardware.raspberry-pi."4".dwc2 = {
-  #   enable = true;
-  #   dr_mode = "host";
-  # };
 }

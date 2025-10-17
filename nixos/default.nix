@@ -32,7 +32,17 @@
       {imports = [self.modules.nixos.rockchip-with-overlay];}
     ];
 
-    raspberry = [
+    rpi02 = [
+      profiles.nixos.hardware.sbc.rpi02
+      {
+        imports = [
+          self.modules.nixos.raspberry-pi-overlay
+        ];
+      }
+    ];
+
+    rpi4 = [
+      profiles.nixos.hardware.sbc.rpi4
       {
         imports = [
           inputs.nixos-hardware.nixosModules.raspberry-pi-4

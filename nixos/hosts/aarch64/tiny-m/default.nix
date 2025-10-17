@@ -2,15 +2,13 @@
   imports =
     suites.base
     ++ suites._3d-printing
-    ++ suites.raspberry
+    ++ suites.rpi4
     ++ [
       ./hardware-configuration.nix
       ./klipper
       ./network.nix
       # ./wifi.nix
     ];
-
-  networking .firewall.enable = false;
 
   system.stateVersion = "24.11";
 

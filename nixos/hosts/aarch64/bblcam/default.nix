@@ -2,15 +2,18 @@
   imports =
     suites.base
     ++ suites._3d-printing
-    ++ suites.rpi4
+    ++ suites.rpi02
     ++ [
       ./hardware-configuration.nix
       ./camera.nix
-      ./klipper
       ./network.nix
+      ./wifi.nix
+      ./usb-eth.nix
     ];
 
-  system.stateVersion = "23.05";
+  networking.firewall.enable = false;
+
+  system.stateVersion = "25.05";
 
   users.users.truelecter = {
     extraGroups = ["video" "gpio"];

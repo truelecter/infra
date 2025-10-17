@@ -40,13 +40,14 @@ in {
           settings = {
             camera = {
               path = mkOption {
-                type = types.str;
+                type = types.nullOr types.str;
                 description = "Chooses the camera to use. If empty connect to default.";
+                default = null;
               };
 
               type = mkOption {
                 type = types.enum ["v4l2" "libcamera" "dummy"];
-                default = "v4l2";
+                default = "dummy";
                 description = "Select camera type.";
               };
 

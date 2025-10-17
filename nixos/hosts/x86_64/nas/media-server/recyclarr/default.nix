@@ -8,7 +8,7 @@
     # configuration = {
     #   radarr.radarr = {
     #     base_url = "http://localhost:7878";
-    #     # api_key = "!env_var RADARR_API_KEY";
+    #     api_key = "!env_var RADARR_API_KEY";
     #     delete_old_custom_formats = true;
     #     replace_existing_custom_formats = true;
 
@@ -17,16 +17,16 @@
     #         template = "radarr-quality-definition-movie";
     #       }
     #       {
-    #         config = ./radarr/general-cfs.yml;
+    #         config = ./config/radarr/general-cfs.yml;
     #       }
     #       {
-    #         config = ./radarr/general-qp.yml;
+    #         config = ./config/radarr/general-qp.yml;
     #       }
     #       {
-    #         config = ./radarr/anime-cfs.yml;
+    #         config = ./config/radarr/anime-cfs.yml;
     #       }
     #       {
-    #         config = ./radarr/anime-qp.yml;
+    #         config = ./config/radarr/anime-qp.yml;
     #       }
     #     ];
     #     media_naming = {
@@ -39,7 +39,7 @@
     #   };
     #   sonarr.sonarr = {
     #     base_url = "http://localhost:8989";
-    #     # api_key = "!env_var SONARR_API_KEY";
+    #     api_key = "!env_var SONARR_API_KEY";
     #     delete_old_custom_formats = true;
     #     replace_existing_custom_formats = true;
     #     include = [
@@ -50,16 +50,16 @@
     #         template = "sonarr-quality-definition-anime";
     #       }
     #       {
-    #         config = ./sonarr/general-cfs.yml;
+    #         config = ./config/sonarr/general-cfs.yml;
     #       }
     #       {
-    #         config = ./sonarr/general-qp.yml;
+    #         config = ./config/sonarr/general-qp.yml;
     #       }
     #       {
-    #         config = ./sonarr/anime-cfs.yml;
+    #         config = ./config/sonarr/anime-cfs.yml;
     #       }
     #       {
-    #         config = ./sonarr/anime-qp.yml;
+    #         config = ./config/sonarr/anime-qp.yml;
     #       }
     #     ];
     #     media_naming = {

@@ -2,7 +2,7 @@
   imports =
     suites.base
     ++ suites._3d-printing
-    ++ suites.raspberry
+    ++ suites.rpi4
     ++ [
       ./camera.nix
       ./hardware-configuration.nix
@@ -11,17 +11,9 @@
       ./network.nix
     ];
 
-  networking .firewall.enable = false;
-
   system.stateVersion = "24.11";
 
   users.users.truelecter = {
     extraGroups = ["video" "gpio"];
-  };
-
-  nix.settings = {
-    keep-outputs = false;
-    keep-derivations = false;
-    system-features = [];
   };
 }

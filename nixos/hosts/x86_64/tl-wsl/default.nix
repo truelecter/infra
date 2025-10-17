@@ -66,4 +66,6 @@
       windowsSocketsPath = "D:/Soft/Scoop/user/apps/gnupg/current/gnupg";
     };
   };
+
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 }

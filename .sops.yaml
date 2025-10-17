@@ -12,6 +12,7 @@ keys:
   - &tinym     age1ygjayuhd3sx0xnxlxuhftz0qj79j95x4cewfj2e5ux9k7f335v2sul9u97
   - &bttpi     age1pcvq86sasvxdqceyjcgxr7lppugasqsfdwt3ewnlufn9xyel5u8qeu0hn5
   - &tl-mm4    age13xs4xvwm0ythks33uvgv7v9gnqhn9mvhqgyzg8u94060pxjc3urq3ht6r8
+  - &bblcam    age19hm3czcahj82s5scfg5a3n4xdhqa2f9gralx08hfv6w80pd5nghs7nj4jw
 
 creation_rules:
   - path_regex: secrets/minecraft-server.yaml
@@ -36,6 +37,7 @@ creation_rules:
           - *tinym
           - *bttpi
           - *tl-mm4
+          - *bblcam
 
   - path_regex: secrets/bots/.*
     key_groups:
@@ -78,6 +80,7 @@ creation_rules:
           - *tinym
           - *bttpi
           - *tl-mm4
+          - *bblcam
 
   - path_regex: secrets/ssh/remote-builder$
     key_groups:

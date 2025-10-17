@@ -64,7 +64,12 @@
     )
     // (
       klipper-distribution "experimental-kalico" sources.experimental-kalico
-    );
+    )
+    // {
+      camera-streamer-libcamera = packages.camera-streamer.override {
+        useLibcamera = true;
+      };
+    };
 in {
   perSystem = {
     config,

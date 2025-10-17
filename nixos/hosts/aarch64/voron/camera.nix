@@ -25,6 +25,7 @@
       settings = {
         camera = {
           path = "/dev/v4l/by-id/usb-3DO_3DO_NOZZLE_CAMERA_V2_3DO-video-index0";
+          type = "v4l2";
           width = 1280;
           height = 720;
           fps = 60;
@@ -58,6 +59,7 @@
       enable = true;
       settings = {
         camera = {
+          type = "v4l2";
           path = "/dev/v4l/by-id/usb-3DO_3DO_USB_CAMERA_V2_3DO-video-index0";
           width = 1280;
           height = 720;

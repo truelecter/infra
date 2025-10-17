@@ -40,7 +40,10 @@ in {
           # raspberrypifw
           # linuxPackages_rpi4
           ubootRaspberryPi4_64bit
+          ubootRaspberryPi3_64bit
           ;
+
+        origRpiWirelessFirmware = latest.raspberrypiWirelessFirmware;
 
         deviceTree =
           prev.deviceTree
@@ -48,7 +51,7 @@ in {
             applyOverlays = final.callPackage ./extra/dtmerge.nix {};
           };
 
-        makeModulesClosure = x: prev.makeModulesClosure (x // {allowMissing = false;});
+        makeModulesClosure = x: prev.makeModulesClosure (x // {allowMissing = true;});
       };
 
     modules.nixos = {
@@ -56,6 +59,7 @@ in {
         nixpkgs.overlays = [
           inputs.nixos-raspberrypi.overlays.vendor-firmware
           inputs.nixos-raspberrypi.overlays.vendor-kernel
+          inputs.nixos-raspberrypi.overlays.vendor-pkgs
           inputs.nixos-raspberrypi.overlays.kernel-and-firmware
           self.overlays.raspberry-pi
         ];
