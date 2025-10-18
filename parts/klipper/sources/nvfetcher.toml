@@ -117,7 +117,3 @@ fetch.url = "https://github.com/Donkie/Spoolman/releases/download/$ver/spoolman.
 [python-scheduler]
 src.pypi = "scheduler"
 fetch.pypi = "scheduler"
-
-[python-sqlalchemy-cockroachdb]
-src.pypi = "sqlalchemy-cockroachdb"
-fetch.pypi = "sqlalchemy-cockroachdb"

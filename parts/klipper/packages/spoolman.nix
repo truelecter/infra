@@ -24,37 +24,11 @@
     '';
   };
 
-  project = pyproject-nix.lib.project.loadRequirementsTxt {
+  project = pyproject-nix.lib.project.loadPyproject {
     projectRoot = source;
   };
 
-  python = python3.override {
-    packageOverrides = self: super: {
-      inherit pre-commit ruff;
-
-      psycopg2-binary = super.psycopg2;
-
-      scheduler = super.buildPythonPackage {
-        inherit (sources.python-scheduler) pname version src;
-
-        pyproject = true;
-        propagatedBuildInputs = [
-          super.setuptools
-          super.typeguard
-        ];
-      };
-
-      sqlalchemy-cockroachdb = super.buildPythonPackage {
-        inherit (sources.python-sqlalchemy-cockroachdb) pname version src;
-
-        doCheck = false;
-        # propagatedBuildInputs = [
-        #   dbus-python
-        #   six
-        # ];
-      };
-    };
-  };
+  python = python3;
 
   pythonEnv = python.withPackages (
     project.renderers.withPackages {

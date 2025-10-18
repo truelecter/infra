@@ -8,8 +8,8 @@ src.manual = "v2024.10"
 
 [btt-u-boot]
 fetch.github = "bigtreetech/u-boot"
-src.manual = "bpi-v2025.04-rc3"
+src.manual = "bpi-v2025.04"
 
 [btt-linux-rockchip]
 fetch.github = "bigtreetech/linux-rockchip"
-src.manual = "bpi-rk-6.1-rkr5"
+src.manual = "bpi-rk-6.1-rkr5.1"

@@ -1,6 +1,6 @@
 {
     "btt-linux-rockchip": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "btt-linux-rockchip",
@@ -13,15 +13,15 @@
             "name": null,
             "owner": "bigtreetech",
             "repo": "linux-rockchip",
-            "rev": "bpi-rk-6.1-rkr5",
-            "sha256": "sha256-ICaymHitOek1Cfzcx5GssoGkOnghQ794sbtNVKSSaEA=",
+            "rev": "bpi-rk-6.1-rkr5.1",
+            "sha256": "sha256-nkDkV6A+fko5egnvKSCJryRA/upwgBtQUB3nCH/Wcxs=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "bpi-rk-6.1-rkr5"
+        "version": "bpi-rk-6.1-rkr5.1"
     },
     "btt-u-boot": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "btt-u-boot",
@@ -34,15 +34,15 @@
             "name": null,
             "owner": "bigtreetech",
             "repo": "u-boot",
-            "rev": "bpi-v2025.04-rc3",
-            "sha256": "sha256-Dtcc61orqV6HtqrYCeAO5iQfVU9KK3Jgnf+LoS8zTh0=",
+            "rev": "bpi-v2025.04",
+            "sha256": "sha256-WACdkm1hWzxA5N6+CYQ12QgGihVdDoxug9+GkUAVtjE=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "bpi-v2025.04-rc3"
+        "version": "bpi-v2025.04"
     },
     "uboot": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "uboot",
@@ -63,7 +63,7 @@
         "version": "v2025.04-rc2"
     },
     "uboot-2024-10": {
-        "cargoLocks": null,
+        "cargoLock": null,
         "date": null,
         "extract": null,
         "name": "uboot-2024-10",
