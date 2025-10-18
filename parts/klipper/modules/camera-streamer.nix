@@ -359,12 +359,17 @@ in {
         wantedBy = ["multi-user.target"];
         after = ["network.target"];
 
+        path = l.optionals ((icfg.package ? useLibcamera) && icfg.package.useLibcamera) [
+          pkgs.libcamera
+        ];
+
         serviceConfig = {
           Restart = "always";
           TimeoutStopSec = "5";
           DynamicUser = true;
           SupplementaryGroups = ["video"];
           AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+
           ExecStart = "${icfg.package}/bin/camera-streamer ${options}";
         };
       })
@@ -391,6 +396,8 @@ in {
                   proxyPass = "http://camera-streamer-${name}/";
                   proxyWebsockets = true;
                   extraConfig = ''
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection "upgrade";
                     postpone_output 0;
                     proxy_buffering off;
                     proxy_ignore_headers X-Accel-Buffering;

@@ -34,16 +34,19 @@ fetch.pypi = "python-networkmanager"
 
 # camera-streamer dependency
 [camera-streamer]
-src.github = "ayufan/camera-streamer"
-fetch.github = "ayufan/camera-streamer"
+# src.github = "ayufan/camera-streamer"
+# fetch.github = "ayufan/camera-streamer"
+src.github = "mryel00/camera-streamer"
+fetch.github = "mryel00/camera-streamer"
 git.fetchSubmodules = true
 
-[libdatachannel0_17]
-src.manual = "v0.17.10"
+[libdatachannel_latest]
+src.git = "https://github.com/paullouisageneau/libdatachannel"
 fetch.github = "paullouisageneau/libdatachannel"
+git.fetchSubmodules = true
 
 [libjuice]
-src.manual = "v1.0.4"
+src.manual = "v1.6.2"
 fetch.github = "paullouisageneau/libjuice"
 
 [live555]
@@ -117,3 +120,8 @@ fetch.url = "https://github.com/Donkie/Spoolman/releases/download/$ver/spoolman.
 [python-scheduler]
 src.pypi = "scheduler"
 fetch.pypi = "scheduler"
+
+[python-sqlalchemy-cockroachdb]
+# src.pypi = "sqlalchemy-cockroachdb"
+fetch.pypi = "sqlalchemy-cockroachdb"
+src.manual = "2.0.2"

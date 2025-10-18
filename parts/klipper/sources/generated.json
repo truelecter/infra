@@ -11,14 +11,14 @@
             "fetchSubmodules": true,
             "leaveDotGit": false,
             "name": null,
-            "owner": "ayufan",
+            "owner": "mryel00",
             "repo": "camera-streamer",
-            "rev": "v0.3.0",
-            "sha256": "sha256-wBzsAltUOrs3egJeg4V1EbeUSXfkVn9VKN44X5tGSUc=",
+            "rev": "v0.3.0.3",
+            "sha256": "sha256-yhh9ZjZUgCWmtB0L2SNE/gZjJGWhn2mivxtugFlgbCk=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v0.3.0"
+        "version": "v0.3.0.3"
     },
     "experimental-kalico": {
         "cargoLock": null,
@@ -398,26 +398,26 @@
         },
         "version": "90e17d5665adcc12e5131c084f5074bdfa140ea9"
     },
-    "libdatachannel0_17": {
+    "libdatachannel_latest": {
         "cargoLock": null,
-        "date": null,
+        "date": "2025-10-12",
         "extract": null,
-        "name": "libdatachannel0_17",
+        "name": "libdatachannel_latest",
         "passthru": null,
         "pinned": false,
         "src": {
             "deepClone": false,
-            "fetchSubmodules": false,
+            "fetchSubmodules": true,
             "leaveDotGit": false,
             "name": null,
             "owner": "paullouisageneau",
             "repo": "libdatachannel",
-            "rev": "v0.17.10",
-            "sha256": "sha256-3f84GxAgQiObe+DYuTQABvK+RTihKKFKaf48lscUex4=",
+            "rev": "ab100fe8b803c30d928b61832889a31cd0585f39",
+            "sha256": "sha256-jkkcE6VfF2ghXtG2F4gYEmsCEZPUHFelANR1wooXoQg=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v0.17.10"
+        "version": "ab100fe8b803c30d928b61832889a31cd0585f39"
     },
     "libjuice": {
         "cargoLock": null,
@@ -433,12 +433,12 @@
             "name": null,
             "owner": "paullouisageneau",
             "repo": "libjuice",
-            "rev": "v1.0.4",
-            "sha256": "sha256-LAqi5F6okhGj0LyJasPKRkUz6InlM6rbYN+1sX1N4Qo=",
+            "rev": "v1.6.2",
+            "sha256": "sha256-i+Hx0Qg9g35L5gg5OMVnitmQ84BnE+0IDXdvrLLdz8Y=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v1.0.4"
+        "version": "v1.6.2"
     },
     "live555": {
         "cargoLock": null,
@@ -546,6 +546,21 @@
             "url": "https://pypi.org/packages/source/s/scheduler/scheduler-0.8.8.tar.gz"
         },
         "version": "0.8.8"
+    },
+    "python-sqlalchemy-cockroachdb": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "python-sqlalchemy-cockroachdb",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-EZdW65BYVdahE0W5nP6FMDGj/lmKnEvzWo3ayfif6Mw=",
+            "type": "url",
+            "url": "https://pypi.org/packages/source/s/sqlalchemy-cockroachdb/sqlalchemy-cockroachdb-2.0.2.tar.gz"
+        },
+        "version": "2.0.2"
     },
     "spoolman": {
         "cargoLock": null,

@@ -37,6 +37,7 @@
       {
         imports = [
           self.modules.nixos.raspberry-pi-overlay
+          self.modules.nixos.nixos-raspberry-pi-overlays
         ];
       }
     ];
@@ -47,6 +48,7 @@
         imports = [
           inputs.nixos-hardware.nixosModules.raspberry-pi-4
           self.modules.nixos.raspberry-pi-overlay
+          self.modules.nixos.nixos-raspberry-pi-overlays
         ];
       }
     ];

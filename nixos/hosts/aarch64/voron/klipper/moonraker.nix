@@ -49,16 +49,16 @@ in {
         ];
       };
 
-      "webcam nozzle" = {
-        enabled = true;
-        location = "nozzle";
-        icon = "mdiPrinter3dNozzle";
-        service = "webrtc-camerastreamer";
-        target_fps = 30;
-        target_fps_idle = 5;
-        stream_url = "/camera/nozzle/webrtc";
-        snapshot_url = "/camera/nozzle/snapshot";
-      };
+      # "webcam nozzle" = {
+      #   enabled = true;
+      #   location = "nozzle";
+      #   icon = "mdiPrinter3dNozzle";
+      #   service = "webrtc-camerastreamer";
+      #   target_fps = 30;
+      #   target_fps_idle = 5;
+      #   stream_url = "/camera/nozzle/webrtc";
+      #   snapshot_url = "/camera/nozzle/snapshot";
+      # };
 
       "webcam printer" = {
         enabled = true;

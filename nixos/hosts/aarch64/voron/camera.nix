@@ -57,6 +57,7 @@
 
     printer = {
       enable = true;
+      # package = pkgs.camera-streamer-028;
       settings = {
         camera = {
           type = "v4l2";
@@ -72,7 +73,10 @@
           #   whitebalancetemperature = 5700;
           # };
         };
+        # log.verbose = true;
+        # log.debug = true;
         # webrtc.disable_client_ice = true;
+        # http.listen = "0.0.0.0";
         http.port = 8081;
       };
 

@@ -5,6 +5,11 @@
   ...
 }: let
   mkPackages = pkgs: let
+    latest = import inputs.latest {
+      inherit (pkgs.stdenv.hostPlatform) system;
+      config.allowUnfree = true;
+    };
+
     sources = pkgs.callPackage ./sources/generated.nix {};
 
     packages = self.lib.importPackages {
@@ -15,6 +20,7 @@
 
       extraArguments = {
         inherit (inputs) pyproject-nix;
+        inherit (latest) libdatachannel;
       };
     };
 

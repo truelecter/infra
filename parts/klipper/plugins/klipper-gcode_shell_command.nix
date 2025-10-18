@@ -14,7 +14,7 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/lib/extras
-    cp ./resources/gcode_shell_command.py $out/lib/extras
+    cp ./kiauh/extensions/gcode_shell_cmd/assets/gcode_shell_command.py $out/lib/extras
   '';
 
   passthru.klipper = {

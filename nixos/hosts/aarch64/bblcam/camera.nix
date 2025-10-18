@@ -10,13 +10,10 @@
         withGUI = false;
       }
     )
-    pkgs.camera-streamer
   ];
 
-  users.groups.dma-heap = {};
-
   services.udev.extraRules = ''
-    SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
+    SUBSYSTEM=="dma_heap", GROUP="video", MODE="0660"
   '';
 
   tl.services.camera-streamer.instances = {
@@ -25,10 +22,10 @@
       settings = {
         camera = {
           type = "libcamera";
-          width = 1280;
-          height = 720;
-          fps = 30;
-          format = "MJPG";
+          width = 800;
+          height = 600;
+          fps = 60;
+          format = "YUYV";
           force_active = true;
           nbufs = 2;
           # options = {

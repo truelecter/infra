@@ -31,6 +31,8 @@ in {
         inherit (prev.stdenv.hostPlatform) system;
         config.allowUnfree = true;
       };
+
+      nixos-raspberrypi = inputs.nixos-raspberrypi.packages.${prev.stdenv.hostPlatform.system};
     in
       pkgs
       // {
@@ -43,7 +45,7 @@ in {
           ubootRaspberryPi3_64bit
           ;
 
-        origRpiWirelessFirmware = latest.raspberrypiWirelessFirmware;
+        inherit (nixos-raspberrypi) raspberrypi-udev-rules rpicam-apps;
 
         deviceTree =
           prev.deviceTree
@@ -57,11 +59,17 @@ in {
     modules.nixos = {
       raspberry-pi-overlay = {
         nixpkgs.overlays = [
+          self.overlays.raspberry-pi
+        ];
+      };
+
+      nixos-raspberry-pi-overlays = {
+        nixpkgs.overlays = [
           inputs.nixos-raspberrypi.overlays.vendor-firmware
           inputs.nixos-raspberrypi.overlays.vendor-kernel
           inputs.nixos-raspberrypi.overlays.vendor-pkgs
           inputs.nixos-raspberrypi.overlays.kernel-and-firmware
-          self.overlays.raspberry-pi
+          # inputs.nixos-raspberrypi.overlays.pkgs
         ];
       };
     };

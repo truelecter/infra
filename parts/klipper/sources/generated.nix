@@ -8,13 +8,13 @@
 {
   camera-streamer = {
     pname = "camera-streamer";
-    version = "v0.3.0";
+    version = "v0.3.0.3";
     src = fetchFromGitHub {
-      owner = "ayufan";
+      owner = "mryel00";
       repo = "camera-streamer";
-      rev = "v0.3.0";
+      rev = "v0.3.0.3";
       fetchSubmodules = true;
-      sha256 = "sha256-wBzsAltUOrs3egJeg4V1EbeUSXfkVn9VKN44X5tGSUc=";
+      sha256 = "sha256-yhh9ZjZUgCWmtB0L2SNE/gZjJGWhn2mivxtugFlgbCk=";
     };
   };
   experimental-kalico = {
@@ -231,26 +231,27 @@
     };
     date = "2025-10-08";
   };
-  libdatachannel0_17 = {
-    pname = "libdatachannel0_17";
-    version = "v0.17.10";
+  libdatachannel_latest = {
+    pname = "libdatachannel_latest";
+    version = "ab100fe8b803c30d928b61832889a31cd0585f39";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libdatachannel";
-      rev = "v0.17.10";
-      fetchSubmodules = false;
-      sha256 = "sha256-3f84GxAgQiObe+DYuTQABvK+RTihKKFKaf48lscUex4=";
+      rev = "ab100fe8b803c30d928b61832889a31cd0585f39";
+      fetchSubmodules = true;
+      sha256 = "sha256-jkkcE6VfF2ghXtG2F4gYEmsCEZPUHFelANR1wooXoQg=";
     };
+    date = "2025-10-12";
   };
   libjuice = {
     pname = "libjuice";
-    version = "v1.0.4";
+    version = "v1.6.2";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libjuice";
-      rev = "v1.0.4";
+      rev = "v1.6.2";
       fetchSubmodules = false;
-      sha256 = "sha256-LAqi5F6okhGj0LyJasPKRkUz6InlM6rbYN+1sX1N4Qo=";
+      sha256 = "sha256-i+Hx0Qg9g35L5gg5OMVnitmQ84BnE+0IDXdvrLLdz8Y=";
     };
   };
   live555 = {
@@ -311,6 +312,14 @@
     src = fetchurl {
       url = "https://pypi.org/packages/source/s/scheduler/scheduler-0.8.8.tar.gz";
       sha256 = "sha256-RXWhLNJp5OSJZAmDb9kRVgy2P7djQ2DuYqovpOxJX/0=";
+    };
+  };
+  python-sqlalchemy-cockroachdb = {
+    pname = "python-sqlalchemy-cockroachdb";
+    version = "2.0.2";
+    src = fetchurl {
+      url = "https://pypi.org/packages/source/s/sqlalchemy-cockroachdb/sqlalchemy-cockroachdb-2.0.2.tar.gz";
+      sha256 = "sha256-EZdW65BYVdahE0W5nP6FMDGj/lmKnEvzWo3ayfif6Mw=";
     };
   };
   spoolman = {
