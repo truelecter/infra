@@ -1,6 +1,6 @@
 {
   services.dnsmasq = {
-    enable = true;
+    enable = false;
     resolveLocalQueries = false;
     settings = {
       bind-interfaces = true;

@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  utils,
+  ...
+}: let
   wifiInterface = "wifi-ext";
   wifiAPInterface = "wifi-ap";
   lanEth = "lan-eth";
@@ -29,25 +33,25 @@ in {
         };
       };
 
-      "10-wifi-reserve" = {
-        linkConfig = {
-          Name = wifiInterface;
-        };
+      # "10-wifi-reserve" = {
+      #   linkConfig = {
+      #     Name = wifiInterface;
+      #   };
 
-        matchConfig = {
-          PermanentMACAddress = "00:c0:ca:b6:73:ff";
-        };
-      };
+      #   matchConfig = {
+      #     PermanentMACAddress = "00:c0:ca:b6:73:ff";
+      #   };
+      # };
 
-      "10-wifi-reserve-rtl" = {
-        linkConfig = {
-          Name = wifiInterface;
-        };
+      # "10-wifi-reserve-rtl" = {
+      #   linkConfig = {
+      #     Name = wifiInterface;
+      #   };
 
-        matchConfig = {
-          PermanentMACAddress = "c8:3a:35:ac:03:f0";
-        };
-      };
+      #   matchConfig = {
+      #     PermanentMACAddress = "c8:3a:35:ac:03:f0";
+      #   };
+      # };
 
       "10-wifi-ap" = {
         linkConfig = {
@@ -55,7 +59,8 @@ in {
         };
 
         matchConfig = {
-          PermanentMACAddress = "a8:6e:84:da:99:37";
+          # PermanentMACAddress = "a8:6e:84:da:99:37";
+          PermanentMACAddress = "00:c0:ca:b6:73:ff";
         };
       };
 
@@ -257,7 +262,8 @@ in {
         channel = 6;
         countryCode = "UA";
         wifi4 = {
-          capabilities = ["HT20/HT40"];
+          enable = true;
+          capabilities = ["[LDPC][HT40+][HT40-][GF][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1]"];
         };
         networks = {
           ${wifiAPInterface} = {
@@ -273,16 +279,13 @@ in {
   };
 
   systemd.services = let
-    systemdEscape = d: builtins.replaceStrings ["-"] ["\\x2d"] d;
-    systemdNetdev = d: "sys-subsystem-net-devices-${systemdEscape d}.device";
+    systemdNetdev = d: "sys-subsystem-net-devices-${utils.escapeSystemdPath d}.device";
   in {
     hostapd = {
-      bindsTo = [(systemdNetdev wifiAPInterface)];
-      after = [(systemdNetdev wifiAPInterface)];
+      wantedBy = [(systemdNetdev wifiAPInterface)];
     };
     kea-dhcp4-server = {
-      bindsTo = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
-      after = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
+      wantedBy = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
     };
   };
 
