@@ -74,10 +74,6 @@
 
   homebrew = {
     enable = true;
-    taps = [
-      "homebrew/cask-drivers"
-      "homebrew/cask-versions"
-    ];
     casks = [
       "iterm2"
       "launchcontrol"
