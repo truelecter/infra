@@ -36,6 +36,7 @@ in {
     options iwlwifi lar_disable=1
     options iwlmvm power_scheme=1
     options rtw88_core disable_lps_deep=Y
+    options mt76_usb disable_usb_sg=1
   '';
 
   services.udev.extraRules = ''
