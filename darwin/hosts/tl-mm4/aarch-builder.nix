@@ -63,6 +63,7 @@ in {
       RunAtLoad = true;
       StandardOutPath = "/var/log/darwin-builder.log";
       StandardErrorPath = "/var/log/darwin-builder.log";
+      WorkingDirectory = "/var/lib/darwin-builder";
     };
   };
 
