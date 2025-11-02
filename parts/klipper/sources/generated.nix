@@ -8,14 +8,15 @@
 {
   camera-streamer = {
     pname = "camera-streamer";
-    version = "v0.3.0.4";
+    version = "a7958ed191a839ad642edf706f0561ad6b3baa43";
     src = fetchFromGitHub {
       owner = "mryel00";
       repo = "camera-streamer";
-      rev = "v0.3.0.4";
+      rev = "a7958ed191a839ad642edf706f0561ad6b3baa43";
       fetchSubmodules = true;
-      sha256 = "sha256-QdYN24/mtg0T2PguxLWKdeW+7/7QTCraOO9ZlU/R5oo=";
+      sha256 = "sha256-jbZPGly3U72BGcsR/LhDb/q1gMeMwP6wLpP0CYI6684=";
     };
+    date = "2025-10-25";
   };
   experimental-kalico = {
     pname = "experimental-kalico";

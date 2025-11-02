@@ -36,7 +36,9 @@ fetch.pypi = "python-networkmanager"
 [camera-streamer]
 # src.github = "ayufan/camera-streamer"
 # fetch.github = "ayufan/camera-streamer"
-src.github = "mryel00/camera-streamer"
+# src.github = "mryel00/camera-streamer"
+src.git = "https://github.com/mryel00/camera-streamer"
+src.branch = "main"
 fetch.github = "mryel00/camera-streamer"
 git.fetchSubmodules = true
 

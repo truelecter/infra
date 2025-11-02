@@ -64,7 +64,7 @@ stdenv.mkDerivation rec {
 
   prePatch = ''
     # patch libdatachannel offending line leading to msid attribute issues
-    sed -i 's/mAttributes.emplace_back("msid:"/\/\/mAttributes.emplace_back("msid:"/g' third_party/libdatachannel/src/description.cpp
+    # sed -i 's/mAttributes.emplace_back("msid:"/\/\/mAttributes.emplace_back("msid:"/g' third_party/libdatachannel/src/description.cpp
 
     sed -i 's/all: version/all:/g' Makefile
     sed -i 's/git submodule update/#git submodule update/g' Makefile
