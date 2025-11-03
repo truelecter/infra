@@ -1,9 +1,20 @@
 {pkgs, ...}: {
-  home.shellAliases = let
+  home.shellAliases = {
+    cursor = "~/.config/path/cursor";
+    code = "~/.config/path/cursor";
+  };
+
+  home.file = let
     cursor = "${pkgs.code-cursor}/Applications/Cursor.app/Contents/Resources/app/bin/code";
   in {
-    cursor = "${cursor}";
-    code = "${cursor}";
+    ".config/path/cursor" = {
+      executable = true;
+      source = cursor;
+    };
+    ".config/path/code" = {
+      executable = true;
+      source = cursor;
+    };
   };
 
   programs.vscode = {
