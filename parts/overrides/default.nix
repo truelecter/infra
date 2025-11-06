@@ -68,19 +68,6 @@ in {
         jellyseerr
         prowlarr
         ;
-
-      bluez = prev.bluez.overrideAttrs (old: {
-        version = "5.72";
-        src = prev.fetchurl {
-          url = "mirror://kernel/linux/bluetooth/bluez-5.72.tar.xz";
-          hash = "sha256-SZ1/o0WplsG7ZQ9cZ0nh2SkRH6bs4L4OmGh/7mEkU24=";
-        };
-
-        preInstall = ''
-          mkdir -p $out/etc/bluetooth
-          touch $out/etc/bluetooth/{main,input,network}.conf
-        '';
-      });
     };
 
     overlays.lix = final: prev: {

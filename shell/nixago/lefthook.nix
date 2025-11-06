@@ -17,7 +17,7 @@ exts.lefthook {
     ];
     commands = {
       treefmt = {
-        run = "treefmt --fail-on-change {staged_files}";
+        run = "treefmt --fail-on-change {staged_files} > /dev/null";
         skip = ["merge" "rebase"];
       };
     };
