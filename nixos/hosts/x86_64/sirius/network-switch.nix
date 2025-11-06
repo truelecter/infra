@@ -60,7 +60,8 @@ in {
 
         matchConfig = {
           # PermanentMACAddress = "a8:6e:84:da:99:37";
-          PermanentMACAddress = "00:c0:ca:b6:73:ff";
+          # PermanentMACAddress = "00:c0:ca:b6:73:ff";
+          PermanentMACAddress = "1c:79:2d:f9:92:d8";
         };
       };
 
@@ -263,7 +264,7 @@ in {
         countryCode = "UA";
         wifi4 = {
           enable = true;
-          capabilities = ["[LDPC][HT40+][HT40-][GF][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1]"];
+          capabilities = ["[LDPC][HT40+][HT40-][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1][MAX-AMSDU-7935][DSSS_CCK-40]"];
         };
         networks = {
           ${wifiAPInterface} = {
