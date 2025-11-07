@@ -67,6 +67,8 @@ in {
         # nixarr
         jellyseerr
         prowlarr
+        #shell
+        lefthook
         ;
     };
 

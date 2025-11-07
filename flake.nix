@@ -236,6 +236,7 @@
               (final: prev: {
                 nix4vscode = inputs.nix4vscode.packages.${prev.stdenv.hostPlatform.system}.default;
               })
+              self.overlays.latest-packages
             ];
           };
         };

@@ -1,6 +1,6 @@
 {
   imports = [
-    ./nixago.nix
+    ./nixago
   ];
 
   perSystem = {
