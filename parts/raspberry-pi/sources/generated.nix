@@ -32,14 +32,14 @@
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "1ef5db5b3c1aee4c9250444ed6b5ce6d4a3029f8";
+    version = "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "1ef5db5b3c1aee4c9250444ed6b5ce6d4a3029f8";
+      rev = "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29";
       fetchSubmodules = false;
-      sha256 = "sha256-b4STqgv/RWS456JUyCJ6ZbV5YOJvcLMddXSRkStBedc=";
+      sha256 = "sha256-GMO7NQ05XZ+G//xhZeQhNJAxQuSRXGY6hiIOJAFrvAc=";
     };
-    date = "2025-10-29";
+    date = "2025-11-07";
   };
 }
