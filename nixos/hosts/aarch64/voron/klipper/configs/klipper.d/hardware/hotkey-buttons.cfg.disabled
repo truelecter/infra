@@ -68,3 +68,7 @@ gcode:
 # [gcode_button b2]
 # pin: ^!hotkey: gpio3
 # press_gcode: _BUTTON_B2
+
+# [temperature_sensor hotkeys_mcu]
+# sensor_type: temperature_mcu
+# sensor_mcu: hotkey
