@@ -1,5 +1,6 @@
 keys:
-  - &truelecter A35AABA719FAC1A001E375F8EEF7F5B1C5AB1F74
+  - &truelecter-alpha A35AABA719FAC1A001E375F8EEF7F5B1C5AB1F74
+  - &truelecter-beta  A162FFF2A19DFB46C74511E6EF7D709B9C146477
 
   - &squadbook age1zltjqzpr3du45xnsy85q80nafejrvhlat2ugs8pysf763fm6spxsjk29eg
   - &tl-wsl    age1qmurstgayt65a8r7j9nnf9mpz7wffxht2j8uadxy9pupylrqscyqv5m7zk
@@ -18,14 +19,16 @@ creation_rules:
   - path_regex: secrets/minecraft-server.yaml
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *oracle
 
   - path_regex: secrets/nixos-common.yaml
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *nas
           - *depsos
@@ -42,35 +45,40 @@ creation_rules:
   - path_regex: secrets/bots/.*
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *depsos
 
   - path_regex: secrets/matrix/.*
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *depsos
 
   - path_regex: secrets/wireguard.yaml
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *depsos
 
   - path_regex: secrets/cloudflare.env
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *depsos
 
   - path_regex: secrets/wifi.yaml
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *squadbook
           - *voron
@@ -85,7 +93,8 @@ creation_rules:
   - path_regex: secrets/ssh/remote-builder$
     key_groups:
       - pgp:
-          - *truelecter
+          - *truelecter-alpha
+          - *truelecter-beta
         age:
           - *squadbook
           - *tl-wsl
