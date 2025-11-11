@@ -1,4 +1,19 @@
 {
+    "hls-js": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "hls-js",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-rI9SjpXy+f9IEQ0ZzB/OeHBbKiziVaeoOl/2T4wqGHE=",
+            "type": "url",
+            "url": "https://github.com/video-dev/hls.js/releases/download/v1.6.14/release.zip"
+        },
+        "version": "v1.6.14"
+    },
     "libcamera": {
         "cargoLock": null,
         "date": "2025-09-01",
@@ -43,7 +58,7 @@
     },
     "mediamtx": {
         "cargoLock": null,
-        "date": "2025-11-07",
+        "date": null,
         "extract": null,
         "name": "mediamtx",
         "passthru": null,
@@ -55,11 +70,32 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx",
-            "rev": "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29",
-            "sha256": "sha256-GMO7NQ05XZ+G//xhZeQhNJAxQuSRXGY6hiIOJAFrvAc=",
+            "rev": "v1.15.3",
+            "sha256": "sha256-alZn6o8S6HWlYdsziptsqqSZKdfYHGB1VhPGhTJNbqQ=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29"
+        "version": "v1.15.3"
+    },
+    "mediamtx-rpicamera": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "mediamtx-rpicamera",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "bluenviron",
+            "repo": "mediamtx-rpicamera",
+            "rev": "v2.5.1",
+            "sha256": "sha256-G8tnvo2Elc6a+7cHo7SKfEwF2sUzD9C92Pj4qdlOxIo=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v2.5.1"
     }
 }

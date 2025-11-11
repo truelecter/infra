@@ -6,6 +6,14 @@
   dockerTools,
 }:
 {
+  hls-js = {
+    pname = "hls-js";
+    version = "v1.6.14";
+    src = fetchurl {
+      url = "https://github.com/video-dev/hls.js/releases/download/v1.6.14/release.zip";
+      sha256 = "sha256-rI9SjpXy+f9IEQ0ZzB/OeHBbKiziVaeoOl/2T4wqGHE=";
+    };
+  };
   libcamera = {
     pname = "libcamera";
     version = "bfd68f786964636b09f8122e6c09c230367390e7";
@@ -32,14 +40,24 @@
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29";
+    version = "v1.15.3";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "d4741b7d686a8590a9cfa42c108e1e9f1b0e9f29";
+      rev = "v1.15.3";
       fetchSubmodules = false;
-      sha256 = "sha256-GMO7NQ05XZ+G//xhZeQhNJAxQuSRXGY6hiIOJAFrvAc=";
+      sha256 = "sha256-alZn6o8S6HWlYdsziptsqqSZKdfYHGB1VhPGhTJNbqQ=";
     };
-    date = "2025-11-07";
+  };
+  mediamtx-rpicamera = {
+    pname = "mediamtx-rpicamera";
+    version = "v2.5.1";
+    src = fetchFromGitHub {
+      owner = "bluenviron";
+      repo = "mediamtx-rpicamera";
+      rev = "v2.5.1";
+      fetchSubmodules = false;
+      sha256 = "sha256-G8tnvo2Elc6a+7cHo7SKfEwF2sUzD9C92Pj4qdlOxIo=";
+    };
   };
 }

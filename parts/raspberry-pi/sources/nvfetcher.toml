@@ -7,5 +7,15 @@ src.git = "https://github.com/raspberrypi/libcamera-apps"
 fetch.github = "raspberrypi/libcamera-apps"
 
 [mediamtx]
-src.git = "https://github.com/bluenviron/mediamtx"
+# src.git = "https://github.com/bluenviron/mediamtx"
+src.github = "bluenviron/mediamtx"
 fetch.github = "bluenviron/mediamtx"
+
+[mediamtx-rpicamera]
+# src.git = "https://github.com/bluenviron/mediamtx-rpicamera"
+src.github = "bluenviron/mediamtx-rpicamera"
+fetch.github = "bluenviron/mediamtx-rpicamera"
+
+[hls-js]
+src.github = "video-dev/hls.js"
+fetch.url = "https://github.com/video-dev/hls.js/releases/download/$ver/release.zip"

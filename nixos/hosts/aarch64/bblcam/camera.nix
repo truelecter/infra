@@ -20,25 +20,26 @@
     enable = true;
     allowVideoAccess = true;
     settings = {
-      rtsp = "yes";
+      rtsp = true;
       rtspAddress = ":8554";
-      rtmp = "no";
-      hls = "no";
-      webrtc = "no";
-      srt = "no";
+      rtmp = false;
+      hls = false;
+      webrtc = true;
+      webrtcAddress = ":8555";
+      srt = false;
       paths = {
         cam = {
-          sourceOnDemand = "false";
+          sourceOnDemand = false;
           source = "rpiCamera";
-          rpiCameraWidth = "1920";
-          rpiCameraHeight = "1080";
-          rpiCameraFPS = "30";
+          rpiCameraWidth = 1920;
+          rpiCameraHeight = 1080;
+          rpiCameraFPS = 30;
           rpiCameraDenoise = "cdn_fast";
           rpiCameraROI = "0,0.15,0.85,0.75";
           rpiCameraAfSpeed = "fast";
           rpiCameraAfRange = "macro";
           rpiCameraAWB = "indoor";
-          rpiCameraMode = "2304:1296";
+          # rpiCameraMode = "2304:1296";
         };
       };
     };

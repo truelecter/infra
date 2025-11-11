@@ -1,0 +1,24 @@
+diff --git a/internal/staticsources/rpicamera/camera_arm_.go b/internal/staticsources/rpicamera/camera_arm_.go
+index 9c33c017e86c..075871a692a5 100644
+--- a/internal/staticsources/rpicamera/camera_arm_.go
++++ b/internal/staticsources/rpicamera/camera_arm_.go
+@@ -140,14 +140,14 @@ func dumpComponent() error {
+ 		return nil
+ 	}
+ 
+-	err := checkArchitecture()
+-	if err != nil {
+-		return err
+-	}
++	// err := checkArchitecture()
++	// if err != nil {
++	// 	return err
++	// }
+ 
+ 	dumpPath = dumpPrefix + strconv.FormatInt(time.Now().UnixNano(), 10)
+ 
+-	err = os.Mkdir(dumpPath, 0o755)
++	err := os.Mkdir(dumpPath, 0o755)
+ 	if err != nil {
+ 		return err
+ 	}

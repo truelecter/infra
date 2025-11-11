@@ -34,9 +34,8 @@ in {
 
       nixos-raspberrypi = inputs.nixos-raspberrypi.packages.${prev.stdenv.hostPlatform.system};
     in
-      # pkgs
-      # //
-      {
+      pkgs
+      // {
         inherit
           (latest)
           # raspberrypiWirelessFirmware
@@ -44,7 +43,7 @@ in {
           # linuxPackages_rpi4
           ubootRaspberryPi4_64bit
           ubootRaspberryPi3_64bit
-          mediamtx
+          # mediamtx
           ;
 
         inherit (nixos-raspberrypi) raspberrypi-udev-rules rpicam-apps;

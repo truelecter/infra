@@ -22,5 +22,6 @@ in
       haumea.load {
         src = packages;
         loader = haumea.loaders.path;
+        transformer = _cursor: dir: dir.default or dir;
       }
     )
