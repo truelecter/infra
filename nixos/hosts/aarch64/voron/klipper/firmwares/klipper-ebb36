@@ -127,7 +127,7 @@ CONFIG_NEED_SENSOR_BULK=y
 #
 # Microcontroller interfaces
 #
-# CONFIG_WANT_GPIO_BUTTONS is not set
+CONFIG_WANT_GPIO_BUTTONS=y
 
 #
 # ----
