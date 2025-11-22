@@ -85,7 +85,7 @@
     },
     "klipper": {
         "cargoLock": null,
-        "date": "2025-11-17",
+        "date": "2025-11-21",
         "extract": null,
         "name": "klipper",
         "passthru": null,
@@ -97,12 +97,12 @@
             "name": null,
             "owner": "Klipper3d",
             "repo": "klipper",
-            "rev": "b4c7cf4a3365a7bdc05b1ac146f8f48b5666ce8d",
-            "sha256": "sha256-R4WHzRGz+0Tv/bGlTplARuIOlajrIlJjP6wmPMonDEY=",
+            "rev": "baf188bd62bb9c82775d679cf0db30a72f9e9173",
+            "sha256": "sha256-O6XpfUeJ5d5CMnCeukqmvo1Xz12b6wQYAyAqvNmpPmI=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "b4c7cf4a3365a7bdc05b1ac146f8f48b5666ce8d"
+        "version": "baf188bd62bb9c82775d679cf0db30a72f9e9173"
     },
     "klipper-cartographer": {
         "cargoLock": null,
@@ -456,7 +456,7 @@
     },
     "mainsail": {
         "cargoLock": null,
-        "date": "2025-11-15",
+        "date": "2025-11-21",
         "extract": null,
         "name": "mainsail",
         "passthru": null,
@@ -468,12 +468,12 @@
             "name": null,
             "owner": "mainsail-crew",
             "repo": "mainsail",
-            "rev": "0b16282ee100f7a77307ed31d8be458e4b235140",
-            "sha256": "sha256-tPVz+3zHannb8l6gQ3GOpQb2nXhSerXCNgdJlq2j7cU=",
+            "rev": "33d282464eba60e68f8659ac49201c09836b3311",
+            "sha256": "sha256-iv4eIPh7jnGwOzEjJIg/EgmQgThiqsBrwJKB3NqnfbY=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "0b16282ee100f7a77307ed31d8be458e4b235140"
+        "version": "33d282464eba60e68f8659ac49201c09836b3311"
     },
     "mobileraker-companion": {
         "cargoLock": null,
