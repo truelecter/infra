@@ -4,7 +4,7 @@
   mods,
   ...
 }: {
-  services.minecraft-servers.instances.sevtech = {
+  services.yanms.instances.sevtech = {
     enable = false;
     serverPackage = pkgs.mcs-sevtech-ages;
     backup.restic = {

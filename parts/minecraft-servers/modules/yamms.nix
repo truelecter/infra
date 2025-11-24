@@ -6,7 +6,7 @@
   ...
 }: let
   l = lib // builtins;
-  cfg = config.services.minecraft-servers;
+  cfg = config.services.yanms;
 
   inherit (lib) mkOption types;
 
@@ -59,7 +59,7 @@
     lib.concatStringsSep "\n"
     (lib.mapAttrsToList mkOptionLine c);
 in {
-  options.services.minecraft-servers = {
+  options.services.yanms = {
     eula = mkOption {
       type = types.bool;
       default = false;

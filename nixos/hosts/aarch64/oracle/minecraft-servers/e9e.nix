@@ -5,7 +5,7 @@
   mods,
   ...
 }: {
-  services.minecraft-servers.instances.e9e = {
+  services.yanms.instances.e9e = {
     enable = true;
     serverPackage = pkgs.mcs-enigmatica-9-expert;
     backup.restic = {

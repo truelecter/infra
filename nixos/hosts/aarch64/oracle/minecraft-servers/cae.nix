@@ -5,7 +5,7 @@
   mods,
   ...
 }: {
-  services.minecraft-servers.instances.cae = {
+  services.yanms.instances.cae = {
     enable = false;
     serverPackage = pkgs.mcs-create-arcane-engineering;
     backup.restic = {

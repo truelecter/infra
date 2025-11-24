@@ -5,7 +5,7 @@
   mods,
   ...
 }: {
-  services.minecraft-servers.instances.litv3 = {
+  services.yanms.instances.litv3 = {
     enable = false;
     serverPackage = pkgs.mcs-life-in-the-village-3;
     backup.restic = {

@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  services.minecraft-servers.instances.dawncraft = {
+  services.yanms.instances.dawncraft = {
     enable = false;
     serverPackage = pkgs.mcs-dawncraft;
     backup.restic = {

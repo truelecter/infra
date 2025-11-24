@@ -5,7 +5,7 @@
   mods,
   ...
 }: {
-  services.minecraft-servers.instances.vh3 = {
+  services.yanms.instances.vh3 = {
     enable = false;
     serverPackage = pkgs.mcs-vault-hunters-3;
     backup.restic = {

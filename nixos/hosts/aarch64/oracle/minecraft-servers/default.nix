@@ -50,7 +50,7 @@ in {
     users.truelecter.extraGroups = ["minecraft-servers"];
   };
 
-  services.minecraft-servers = let
+  services.yanms = let
     bluemapConfig = port: ''
       enabled: true
       port: ${toString port}

@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  services.minecraft-servers.instances.e6e = {
+  services.yanms.instances.e6e = {
     enable = false;
     serverPackage = pkgs.mcs-enigmatica-6-expert;
     backup.restic = {
