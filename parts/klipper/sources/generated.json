@@ -125,6 +125,27 @@
         },
         "version": "07ca934e05b15cc1294843fb84bf01d3fa6644c3"
     },
+    "klipper-cartographer-plugin": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "klipper-cartographer-plugin",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "Cartographer3D",
+            "repo": "cartographer3d-plugin",
+            "rev": "v1.0.2",
+            "sha256": "sha256-jLoz8vcsFSjln7SFJumviE6XqE2k/BMkcPIcE0V5MDQ=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v1.0.2"
+    },
     "klipper-chopper-resonance-tuner": {
         "cargoLock": null,
         "date": "2024-08-23",

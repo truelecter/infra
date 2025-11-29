@@ -78,6 +78,17 @@
     };
     date = "2025-10-07";
   };
+  klipper-cartographer-plugin = {
+    pname = "klipper-cartographer-plugin";
+    version = "v1.0.2";
+    src = fetchFromGitHub {
+      owner = "Cartographer3D";
+      repo = "cartographer3d-plugin";
+      rev = "v1.0.2";
+      fetchSubmodules = false;
+      sha256 = "sha256-jLoz8vcsFSjln7SFJumviE6XqE2k/BMkcPIcE0V5MDQ=";
+    };
+  };
   klipper-chopper-resonance-tuner = {
     pname = "klipper-chopper-resonance-tuner";
     version = "1f98212ca9dbfdf15d516115dd4c26e97b914a8d";

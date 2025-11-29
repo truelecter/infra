@@ -1,0 +1,20 @@
+diff --git a/hatch_build.py b/hatch_build.py
+index 4394a47c9863..126b9130f1f1 100644
+--- a/hatch_build.py
++++ b/hatch_build.py
+@@ -24,13 +24,11 @@ def _run_git_command(cmd: str) -> str:
+ 
+ 
+ def get_commit_sha(root: str) -> str:
+-    cmd = f"git -C {root} rev-parse HEAD"
+-    return _run_git_command(cmd)
++    return os.getenv("NIX_BUILD_COMMIT_SHA")
+ 
+ 
+ def retrieve_git_version(root: str) -> str:
+-    cmd = f"git -C {root} describe --always --tags --long --dirty"
+-    return _run_git_command(cmd)
++    return os.getenv("NIX_BUILD_GIT_VERSION")
+ 
+ 
+ class ReleaseInfo(TypedDict):

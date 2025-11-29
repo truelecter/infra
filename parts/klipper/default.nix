@@ -32,18 +32,37 @@
 
       extraArguments = {
         inherit (packages) chopper-resonance-tuner;
+        inherit (inputs) pyproject-nix;
       };
     };
 
-    klipper-distribution = name: source: let
-      klipper = packages.klipper.overrideAttrs (_: {
-        inherit (source) pname version src;
-      });
+    klipper-distribution = {
+      name,
+      source,
+      hasPlugins,
+      isKalico,
+    }: let
+      klipper =
+        packages.klipper.override
+        {
+          inherit isKalico;
+
+          pluginsInstallDir =
+            if hasPlugins
+            then "plugins"
+            else "extras";
+
+          sources = {
+            klipper = source;
+          };
+        };
+
+      excluded-plugins = excluded-plugins-from-full ++ lib.optionals isKalico ["klipper-gcode_shell_command"];
     in {
       ${name} = klipper;
 
       "${name}-full-plugins" = klipper.override {
-        plugins = lib.attrValues (lib.filterAttrs (n: _: !builtins.elem n excluded-plugins-from-full) klipper-plugins);
+        plugins = lib.attrValues (lib.filterAttrs (n: _: !builtins.elem n excluded-plugins) klipper-plugins);
       };
 
       "${name}-genconf" = packages.klipper-genconf.override {
@@ -66,10 +85,20 @@
       };
     }
     // (
-      klipper-distribution "kalico" sources.kalico
+      klipper-distribution {
+        name = "kalico";
+        source = sources.kalico;
+        hasPlugins = true;
+        isKalico = true;
+      }
     )
     // (
-      klipper-distribution "experimental-kalico" sources.experimental-kalico
+      klipper-distribution {
+        name = "kalico-experimental";
+        source = sources.experimental-kalico;
+        hasPlugins = true;
+        isKalico = true;
+      }
     )
     // {
       camera-streamer-libcamera = packages.camera-streamer.override {

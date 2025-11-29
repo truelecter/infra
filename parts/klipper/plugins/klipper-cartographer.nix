@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/lib/extras
-    cp idm.py cartographer.py scanner.py $out/lib/extras
+    cp idm.py scanner.py $out/lib/extras
   '';
 
   passthru.klipper = {

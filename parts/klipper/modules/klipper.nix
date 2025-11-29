@@ -277,13 +277,7 @@ in {
         )
         enabledKatapultFirmwares;
     in
-      {
-        "klipper/printer.cfg".source =
-          if cfg.settings != null
-          then format.generate "klipper.cfg" cfg.settings
-          else cfg.configFile;
-      }
-      // (
+      (
         l.listToAttrs (
           l.map (p: l.nameValuePair "klipper/plugins/${p.pname}" {source = "${p}/lib/config";}) pluginsWithConfig
         )
@@ -301,27 +295,33 @@ in {
         + l.optionalString (cfg.apiSocket != null) " --api-server=${cfg.apiSocket}"
         + l.optionalString (cfg.logFile != null) " --logfile=${cfg.logFile}";
 
-      statefulConfigFileTemplate = pkgs.writeText "stateful-klipper-config.cfg" ''
-        # WARNING!!!
-        # THIS FILE EXISTS FOR COMPATIBILITY WITH STATEFUL
-        # SETTINGS (MAINLY GENERATED WITH SAVE_CONFIG)
-        # ACTUAL PRINTER CONFIGURATION IS LOCATED IN /etc/klipper/printer.cfg
-        # AND IS MANAGED VIA NIX MODULE
-        [include /etc/klipper/printer.cfg]
-      '';
+      printerConfigPath = "${cfg.stateDirectory}/printer.cfg";
 
-      printerConfigPath = "${cfg.stateDirectory}/stateful-config.cfg";
+      printerConfig =
+        if cfg.settings != null
+        then format.generate "klipper.cfg" cfg.settings
+        else cfg.configFile;
     in {
       description = "Klipper 3D Printer Firmware";
       wantedBy = ["multi-user.target"];
       after = ["network.target"];
       preStart = ''
         mkdir -p ${cfg.stateDirectory}
-        [ -e ${printerConfigPath} ] || {
-          cp ${statefulConfigFileTemplate} ${printerConfigPath}
-          chmod +w "${printerConfigPath}"
-        }
+        pushd ${cfg.stateDirectory}
+        if [ -e printer.cfg ]; then
+          # Backup existing config using the same date format klipper uses for SAVE_CONFIG
+          old_config="printer-$(date +"%Y%m%d_%H%M%S").cfg"
+          mv printer.cfg "$old_config"
+          # Preserve SAVE_CONFIG section from the existing config
+          cat ${printerConfig} <(printf "\n") <(sed -n '/#*# <---------------------- SAVE_CONFIG ---------------------->/,$p' "$old_config") > printer.cfg
+          ${pkgs.diffutils}/bin/cmp printer.cfg "$old_config" && rm "$old_config"
+        else
+          cat ${printerConfig} > printer.cfg
+        fi
+        popd
       '';
+
+      restartTriggers = [printerConfig];
 
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/klippy ${klippyArgs} ${printerConfigPath}";
@@ -330,6 +330,7 @@ in {
         WorkingDirectory = "${cfg.package}/lib";
         Group = cfg.group;
         User = cfg.user;
+        SupplementaryGroups = ["dialout"];
 
         OOMScoreAdjust = "-999";
         CPUSchedulingPolicy = "rr";

@@ -114,6 +114,10 @@ fetch.github = "MRX8024/chopper-resonance-tuner"
 src.git = "https://github.com/Cartographer3D/cartographer-klipper"
 fetch.github = "Cartographer3D/cartographer-klipper"
 
+[klipper-cartographer-plugin]
+src.github = "Cartographer3D/cartographer3d-plugin"
+fetch.github = "Cartographer3D/cartographer3d-plugin"
+
 # Spoolman
 [spoolman]
 src.github = "Donkie/Spoolman"
