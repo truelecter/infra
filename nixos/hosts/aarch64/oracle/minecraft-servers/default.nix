@@ -132,10 +132,10 @@ in {
     };
   };
 
-  systemd.extraConfig = ''
-    DefaultLimitNOFILE = 102400
-    DefaultLimitNOFILESoft = 102400
-  '';
+  systemd.settings.Manager = {
+    DefaultLimitNOFILE = 102400;
+    DefaultLimitNOFILESoft = 102400;
+  };
 
   networking.firewall.allowedTCPPorts = [
     80

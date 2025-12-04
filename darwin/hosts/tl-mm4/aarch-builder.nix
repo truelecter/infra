@@ -20,7 +20,7 @@
           darwin-builder = {
             workingDirectory = "/var/lib/darwin-builder";
             hostPort = 3022;
-            diskSize = 150 * 1024;
+            diskSize = 100 * 1024;
             memorySize = 12 * 1024;
           };
         };

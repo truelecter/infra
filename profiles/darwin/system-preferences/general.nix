@@ -76,15 +76,6 @@
   # Keep macOS up to date.
   system.defaults.SoftwareUpdate.AutomaticallyInstallMacOSUpdates = true;
 
-  # Firewall
-  system.defaults.alf = {
-    allowdownloadsignedenabled = 0;
-    allowsignedenabled = 1;
-    globalstate = 0;
-    loggingenabled = 0;
-    stealthenabled = 0;
-  };
-
   system.defaults.loginwindow = {
     DisableConsoleAccess = true;
     GuestEnabled = false;

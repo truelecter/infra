@@ -9,7 +9,7 @@
     dataDir = "/srv/home-assistant/zigbee2mqtt";
     settings = {
       # Home Assistant integration (MQTT discovery)
-      homeassistant = true;
+      homeassistant = lib.mkForce true;
 
       # allow new devices to join
       permit_join = false;

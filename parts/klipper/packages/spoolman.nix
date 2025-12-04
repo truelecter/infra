@@ -43,16 +43,6 @@
           super.typeguard
         ];
       };
-
-      sqlalchemy-cockroachdb = super.buildPythonPackage {
-        inherit (sources.python-sqlalchemy-cockroachdb) pname version src;
-
-        doCheck = false;
-        # propagatedBuildInputs = [
-        #   dbus-python
-        #   six
-        # ];
-      };
     };
   };
 

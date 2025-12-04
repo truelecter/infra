@@ -131,10 +131,9 @@ in {
     };
   };
 
-  systemd.extraConfig = ''
-    [Manager]
-    CPUAffinity=0-1
-  '';
+  systemd.settings.Manager = {
+    CPUAffinity = "0-1";
+  };
 
   systemd.services.klipper.serviceConfig.CPUAffinity = "2-3";
 

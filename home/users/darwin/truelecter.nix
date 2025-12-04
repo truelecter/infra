@@ -2,6 +2,7 @@
   pkgs,
   profiles,
   hmSuites,
+  sshKeys,
   ...
 }: {
   imports = [
@@ -10,6 +11,10 @@
 
   home-manager.users.truelecter = {
     imports = hmSuites.base;
+  };
+
+  users.users.truelecter = {
+    openssh.authorizedKeys.keys = sshKeys;
   };
 
   system.defaults.dock.persistent-apps = [
