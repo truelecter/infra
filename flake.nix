@@ -99,7 +99,7 @@
     };
 
     nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi/main";
+      url = "github:nvmd/nixos-raspberrypi/develop";
     };
 
     nixarr = {
