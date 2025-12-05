@@ -11,6 +11,7 @@
       ./unifi.nix
       ./ide.nix
       ./bluetooth.nix
+      ./topology.nix
     ];
 
   networking.firewall.enable = false;

@@ -85,7 +85,7 @@
     arch,
     configuration,
   }: let
-    inherit (inputs) nixpkgs home catppuccin;
+    inherit (inputs) nixpkgs home catppuccin nix-topology;
     system = "${arch}-linux";
   in {
     ${hostname} = nixpkgs.lib.nixosSystem {
@@ -100,6 +100,7 @@
         [
           home.nixosModules.home-manager
           catppuccin.nixosModules.catppuccin
+          nix-topology.nixosModules.default
         ]
         ++ [
           (
