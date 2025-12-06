@@ -16,15 +16,15 @@
   };
   libcamera = {
     pname = "libcamera";
-    version = "ac7d0a25a8aef169db2125a735acbda5145affb5";
+    version = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera";
-      rev = "ac7d0a25a8aef169db2125a735acbda5145affb5";
+      rev = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
       fetchSubmodules = false;
-      sha256 = "sha256-zqf8FrawAbmEeZb8AlH2eYL9vqzQQ0WwgGiWEwnSa7Q=";
+      sha256 = "sha256-sJKzmeeXD/66P5o+X9w3J2gwxDNsdBUdXEqU6goJdN4=";
     };
-    date = "2025-11-27";
+    date = "2025-12-02";
   };
   libcamera-apps = {
     pname = "libcamera-apps";
