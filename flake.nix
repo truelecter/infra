@@ -64,6 +64,11 @@
 
   # Tools
   inputs = {
+    nix-topology = {
+      url = "github:oddlama/nix-topology";
+      inputs.nixpkgs.follows = "latest";
+    };
+
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs = {
@@ -201,6 +206,7 @@
         imports = [
           inputs.flake-parts.flakeModules.modules
           inputs.devshell.flakeModule
+          inputs.nix-topology.flakeModule
 
           ./parts/nixpkgs.nix
           ./parts/klipper
@@ -210,6 +216,7 @@
           ./parts/rockchip
           ./parts/deploy-rs.nix
           ./parts/wsl
+          ./parts/topology
 
           ./shell
 

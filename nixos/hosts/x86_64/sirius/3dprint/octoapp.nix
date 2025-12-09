@@ -56,14 +56,14 @@ in
 
     (mkOptoappInstance "tiny-m" {
       environment = {
-        PRINTER_IP = "10.3.0.149";
+        PRINTER_IP = "10.3.0.151";
         COMPANION_MODE = "klipper";
       };
     })
 
     (mkOptoappInstance "vzbot" {
       environment = {
-        PRINTER_IP = "10.3.0.131";
+        PRINTER_IP = "10.3.0.153";
         COMPANION_MODE = "klipper";
       };
     })

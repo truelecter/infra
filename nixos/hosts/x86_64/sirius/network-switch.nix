@@ -6,14 +6,26 @@
   wifiInterface = "wifi-ext";
   wifiAPInterface = "wifi-ap";
   lanEth = "lan-eth";
+  bridge = "br-switch";
+
+  switchAddress = "10.3.0.129";
 in {
   networking.useDHCP = false;
 
   systemd.network = {
     enable = true;
 
+    netdevs = {
+      "10-${bridge}" = {
+        netdevConfig = {
+          Kind = "bridge";
+          Name = bridge;
+        };
+      };
+    };
+
     links = {
-      "10-wifi-pci" = {
+      "10-wifi-ext" = {
         linkConfig = {
           Name = wifiInterface;
         };
@@ -23,35 +35,10 @@ in {
         };
       };
 
-      "10-wifi-ext" = {
-        linkConfig = {
-          Name = wifiInterface;
-        };
-
-        matchConfig = {
-          PermanentMACAddress = "00:c0:ca:b6:86:ff";
-        };
-      };
-
-      # "10-wifi-reserve" = {
-      #   linkConfig = {
-      #     Name = wifiInterface;
-      #   };
-
-      #   matchConfig = {
-      #     PermanentMACAddress = "00:c0:ca:b6:73:ff";
-      #   };
-      # };
-
-      # "10-wifi-reserve-rtl" = {
-      #   linkConfig = {
-      #     Name = wifiInterface;
-      #   };
-
-      #   matchConfig = {
-      #     PermanentMACAddress = "c8:3a:35:ac:03:f0";
-      #   };
-      # };
+      # External USB Dongles
+      # TPLink 00:c0:ca:b6:86:ff
+      # Alfa AWUS036ACH 00:c0:ca:b6:73:ff
+      # Alfa AWUS036AXM c8:3a:35:ac:03:f0
 
       "10-wifi-ap" = {
         linkConfig = {
@@ -59,8 +46,6 @@ in {
         };
 
         matchConfig = {
-          # PermanentMACAddress = "a8:6e:84:da:99:37";
-          # PermanentMACAddress = "00:c0:ca:b6:73:ff";
           PermanentMACAddress = "1c:79:2d:f9:92:d8";
         };
       };
@@ -91,23 +76,29 @@ in {
         linkConfig.RequiredForOnline = "routable";
       };
 
-      "40-wifi-ap" = {
-        matchConfig.Name = wifiAPInterface;
+      "10-br-switch" = {
+        matchConfig.Name = bridge;
         address = [
-          "10.3.0.161/27"
+          "${switchAddress}/25"
         ];
         networkConfig = {
           ConfigureWithoutCarrier = true;
         };
       };
 
-      "40-lan-eth" = {
-        matchConfig.Name = lanEth;
-        address = [
-          "10.3.0.129/27"
-        ];
+      "40-wifi-ap" = {
+        matchConfig.Name = wifiAPInterface;
         networkConfig = {
           ConfigureWithoutCarrier = true;
+          Bridge = bridge;
+        };
+      };
+
+      "40-lan-eth" = {
+        matchConfig.Name = lanEth;
+        networkConfig = {
+          ConfigureWithoutCarrier = true;
+          Bridge = bridge;
         };
       };
     };
@@ -121,6 +112,7 @@ in {
       "net.ipv4.conf.${wifiInterface}.rp_filter" = false;
       "net.ipv4.conf.${wifiAPInterface}.rp_filter" = false;
       "net.ipv4.conf.${lanEth}.rp_filter" = false;
+      "net.ipv4.conf.${bridge}.rp_filter" = false;
     };
   };
 
@@ -130,8 +122,7 @@ in {
       settings = {
         interfaces-config = {
           interfaces = [
-            wifiAPInterface
-            lanEth
+            bridge
           ];
         };
         lease-database = {
@@ -158,6 +149,24 @@ in {
         ];
 
         reservations = [
+          # USW Flex 2.5G 8
+          {
+            hw-address = "94:2a:6f:4e:e0:20";
+            ip-address = "10.3.0.130";
+          }
+
+          # NAS
+          {
+            hw-address = "f4:b5:20:45:4d:2e";
+            ip-address = "10.3.0.132";
+          }
+
+          # tl-mm4
+          {
+            hw-address = "d0:11:e5:83:d8:9e";
+            ip-address = "10.3.0.133";
+          }
+
           # Voron
           {
             hw-address = "e4:5f:01:67:cc:6f";
@@ -167,85 +176,58 @@ in {
           # Tiny-M
           {
             hw-address = "dc:a6:32:ff:8c:18";
-            ip-address = "10.3.0.149";
+            ip-address = "10.3.0.151";
           }
 
           # BBL
           {
             hw-address = "64:e8:33:77:71:b0";
-            ip-address = "10.3.0.162";
+            ip-address = "10.3.0.152";
           }
 
           # VZBot
           {
             hw-address = "d8:3a:dd:43:45:dc";
-            ip-address = "10.3.0.131";
+            ip-address = "10.3.0.153";
           }
 
+          # IoT
           # Oukitel BP2000
           {
             hw-address = "74:07:7e:67:6c:30";
-            ip-address = "10.3.0.164";
+            ip-address = "10.3.0.180";
 
             option-data = [
               {
                 code = 6;
                 name = "domain-name-servers";
-                data = "10.3.0.161";
+                data = switchAddress;
               }
             ];
-          }
-
-          # NAS
-          {
-            hw-address = "f4:b5:20:45:4d:2e";
-            ip-address = "10.3.0.132";
           }
         ];
 
         subnet4 = [
           {
-            # Ethernet
+            # Bridge
             id = 1;
             pools = [
               {
-                pool = "10.3.0.130 - 10.3.0.158";
+                pool = "10.3.0.200 - 10.3.0.225";
               }
             ];
 
-            interface = lanEth;
+            interface = bridge;
 
             option-data = [
               {
                 code = 3;
-                data = "10.3.0.129";
+                data = switchAddress;
                 name = "routers";
               }
             ];
 
-            subnet = "10.3.0.128/27";
-          }
-
-          {
-            # WiFi
-            id = 2;
-            pools = [
-              {
-                pool = "10.3.0.162 - 10.3.0.190";
-              }
-            ];
-
-            option-data = [
-              {
-                code = 3;
-                data = "10.3.0.161";
-                name = "routers";
-              }
-            ];
-
-            interface = wifiAPInterface;
-
-            subnet = "10.3.0.160/27";
+            subnet = "${switchAddress}/25";
           }
         ];
         valid-lifetime = 4000;

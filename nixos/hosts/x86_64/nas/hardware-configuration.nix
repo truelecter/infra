@@ -56,4 +56,9 @@
 
   # Weird bug with NM-wait-online restart on new configuration always fails
   systemd.services.NetworkManager-wait-online.enable = false;
+
+  networking.interfaces.enp4s0.wakeOnLan = {
+    enable = true;
+    policy = ["magic"];
+  };
 }
