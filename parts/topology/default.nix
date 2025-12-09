@@ -6,9 +6,9 @@
 }: {
   perSystem = {...}: {
     topology.modules = [
-      {
-        # extractors.nix-minecraft.enable = false;
-      }
+      ./routers.nix
+      ./internet.nix
+      ./networks.nix
     ];
   };
 }

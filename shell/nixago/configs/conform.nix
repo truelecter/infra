@@ -35,6 +35,7 @@ exts.conform {
           "common"
           "minecraft-servers"
           "klipper"
+          "topology"
         ]
         ++ (builtins.attrNames self.nixosConfigurations)
         ++ (builtins.attrNames self.darwinConfigurations);
