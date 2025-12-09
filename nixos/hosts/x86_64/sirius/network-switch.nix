@@ -124,6 +124,7 @@ in {
           interfaces = [
             bridge
           ];
+          service-sockets-require-all = true;
         };
         lease-database = {
           name = "/var/lib/kea/dhcp4.leases";
