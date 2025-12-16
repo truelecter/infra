@@ -8,11 +8,11 @@
     enable = true;
     dataDir = "/srv/home-assistant/zigbee2mqtt";
     settings = {
+      version = 4;
       # Home Assistant integration (MQTT discovery)
-      homeassistant = lib.mkForce true;
-
-      # allow new devices to join
-      permit_join = false;
+      homeassistant = {
+        enabled = lib.mkForce true;
+      };
 
       # MQTT settings
       mqtt = {
@@ -25,20 +25,23 @@
       # Serial settings
       serial = {
         port = "/dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20231218134945-if00";
+        adapter = "ember";
       };
 
       advanced = {
         log_output = ["console"];
-        log_level = "warn";
+        log_level = "warning";
         pan_id = 1337;
         # add last seen information
         last_seen = "ISO_8601_local";
       };
 
       # configure web ui
-      frontend.port = 9666;
-      frontend.host = "0.0.0.0";
-      experimental.new_api = true;
+      frontend = {
+        enabled = true;
+        port = 9666;
+        host = "0.0.0.0";
+      };
     };
   };
 }

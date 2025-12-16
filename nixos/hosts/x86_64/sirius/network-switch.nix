@@ -124,6 +124,7 @@ in {
           interfaces = [
             bridge
           ];
+          service-sockets-require-all = true;
         };
         lease-database = {
           name = "/var/lib/kea/dhcp4.leases";
@@ -246,7 +247,7 @@ in {
         countryCode = "UA";
         wifi4 = {
           enable = true;
-          capabilities = ["[LDPC][HT40+][HT40-][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1][MAX-AMSDU-7935][DSSS_CCK-40]"];
+          capabilities = ["[HT20/HT40][LDPC][HT40+][HT40-][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1][MAX-AMSDU-7935][DSSS_CCK-40]"];
         };
         networks = {
           ${wifiAPInterface} = {
@@ -265,7 +266,21 @@ in {
     systemdNetdev = d: "sys-subsystem-net-devices-${utils.escapeSystemdPath d}.device";
   in {
     hostapd = {
-      wantedBy = [(systemdNetdev wifiAPInterface)];
+      wantedBy = [
+        (systemdNetdev wifiAPInterface)
+        "network.target"
+      ];
+      before = [
+        "network-pre.target"
+      ];
+      wants = [
+        "network-pre.target"
+        "systemd-modules-load.service"
+      ];
+      after = [
+        "systemd-modules-load.service"
+        "local-fs.target"
+      ];
     };
     kea-dhcp4-server = {
       wantedBy = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
