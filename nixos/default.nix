@@ -103,6 +103,7 @@
           nix-topology.nixosModules.default
         ]
         ++ [
+          profiles.nixos.topology-common
           (
             {
               lib,
