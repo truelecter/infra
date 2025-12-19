@@ -1,3 +1,8 @@
 {
-  homebrew.casks = ["telegram-desktop" "viber" "keybase" "discord"];
+  homebrew.casks = [
+    "telegram-desktop"
+    "viber"
+    "keybase"
+    "discord"
+  ];
 }

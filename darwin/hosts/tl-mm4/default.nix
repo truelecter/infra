@@ -12,6 +12,7 @@
     ++ [
       profiles.common.remote-builder
       profiles.common.build-machines
+      profiles.darwin.rdp
 
       users.darwin.truelecter
 
