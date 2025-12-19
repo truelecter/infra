@@ -62,4 +62,13 @@ in {
       network = "x290";
     };
   };
+
+  nodes.tailscale = mkSwitch "Tailscale" {
+    info = "Tailscale";
+    deviceType = "internet";
+
+    interfaces."*" = {
+      network = "tailscale";
+    };
+  };
 }
