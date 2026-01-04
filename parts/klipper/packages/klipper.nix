@@ -46,6 +46,11 @@
     );
   in
     pythonEnv;
+
+  pluginInstallDir = plugin:
+    if plugin.passthru.klipper ? forceExtrasDir && plugin.passthru.klipper.forceExtrasDir
+    then "extras"
+    else pluginsInstallDir;
 in
   stdenv.mkDerivation rec {
     inherit (sources.klipper) pname version src;
@@ -117,7 +122,7 @@ in
         lib.concatStringsSep "\n" (
           builtins.map
           # Filter only plugins with extras. There was a lib function for getting output in lib/attrset.nix
-          (plugin: "ln -sf ${plugin}/lib/extras/* $out/lib/${libDir}/${pluginsInstallDir}/")
+          (plugin: "ln -sf ${plugin}/lib/extras/* $out/lib/${libDir}/${pluginInstallDir plugin}/")
           (builtins.filter (p: p ? klipper && p.klipper.extras) plugins)
         )
       }

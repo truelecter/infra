@@ -21,6 +21,7 @@ stdenvNoCC.mkDerivation {
   passthru.klipper = {
     config = false;
     extras = true;
+    forceExtrasDir = true;
   };
 
   meta = with lib; {
