@@ -57,7 +57,13 @@
           };
         };
 
-      excluded-plugins = excluded-plugins-from-full ++ lib.optionals isKalico ["klipper-gcode_shell_command"];
+      excluded-plugins =
+        excluded-plugins-from-full
+        ++ lib.optionals isKalico [
+          "klipper-gcode_shell_command"
+          "klipper-z_calibration"
+          "klipper-cartographer"
+        ];
     in {
       ${name} = klipper;
 
