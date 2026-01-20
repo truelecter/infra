@@ -22,7 +22,6 @@
     "/System/Applications/Mail.app"
     "/System/Applications/Calendar.app"
     "/Applications/Cisco/Cisco Secure Client.app"
-    "/Applications/Amazon Chime.app"
     "/Applications/OpenVPN Connect/OpenVPN Connect.app"
   ];
 }
