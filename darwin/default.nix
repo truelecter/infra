@@ -78,7 +78,7 @@
 
                   inputs.nix4vscode.overlays.forVscode
 
-                  inputs.zen-flake.overlay
+                  # inputs.zen-flake.overlay
                 ];
 
                 config.allowUnfree = true;

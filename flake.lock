@@ -57,18 +57,6 @@
         "type": "github"
       }
     },
-    "darwin-universal-src": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-WBcU0LoBBPPE7FWOutIga49Vl0kP1Hk4tlAoJI+I0ag=",
-        "type": "file",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.macos-universal.dmg"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.macos-universal.dmg"
-      }
-    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -307,32 +295,6 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
-      }
-    },
-    "linux-aarch-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1762686492,
-        "narHash": "sha256-nUzCptiIm590p7t80bwgi921wBBeD65ZqkbH4pSBDHQ=",
-        "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.linux-aarch64.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.linux-aarch64.tar.xz"
-      }
-    },
-    "linux-x86-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1762697774,
-        "narHash": "sha256-q1IK39GdPhO+/baGOO9A3aUehwCtwBfRkDVFXCthC54=",
-        "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.linux-x86_64.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/zen-browser/desktop/releases/download/1.17.6b/zen.linux-x86_64.tar.xz"
       }
     },
     "nix-topology": {
@@ -741,8 +703,7 @@
         "nixpkgs-master": "nixpkgs-master",
         "nvfetcher": "nvfetcher",
         "pyproject-nix": "pyproject-nix",
-        "sops-nix": "sops-nix",
-        "zen-flake": "zen-flake"
+        "sops-nix": "sops-nix"
       }
     },
     "sops-nix": {
@@ -830,29 +791,6 @@
         "owner": "rasmus-kirk",
         "repo": "website-builder",
         "type": "github"
-      }
-    },
-    "zen-flake": {
-      "inputs": {
-        "darwin-universal-src": "darwin-universal-src",
-        "linux-aarch-src": "linux-aarch-src",
-        "linux-x86-src": "linux-x86-src",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1763284718,
-        "narHash": "sha256-dN5TkivT1I3HKgPf3diKhX3aU9kr0tBIARYrMzY3psk=",
-        "owner": "InvraNet",
-        "repo": "zen-flake",
-        "rev": "1c3d74108da867dd6e93f7174b50f3d0ea549cfa",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "InvraNet",
-        "repo": "zen-flake",
-        "type": "gitlab"
       }
     }
   },
