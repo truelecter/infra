@@ -16,48 +16,48 @@
   };
   libcamera = {
     pname = "libcamera";
-    version = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
+    version = "9f4754cbc6f9ae2276c9e2f42db9302e64c723b5";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera";
-      rev = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
+      rev = "9f4754cbc6f9ae2276c9e2f42db9302e64c723b5";
       fetchSubmodules = false;
-      sha256 = "sha256-sJKzmeeXD/66P5o+X9w3J2gwxDNsdBUdXEqU6goJdN4=";
+      sha256 = "sha256-ZSKNeFDedqzcVxoLPap2dMjq+F3C1eQ+HikEKuGBOyM=";
     };
-    date = "2025-12-02";
+    date = "2026-02-05";
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "d1d948293549a5fc9766e41788084638aff3c821";
+    version = "2ebb5820566f2efa64d812c6fbceac94d5799f86";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "d1d948293549a5fc9766e41788084638aff3c821";
+      rev = "2ebb5820566f2efa64d812c6fbceac94d5799f86";
       fetchSubmodules = false;
-      sha256 = "sha256-XpKM8FpeRjzuN3PbdRxOKG6w8Q3qrUz8lgAnucEZ0Co=";
+      sha256 = "sha256-hVoKbvWFeramPkHuibJwUgFOPS9v588+K8828a1fNnA=";
     };
-    date = "2026-01-21";
+    date = "2026-02-02";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.15.6";
+    version = "v1.16.0";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.15.6";
+      rev = "v1.16.0";
       fetchSubmodules = false;
-      sha256 = "sha256-Fw8Yr8C5NQ7mADLFkxw6ME6MODtHUCBNkeT44USveGU=";
+      sha256 = "sha256-bi93rZnX8hymcmW6H/Iglujdv6LiqueitlVJbVlGNis=";
     };
   };
   mediamtx-rpicamera = {
     pname = "mediamtx-rpicamera";
-    version = "v2.5.1";
+    version = "v2.5.2";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx-rpicamera";
-      rev = "v2.5.1";
+      rev = "v2.5.2";
       fetchSubmodules = false;
-      sha256 = "sha256-G8tnvo2Elc6a+7cHo7SKfEwF2sUzD9C92Pj4qdlOxIo=";
+      sha256 = "sha256-qYcpOsJj+73YRe0XZZal/8cdWMuazyr9spY326FtalA=";
     };
   };
 }
