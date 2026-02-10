@@ -16,7 +16,7 @@
     },
     "libcamera": {
         "cargoLock": null,
-        "date": "2025-12-02",
+        "date": "2026-02-05",
         "extract": null,
         "name": "libcamera",
         "passthru": null,
@@ -28,16 +28,16 @@
             "name": null,
             "owner": "raspberrypi",
             "repo": "libcamera",
-            "rev": "f0e40f1c50bd0afe65727d6e407d0dcb42666ada",
-            "sha256": "sha256-sJKzmeeXD/66P5o+X9w3J2gwxDNsdBUdXEqU6goJdN4=",
+            "rev": "9f4754cbc6f9ae2276c9e2f42db9302e64c723b5",
+            "sha256": "sha256-ZSKNeFDedqzcVxoLPap2dMjq+F3C1eQ+HikEKuGBOyM=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "f0e40f1c50bd0afe65727d6e407d0dcb42666ada"
+        "version": "9f4754cbc6f9ae2276c9e2f42db9302e64c723b5"
     },
     "libcamera-apps": {
         "cargoLock": null,
-        "date": "2026-01-21",
+        "date": "2026-02-02",
         "extract": null,
         "name": "libcamera-apps",
         "passthru": null,
@@ -49,12 +49,12 @@
             "name": null,
             "owner": "raspberrypi",
             "repo": "libcamera-apps",
-            "rev": "d1d948293549a5fc9766e41788084638aff3c821",
-            "sha256": "sha256-XpKM8FpeRjzuN3PbdRxOKG6w8Q3qrUz8lgAnucEZ0Co=",
+            "rev": "2ebb5820566f2efa64d812c6fbceac94d5799f86",
+            "sha256": "sha256-hVoKbvWFeramPkHuibJwUgFOPS9v588+K8828a1fNnA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "d1d948293549a5fc9766e41788084638aff3c821"
+        "version": "2ebb5820566f2efa64d812c6fbceac94d5799f86"
     },
     "mediamtx": {
         "cargoLock": null,
@@ -70,12 +70,12 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx",
-            "rev": "v1.15.6",
-            "sha256": "sha256-Fw8Yr8C5NQ7mADLFkxw6ME6MODtHUCBNkeT44USveGU=",
+            "rev": "v1.16.0",
+            "sha256": "sha256-bi93rZnX8hymcmW6H/Iglujdv6LiqueitlVJbVlGNis=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v1.15.6"
+        "version": "v1.16.0"
     },
     "mediamtx-rpicamera": {
         "cargoLock": null,
@@ -91,11 +91,11 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx-rpicamera",
-            "rev": "v2.5.1",
-            "sha256": "sha256-G8tnvo2Elc6a+7cHo7SKfEwF2sUzD9C92Pj4qdlOxIo=",
+            "rev": "v2.5.2",
+            "sha256": "sha256-qYcpOsJj+73YRe0XZZal/8cdWMuazyr9spY326FtalA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v2.5.1"
+        "version": "v2.5.2"
     }
 }
