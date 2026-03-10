@@ -86,10 +86,7 @@
       repo = "cartographer3d-plugin";
       rev = "v1.5.0";
       fetchSubmodules = false;
-      deepClone = false;
-      leaveDotGit = true;
-      sparseCheckout = [ ];
-      sha256 = "sha256-15IUWlOk4mQTSYqiSVnADt9ABmpDc8RJIy/kfrngV1w=";
+      sha256 = "sha256-mih3ZMwJfQ4JKvL3myAHff5V6wXnCMRVoJyfMEmtlcQ=";
     };
   };
   klipper-chopper-resonance-tuner = {

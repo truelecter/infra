@@ -37,6 +37,9 @@
         )
         // {
           version = pythonVersion;
+
+          GIT_VERSION = pythonVersion;
+          COMMIT_SHA = "unknown";
         }
       )
     ).overrideAttrs (old: {
