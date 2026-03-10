@@ -119,9 +119,25 @@ in {
     pkgs,
     system,
     ...
-  }:
-    lib.optionalAttrs (self.lib.isLinux system) {
-      packages = mkPackages pkgs;
+  }: let
+    filterPackages = pkgs':
+      lib.filterAttrs (n: _:
+        builtins.elem n [
+          "kalico-genconf"
+          "kalico-experimental-genconf"
+          "klipper-genconf"
+          "katapult-genconf"
+        ])
+      pkgs';
+
+    klipperPackages = mkPackages pkgs;
+  in
+    if self.lib.isLinux system
+    then {
+      packages = klipperPackages;
+    }
+    else {
+      packages = filterPackages klipperPackages;
     };
 
   flake = {
