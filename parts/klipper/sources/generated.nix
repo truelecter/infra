@@ -56,15 +56,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "88a71c3ce5383085b18d87d76ac42686ec7fad9f";
+    version = "644cda5ecaa39d0dcf797624c19d5425cb8121ec";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "88a71c3ce5383085b18d87d76ac42686ec7fad9f";
+      rev = "644cda5ecaa39d0dcf797624c19d5425cb8121ec";
       fetchSubmodules = false;
-      sha256 = "sha256-9brIlsO0lice0atZux2OHdAR9DD0xx/aeRLziU6HQ94=";
+      sha256 = "sha256-ono0+6pyjJDexaDOH/vYNFNyh636iNfjBMxmWNbgVik=";
     };
-    date = "2026-03-04";
+    date = "2026-03-09";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -86,7 +86,10 @@
       repo = "cartographer3d-plugin";
       rev = "v1.5.0";
       fetchSubmodules = false;
-      sha256 = "sha256-mih3ZMwJfQ4JKvL3myAHff5V6wXnCMRVoJyfMEmtlcQ=";
+      deepClone = false;
+      leaveDotGit = true;
+      sparseCheckout = [ ];
+      sha256 = "sha256-15IUWlOk4mQTSYqiSVnADt9ABmpDc8RJIy/kfrngV1w=";
     };
   };
   klipper-chopper-resonance-tuner = {
@@ -210,15 +213,15 @@
   };
   klipper-screen = {
     pname = "klipper-screen";
-    version = "33c11992f0a6e66783b82d84c3d434535c08c78d";
+    version = "7f8cb474d7b0866f56116882faa52f5cfc3d0bfc";
     src = fetchFromGitHub {
       owner = "jordanruthe";
       repo = "KlipperScreen";
-      rev = "33c11992f0a6e66783b82d84c3d434535c08c78d";
+      rev = "7f8cb474d7b0866f56116882faa52f5cfc3d0bfc";
       fetchSubmodules = false;
-      sha256 = "sha256-zPeyvO8U/aZHNP9CmHYiysW9N8E1/gkkZGKrActkWjk=";
+      sha256 = "sha256-5lREs6x6zQ0XUXGl3ZIw0Qz2KLy26OqZP3+tuzwoPkk=";
     };
-    date = "2026-03-06";
+    date = "2026-03-08";
   };
   klipper-z-calibration = {
     pname = "klipper-z-calibration";
@@ -245,15 +248,15 @@
   };
   libdatachannel_latest = {
     pname = "libdatachannel_latest";
-    version = "a33ffc1aeaab38b29764f6f9fa53b776b99cfeb4";
+    version = "5a41b7226c7d7d9416477000678d3f5e0d8a6479";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libdatachannel";
-      rev = "a33ffc1aeaab38b29764f6f9fa53b776b99cfeb4";
+      rev = "5a41b7226c7d7d9416477000678d3f5e0d8a6479";
       fetchSubmodules = true;
-      sha256 = "sha256-+qHXo+nDme5X1UVBashimNfV/SQdlNN8vuIhtJgr1Dw=";
+      sha256 = "sha256-uafsQMx3LLaUckxhWTUM/gD6uvY6URohRhhEoSFDPsE=";
     };
-    date = "2026-03-01";
+    date = "2026-03-09";
   };
   libjuice = {
     pname = "libjuice";

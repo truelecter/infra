@@ -117,6 +117,7 @@ fetch.github = "Cartographer3D/cartographer-klipper"
 [klipper-cartographer-plugin]
 src.github = "Cartographer3D/cartographer3d-plugin"
 fetch.github = "Cartographer3D/cartographer3d-plugin"
+git.leaveDotGit = true
 
 # Spoolman
 [spoolman]

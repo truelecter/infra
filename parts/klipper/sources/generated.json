@@ -85,7 +85,7 @@
     },
     "klipper": {
         "cargoLock": null,
-        "date": "2026-03-04",
+        "date": "2026-03-09",
         "extract": null,
         "name": "klipper",
         "passthru": null,
@@ -97,12 +97,12 @@
             "name": null,
             "owner": "Klipper3d",
             "repo": "klipper",
-            "rev": "88a71c3ce5383085b18d87d76ac42686ec7fad9f",
-            "sha256": "sha256-9brIlsO0lice0atZux2OHdAR9DD0xx/aeRLziU6HQ94=",
+            "rev": "644cda5ecaa39d0dcf797624c19d5425cb8121ec",
+            "sha256": "sha256-ono0+6pyjJDexaDOH/vYNFNyh636iNfjBMxmWNbgVik=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "88a71c3ce5383085b18d87d76ac42686ec7fad9f"
+        "version": "644cda5ecaa39d0dcf797624c19d5425cb8121ec"
     },
     "klipper-cartographer": {
         "cargoLock": null,
@@ -135,12 +135,12 @@
         "src": {
             "deepClone": false,
             "fetchSubmodules": false,
-            "leaveDotGit": false,
+            "leaveDotGit": true,
             "name": null,
             "owner": "Cartographer3D",
             "repo": "cartographer3d-plugin",
             "rev": "v1.5.0",
-            "sha256": "sha256-mih3ZMwJfQ4JKvL3myAHff5V6wXnCMRVoJyfMEmtlcQ=",
+            "sha256": "sha256-15IUWlOk4mQTSYqiSVnADt9ABmpDc8RJIy/kfrngV1w=",
             "sparseCheckout": [],
             "type": "github"
         },
@@ -358,7 +358,7 @@
     },
     "klipper-screen": {
         "cargoLock": null,
-        "date": "2026-03-06",
+        "date": "2026-03-08",
         "extract": null,
         "name": "klipper-screen",
         "passthru": null,
@@ -370,12 +370,12 @@
             "name": null,
             "owner": "jordanruthe",
             "repo": "KlipperScreen",
-            "rev": "33c11992f0a6e66783b82d84c3d434535c08c78d",
-            "sha256": "sha256-zPeyvO8U/aZHNP9CmHYiysW9N8E1/gkkZGKrActkWjk=",
+            "rev": "7f8cb474d7b0866f56116882faa52f5cfc3d0bfc",
+            "sha256": "sha256-5lREs6x6zQ0XUXGl3ZIw0Qz2KLy26OqZP3+tuzwoPkk=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "33c11992f0a6e66783b82d84c3d434535c08c78d"
+        "version": "7f8cb474d7b0866f56116882faa52f5cfc3d0bfc"
     },
     "klipper-z-calibration": {
         "cargoLock": null,
@@ -421,7 +421,7 @@
     },
     "libdatachannel_latest": {
         "cargoLock": null,
-        "date": "2026-03-01",
+        "date": "2026-03-09",
         "extract": null,
         "name": "libdatachannel_latest",
         "passthru": null,
@@ -433,12 +433,12 @@
             "name": null,
             "owner": "paullouisageneau",
             "repo": "libdatachannel",
-            "rev": "a33ffc1aeaab38b29764f6f9fa53b776b99cfeb4",
-            "sha256": "sha256-+qHXo+nDme5X1UVBashimNfV/SQdlNN8vuIhtJgr1Dw=",
+            "rev": "5a41b7226c7d7d9416477000678d3f5e0d8a6479",
+            "sha256": "sha256-uafsQMx3LLaUckxhWTUM/gD6uvY6URohRhhEoSFDPsE=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "a33ffc1aeaab38b29764f6f9fa53b776b99cfeb4"
+        "version": "5a41b7226c7d7d9416477000678d3f5e0d8a6479"
     },
     "libjuice": {
         "cargoLock": null,

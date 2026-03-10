@@ -4,6 +4,7 @@
   sources,
   python3,
   pyproject-nix,
+  git,
   ...
 }: let
   semverRegex = "(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\\+([0-9a-zA-Z-]+(\\.[0-9a-zA-Z-]+)*))?";
@@ -26,17 +27,21 @@
     then version
     else "0.0.0+${version}";
 
-  cartographerPlugin = python.pkgs.buildPythonPackage (
+  cartographerPlugin =
     (
-      project.renderers.buildPythonPackage {
-        inherit project python;
-      }
-    )
-    // {
-      version = pythonVersion;
-      patches = [./patch_hatch_build.patch];
-    }
-  );
+      python.pkgs.buildPythonPackage (
+        (
+          project.renderers.buildPythonPackage {
+            inherit project python;
+          }
+        )
+        // {
+          version = pythonVersion;
+        }
+      )
+    ).overrideAttrs (old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [git];
+    });
 in
   stdenvNoCC.mkDerivation {
     pname = "klipper-cartographer-plugin";
