@@ -28,15 +28,15 @@
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "8b7be4ebfe185fa938a340a0125f023bd1d8227e";
+    version = "f9b89b804bd58eacad3698646c7ca3cf08c42bc1";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "8b7be4ebfe185fa938a340a0125f023bd1d8227e";
+      rev = "f9b89b804bd58eacad3698646c7ca3cf08c42bc1";
       fetchSubmodules = false;
-      sha256 = "sha256-V1nC54+8u3MWv8yheKrEbPpxZN1dsMB32PAMc19V934=";
+      sha256 = "sha256-/4cjnF7fiT7fYrmhIc/f4kDoPCBx3Cf9tq0ATskOM8Y=";
     };
-    date = "2026-02-12";
+    date = "2026-03-10";
   };
   mediamtx = {
     pname = "mediamtx";
