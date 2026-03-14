@@ -245,15 +245,15 @@
   };
   libdatachannel_latest = {
     pname = "libdatachannel_latest";
-    version = "5a41b7226c7d7d9416477000678d3f5e0d8a6479";
+    version = "082f2dacabe82c1ef970ba38e596aeb454ea1372";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libdatachannel";
-      rev = "5a41b7226c7d7d9416477000678d3f5e0d8a6479";
+      rev = "082f2dacabe82c1ef970ba38e596aeb454ea1372";
       fetchSubmodules = true;
-      sha256 = "sha256-uafsQMx3LLaUckxhWTUM/gD6uvY6URohRhhEoSFDPsE=";
+      sha256 = "sha256-lTyfPfwAf/kiQN7zF25QnqATWD7RNftFzipx2yEgNZg=";
     };
-    date = "2026-03-09";
+    date = "2026-03-12";
   };
   libjuice = {
     pname = "libjuice";
