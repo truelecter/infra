@@ -28,25 +28,25 @@
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "f9b89b804bd58eacad3698646c7ca3cf08c42bc1";
+    version = "593f63bf981de1a572bbb46e79e7d8b169e96fae";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "f9b89b804bd58eacad3698646c7ca3cf08c42bc1";
+      rev = "593f63bf981de1a572bbb46e79e7d8b169e96fae";
       fetchSubmodules = false;
-      sha256 = "sha256-/4cjnF7fiT7fYrmhIc/f4kDoPCBx3Cf9tq0ATskOM8Y=";
+      sha256 = "sha256-zzClf35BnV6yCEuhfT78I2rry62mSwRXixnnmOp/lOQ=";
     };
-    date = "2026-03-10";
+    date = "2026-03-20";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.16.3";
+    version = "v1.17.0";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.16.3";
+      rev = "v1.17.0";
       fetchSubmodules = false;
-      sha256 = "sha256-TjeNm6gfhw+5IWtlojdO24k/N8oDZddFgQY7/e+dlPY=";
+      sha256 = "sha256-k+XpnoERFJdpjvyby6vvRyJst9nA2NDq3cMkGL7kRQE=";
     };
   };
   mediamtx-rpicamera = {
