@@ -14,6 +14,7 @@ in {
       enableACME = true;
       forceSSL = true;
       kTLS = true;
+      default = true;
 
       locations."/" = {
         proxyPass = "http://localhost:${web-container-port}/";
