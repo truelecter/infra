@@ -27,7 +27,7 @@
   };
 in
   writeShellApplication {
-    name = "${klipper.pname}-genconf";
+    name = "${klipper.pname}-menuconfig";
     runtimeInputs = [
       python3
       gnumake

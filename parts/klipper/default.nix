@@ -123,10 +123,17 @@ in {
     filterPackages = pkgs':
       lib.filterAttrs (n: _:
         builtins.elem n [
-          "kalico-genconf"
-          "kalico-experimental-genconf"
-          "klipper-genconf"
-          "katapult-genconf"
+          "kalico-menuconfig"
+          "kalico-olddefconfig"
+
+          "kalico-experimental-menuconfig"
+          "kalico-experimental-olddefconfig"
+
+          "klipper-menuconfig"
+          "klipper-olddefconfig"
+
+          "katapult-menuconfig"
+          "katapult-olddefconfig"
         ])
       pkgs';
 
