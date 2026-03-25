@@ -1,9 +1,12 @@
 let
-  hass-version = "2025.12.0";
+  hass-version = "2025.12.5";
 in {
   virtualisation.oci-containers = {
     containers.homeassistant = {
-      volumes = ["/srv/home-assistant/hass:/config"];
+      volumes = [
+        "/srv/home-assistant/hass:/config"
+        "${./configs/dashboards}:/config/dashboards/"
+      ];
       environment = {
         TZ = "Europe/Kyiv";
         # This is for HACS

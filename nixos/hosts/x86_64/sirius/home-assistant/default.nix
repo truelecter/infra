@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./z2m.nix
-    ./home-assistant.nix
+    ./hass
     ./mqtt.nix
     # ./matter.nix
     ./dns.nix
