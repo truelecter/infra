@@ -1,6 +1,19 @@
-{suites, ...}: {
+{
+  suites,
+  profiles,
+  users,
+  ...
+}: {
   imports =
-    suites.base
+    [
+      profiles.common.cachix
+      profiles.common.networking.tailscale
+
+      profiles.nixos.core
+      profiles.nixos.secrets.common
+
+      users.nixos.truelecter-micro
+    ]
     ++ suites._3d-printing
     ++ suites.rpi02
     ++ [

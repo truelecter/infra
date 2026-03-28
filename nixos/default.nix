@@ -90,7 +90,7 @@
   in {
     ${hostname} = nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit inputs profiles suites;
+        inherit inputs profiles suites users;
 
         inherit (self) overlays;
       };
