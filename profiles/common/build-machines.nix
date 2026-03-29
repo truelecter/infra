@@ -54,14 +54,14 @@ in {
           "aarch64-darwin"
         ];
       }
-      {
-        maxJobs = 4;
-        hostName = "depsos";
-        systems = [
-          "x86_64-linux"
-          "i686-linux"
-        ];
-      }
+      # {
+      #   maxJobs = 4;
+      #   hostName = "depsos";
+      #   systems = [
+      #     "x86_64-linux"
+      #     "i686-linux"
+      #   ];
+      # }
     ];
   };
 
