@@ -1,5 +1,5 @@
 let
-  hass-version = "2025.12.5";
+  hass-version = "2026.3.3";
 in {
   virtualisation.oci-containers = {
     containers.homeassistant = {
