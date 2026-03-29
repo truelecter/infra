@@ -11,10 +11,6 @@
     "${modulesPath}/profiles/base.nix"
   ];
 
-  imports = [
-    "${modulesPath}/profiles/perlless.nix"
-  ];
-
   environment.systemPackages = [
     pkgs.pciutils
     pkgs.usbutils
