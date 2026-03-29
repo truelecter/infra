@@ -2,6 +2,7 @@
   suites,
   profiles,
   users,
+  modulesPath,
   ...
 }: {
   imports =
@@ -22,6 +23,8 @@
       ./network.nix
       ./wifi.nix
       ./usb-eth.nix
+
+      "${modulesPath}/profiles/perlless.nix"
     ];
 
   networking.firewall.enable = false;
