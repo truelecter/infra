@@ -38,7 +38,7 @@ in {
         android-tools
         vscode
         alejandra
-        nil
+        nixd
         terraform
         terraform-ls
         kubelogin-oidc
