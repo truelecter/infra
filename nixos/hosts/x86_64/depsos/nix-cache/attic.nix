@@ -96,7 +96,7 @@ in {
   };
 
   systemd.tmpfiles.rules = [
-    "d ${storagePath} 0755 root root -"
+    "d ${storagePath} 0755 ${config.services.atticd.user} ${config.services.atticd.group} -"
   ];
 
   environment.systemPackages = [
