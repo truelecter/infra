@@ -27,6 +27,10 @@ in {
       locations."/" = {
         proxyPass = "http://localhost:${ncpsPort}/";
       };
+
+      extraConfig = ''
+        client_max_body_size 0;
+      '';
     };
   };
 

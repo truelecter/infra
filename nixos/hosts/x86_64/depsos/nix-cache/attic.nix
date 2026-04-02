@@ -20,6 +20,10 @@ in {
       locations."/" = {
         proxyPass = "http://localhost:${atticPort}/";
       };
+
+      extraConfig = ''
+        client_max_body_size 0;
+      '';
     };
   };
 
