@@ -54,6 +54,9 @@ jobs:
         sudo chmod 0755 /nix
         sudo mount --bind /mnt/nix /nix
 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - uses: ./.github/actions/prepare-build-environment
       with:
         attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}

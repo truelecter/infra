@@ -1,5 +1,5 @@
 name: Prepare build environment
-description: Checkout, install Nix, Attic client, and configure Attic cache for CI
+description: Install Nix, Attic client, and configure Attic cache for CI
 
 inputs:
   attic-push-token:
@@ -8,17 +8,10 @@ inputs:
   github-token:
     description: GitHub token for Nix access-tokens (typically secrets.GITHUB_TOKEN)
     required: true
-  checkout-version:
-    description: actions/checkout version tag
-    required: false
-    default: v4
 
 runs:
   using: composite
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@${{ inputs.checkout-version }}
-
     - name: Install Nix
       uses: cachix/install-nix-action@v30
       with:
