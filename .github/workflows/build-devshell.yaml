@@ -25,6 +25,10 @@ jobs:
           substituters = https://nix-proxy.tlctr.me https://cache.nixos.org/
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk=
 
+    - name: Install Attic with chunking support
+      run: |
+        nix profile install github:ByteZ1337/attic/feat/upload-in-parts#attic-client
+
     # - uses: cachix/cachix-action@v15
     #   with:
     #     name: truelecter

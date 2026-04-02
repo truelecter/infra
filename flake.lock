@@ -32,15 +32,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1758711588,
-        "narHash": "sha256-0nZlCCDC5PfndsQJXXtcyrtrfW49I3KadGMDlutzaGU=",
-        "owner": "zhaofengli",
+        "lastModified": 1766486183,
+        "narHash": "sha256-1koNX1T45G/Qz8xPFE7lR/awpkiJUY0omL/ofTYd60I=",
+        "owner": "ByteZ1337",
         "repo": "attic",
-        "rev": "12cbeca141f46e1ade76728bce8adc447f2166c6",
+        "rev": "5fc1b918c12c2658603f6d88a75aa4a2e74080df",
         "type": "github"
       },
       "original": {
-        "owner": "zhaofengli",
+        "owner": "ByteZ1337",
+        "ref": "feat/upload-in-parts",
         "repo": "attic",
         "type": "github"
       }

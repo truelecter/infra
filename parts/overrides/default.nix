@@ -87,7 +87,10 @@ in {
 
     modules.nixos = {
       overrides-overlay = {
-        nixpkgs.overlays = [self.overlays.latest-packages];
+        nixpkgs.overlays = [
+          self.overlays.latest-packages
+          inputs.attic.overlays.default
+        ];
       };
     };
   };

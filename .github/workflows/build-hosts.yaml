@@ -72,6 +72,10 @@ jobs:
     #     extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
     #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
+    - name: Install Attic with chunking support
+      run: |
+        nix profile install github:ByteZ1337/attic/feat/upload-in-parts#attic-client
+
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0.4.1
       with:

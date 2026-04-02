@@ -159,7 +159,7 @@
     };
 
     attic = {
-      url = "github:zhaofengli/attic";
+      url = "github:ByteZ1337/attic/feat/upload-in-parts";
       inputs = {
         nixpkgs.follows = "latest";
         nixpkgs-stable.follows = "nixpkgs";
@@ -178,10 +178,10 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://nixos-raspberrypi.cachix.org"
+      "https://nix-proxy.tlctr.me"
     ];
     extra-trusted-public-keys = [
-      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+      "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="
     ];
   };
 
@@ -254,6 +254,7 @@
                 nix4vscode = inputs.nix4vscode.packages.${prev.stdenv.hostPlatform.system}.default;
               })
               self.overlays.latest-packages
+              inputs.attic.overlays.default
             ];
           };
         };
