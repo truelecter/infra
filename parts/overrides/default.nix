@@ -30,7 +30,7 @@ in {
         config.allowUnfree = true;
       };
     in {
-      inherit (pkgs) tfenv transmissionic-web;
+      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking;
 
       inherit
         (latest)
@@ -48,7 +48,6 @@ in {
         statix
         cachix
         nix-index
-        attic-client
         _1password-cli
         wrapHelm
         kubectl

@@ -30,6 +30,8 @@ in {
   services.atticd = {
     enable = true;
 
+    package = pkgs.attic-server-chunking;
+
     environmentFile = config.sops.templates."attic/env".path;
 
     settings = {

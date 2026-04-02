@@ -6,6 +6,17 @@
   dockerTools,
 }:
 {
+  attic = {
+    pname = "attic";
+    version = "5fc1b918c12c2658603f6d88a75aa4a2e74080df";
+    src = fetchFromGitHub {
+      owner = "ByteZ1337";
+      repo = "attic";
+      rev = "5fc1b918c12c2658603f6d88a75aa4a2e74080df";
+      fetchSubmodules = false;
+      sha256 = "sha256-1koNX1T45G/Qz8xPFE7lR/awpkiJUY0omL/ofTYd60I=";
+    };
+  };
   s5cmd = {
     pname = "s5cmd";
     version = "54d6a8a955688f07e5acc40d61f9c42ceac6c33b";

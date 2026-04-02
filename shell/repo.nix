@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  inherit (pkgs) writeScriptBin nvfetcher-bin nix4vscode cachix attic-client;
+  inherit (pkgs) writeScriptBin nvfetcher-bin nix4vscode cachix attic-client-chunking;
 
   update-sources = writeScriptBin "update-sources" ''
     function updatePartsSources {
@@ -67,7 +67,7 @@ in {
     }
     {
       category = "nix";
-      package = attic-client;
+      package = attic-client-chunking;
     }
   ];
 }

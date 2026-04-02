@@ -158,14 +158,14 @@
       };
     };
 
-    attic = {
-      url = "github:ByteZ1337/attic/feat/upload-in-parts";
-      inputs = {
-        nixpkgs.follows = "latest";
-        nixpkgs-stable.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
+    # attic = {
+    #   url = "github:ByteZ1337/attic/feat/upload-in-parts";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #     nixpkgs-stable.follows = "nixpkgs";
+    #     flake-parts.follows = "flake-parts";
+    #   };
+    # };
 
     # zen-browser-flake = {
     #   url = "github:0xc000022070/zen-browser-flake";
@@ -254,7 +254,6 @@
                 nix4vscode = inputs.nix4vscode.packages.${prev.stdenv.hostPlatform.system}.default;
               })
               self.overlays.latest-packages
-              inputs.attic.overlays.default
             ];
           };
         };
