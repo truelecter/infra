@@ -48,6 +48,7 @@ jobs:
     # Filesystem on /mnt for some reason has more space on GitHub action
     # runner than /
     - name: Bind mount /nix
+      if: ${{ ! startsWith(matrix.host.os, 'macos') }}
       run: |
         sudo mkdir /mnt/nix /nix
         sudo chmod 0755 /nix
