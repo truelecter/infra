@@ -1,0 +1,41 @@
+name: Prepare build environment
+description: Checkout, install Nix, Attic client, and configure Attic cache for CI
+
+inputs:
+  attic-push-token:
+    description: Token for pushing to Attic (ATTIC_PUSH_TOKEN)
+    required: true
+  github-token:
+    description: GitHub token for Nix access-tokens (typically secrets.GITHUB_TOKEN)
+    required: true
+  checkout-version:
+    description: actions/checkout version tag
+    required: false
+    default: v4
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@${{ inputs.checkout-version }}
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v30
+      with:
+        nix_path: nixpkgs=channel:nixos-25.11
+        extra_nix_config: |
+          access-tokens = github.com=${{ inputs.github-token }}
+          substituters = https://nix-proxy.tlctr.me https://cache.nixos.org/ https://nix-cache.tlctr.me/workflows
+          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk= workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw=
+
+    - name: Install Attic with chunking support
+      shell: bash
+      run: |
+        nix profile install github:ByteZ1337/attic/feat/upload-in-parts#attic-client
+
+    - name: Setup Attic cache
+      uses: ryanccn/attic-action@v0.4.1
+      with:
+        endpoint: https://nix-cache.tlctr.me/
+        cache: workflows
+        token: ${{ inputs.attic-push-token }}

@@ -38,6 +38,7 @@ in {
     enable = true;
 
     netrcFile = config.sops.templates.ncps_netrc.path;
+    logLevel = "error";
 
     cache = {
       hostName = domainName;
@@ -51,24 +52,26 @@ in {
 
       lru.schedule = "0 3 * * 6";
 
+      cdc.enabled = false;
+
+      # Do not proxy attic for now.
+      # It fails with "invalid narinfo hash" for some reason.
       upstream = let
         caches = import ./external-caches.nix;
       in {
-        urls =
-          (
-            builtins.map (c: c.url) caches
-          )
-          ++ [
-            "http://${config.services.atticd.settings.listen}/workflows"
-          ];
+        urls = (
+          map (c: c.url) caches
+        );
+        # ++ [
+        #   "http://${config.services.atticd.settings.listen}/workflows"
+        # ];
 
-        publicKeys =
-          (
-            builtins.map (c: c.pubKey) caches
-          )
-          ++ [
-            "workflows:LrcQCsRv7P/HRuE10RyaNGM/6qsPchf+xaUOcFLy/5E=" # View by issuing "attic cache info workflows"
-          ];
+        publicKeys = (
+          map (c: c.pubKey) caches
+        );
+        # ++ [
+        #   "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw=" # View by issuing "attic cache info workflows"
+        # ];
       };
     };
   };

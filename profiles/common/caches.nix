@@ -12,6 +12,7 @@
       # "https://nix-rpi-kernels.cachix.org"
 
       "https://nix-proxy.tlctr.me"
+      "https://nix-cache.tlctr.me/workflows"
     ];
     trusted-public-keys = [
       # "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
@@ -22,6 +23,7 @@
       # # "nix-rpi-kernels.cachix.org-1:QSG8mkW+7ITX8g8VZQcJ6EXBuOSk2F8y2D/2iOzdZHc="
       # "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
       "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="
+      "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw="
     ];
   };
 }

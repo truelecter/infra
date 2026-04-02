@@ -62,8 +62,8 @@ in {
       };
 
       compression = {
-        type = "zstd";
-        level = 9;
+        type = "none";
+        level = 1;
       };
 
       garbage-collection = {
