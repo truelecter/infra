@@ -74,6 +74,14 @@ creation_rules:
         age:
           - *depsos
 
+  - path_regex: secrets/nix-caches.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+        age:
+          - *depsos
+
   - path_regex: secrets/wifi.yaml
     key_groups:
       - pgp:

@@ -7,7 +7,7 @@
 }: {
   imports =
     [
-      profiles.common.cachix
+      profiles.common.caches
       profiles.common.networking.tailscale
 
       profiles.nixos.core

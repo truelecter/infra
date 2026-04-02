@@ -26,6 +26,8 @@
       ./ssl.nix
 
       # ./matrix
+
+      ./nix-cache
     ];
 
   networking.networkmanager = {

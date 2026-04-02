@@ -1,3 +1,13 @@
+# To generate authenticate push to GH actions cache token ${{ secrets.ATTIC_PUSH_TOKEN }}:
+# $ sudo atticd-atticadm make-token \
+#   --sub truelecter \
+#   --validity 10y \
+#   --pull workflows \
+#   --push workflows \
+#   --create-cache workflows \
+#   --configure-cache workflows \
+#   --configure-cache-retention workflows
+
 # TODO: generate with nixago?
 name: Build machine configurations
 on:
@@ -35,6 +45,14 @@ jobs:
 
     runs-on: ${{ matrix.host.os }}
     steps:
+    # Filesystem on /mnt for some reason has more space on GitHub action
+    # runner than /
+    - name: Bind mount /nix
+      run: |
+        sudo mkdir /mnt/nix /nix
+        sudo chmod 0755 /nix
+        sudo mount --bind /mnt/nix /nix
+
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -45,11 +63,18 @@ jobs:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-    - uses: cachix/cachix-action@v15
+    # - uses: cachix/cachix-action@v15
+    #   with:
+    #     name: truelecter
+    #     extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
+    #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+    - name: Setup Attic cache
+      uses: ritiek/attic-action@v0.4.1
       with:
-        name: truelecter
-        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
-        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+        endpoint: https://nix-cache.tlctr.me/
+        cache: workflows
+        token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
     - name: Create aarch64-linux builder
       if: ${{ startsWith(matrix.host.os, 'macos') }}

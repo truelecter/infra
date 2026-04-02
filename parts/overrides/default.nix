@@ -48,6 +48,7 @@ in {
         statix
         cachix
         nix-index
+        attic-client
         _1password-cli
         wrapHelm
         kubectl
@@ -69,6 +70,7 @@ in {
         prowlarr
         #shell
         lefthook
+        ncps
         ;
     };
 

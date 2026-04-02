@@ -1,8 +1,12 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   sCfg = config.tl.matrix;
 in {
   sops.secrets = let
-    sopsFile = ../../../../../secrets/matrix.yaml;
+    sopsFile = "${inputs.self}/secrets/matrix.yaml";
   in {
     coturn_auth_secret = {
       inherit sopsFile;

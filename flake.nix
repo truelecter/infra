@@ -158,6 +158,15 @@
       };
     };
 
+    attic = {
+      url = "github:zhaofengli/attic";
+      inputs = {
+        nixpkgs.follows = "latest";
+        nixpkgs-stable.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+
     # zen-browser-flake = {
     #   url = "github:0xc000022070/zen-browser-flake";
     #   inputs = {

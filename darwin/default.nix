@@ -10,7 +10,7 @@
     base = with profiles;
       [
         common.core
-        common.cachix
+        common.caches
         common.fonts
         common.networking.tailscale
 

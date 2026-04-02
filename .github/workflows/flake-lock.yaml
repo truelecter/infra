@@ -17,11 +17,18 @@ jobs:
         nix_path: nixpkgs=channel:nixos-25.05
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: cachix/cachix-action@v16
+    # - uses: cachix/cachix-action@v16
+    #   with:
+    #     name: truelecter
+    #     extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
+    #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+    - name: Setup Attic cache
+      uses: ritiek/attic-action@v0.4.1
       with:
-        name: truelecter
-        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
-        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+        endpoint: https://nix-cache.tlctr.me/
+        cache: workflows
+        token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
     - name: Configure git
       run: |

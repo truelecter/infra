@@ -1,7 +1,7 @@
 {
-  lib,
   pkgs,
   config,
+  inputs,
   ...
 }: let
   sCfg = config.tl.matrix;
@@ -9,7 +9,7 @@ in {
   environment.systemPackages = with pkgs; [matrix-synapse];
 
   sops.secrets = let
-    sopsFile = ../../../../../secrets/matrix/synapse.yaml;
+    sopsFile = "${inputs.self}/secrets/matrix/synapse.yaml";
   in {
     synapse_registration_secret = {
       inherit sopsFile;
