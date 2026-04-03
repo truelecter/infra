@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  inputs,
   ...
 }: let
   web-container-port = "8911";
@@ -67,7 +68,7 @@ in {
   };
 
   sops.secrets.pandora-envs = {
-    sopsFile = ../../../../../../secrets/bots/pandora-envs.env;
+    sopsFile = "${inputs.self}/secrets/bots/pandora-envs.env";
     key = "";
     format = "dotenv";
   };

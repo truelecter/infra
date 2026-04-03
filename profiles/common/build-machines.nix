@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   builder-username = "remote-builder";
 
   mkBuildMachine = {
@@ -67,7 +71,7 @@ in {
 
   sops.secrets = {
     remote-builder-pk = {
-      sopsFile = ../../secrets/ssh/remote-builder;
+      sopsFile = "${inputs.self}/secrets/ssh/remote-builder";
       format = "binary";
       group = "wheel";
     };

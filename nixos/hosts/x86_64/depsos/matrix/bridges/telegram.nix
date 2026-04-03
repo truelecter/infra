@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }: let
   sCfg = config.tl.matrix;
@@ -10,7 +11,7 @@ in {
   ];
 
   sops.secrets.mautrix-telegram = {
-    sopsFile = ../../../../../../secrets/matrix/mautrix-telegram.env;
+    sopsFile = "${inputs.self}/secrets/matrix/mautrix-telegram.env";
     key = "";
     format = "dotenv";
   };

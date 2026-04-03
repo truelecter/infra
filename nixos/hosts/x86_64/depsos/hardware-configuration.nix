@@ -46,6 +46,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/cache" = {
+    device = "/dev/disk/by-label/cache-storage";
+    fsType = "ext4";
+  };
+
   virtualisation.containers.storage.settings.storage.graphroot = "/srv/containsers/storage";
 
   swapDevices = [

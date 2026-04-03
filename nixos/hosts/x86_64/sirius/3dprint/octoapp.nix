@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  inputs,
   ...
 }: let
   # FIXME: change to static version number when release is made
@@ -33,7 +34,7 @@ in
   lib.mkMerge [
     # {
     #   sops.secrets.bbl-p1s-envs = {
-    #     sopsFile = ../../../../../secrets/printer-secrets.env;
+    #     sopsFile = "${inputs.self}/secrets/printer-secrets.env";
     #     key = "";
     #     format = "dotenv";
     #   };

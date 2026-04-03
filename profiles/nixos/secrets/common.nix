@@ -11,7 +11,7 @@
   sops.secrets = {
     root-password = {
       key = "root-password";
-      sopsFile = ../../../secrets/nixos-common.yaml;
+      sopsFile = "${inputs.self}/secrets/nixos-common.yaml";
       neededForUsers = true;
     };
   };

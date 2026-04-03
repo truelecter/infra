@@ -30,7 +30,7 @@ in {
         config.allowUnfree = true;
       };
     in {
-      inherit (pkgs) tfenv transmissionic-web;
+      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking;
 
       inherit
         (latest)
@@ -69,6 +69,7 @@ in {
         prowlarr
         #shell
         lefthook
+        ncps
         ;
     };
 
@@ -85,7 +86,10 @@ in {
 
     modules.nixos = {
       overrides-overlay = {
-        nixpkgs.overlays = [self.overlays.latest-packages];
+        nixpkgs.overlays = [
+          self.overlays.latest-packages
+          inputs.attic.overlays.default
+        ];
       };
     };
   };

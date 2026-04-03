@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   asfPort = "1242";
   domainName = "asf.tenma.moe";
 in {
@@ -78,7 +82,7 @@ in {
   sops.secrets = let
     inherit (config.services.archisteamfarm) dataDir;
 
-    sopsFile = ../../../../../secrets/bots/archi-steam-farm.yaml;
+    sopsFile = "${inputs.self}/secrets/bots/archi-steam-farm.yaml";
     owner = "archisteamfarm";
   in {
     asf-tl-pw = {

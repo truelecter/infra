@@ -14,18 +14,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Install Nix
-      uses: cachix/install-nix-action@v30
+      uses: actions/checkout@v4
+
+    - uses: ./.github/actions/prepare-build-environment
       with:
-        nix_path: nixpkgs=channel:nixos-25.05
-        extra_nix_config: |
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - uses: cachix/cachix-action@v15
-      with:
-        name: truelecter
-        extraPullNames: cuda-maintainers, mic92, nix-community, nrdxp, nixos-raspberrypi
-        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build shell
       run: |
         nix develop --command "menu"
@@ -39,7 +34,7 @@ jobs:
       # see https://stackoverflow.com/a/67532120/4907315
       if: >-
         ${{
-              contains(needs.*.result, 'failure')
+          contains(needs.*.result, 'failure')
           || contains(needs.*.result, 'cancelled')
           || contains(needs.*.result, 'skipped')
         }}

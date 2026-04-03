@@ -158,6 +158,19 @@
       };
     };
 
+    # ncps = {
+    #   url = "github:kalbasit/ncps";
+    # };
+
+    # attic = {
+    #   url = "github:ByteZ1337/attic/feat/upload-in-parts";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #     nixpkgs-stable.follows = "nixpkgs";
+    #     flake-parts.follows = "flake-parts";
+    #   };
+    # };
+
     # zen-browser-flake = {
     #   url = "github:0xc000022070/zen-browser-flake";
     #   inputs = {
@@ -169,10 +182,12 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://nixos-raspberrypi.cachix.org"
+      "https://nix-proxy.tlctr.me"
+      "https://nix-cache.tlctr.me/workflows"
     ];
     extra-trusted-public-keys = [
-      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+      "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="
+      "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw="
     ];
   };
 

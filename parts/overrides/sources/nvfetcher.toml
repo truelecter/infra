@@ -9,3 +9,8 @@ fetch.github = "tfutils/tfenv"
 [s5cmd]
 src.git = "https://github.com/peak/s5cmd"
 fetch.github = "peak/s5cmd"
+
+[attic]
+fetch.github = "ByteZ1337/attic"
+src.manual = "5fc1b918c12c2658603f6d88a75aa4a2e74080df"
+# cargo_lock = ["Cargo.lock"] # TODO move to importCargoLock
