@@ -57,7 +57,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - uses: ./.github/actions/prepare-build-environment
+    - name: Prepare build environment
+      uses: ./.github/actions/prepare-build-environment
       with:
         attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
