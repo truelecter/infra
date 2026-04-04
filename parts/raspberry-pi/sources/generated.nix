@@ -40,24 +40,24 @@
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.17.0";
+    version = "v1.17.1";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.17.0";
+      rev = "v1.17.1";
       fetchSubmodules = false;
-      sha256 = "sha256-k+XpnoERFJdpjvyby6vvRyJst9nA2NDq3cMkGL7kRQE=";
+      sha256 = "sha256-KI6JSyhbraynwwuNp6rBH/VN9/oIJYGC8rTqyTvfDOU=";
     };
   };
   mediamtx-rpicamera = {
     pname = "mediamtx-rpicamera";
-    version = "v2.5.4";
+    version = "v2.5.5";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx-rpicamera";
-      rev = "v2.5.4";
+      rev = "v2.5.5";
       fetchSubmodules = false;
-      sha256 = "sha256-wH98KHpaVOODA+kF3LbhFNFp7JlcRvdcyYbK0Dj9wX0=";
+      sha256 = "sha256-Abk17pa3Um+3OyPi84SSZNHJaFymgifgUvGr1ZSUFhI=";
     };
   };
 }

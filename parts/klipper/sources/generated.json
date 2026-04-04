@@ -85,7 +85,7 @@
     },
     "klipper": {
         "cargoLock": null,
-        "date": "2026-03-24",
+        "date": "2026-04-01",
         "extract": null,
         "name": "klipper",
         "passthru": null,
@@ -97,12 +97,12 @@
             "name": null,
             "owner": "Klipper3d",
             "repo": "klipper",
-            "rev": "2f05309d59743c1a20b271da3a8c481397c16424",
-            "sha256": "sha256-x1M9pBj8gY7C6OWXEgkw33fguBOkqxN/4C9veC0PHeA=",
+            "rev": "b0e6ca45fc7b239145375ee80eb9666552c12821",
+            "sha256": "sha256-321WH65+3o5jDzIvN8eoDJbxF0+sBZr6ogVs6I/hDYA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "2f05309d59743c1a20b271da3a8c481397c16424"
+        "version": "b0e6ca45fc7b239145375ee80eb9666552c12821"
     },
     "klipper-cartographer": {
         "cargoLock": null,
@@ -358,7 +358,7 @@
     },
     "klipper-screen": {
         "cargoLock": null,
-        "date": "2026-03-23",
+        "date": "2026-04-03",
         "extract": null,
         "name": "klipper-screen",
         "passthru": null,
@@ -370,12 +370,12 @@
             "name": null,
             "owner": "jordanruthe",
             "repo": "KlipperScreen",
-            "rev": "20045925680cc35f502cb57f8eed570642e1a3de",
-            "sha256": "sha256-oao7zWftYwLv4Qz9CC0oVbXTeyG19WofIQ6rk3/82u0=",
+            "rev": "0293a63ed305edb2dee2ba59d0258da99e52e766",
+            "sha256": "sha256-5NoPcQQYewhIjE3wYoYhUKggXiRt7kmmUkfoThZckrg=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "20045925680cc35f502cb57f8eed570642e1a3de"
+        "version": "0293a63ed305edb2dee2ba59d0258da99e52e766"
     },
     "klipper-z-calibration": {
         "cargoLock": null,
@@ -421,7 +421,7 @@
     },
     "libdatachannel_latest": {
         "cargoLock": null,
-        "date": "2026-03-12",
+        "date": "2026-03-29",
         "extract": null,
         "name": "libdatachannel_latest",
         "passthru": null,
@@ -433,12 +433,12 @@
             "name": null,
             "owner": "paullouisageneau",
             "repo": "libdatachannel",
-            "rev": "082f2dacabe82c1ef970ba38e596aeb454ea1372",
-            "sha256": "sha256-lTyfPfwAf/kiQN7zF25QnqATWD7RNftFzipx2yEgNZg=",
+            "rev": "4079f8039b0c0f0f3005987b2e435e5da2ef8577",
+            "sha256": "sha256-PP9mx0SyY66Vf2pg5F4E3xXRTlrF630EWVBqpr9fQAM=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "082f2dacabe82c1ef970ba38e596aeb454ea1372"
+        "version": "4079f8039b0c0f0f3005987b2e435e5da2ef8577"
     },
     "libjuice": {
         "cargoLock": null,
