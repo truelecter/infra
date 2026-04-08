@@ -14,7 +14,7 @@
   # };
 
   zramSwap = {
-    enable = false;
+    enable = true;
     algorithm = "zstd";
   };
 

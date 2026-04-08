@@ -2,7 +2,6 @@
   suites,
   profiles,
   users,
-  modulesPath,
   ...
 }: {
   imports =
@@ -13,7 +12,7 @@
       profiles.nixos.core
       profiles.nixos.secrets.common
 
-      users.nixos.truelecter-micro
+      users.nixos.truelecter
     ]
     ++ suites._3d-printing
     ++ suites.rpi02
@@ -23,8 +22,9 @@
       ./network.nix
       ./wifi.nix
       ./usb-eth.nix
-
-      "${modulesPath}/profiles/perlless.nix"
+      ./watchdog.nix
+      # ./almost-perlless.nix
+      ./unoom.nix
     ];
 
   networking.firewall.enable = false;
