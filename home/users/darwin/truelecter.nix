@@ -20,7 +20,7 @@
   system.defaults.dock.persistent-apps = [
     "/Applications/Zen.app"
     # "/Applications/Arc.app"
-    "/Applications/iTerm.app"
+    "${home}/Applications/Home Manager Apps/Ghostty.app"
     "${pkgs.vscode}/Applications/Visual Studio Code.app"
   ];
 }

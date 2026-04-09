@@ -75,7 +75,6 @@
   homebrew = {
     enable = true;
     casks = [
-      "iterm2"
       "launchcontrol"
       "alt-tab"
     ];
