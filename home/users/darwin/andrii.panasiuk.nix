@@ -19,7 +19,6 @@ in {
 
   system.defaults.dock.persistent-apps = [
     "/Applications/Zen.app"
-    # "/Applications/Arc.app"
     "${home}/Applications/Home Manager Apps/Ghostty.app"
     "${home}/Applications/Home Manager Apps/Cursor.app"
     "/Applications/Telegram Desktop.app"
