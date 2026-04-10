@@ -20,7 +20,6 @@ lib.mkMerge [
         auto-update = "off";
 
         background = "#000000";
-        foreground = "#000000";
       };
     };
   }
