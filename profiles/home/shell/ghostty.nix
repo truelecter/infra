@@ -31,7 +31,10 @@ lib.mkMerge [
         settings = {
           fullscreen = true;
 
-          keybind = "global:cmd+§=toggle_quick_terminal";
+          keybind = [
+            "global:cmd+\\=toggle_quick_terminal"
+            "global:cmd+§=toggle_quick_terminal"
+          ];
 
           bell-features = "no-attention,no-title";
         };
