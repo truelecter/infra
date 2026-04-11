@@ -70,6 +70,7 @@ in {
         #shell
         lefthook
         ncps
+        unifi
         ;
     };
 

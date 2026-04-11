@@ -6,6 +6,6 @@
   services.unifi = {
     enable = true;
     openFirewall = true;
-    mongodbPackage = pkgs.mongodb-ce;
+    mongodbPackage = pkgs.mongodb-7_0;
   };
 }
