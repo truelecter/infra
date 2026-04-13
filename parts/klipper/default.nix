@@ -71,7 +71,11 @@
         plugins = lib.attrValues (lib.filterAttrs (n: _: !builtins.elem n excluded-plugins) klipper-plugins);
       };
 
-      "${name}-genconf" = packages.klipper-genconf.override {
+      "${name}-menuconfig" = packages.klipper-menuconfig.override {
+        inherit klipper;
+      };
+
+      "${name}-olddefconfig" = packages.klipper-olddefconfig.override {
         inherit klipper;
       };
 
@@ -113,9 +117,6 @@
     };
 in {
   perSystem = {
-    config,
-    self',
-    inputs',
     pkgs,
     system,
     ...

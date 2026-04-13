@@ -30,7 +30,7 @@ in {
         config.allowUnfree = true;
       };
     in {
-      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking;
+      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking unifi-os-server-image;
 
       inherit
         (latest)
