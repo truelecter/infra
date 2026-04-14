@@ -15,6 +15,7 @@
         common.networking.tailscale
 
         darwin.core
+        darwin.apps.alt-tab
         darwin.security.pam
         darwin.security.one-password
         darwin.messengers

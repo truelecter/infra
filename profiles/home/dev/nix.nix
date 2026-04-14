@@ -7,7 +7,7 @@
     extensions =
       pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
       [
-        "arrterian.nix-env-selector"
+        # "arrterian.nix-env-selector"
         "bbenoist.nix"
         "jnoortheen.nix-ide"
       ];

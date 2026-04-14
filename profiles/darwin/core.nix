@@ -80,12 +80,6 @@
     ];
   };
 
-  system.defaults = {
-    CustomUserPreferences = {
-      "com.lwouis.alt-tab-macos" = lib.importJSON ./_files/alt-tab.plist.json;
-    };
-  };
-
   system.systemBuilderArgs = lib.mkIf (config.nix.settings.sandbox == "relaxed") {
     sandboxProfile = ''
       (allow file-read* file-write* process-exec mach-lookup (subpath "${builtins.storeDir}"))
