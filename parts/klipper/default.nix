@@ -57,7 +57,13 @@
           };
         };
 
-      excluded-plugins = excluded-plugins-from-full ++ lib.optionals isKalico ["klipper-gcode_shell_command"];
+      excluded-plugins =
+        excluded-plugins-from-full
+        ++ lib.optionals isKalico [
+          "klipper-gcode_shell_command"
+          "klipper-z_calibration"
+          "klipper-cartographer"
+        ];
     in {
       ${name} = klipper;
 
@@ -65,7 +71,11 @@
         plugins = lib.attrValues (lib.filterAttrs (n: _: !builtins.elem n excluded-plugins) klipper-plugins);
       };
 
-      "${name}-genconf" = packages.klipper-genconf.override {
+      "${name}-menuconfig" = packages.klipper-menuconfig.override {
+        inherit klipper;
+      };
+
+      "${name}-olddefconfig" = packages.klipper-olddefconfig.override {
         inherit klipper;
       };
 
@@ -107,15 +117,35 @@
     };
 in {
   perSystem = {
-    config,
-    self',
-    inputs',
     pkgs,
     system,
     ...
-  }:
-    lib.optionalAttrs (self.lib.isLinux system) {
-      packages = mkPackages pkgs;
+  }: let
+    filterPackages = pkgs':
+      lib.filterAttrs (n: _:
+        builtins.elem n [
+          "kalico-menuconfig"
+          "kalico-olddefconfig"
+
+          "kalico-experimental-menuconfig"
+          "kalico-experimental-olddefconfig"
+
+          "klipper-menuconfig"
+          "klipper-olddefconfig"
+
+          "katapult-menuconfig"
+          "katapult-olddefconfig"
+        ])
+      pkgs';
+
+    klipperPackages = mkPackages pkgs;
+  in
+    if self.lib.isLinux system
+    then {
+      packages = klipperPackages;
+    }
+    else {
+      packages = filterPackages klipperPackages;
     };
 
   flake = {

@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   builder-username = "remote-builder";
 
   mkBuildMachine = {
@@ -54,20 +58,20 @@ in {
           "aarch64-darwin"
         ];
       }
-      {
-        maxJobs = 4;
-        hostName = "depsos";
-        systems = [
-          "x86_64-linux"
-          "i686-linux"
-        ];
-      }
+      # {
+      #   maxJobs = 4;
+      #   hostName = "depsos";
+      #   systems = [
+      #     "x86_64-linux"
+      #     "i686-linux"
+      #   ];
+      # }
     ];
   };
 
   sops.secrets = {
     remote-builder-pk = {
-      sopsFile = ../../secrets/ssh/remote-builder;
+      sopsFile = "${inputs.self}/secrets/ssh/remote-builder";
       format = "binary";
       group = "wheel";
     };

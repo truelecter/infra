@@ -18,7 +18,7 @@
     '';
 
     buildPhase = ''
-      ./scripts/find-firmware-extras.sh
+      [ -f ./scripts/find-firmware-extras.sh ] && ./scripts/find-firmware-extras.sh || echo "No firmware extras script found (assuming this is klipper)"
     '';
 
     installPhase = ''
@@ -27,7 +27,7 @@
   };
 in
   writeShellApplication {
-    name = "${klipper.pname}-genconf";
+    name = "${klipper.pname}-menuconfig";
     runtimeInputs = [
       python3
       gnumake

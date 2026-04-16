@@ -1,0 +1,23 @@
+{lib, ...}: {
+  homebrew = {
+    enable = true;
+    casks = [
+      "alt-tab"
+    ];
+  };
+
+  system.defaults = {
+    CustomUserPreferences = {
+      "com.lwouis.alt-tab-macos" = lib.importJSON ./_files/alt-tab.plist.json;
+    };
+  };
+
+  # Shortcut preferences require NSKeyedArchiver binary data in the secureData
+  # field; CustomUserPreferences (JSON) can't represent binary plist Data, so
+  # we write them via `defaults write -dict … -data <hex>` instead.
+  system.activationScripts.postActivation.text = lib.mkAfter ''
+    defaults write com.lwouis.alt-tab-macos holdShortcut \
+      -dict string '⌘' secureData -data \
+      62706c6973743030d4010203040506070a582476657273696f6e592461726368697665725424746f7058246f626a6563747312000186a05f100f4e534b657965644172636869766572d1080954726f6f748001a60b0c191a1b1c55246e756c6cd60d0e0f1011121314151417185d6d6f646966696572466c6167735f101b6368617261637465727349676e6f72696e674d6f646966696572735624636c6173735a63686172616374657273576b6579436f64655776657273696f6e800480008005800080038002513111ffff1200100000d21d1e1f205a24636c6173736e616d655824636c61737365735a535253686f7274637574a21f21584e534f626a65637400080011001a00240029003200370049004c00510053005a0060006d007b009900a000ab00b300bb00bd00bf00c100c300c500c700c900cc00d100d600e100ea00f500f80000000000000201000000000000002200000000000000000000000000000101
+  '';
+}

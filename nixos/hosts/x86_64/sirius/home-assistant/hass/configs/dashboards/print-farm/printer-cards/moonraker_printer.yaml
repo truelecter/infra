@@ -1,0 +1,27 @@
+default:
+  - printer_name: ""
+  - navigation_path: "/lovelace/3d-printer"
+  - camera_view_entity: "input_boolean.3d_printer_camera_view"
+  - camera: "camera.moonraker_camera"
+  - thumbnail: "camera.moonraker_thumbnail"
+  - prefix: ""
+card:
+  type: custom:streamline-card
+  template: moonraker_printer_base
+  variables:
+    - printer_name: "[[printer_name]]"
+    - navigation_path: "[[navigation_path]]"
+    - camera_view_entity: "[[camera_view_entity]]"
+    - camera: "[[camera]]"
+    - thumbnail: "[[thumbnail]]"
+    - current_print_state: "sensor.[[prefix]]_current_print_state"
+    - print_progress: "sensor.[[prefix]]_print_progress"
+    - filename: "sensor.[[prefix]]_filename"
+    - extruder_temperature: "sensor.[[prefix]]_extruder_temperature"
+    - bed_temperature: "sensor.[[prefix]]_bed_temperature"
+    - printing: "binary_sensor.[[prefix]]_printing"
+    - print_duration: "sensor.[[prefix]]_print_duration"
+    - estimated_finish_time: "sensor.[[prefix]]_estimated_finish_time"
+    - pause_print: "button.[[prefix]]_pause_print"
+    - resume_print: "button.[[prefix]]_resume_print"
+    - emergency_stop: "button.[[prefix]]_emergency_stop"

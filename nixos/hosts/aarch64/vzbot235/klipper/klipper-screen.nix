@@ -11,7 +11,7 @@
       };
 
       "main" = {
-        print_sort_dir = "name_desc";
+        print_sort_dir = "date_desc";
       };
 
       "preheat ABS+" = {
@@ -23,6 +23,26 @@
       "preheat coPET" = {
         extruder = 245;
         heater_bed = 80;
+      };
+
+      "menu __main LEDProfile" = {
+        name = "LED";
+        icon = "light";
+      };
+
+      # TODO: may be custom theme for icons?
+      "menu __main LEDProfile Dark" = {
+        name = "Dark";
+        icon = "avatar-default";
+        method = "printer.gcode.script";
+        params = ''{"script":"LED_NONE"}'';
+      };
+
+      "menu __main LEDProfile Full" = {
+        name = "Full";
+        icon = "light";
+        method = "printer.gcode.script";
+        params = ''{"script":"LED_FULL"}'';
       };
     };
   };

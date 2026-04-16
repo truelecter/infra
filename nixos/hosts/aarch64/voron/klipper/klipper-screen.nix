@@ -11,7 +11,7 @@
       };
 
       "main" = {
-        print_sort_dir = "name_desc";
+        print_sort_dir = "date_desc";
       };
 
       "preheat ABS+" = {

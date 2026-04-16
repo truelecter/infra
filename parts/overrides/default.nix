@@ -30,7 +30,7 @@ in {
         config.allowUnfree = true;
       };
     in {
-      inherit (pkgs) tfenv transmissionic-web;
+      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking unifi-os-server-image;
 
       inherit
         (latest)
@@ -38,7 +38,7 @@ in {
         android-tools
         vscode
         alejandra
-        nil
+        nixd
         terraform
         terraform-ls
         kubelogin-oidc
@@ -69,6 +69,8 @@ in {
         prowlarr
         #shell
         lefthook
+        ncps
+        unifi
         ;
     };
 
@@ -85,7 +87,10 @@ in {
 
     modules.nixos = {
       overrides-overlay = {
-        nixpkgs.overlays = [self.overlays.latest-packages];
+        nixpkgs.overlays = [
+          self.overlays.latest-packages
+          inputs.attic.overlays.default
+        ];
       };
     };
   };

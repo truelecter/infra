@@ -1,0 +1,736 @@
+streamline_templates: !include_dir_named ./printer-cards/
+
+views:
+  - title: Home
+    sections:
+      - cards:
+          - type: heading
+            icon: mdi:printer-3d
+            heading: Bambulab P1S
+            heading_style: title
+            badges:
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: switch.bbl_p1s_plug
+                tap_action:
+                  action: toggle
+                color: green
+                name: Power
+              - type: entity
+                show_state: true
+                show_icon: true
+                entity: sensor.bbl_p1s_plug_power
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-title-card
+                    title: BBL P1S
+                    alignment: start
+                    subtitle: ''
+                  - type: custom:mod-card
+                    card:
+                      type: custom:mushroom-chips-card
+                      chips:
+                        - type: entity
+                          show_state: true
+                          show_icon: true
+                          entity: sensor.bbl_p1s_plug_power
+                        - type: entity
+                          entity: button.p1s_01p09c461901252_stop_printing
+                          icon: mdi:stop
+                          content_info: false
+                        - type: entity
+                          entity: button.p1s_01p09c461901252_pause_printing
+                          icon: mdi:pause
+                          content_info: false
+                        - type: entity
+                          entity: button.p1s_01p09c461901252_resume_printing
+                          icon: mdi:play
+                          content_info: false
+                      card_mod:
+                        style: |
+                          ha-card {
+                            display: flex;
+                            justify-content: end;
+                            align-items: center;
+                            height: 80px;
+                          }
+              - type: custom:mod-card
+                card:
+                  camera_view: live
+                  type: picture-glance
+                  entities: []
+                  camera_image: camera.p1s_01p09c461901252_camera
+              - type: custom:mod-card
+                card_mod:
+                  style:
+                    hui-horizontal-stack-card $: |
+                      div#root > :first-child > * {
+                        width: 20%;
+                        flex: auto; 
+                      }
+                      div#root > :last-child > * {
+                        width: 80%;
+                        flex: auto; 
+                      }
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:mushroom-chips-card
+                      chips:
+                        - type: template
+                          entity: binary_sensor.p1s_01p09c461901252_online
+                          content: EXT.
+                          card_mod:
+                            style: |
+                              ha-card {
+                                background: none !important;
+                                border: none;
+                                font-size: 4rem !important;
+                              }
+                    - type: custom:mushroom-chips-card
+                      chips:
+                        - type: template
+                          entity: binary_sensor.p1s_01p09c461901252_online
+                          content: AMS
+                          card_mod:
+                            style: |
+                              ha-card {
+                                background: none !important;
+                                border: none;
+                                font-size: 4rem !important;
+                              }
+                        - type: spacer
+                        - type: entity
+                          entity: sensor.p1s_01p09c461901252_ams_1_temperature
+                        - type: entity
+                          entity: sensor.p1s_01p09c461901252_ams_1_humidity_index
+                          icon: mdi:water-opacity
+              - type: custom:mod-card
+                card_mod:
+                  style:
+                    hui-horizontal-stack-card $: |
+                      div#root > :first-child > * {
+                        width: 20%;
+                        flex: auto; 
+                      }
+                      div#root > :last-child > * {
+                        width: 80%;
+                        flex: auto; 
+                      }
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:mod-card
+                      card_mod:
+                        style: |
+                          ha-card {
+                            font-size: 10px;
+                            --external_spool_color: {{state_attr('sensor.p1s_01p09c461901252_externalspool_external_spool', 'color') }};
+                            --tray_1_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_1', 'color') }};
+                            --tray_2_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_2', 'color') }};
+                            --tray_3_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_3', 'color') }};
+                            --tray_4_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_4', 'color') }};
+                            --external_spool_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_externalspool_external_spool', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_1_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_1', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_2_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_2', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_3_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_3', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_4_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_4', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                          }
+                      card:
+                        card_mod:
+                          style: |
+                            .entities {
+                              align-items: start !important;
+                            }
+                        show_name: false
+                        show_icon: true
+                        show_state: true
+                        type: glance
+                        entities:
+                          - entity: >-
+                              sensor.p1s_01p09c461901252_externalspool_external_spool
+                            icon: mdi:circle-slice-8
+                            card_mod:
+                              style: |
+                                :host {
+                                  --paper-item-icon-color: var(--external_spool_color);
+                                }
+                                state-badge {
+                                  background-color: var(--external_spool_bg);
+                                  border-radius: 50%;
+                                }
+                                div {
+                                  white-space: unset !important;
+                                  text-wrap: balance !important;
+                                }
+                    - type: custom:mod-card
+                      card_mod:
+                        style: |
+                          ha-card {
+                            font-size: 10px;
+                            --external_spool_color: {{state_attr('sensor.p1s_01p09c461901252_externalspool_external_spool', 'color') }};
+                            --tray_1_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_1', 'color') }};
+                            --tray_2_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_2', 'color') }};
+                            --tray_3_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_3', 'color') }};
+                            --tray_4_color: {{state_attr('sensor.p1s_01p09c461901252_ams_1_tray_4', 'color') }};
+                            --external_spool_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_externalspool_external_spool', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_1_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_1', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_2_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_2', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_3_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_3', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                            --tray_4_bg: {% if is_state_attr('sensor.p1s_01p09c461901252_ams_1_tray_4', 'active', true) %} rgba(255,254,249, 0.25); {% else %} rgba(111,111,111, 0.2) {% endif %};
+                          }
+                      card:
+                        card_mod:
+                          style: |
+                            .entities {
+                              align-items: start !important;
+                            }
+                        show_name: false
+                        show_icon: true
+                        show_state: true
+                        type: glance
+                        entities:
+                          - entity: sensor.p1s_01p09c461901252_ams_1_tray_1
+                            icon: mdi:circle-slice-8
+                            card_mod:
+                              style: |
+                                :host {
+                                  --paper-item-icon-color: var(--tray_1_color);
+                                }
+                                state-badge {
+                                  background-color: var(--tray_1_bg);
+                                  border-radius: 50%;
+                                }
+                                div {
+                                  white-space: unset !important;
+                                  text-wrap: balance !important;
+                                }
+                          - entity: sensor.p1s_01p09c461901252_ams_1_tray_2
+                            icon: mdi:circle-slice-8
+                            card_mod:
+                              style: |
+                                :host {
+                                  --paper-item-icon-color: var(--tray_2_color);
+                                }
+                                state-badge {
+                                  background-color: var(--tray_2_bg);
+                                  border-radius: 50%;
+                                }
+                                div {
+                                  white-space: unset !important;
+                                  text-wrap: balance !important;
+                                }
+                          - entity: sensor.p1s_01p09c461901252_ams_1_tray_3
+                            icon: mdi:circle-slice-8
+                            card_mod:
+                              style: |
+                                :host {
+                                  --paper-item-icon-color: var(--tray_3_color);
+                                }
+                                state-badge {
+                                  background-color: var(--tray_3_bg);
+                                  border-radius: 50%;
+                                }
+                                div {
+                                  white-space: unset !important;
+                                  text-wrap: balance !important;
+                                }
+                          - entity: sensor.p1s_01p09c461901252_ams_1_tray_4
+                            icon: mdi:circle-slice-8
+                            card_mod:
+                              style: |
+                                :host {
+                                  --paper-item-icon-color: var(--tray_4_color);
+                                }
+                                state-badge {
+                                  background-color: var(--tray_4_bg);
+                                  border-radius: 50%;
+                                }
+                                div {
+                                  white-space: unset !important;
+                                  text-wrap: balance !important;
+                                }
+              - type: custom:mod-card
+                card:
+                  type: custom:mushroom-chips-card
+                  chips:
+                    - type: template
+                      entity: binary_sensor.p1s_01p09c461901252_online
+                      content: Printer
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background: none !important;
+                            border: none;
+                            font-size: 4rem !important;
+                          }
+                    - type: spacer
+                    - type: entity
+                      entity: sensor.p1s_01p09c461901252_current_stage
+                    - type: light
+                      icon: mdi:lightbulb
+                      entity: light.p1s_01p09c461901252_chamber_light
+                    - type: entity
+                      entity: sensor.p1s_01p09c461901252_wi_fi_signal
+                    - type: entity
+                      entity: binary_sensor.p1s_01p09c461901252_hms_errors
+                      icon: mdi:alert-circle
+              - type: custom:mod-card
+                card:
+                  show_name: false
+                  show_icon: true
+                  show_state: true
+                  type: glance
+                  entities:
+                    - entity: sensor.p1s_01p09c461901252_nozzle_temperature
+                      icon: mdi:printer-3d-nozzle-heat
+                    - entity: sensor.p1s_01p09c461901252_bed_temperature
+                      icon: mdi:train-car-flatbed
+                    - entity: sensor.p1s_01p09c461901252_speed_profile
+                  state_color: false
+              - type: custom:mod-card
+                card:
+                  type: custom:timer-bar-card
+                  entities:
+                    - entity: sensor.p1s_01p09c461901252_print_progress
+                      guess_mode: true
+                      active_icon: mdi:printer-3d
+                      start_time:
+                        entity: sensor.p1s_01p09c461901252_start_time
+                      end_time:
+                        entity: sensor.p1s_01p09c461901252_end_time
+                  layout: full_row
+                  text_width: 0px
+                  mushroom: null
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: entity
+                    entity: sensor.p1s_01p09c461901252_print_progress
+                  - type: entity
+                    entity: sensor.p1s_01p09c461901252_end_time
+                alignment: justify
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - show_state: true
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            entity: camera.voron_2_4_printer
+      - type: grid
+        cards:
+          - type: custom:stack-in-card
+            cards:
+              - type: custom:mushroom-template-card
+                entity: input_boolean.3d_printer_camera_view
+                primary: Prusa MK3S+
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: navigate
+                  navigation_path: /lovelace/3d-printer
+                secondary: >-
+                  {% if
+                  is_state('sensor.moonraker_current_print_state','printing') or
+                  is_state('sensor.moonraker_current_print_state','resuming') or
+                  is_state('sensor.moonraker_current_print_state','pausing') or
+                  is_state('sensor.moonraker_current_print_state','paused') %}
+                  {{ (states('sensor.moonraker_print_progress') | default(0) |
+                  string | float | round(0)) }}%
+                  {{states('sensor.moonraker_current_print_state')}}
+                    {% set list = states('sensor.moonraker_filename').split('_') %}
+                    {{list[list | length-3]}}
+                  {% else %}
+                    {{states('sensor.moonraker_current_print_state')}}
+                  {% endif %}
+                icon: >-
+                  {% if
+                  is_state('sensor.moonraker_current_print_state','standby') or
+                  is_state('sensor.moonraker_current_print_state','ready') %}
+                    mdi:printer-3d
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','printing') or
+                  is_state('sensor.moonraker_current_print_state','resuming') or
+                  is_state('sensor.moonraker_current_print_state','pausing') or
+                  is_state('sensor.moonraker_current_print_state','paused') %}
+                    mdi:printer-3d-nozzle
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','cancelled')
+                  or is_state('sensor.moonraker_current_print_state','error') or
+                  is_state('sensor.moonraker_current_print_state','cancelling')
+                  %}
+                    mdi:close-octagon
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','unavailable')
+                  or is_state('sensor.moonraker_current_print_state','unknown')
+                  %}
+                    mdi:printer-3d-off
+                  {% endif %}
+                icon_color: >-
+                  {% if
+                  is_state('sensor.moonraker_current_print_state','paused') or
+                  is_state('sensor.moonraker_current_print_state','pausing') %}
+                    #fc6d09
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','cancelling')
+                  or is_state('sensor.moonraker_current_print_state','error') or
+                  is_state('sensor.moonraker_current_print_state','cancelled')
+                  %}
+                    red
+                  {% else %}
+                    var(--primary-text-color)
+                  {% endif %}
+                badge_icon: >-
+                  {% if
+                  is_state('sensor.moonraker_current_print_state','paused') or
+                  is_state('sensor.moonraker_current_print_state','pausing') %}
+                    mdi:pause
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','resuming') %}
+                    mdi:play
+                  {% endif %}
+                badge_color: >-
+                  {% if
+                  is_state('sensor.moonraker_current_print_state','paused') or
+                  is_state('sensor.moonraker_current_print_state','pausing') %}
+                    grey
+                  {% elif
+                  is_state('sensor.moonraker_current_print_state','resuming') %}
+                    green
+                  {% endif %}
+                card_mod:
+                  style:
+                    mushroom-shape-icon$: |
+                      .shape {
+                        {% if is_state('sensor.moonraker_current_print_state','printing') or is_state('sensor.moonraker_current_print_state','resuming') %}
+                          background: radial-gradient(var(--card-background-color) 60%, transparent 0%), conic-gradient(rgb(252,109,9) {% if states('sensor.moonraker_print_progress') | is_number %}{{ states('sensor.moonraker_print_progress') | default (0) | float | round(0) }}{% else %}0{% endif %}% 0%, var(--card-background-color) 0% 100%);
+                        {% elif is_state('sensor.moonraker_current_print_state','standby') or is_state('sensor.moonraker_current_print_state','ready') %}
+                          background: radial-gradient(var(--card-background-color) 60%, transparent 0%), conic-gradient(rgb(53,190,37) 100% 0%, var(--card-background-color) 0% 100%);
+                        {% elif is_state('sensor.moonraker_current_print_state','cancelling') or is_state('sensor.moonraker_current_print_state','error') or is_state('sensor.moonraker_current_print_state','cancelled')%}
+                          background: radial-gradient(var(--card-background-color) 60%, transparent 0%), conic-gradient(red 100% 0%, var(--card-background-color) 0% 100%);
+                        {% else %}
+                          background: radial-gradient(var(--card-background-color) 60%, transparent 0%), conic-gradient(#9e9e9e {% if states('sensor.moonraker_print_progress') | is_number %}{{ states('sensor.moonraker_print_progress') | default (0) | float | round(0) }}{% else %}0{% endif %}% 0%, var(--card-background-color) 0% 100%);
+                        {% endif %}
+                      }
+                      .shape:after {
+                        content: "";
+                        height: 100%;
+                        width: 100%;
+                        position: absolute;
+                        border-radius: 50%;
+                      }
+                    .: |
+                      ha-state-icon {
+                        {% if is_state('sensor.moonraker_current_print_state','printing') or
+                        is_state('sensor.moonraker_current_print_state','resuming')%}
+                          clip-path: inset(83% 72% 0 0);
+                        {% endif %}
+                      }
+                      ha-card {
+                        border: none;
+                      }
+                      mushroom-badge-icon {
+                        {% if is_state('sensor.moonraker_current_print_state','pausing') or
+                        is_state('sensor.moonraker_current_print_state','paused')%}
+                          animation: pulse 2s infinite;
+                        {% endif %}
+                      }
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: template
+                    content: >-
+                      {% if states('sensor.moonraker_extruder_temperature') not
+                      in ['unknown', 'unavailable', 'none'] %}
+                        {{ (states('sensor.moonraker_extruder_temperature') | float | round(1)) }} °C
+                      {% else %}
+                        -- °C
+                      {% endif %}
+                    icon: mdi:printer-3d-nozzle-heat
+                    entity: sensor.moonraker_extruder_temperature
+                    tap_action:
+                      action: more-info
+                    hold_action:
+                      action: navigate
+                      navigation_path: /lovelace/3d-printer
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                        }
+                  - type: template
+                    content: >-
+                      {% if states('sensor.moonraker_bed_temperature') not in
+                      ['unknown', 'unavailable', 'none'] %}
+                        {{ (states('sensor.moonraker_bed_temperature') | float | round(1)) }} °C
+                      {% else %}
+                        -- °C
+                      {% endif %}
+                    icon: mdi:heating-coil
+                    entity: sensor.moonraker_bed_temperature
+                    tap_action:
+                      action: more-info
+                    hold_action:
+                      action: navigate
+                      navigation_path: /lovelace/3d-printer
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                        }
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: binary_sensor.moonraker_printing
+                        state: 'on'
+                    chip:
+                      type: template
+                      content: >-
+                        {% set time = states('sensor.moonraker_print_duration')
+                        | default(0) | int %} {% set minutes = ((time % 3600) /
+                        60) | int %} {% set hours = ((time % 86400) / 3600) |
+                        int %} {% set days = (time / 86400) | int %} {%- if time
+                        < 60 -%}
+                          Less than a minute
+                        {%- else -%}
+                          {%- if days > 0 -%}
+                            {{ days }}d
+                          {%- endif -%}
+                          {%- if hours > 0 -%}
+                            {%- if days > 0 -%}
+                              {{ ' ' }}
+                            {%- endif -%}
+                            {{ hours }}h
+                          {%- endif -%}
+                          {%- if minutes > 0 -%}
+                            {%- if days > 0 or hours > 0 -%}
+                              {{ ' ' }}
+                            {%- endif -%}
+                            {{ minutes }}m
+                          {%- endif -%}
+                        {%- endif -%}
+                      icon: mdi:timer-outline
+                      entity: sensor.moonraker_print_duration
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: navigate
+                        navigation_path: /lovelace/3d-printer
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none;
+                          }
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: binary_sensor.moonraker_printing
+                        state: 'on'
+                    chip:
+                      type: template
+                      content: >
+                        {% if states('sensor.moonraker_estimated_finish_time')
+                        != 'unavailable' and now().day ==
+                        as_timestamp(states('sensor.moonraker_estimated_finish_time'))
+                        | timestamp_custom('%d') | int %}
+                          Today {{as_timestamp(states('sensor.moonraker_estimated_finish_time')) | timestamp_custom ('%H:%M') }}
+                        {% elif now().day <
+                        as_timestamp(states('sensor.moonraker_estimated_finish_time'))
+                        | timestamp_custom('%d') | int %}
+                          Tmrw {{as_timestamp(states('sensor.moonraker_estimated_finish_time')) | timestamp_custom ('%H:%M') }}
+                        {% elif utcnow().day >
+                        as_timestamp(states('sensor.moonraker_estimated_finish_time'))
+                        | timestamp_custom('%d') | int %}
+                          Null
+                        {% else %}
+                          {{as_timestamp(states('sensor.moonraker_estimated_finish_time')) | timestamp_custom ('%b %d %H:%M') }}
+                        {% endif %}
+                      icon: mdi:clock-check-outline
+                      entity: sensor.moonraker_estimated_finish_time
+                      tap_action:
+                        action: more-info
+                      hold_action:
+                        action: navigate
+                        navigation_path: /lovelace/3d-printer
+                      card_mod:
+                        style: |
+                          ha-card {
+                            border: none;
+                          }
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: printing
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: resuming
+                    chip:
+                      type: entity
+                      entity: button.moonraker_pause_print
+                      icon_color: white
+                      icon: mdi:pause
+                      content_info: none
+                      tap_action:
+                        action: toggle
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --chip-background: rgba(var(--rgb-grey), 0.7);
+                            --icon-color: rgb(var(--rgb-white));
+                          }
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: paused
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: pausing
+                    chip:
+                      type: entity
+                      entity: button.moonraker_resume_print
+                      icon_color: white
+                      icon: mdi:play
+                      content_info: none
+                      tap_action:
+                        action: toggle
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --chip-background: rgba(var(--rgb-green), 0.7);
+                            --icon-color: rgb(var(--rgb-white));
+                          }
+                  - type: conditional
+                    conditions:
+                      - condition: or
+                        conditions:
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: printing
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: pausing
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: paused
+                          - condition: state
+                            entity: sensor.moonraker_current_print_state
+                            state: resuming
+                    chip:
+                      type: entity
+                      entity: button.moonraker_emergency_stop
+                      icon_color: white
+                      icon: mdi:alert-octagon
+                      content_info: none
+                      tap_action:
+                        action: toggle
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --chip-background: rgba(var(--rgb-red), 1);
+                          }
+                card_mod:
+                  style: |
+                    ha-card {
+                        --chip-box-shadow: none;
+                        top: 16px;
+                        width: -webkit-fill-available;
+                        right: 12px;
+                        position: absolute;
+                    }
+                    .chip-container {
+                        right: 0px;
+                        position: absolute;
+                    }
+              - type: conditional
+                conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity: sensor.moonraker_current_print_state
+                        state: printing
+                      - condition: state
+                        entity: sensor.moonraker_current_print_state
+                        state: resuming
+                card:
+                  type: custom:mushroom-template-card
+                  icon: mdi:printer-3d-nozzle
+                  icon_color: var(--primary-text-color)
+                  entity: input_boolean.3d_printer_camera_view
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: navigate
+                    navigation_path: /lovelace/3d-printer
+                  card_mod:
+                    style:
+                      mushroom-shape-icon$: |
+                        .shape {
+                          --shape-color: none;
+                        }
+                      .: |
+                        ha-card {
+                          position: absolute;
+                          top: 0px;
+                          border: none;
+                        }
+                        ha-state-icon {
+                          animation: print 1s linear infinite alternate;
+                        }
+                        @keyframes print {
+                          0% { transform: translateX(4px); }
+                          30% { clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%, 0 26%); }
+                          100% { transform: translateX(-4px); clip-path: polygon(0 0, 100% 0%, 100% 100%, 40% 100%, 0 26%); }
+                        }
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: input_boolean.3d_printer_camera_view
+                    state: 'on'
+                card:
+                  type: custom:swipe-card
+                  reset_after: 5
+                  start_card: 1
+                  parameters:
+                    slidesPerView: 2
+                    preloadImages: true
+                    effect: flip
+                    pagination:
+                      type: bullets
+                  cards:
+                    - type: picture-entity
+                      entity: camera.moonraker_camera
+                      show_name: false
+                      show_state: false
+                      camera_view: live
+                      aspect_ratio: '4:3'
+                    - type: picture-entity
+                      entity: camera.moonraker_thumbnail
+                      show_state: false
+                      show_name: false
+                      aspect_ratio: '4:3'
+            card_mod:
+              style: |
+                ha-card {
+
+                }
+          - type: custom:streamline-card
+            template: moonraker_printer
+            variables:
+              printer_name: Voron 2.4
+              navigation_path: /lovelace/voron2.4-printer
+              camera_view_entity: input_boolean.3d_printer_camera_view
+              current_print_state: sensor.moonraker_current_print_state
+              camera: camera.moonraker_camera
+              thumbnail: camera.moonraker_thumbnail
+              prefix: "voron_2_4"

@@ -6,7 +6,6 @@
 }: {
   home-manager.users.truelecter = {
     imports = hmSuites.base ++ hmSuites.git;
-
     home.stateVersion = "22.11";
   };
 

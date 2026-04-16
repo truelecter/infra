@@ -30,7 +30,7 @@
 
       advanced = {
         log_output = ["console"];
-        log_level = "warning";
+        log_level = "info";
         pan_id = 1337;
         # add last seen information
         last_seen = "ISO_8601_local";

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   ...
 }: let
   sCfg = config.tl.matrix;
@@ -8,7 +9,7 @@
   discordBridgePort = toString config.services.mautrix-discord.settings.appservice.port;
 in {
   sops.secrets.mautrix-discord = {
-    sopsFile = ../../../../../../secrets/matrix/mautrix-discord.env;
+    sopsFile = "${inputs.self}/secrets/matrix/mautrix-discord.env";
     key = "";
     format = "dotenv";
   };

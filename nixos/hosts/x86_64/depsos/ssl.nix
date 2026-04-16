@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  inputs,
+  ...
+}: {
   security.acme = {
     acceptTerms = true;
     defaults = {
@@ -18,7 +22,7 @@
   users.groups.acme.members = ["nginx"];
 
   sops.secrets.cloudflare = {
-    sopsFile = ../../../../secrets/cloudflare.env;
+    sopsFile = "${inputs.self}/secrets/cloudflare.env";
     key = "";
     format = "dotenv";
   };

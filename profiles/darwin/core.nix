@@ -75,16 +75,9 @@
   homebrew = {
     enable = true;
     casks = [
-      "iterm2"
       "launchcontrol"
       "alt-tab"
     ];
-  };
-
-  system.defaults = {
-    CustomUserPreferences = {
-      "com.lwouis.alt-tab-macos" = lib.importJSON ./_files/alt-tab.plist.json;
-    };
   };
 
   system.systemBuilderArgs = lib.mkIf (config.nix.settings.sandbox == "relaxed") {

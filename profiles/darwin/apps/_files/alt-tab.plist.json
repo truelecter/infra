@@ -7,8 +7,6 @@
   "hideThumbnails": false,
   "hideWindowlessApps": true,
   "menubarIcon": 0,
-  "holdShortcut": "⌘",
-  "nextWindowShortcut": "⇥",
   "rowsCount": 4,
   "screensToShow": 0,
   "shortcutStyle": 0,
@@ -17,5 +15,6 @@
   "showMinimizedWindows": 0,
   "showOnScreen": 0,
   "showTabsAsWindows": true,
-  "spacesToShow": 0
+  "spacesToShow": 0,
+  "shortcutCount": 1
 }

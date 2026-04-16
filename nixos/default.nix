@@ -10,7 +10,7 @@
     base =
       (with profiles; [
         common.core
-        common.cachix
+        common.caches
         common.networking.tailscale
 
         nixos.core
@@ -62,7 +62,7 @@
     wsl = with profiles;
       [
         common.core
-        common.cachix
+        common.caches
         # common.networking.tailscale
 
         nixos.core
@@ -90,7 +90,7 @@
   in {
     ${hostname} = nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit inputs profiles suites;
+        inherit inputs profiles suites users;
 
         inherit (self) overlays;
       };

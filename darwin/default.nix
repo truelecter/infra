@@ -10,11 +10,12 @@
     base = with profiles;
       [
         common.core
-        common.cachix
+        common.caches
         common.fonts
         common.networking.tailscale
 
         darwin.core
+        darwin.apps.alt-tab
         darwin.security.pam
         darwin.security.one-password
         darwin.messengers
@@ -81,7 +82,7 @@
 
                   inputs.nix4vscode.overlays.forVscode
 
-                  inputs.zen-flake.overlay
+                  # inputs.zen-flake.overlay
                 ];
 
                 config.allowUnfree = true;

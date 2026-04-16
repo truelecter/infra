@@ -1,4 +1,25 @@
 {
+    "attic": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "attic",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "ByteZ1337",
+            "repo": "attic",
+            "rev": "5fc1b918c12c2658603f6d88a75aa4a2e74080df",
+            "sha256": "sha256-1koNX1T45G/Qz8xPFE7lR/awpkiJUY0omL/ofTYd60I=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "5fc1b918c12c2658603f6d88a75aa4a2e74080df"
+    },
     "s5cmd": {
         "cargoLock": null,
         "date": "2025-06-13",

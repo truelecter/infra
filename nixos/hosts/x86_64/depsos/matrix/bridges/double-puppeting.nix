@@ -1,6 +1,10 @@
-{config, ...}: {
+{
+  config,
+  inputs,
+  ...
+}: {
   sops.secrets.mautrix-double-puppet = {
-    sopsFile = ../../../../../../secrets/matrix/double-puppet.yaml;
+    sopsFile = "${inputs.self}/secrets/matrix/double-puppet.yaml";
     key = "";
     format = "yaml";
 

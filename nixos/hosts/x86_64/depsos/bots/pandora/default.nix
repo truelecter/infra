@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  inputs,
   ...
 }: let
   web-container-port = "8911";
@@ -14,6 +15,7 @@ in {
       enableACME = true;
       forceSSL = true;
       kTLS = true;
+      default = true;
 
       locations."/" = {
         proxyPass = "http://localhost:${web-container-port}/";
@@ -66,7 +68,7 @@ in {
   };
 
   sops.secrets.pandora-envs = {
-    sopsFile = ../../../../../../secrets/bots/pandora-envs.env;
+    sopsFile = "${inputs.self}/secrets/bots/pandora-envs.env";
     key = "";
     format = "dotenv";
   };

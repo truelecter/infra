@@ -11,8 +11,9 @@ in {
     imports =
       hmSuites.git
       ++ [
-        profiles.home.darwin.shell.iterm
+        profiles.home.shell.ghostty
         profiles.home.darwin.smart-card-fix
+        profiles.home.darwin.associations
       ];
 
     # home.packages = [
@@ -20,7 +21,7 @@ in {
     #   pkgs.code-cursor
     # ];
 
-    home.stateVersion = "24.11";
+    home.stateVersion = "25.11";
   };
 
   # TODO: find a way to work with 1password and home manager packages linking

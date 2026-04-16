@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }: {
   networking = {
@@ -45,6 +46,6 @@
 
   sops.secrets.depsos-wg-pk = {
     key = "depsos-pk";
-    sopsFile = ../../../../../secrets/wireguard.yaml;
+    sopsFile = "${inputs.self}/secrets/wireguard.yaml";
   };
 }

@@ -1,6 +1,19 @@
-{suites, ...}: {
+{
+  suites,
+  profiles,
+  users,
+  ...
+}: {
   imports =
-    suites.base
+    [
+      profiles.common.caches
+      profiles.common.networking.tailscale
+
+      profiles.nixos.core
+      profiles.nixos.secrets.common
+
+      users.nixos.truelecter
+    ]
     ++ suites._3d-printing
     ++ suites.rpi02
     ++ [
@@ -9,6 +22,9 @@
       ./network.nix
       ./wifi.nix
       ./usb-eth.nix
+      ./watchdog.nix
+      # ./almost-perlless.nix
+      ./unoom.nix
     ];
 
   networking.firewall.enable = false;

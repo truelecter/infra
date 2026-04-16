@@ -16,48 +16,48 @@
   };
   libcamera = {
     pname = "libcamera";
-    version = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
+    version = "fe601eb6ffe02922ff980c60621dd79d401d9061";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera";
-      rev = "f0e40f1c50bd0afe65727d6e407d0dcb42666ada";
+      rev = "fe601eb6ffe02922ff980c60621dd79d401d9061";
       fetchSubmodules = false;
-      sha256 = "sha256-sJKzmeeXD/66P5o+X9w3J2gwxDNsdBUdXEqU6goJdN4=";
+      sha256 = "sha256-pFvdy1sEGIVlIfIbBRdnNz7pVR4u5bMAL8UCtmUIVVs=";
     };
-    date = "2025-12-02";
+    date = "2026-03-02";
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "d92a65175b4b553d7b606fcf4fd64dd3275fff09";
+    version = "3d551425b62d81ce9e3787749ccabb7eb7b988fc";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "d92a65175b4b553d7b606fcf4fd64dd3275fff09";
+      rev = "3d551425b62d81ce9e3787749ccabb7eb7b988fc";
       fetchSubmodules = false;
-      sha256 = "sha256-3f0ThN4C9ZZ/6Is51Q6QA2tnEDnLKCLbxlCNqsGzw14=";
+      sha256 = "sha256-8ie6tFALoTom53V/f8rMaq6wdvi+2OC3C9O5pcIg37c=";
     };
-    date = "2025-12-18";
+    date = "2026-04-10";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.15.5";
+    version = "v1.17.1";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.15.5";
+      rev = "v1.17.1";
       fetchSubmodules = false;
-      sha256 = "sha256-PbDXT2IzC3SGNeHX8/exag1BAk6urNV8jh+94y3aK9g=";
+      sha256 = "sha256-KI6JSyhbraynwwuNp6rBH/VN9/oIJYGC8rTqyTvfDOU=";
     };
   };
   mediamtx-rpicamera = {
     pname = "mediamtx-rpicamera";
-    version = "v2.5.1";
+    version = "v2.5.5";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx-rpicamera";
-      rev = "v2.5.1";
+      rev = "v2.5.5";
       fetchSubmodules = false;
-      sha256 = "sha256-G8tnvo2Elc6a+7cHo7SKfEwF2sUzD9C92Pj4qdlOxIo=";
+      sha256 = "sha256-Abk17pa3Um+3OyPi84SSZNHJaFymgifgUvGr1ZSUFhI=";
     };
   };
 }
