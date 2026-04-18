@@ -56,15 +56,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "35ace52976e1ef8c00da9477d583cab610d70d1c";
+    version = "373f200ca69adb624675f42e685f61d85d49ba40";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "35ace52976e1ef8c00da9477d583cab610d70d1c";
+      rev = "373f200ca69adb624675f42e685f61d85d49ba40";
       fetchSubmodules = false;
-      sha256 = "sha256-sSyRamAQ8UGyrb80hGac1xuiDe0xsjqb4q//jiGpVTk=";
+      sha256 = "sha256-ZMTZ2juLtHqG/1xoASM7jCJfB3E0GGbhhOfHgQ7kBRM=";
     };
-    date = "2026-04-09";
+    date = "2026-04-16";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -245,15 +245,15 @@
   };
   libdatachannel_latest = {
     pname = "libdatachannel_latest";
-    version = "9ddf88971fcc7437b2bfeef92ba5454b7de067f8";
+    version = "01543d5348b2d6898fd5de363647412c7757c2af";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libdatachannel";
-      rev = "9ddf88971fcc7437b2bfeef92ba5454b7de067f8";
+      rev = "01543d5348b2d6898fd5de363647412c7757c2af";
       fetchSubmodules = true;
-      sha256 = "sha256-e2AfDmOAKOgcaePHFOIzKEsC/XxVz+1J1JZv56Dfsoo=";
+      sha256 = "sha256-1s8+uQcdUn7y/TVkFEi3/LCOBht5vYBGloW7FmNGEzw=";
     };
-    date = "2026-04-06";
+    date = "2026-04-17";
   };
   libjuice = {
     pname = "libjuice";
@@ -276,15 +276,15 @@
   };
   mainsail = {
     pname = "mainsail";
-    version = "b391df5e79e3356cb0d2dead854af921933e04bd";
+    version = "13313001c3600ec80dd6d5565e59e9add62d5d99";
     src = fetchFromGitHub {
       owner = "mainsail-crew";
       repo = "mainsail";
-      rev = "b391df5e79e3356cb0d2dead854af921933e04bd";
+      rev = "13313001c3600ec80dd6d5565e59e9add62d5d99";
       fetchSubmodules = false;
-      sha256 = "sha256-j6eHdvyC9ERXQZfXu/RWl1QCXDgh3U2KkHpr9H3pD6s=";
+      sha256 = "sha256-Z3lm5o5iUg/N6zEU8nyj4Ky45LSY5n4baNivBjMulA8=";
     };
-    date = "2026-04-04";
+    date = "2026-04-13";
   };
   mobileraker-companion = {
     pname = "mobileraker-companion";
