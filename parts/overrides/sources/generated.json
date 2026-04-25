@@ -43,7 +43,7 @@
     },
     "tfenv": {
         "cargoLock": null,
-        "date": "2025-07-11",
+        "date": "2026-04-25",
         "extract": null,
         "name": "tfenv",
         "passthru": null,
@@ -55,12 +55,12 @@
             "name": null,
             "owner": "tfutils",
             "repo": "tfenv",
-            "rev": "c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54",
-            "sha256": "sha256-wyfjgX774K95HpD96qT7KzHMeqY7JYCvp6gY5eqhlt8=",
+            "rev": "6ae6519d59a9489bf3abb23bc3eda8b46eaea148",
+            "sha256": "sha256-9ECEVT5OczsTTbL64v25mmwu1IPySwSlE5atWN0Q4QA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54"
+        "version": "6ae6519d59a9489bf3abb23bc3eda8b46eaea148"
     },
     "transmissionic": {
         "cargoLock": null,
