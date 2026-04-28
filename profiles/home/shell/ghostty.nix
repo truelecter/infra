@@ -19,6 +19,10 @@ lib.mkMerge [
         font-size = 16;
         auto-update = "off";
 
+        keybind = [
+          "shift+enter=text:\\n"
+        ];
+
         background = "#000000";
       };
     };
