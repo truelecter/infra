@@ -74,16 +74,27 @@ in {
         networkConfig.LinkLocalAddressing = "no";
         # make routing on this interface a dependency for network-online.target
         linkConfig.RequiredForOnline = "routable";
+
+        routes = [
+          {
+            Destination = "10.3.0.0/25";
+          }
+        ];
       };
 
       "10-br-switch" = {
         matchConfig.Name = bridge;
         address = [
-          "${switchAddress}/25"
+          "${switchAddress}/24"
         ];
         networkConfig = {
           ConfigureWithoutCarrier = true;
         };
+        routes = [
+          {
+            Destination = "10.3.0.128/25";
+          }
+        ];
       };
 
       "40-wifi-ap" = {
@@ -228,7 +239,7 @@ in {
               }
             ];
 
-            subnet = "${switchAddress}/25";
+            subnet = "${switchAddress}/24";
           }
         ];
         valid-lifetime = 4000;
