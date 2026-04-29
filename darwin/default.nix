@@ -59,7 +59,6 @@
       modules =
         [
           home.darwinModules.home-manager
-          nix-topology.nixosModules.default
         ]
         ++ [
           (
