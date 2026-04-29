@@ -103,12 +103,19 @@
           nix-topology.nixosModules.default
         ]
         ++ [
+          profiles.nixos.topology-common
           (
             {
               lib,
               config,
               ...
             }: {
+              topology.extractors.services.enable = false;
+              topology.extractors.kea.enable = false;
+              topology.extractors.microvm.enable = false;
+              topology.extractors.nix-minecraft.enable = false;
+              topology.extractors.nixos-container.enable = false;
+
               networking.hostName = lib.mkDefault hostname;
 
               nix.registry.nixpkgs.flake = nixpkgs;

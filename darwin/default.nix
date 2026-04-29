@@ -47,7 +47,7 @@
     arch ? "aarch64",
     configuration,
   }: let
-    inherit (inputs) nixpkgs darwin home latest;
+    inherit (inputs) nixpkgs darwin home latest nix-topology;
     system = "${arch}-darwin";
   in {
     ${hostname} = darwin.lib.darwinSystem {
@@ -57,7 +57,10 @@
         inherit (self) overlays;
       };
       modules =
-        [home.darwinModules.home-manager]
+        [
+          home.darwinModules.home-manager
+          nix-topology.nixosModules.default
+        ]
         ++ [
           (
             {
