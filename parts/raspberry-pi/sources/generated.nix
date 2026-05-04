@@ -16,48 +16,48 @@
   };
   libcamera = {
     pname = "libcamera";
-    version = "fe601eb6ffe02922ff980c60621dd79d401d9061";
+    version = "26bfadc66e8d7f727a993fe58174217b8a96f7f9";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera";
-      rev = "fe601eb6ffe02922ff980c60621dd79d401d9061";
+      rev = "26bfadc66e8d7f727a993fe58174217b8a96f7f9";
       fetchSubmodules = false;
-      sha256 = "sha256-pFvdy1sEGIVlIfIbBRdnNz7pVR4u5bMAL8UCtmUIVVs=";
+      sha256 = "sha256-U4cjIbZ9Z4sL+sE6qGWUalBeruPME6kzBZpHNGjKlJU=";
     };
-    date = "2026-03-02";
+    date = "2026-04-29";
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "3d551425b62d81ce9e3787749ccabb7eb7b988fc";
+    version = "f5174e5099fd1e1646622d45f86e6ac62c912776";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "3d551425b62d81ce9e3787749ccabb7eb7b988fc";
+      rev = "f5174e5099fd1e1646622d45f86e6ac62c912776";
       fetchSubmodules = false;
-      sha256 = "sha256-8ie6tFALoTom53V/f8rMaq6wdvi+2OC3C9O5pcIg37c=";
+      sha256 = "sha256-u/VdAHCiXlc9MDHcVG2DPKqnQGEynlXIieHuAkcTarQ=";
     };
-    date = "2026-04-10";
+    date = "2026-04-29";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.17.1";
+    version = "v1.18.1";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.17.1";
+      rev = "v1.18.1";
       fetchSubmodules = false;
-      sha256 = "sha256-KI6JSyhbraynwwuNp6rBH/VN9/oIJYGC8rTqyTvfDOU=";
+      sha256 = "sha256-3ZKN2J3M8JhjbGWnYjweERM2GvlT+GK2OahPcFEpsLA=";
     };
   };
   mediamtx-rpicamera = {
     pname = "mediamtx-rpicamera";
-    version = "v2.5.5";
+    version = "v2.5.6";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx-rpicamera";
-      rev = "v2.5.5";
+      rev = "v2.5.6";
       fetchSubmodules = false;
-      sha256 = "sha256-Abk17pa3Um+3OyPi84SSZNHJaFymgifgUvGr1ZSUFhI=";
+      sha256 = "sha256-fikELSKnnXhRyPCkAhUAFGrPA8ZXpS0sXsrqUVhW3Wk=";
     };
   };
 }

@@ -31,15 +31,15 @@
   };
   tfenv = {
     pname = "tfenv";
-    version = "c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54";
+    version = "de6ce2e809c155cbc5e2cfeb3b1bef151244e045";
     src = fetchFromGitHub {
       owner = "tfutils";
       repo = "tfenv";
-      rev = "c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54";
+      rev = "de6ce2e809c155cbc5e2cfeb3b1bef151244e045";
       fetchSubmodules = false;
-      sha256 = "sha256-wyfjgX774K95HpD96qT7KzHMeqY7JYCvp6gY5eqhlt8=";
+      sha256 = "sha256-okFPGBZgKgkwxdou9RiERHphzBr5vQQsidoNzEWT7IM=";
     };
-    date = "2025-07-11";
+    date = "2026-04-28";
   };
   transmissionic = {
     pname = "transmissionic";
