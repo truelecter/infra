@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   services.samba = {
     enable = true;
     nmbd.enable = true;

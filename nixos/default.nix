@@ -85,8 +85,20 @@
     arch,
     configuration,
   }: let
-    inherit (inputs) nixpkgs home catppuccin nix-topology;
+    inherit (inputs) catppuccin nix-topology;
     system = "${arch}-linux";
+
+    isLatest = hostname == "nas";
+
+    nixpkgs =
+      if isLatest
+      then inputs.latest
+      else inputs.nixpkgs;
+
+    home =
+      if isLatest
+      then inputs.home-unstable
+      else inputs.home;
   in {
     ${hostname} = nixpkgs.lib.nixosSystem {
       specialArgs = {

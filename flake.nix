@@ -108,7 +108,8 @@
     };
 
     nixarr = {
-      url = "github:rasmus-kirk/nixarr";
+      # url = "github:rasmus-kirk/nixarr";
+      url = "github:rasmus-kirk/nixarr/refs/pull/158/merge";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };

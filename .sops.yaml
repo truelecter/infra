@@ -107,3 +107,11 @@ creation_rules:
           - *squadbook
           - *tl-wsl
           - *tl-mm4
+  
+  - path_regex: secrets/arr.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+        age:
+          - *nas

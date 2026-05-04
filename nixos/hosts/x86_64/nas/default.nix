@@ -30,6 +30,17 @@
     hostId = "00000000";
   };
 
+  virtualisation.podman = {
+    defaultNetwork.settings = {
+      subnets = [
+        {
+          subnet = "10.88.0.0/16";
+          gateway = "10.88.0.1";
+        }
+      ];
+    };
+  };
+
   services.vnstat.enable = true;
 
   system.stateVersion = "22.05";

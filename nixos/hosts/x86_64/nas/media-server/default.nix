@@ -1,13 +1,11 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   imports = [
     ./samba.nix
 
     ./torrent.nix
-    ./recyclarr
+    # ./recyclarr
+    ./prowlarr.nix
+    ./profilarr.nix
   ];
 
   nixarr = {
@@ -19,10 +17,19 @@
 
     jellyfin.enable = true;
 
-    bazarr.enable = true;
-    sonarr.enable = true;
-    radarr.enable = true;
-    prowlarr.enable = true;
+    sonarr = {
+      enable = true;
+      settings-sync.transmission.enable = true;
+    };
+
+    radarr = {
+      enable = true;
+      settings-sync.transmission.enable = true;
+    };
+
     jellyseerr.enable = true;
   };
+
+  services.sonarr.settings.auth.required = "DisabledForLocalAddresses";
+  services.radarr.settings.auth.required = "DisabledForLocalAddresses";
 }
