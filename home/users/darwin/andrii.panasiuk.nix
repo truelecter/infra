@@ -19,7 +19,6 @@ in {
     "/Applications/Zen.app"
     "${home}/Applications/Home Manager Apps/Ghostty.app"
     "${home}/Applications/Home Manager Apps/Cursor.app"
-    "/Applications/Telegram Desktop.app"
     "/Applications/Slack.app"
     "/System/Applications/Mail.app"
     "/System/Applications/Calendar.app"
