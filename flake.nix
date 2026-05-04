@@ -11,17 +11,23 @@
 
     darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
-      inputs.nixpkgs.follows = "nixos";
+      inputs = {
+        nixpkgs.follows = "nixos";
+      };
     };
 
     home = {
       url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixos";
+      inputs = {
+        nixpkgs.follows = "nixos";
+      };
     };
 
     home-unstable = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "latest";
+      inputs = {
+        nixpkgs.follows = "latest";
+      };
     };
   };
 
@@ -29,7 +35,9 @@
   inputs = {
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+      inputs = {
+        nixpkgs-lib.follows = "nixpkgs";
+      };
     };
 
     flake-utils = {
@@ -39,26 +47,34 @@
 
     haumea = {
       url = "github:nix-community/haumea";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     devshell = {
       url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     nixago = {
       url = "github:nix-community/nixago";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixago-exts.follows = "nixago-exts";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        nixago-exts.follows = "nixago-exts";
+      };
     };
 
     nixago-exts = {
       url = "github:nix-community/nixago-extensions";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixago.follows = "nixago";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        flake-utils.follows = "flake-utils";
+        nixago.follows = "nixago";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 
@@ -66,7 +82,9 @@
   inputs = {
     nix-topology = {
       url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "latest";
+      inputs = {
+        nixpkgs.follows = "latest";
+      };
     };
 
     deploy-rs = {
@@ -211,13 +229,17 @@
           "x86_64-linux"
         ];
 
-        flake.lib =
-          selfLib
-          // {
-            inherit (config) systems;
-          };
+        flake = {
+          lib =
+            selfLib
+            // {
+              inherit (config) systems;
+            };
 
-        flake.profiles = selfLib.rakeLeaves ./profiles;
+          profiles = selfLib.rakeLeaves ./profiles;
+          nixosModules = self.modules.nixos;
+          homeModules = self.modules.homeManager;
+        };
 
         imports = [
           inputs.flake-parts.flakeModules.modules
@@ -263,11 +285,6 @@
               self.overlays.latest-packages
             ];
           };
-        };
-
-        flake = {
-          nixosModules = self.modules.nixos;
-          homeModules = self.modules.homeManager;
         };
       }
     );

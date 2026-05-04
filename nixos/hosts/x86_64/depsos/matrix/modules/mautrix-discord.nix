@@ -6,7 +6,7 @@
   ...
 }: let
   cfg = config.services.mautrix-discord;
-  dataDir = cfg.dataDir;
+  inherit (cfg) dataDir;
   format = pkgs.formats.yaml {};
 
   registrationFile = "${dataDir}/discord-registration.yaml";
@@ -346,17 +346,21 @@ in {
       }
     ];
 
-    users.users.mautrix-discord = {
-      isSystemUser = true;
-      group = "mautrix-discord";
-      extraGroups = ["mautrix-discord-registration"];
-      home = dataDir;
-      description = "Mautrix-Discord bridge user";
-    };
+    users = {
+      users.mautrix-discord = {
+        isSystemUser = true;
+        group = "mautrix-discord";
+        extraGroups = ["mautrix-discord-registration"];
+        home = dataDir;
+        description = "Mautrix-Discord bridge user";
+      };
 
-    users.groups.mautrix-discord = {};
-    users.groups.mautrix-discord-registration = {
-      members = lib.lists.optional config.services.matrix-synapse.enable "matrix-synapse";
+      groups = {
+        mautrix-discord = {};
+        mautrix-discord-registration = {
+          members = lib.lists.optional config.services.matrix-synapse.enable "matrix-synapse";
+        };
+      };
     };
 
     services.matrix-synapse = lib.mkIf cfg.registerToSynapse {

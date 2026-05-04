@@ -11,17 +11,20 @@ in {
   networking.wireless = {
     enable = true;
     interfaces = [wifiInterface];
-    networks."Xata290" = {
-      pskRaw = "ext:WIFI_PASSWORD";
-      priority = 5;
-    };
-    networks."Xata290.5" = {
-      pskRaw = "ext:WIFI_PASSWORD";
-      priority = 10;
-    };
-    networks."Xata290.5S" = {
-      pskRaw = "ext:WIFI_PASSWORD";
-      priority = 100;
+
+    networks = {
+      "Xata290" = {
+        pskRaw = "ext:WIFI_PASSWORD";
+        priority = 5;
+      };
+      "Xata290.5" = {
+        pskRaw = "ext:WIFI_PASSWORD";
+        priority = 10;
+      };
+      "Xata290.5S" = {
+        pskRaw = "ext:WIFI_PASSWORD";
+        priority = 100;
+      };
     };
     secretsFile = config.sops.secrets.xata-password-env.path;
     extraConfig = ''

@@ -6,8 +6,7 @@
 stdenvNoCC.mkDerivation {
   name = "wsl-bundle-${kernel.name}";
 
-  src = kernel.src;
-  version = kernel.version;
+  inherit (kernel) src version;
 
   dontUnpack = true;
   dontBuild = true;

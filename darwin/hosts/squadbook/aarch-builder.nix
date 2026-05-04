@@ -8,10 +8,13 @@
     maxJobs = 8;
 
     config = {
-      virtualisation.cores = 8;
-      virtualisation.darwin-builder.diskSize = 100 * 1024;
-      virtualisation.darwin-builder.memorySize = 8 * 1024;
-      # users.users.builder.extraGroups = ["wheel"];
+      virtualisation = {
+        cores = 8;
+        darwin-builder = {
+          diskSize = 100 * 1024;
+          memorySize = 8 * 1024;
+        };
+      };
     };
   };
 }

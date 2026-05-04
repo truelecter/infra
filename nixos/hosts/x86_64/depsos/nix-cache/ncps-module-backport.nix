@@ -52,8 +52,9 @@
       enabled = true;
     };
     analytics.reporting = {
+      inherit (cfg.analytics.reporting) samples;
+
       enabled = cfg.analytics.reporting.enable;
-      samples = cfg.analytics.reporting.samples;
     };
     server.addr = cfg.server.addr;
     cache = {
@@ -76,7 +77,7 @@
       };
       max-size = cfg.cache.maxSize;
       lru = {
-        schedule = cfg.cache.lru.schedule;
+        inherit (cfg.cache.lru) schedule;
         timezone = cfg.cache.lru.scheduleTimeZone;
       };
       sign-narinfo = cfg.cache.signNarinfo;
@@ -84,25 +85,23 @@
         if cfg.cache.storage.s3 != null
         then {
           s3 = {
-            bucket = cfg.cache.storage.s3.bucket;
-            endpoint = cfg.cache.storage.s3.endpoint;
-            region = cfg.cache.storage.s3.region;
+            inherit (cfg.cache.storage.s3) bucket endpoint region;
             force-path-style = cfg.cache.storage.s3.forcePathStyle;
           };
         }
         else {
-          local = cfg.cache.storage.local;
+          inherit (cfg.cache.storage) local;
         };
       temp-path = cfg.cache.tempPath;
       netrc-file = cfg.netrcFile;
       upstream = {
-        urls = cfg.cache.upstream.urls;
+        inherit (cfg.cache.upstream) urls;
         public-keys = cfg.cache.upstream.publicKeys;
         dialer-timeout = cfg.cache.upstream.dialerTimeout;
         response-header-timeout = cfg.cache.upstream.responseHeaderTimeout;
       };
       lock = {
-        backend = cfg.cache.lock.backend;
+        inherit (cfg.cache.lock) backend;
         redis.key-prefix = cfg.cache.lock.redisKeyPrefix;
         download-lock-ttl = cfg.cache.lock.downloadTTL;
         lru-lock-ttl = cfg.cache.lock.lruTTL;
@@ -110,14 +109,14 @@
           max-attempts = cfg.cache.lock.retry.maxAttempts;
           initial-delay = cfg.cache.lock.retry.initialDelay;
           max-delay = cfg.cache.lock.retry.maxDelay;
-          jitter = cfg.cache.lock.retry.jitter;
+          inherit (cfg.cache.lock.retry) jitter;
         };
         allow-degraded-mode = cfg.cache.lock.allowDegradedMode;
       };
       redis = lib.optionalAttrs (cfg.cache.redis != null) {
         addrs = cfg.cache.redis.addresses;
         db = cfg.cache.redis.database;
-        username = cfg.cache.redis.username;
+        inherit (cfg.cache.redis) username;
         use-tls = cfg.cache.redis.useTLS;
         pool-size = cfg.cache.redis.poolSize;
       };

@@ -31,10 +31,6 @@
 in {
   boot.kernelModules = ["gpiod"];
 
-  systemd.tmpfiles.rules = [
-    "d ${gcodePath} 775 klipper klipper"
-  ];
-
   environment.etc = builtins.listToAttrs (
     builtins.map (
       p: {
@@ -131,11 +127,16 @@ in {
     };
   };
 
-  systemd.settings.Manager = {
-    CPUAffinity = "0-1";
-  };
+  systemd = {
+    settings.Manager = {
+      CPUAffinity = "0-1";
+    };
 
-  systemd.services.klipper.serviceConfig.CPUAffinity = "2-3";
+    services.klipper.serviceConfig.CPUAffinity = "2-3";
+    tmpfiles.rules = [
+      "d ${gcodePath} 775 klipper klipper"
+    ];
+  };
 
   environment.systemPackages = [pkgs.katapult-flashtool];
 

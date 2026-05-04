@@ -57,25 +57,27 @@
     };
   };
 
-  fileSystems."/" = {
-    device = "rpool/root";
-    fsType = "zfs";
-  };
+  fileSystems = {
+    "/" = {
+      device = "rpool/root";
+      fsType = "zfs";
+    };
 
-  fileSystems."/home" = {
-    device = "rpool/home";
-    fsType = "zfs";
-  };
+    "/home" = {
+      device = "rpool/home";
+      fsType = "zfs";
+    };
 
-  fileSystems."/srv" = {
-    device = "rpool/srv";
-    fsType = "zfs";
-  };
+    "/srv" = {
+      device = "rpool/srv";
+      fsType = "zfs";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/02B4-70CB";
-    fsType = "vfat";
-    options = ["fmask=0077" "dmask=0077"];
+    "/boot" = {
+      device = "/dev/disk/by-uuid/02B4-70CB";
+      fsType = "vfat";
+      options = ["fmask=0077" "dmask=0077"];
+    };
   };
 
   swapDevices = [];
@@ -89,7 +91,11 @@
   # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableRedistributableFirmware = true;
+
+  hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    enableRedistributableFirmware = true;
+  };
+
   networking.hostId = "05121450";
 }

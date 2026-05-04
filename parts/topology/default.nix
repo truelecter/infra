@@ -4,7 +4,7 @@
   inputs,
   ...
 }: {
-  perSystem = {...}: {
+  perSystem = _: {
     topology.modules = [
       ./routers.nix
       ./internet.nix

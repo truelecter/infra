@@ -117,21 +117,21 @@
         ++ [
           profiles.nixos.topology-common
           (
-            {
-              lib,
-              config,
-              ...
-            }: {
-              topology.extractors.services.enable = false;
-              topology.extractors.kea.enable = false;
-              topology.extractors.microvm.enable = false;
-              topology.extractors.nix-minecraft.enable = false;
-              topology.extractors.nixos-container.enable = false;
+            {lib, ...}: {
+              topology.extractors = {
+                services.enable = false;
+                kea.enable = false;
+                microvm.enable = false;
+                nix-minecraft.enable = false;
+                nixos-container.enable = false;
+              };
 
               networking.hostName = lib.mkDefault hostname;
 
-              nix.registry.nixpkgs.flake = nixpkgs;
-              nix.registry.l.flake = inputs.latest;
+              nix = {
+                registry.nixpkgs.flake = nixpkgs;
+                registry.l.flake = inputs.latest;
+              };
 
               nixpkgs = {
                 hostPlatform = system;

@@ -1,7 +1,9 @@
 {
-  networking.firewall.enable = false;
-  networking.useDHCP = true;
-  networking.useNetworkd = true;
+  networking = {
+    firewall.enable = false;
+    useDHCP = true;
+    useNetworkd = true;
+  };
 
   services.resolved.enable = true;
 

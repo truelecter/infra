@@ -12,22 +12,24 @@
     };
   };
 
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    settings = {
-      GATT = {
-        Cache = "no";
-        Channels = "1";
-      };
-      General = {
-        ControllerMode = "dual";
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings = {
+        GATT = {
+          Cache = "no";
+          Channels = "1";
+        };
+        General = {
+          ControllerMode = "dual";
+        };
       };
     };
-  };
 
-  hardware.enableRedistributableFirmware = true;
-  hardware.firmwareCompression = "none";
+    enableRedistributableFirmware = true;
+    firmwareCompression = "none";
+  };
 
   system.activationScripts.udevd = ''
     # The deprecated hotplug uevent helper is not used anymore

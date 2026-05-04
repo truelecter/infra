@@ -7,51 +7,65 @@
 }: {
   imports = [];
 
-  boot.loader = {
-    systemd-boot = {
-      enable = false;
-      consoleMode = "auto";
-      editor = false;
-      configurationLimit = 1;
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = false;
+        consoleMode = "auto";
+        editor = false;
+        configurationLimit = 1;
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      }; # efi
+      grub = {
+        devices = ["nodev"];
+        enable = true;
+        efiSupport = true;
+        useOSProber = false;
+      }; # grub
+    }; # bootloader
+
+    initrd = {
+      availableKernelModules = ["ata_piix" "mptspi" "ahci" "sd_mod" "sr_mod"];
+      kernelModules = [];
     };
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    }; # efi
-    grub = {
-      devices = ["nodev"];
+
+    kernelModules = [];
+    extraModulePackages = [];
+  };
+
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/system";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+    };
+
+    "/srv" = {
+      device = "/dev/disk/by-label/srv-data";
+      fsType = "ext4";
+    };
+
+    "/cache" = {
+      device = "/dev/disk/by-label/cache-storage";
+      fsType = "ext4";
+    };
+  };
+
+  virtualisation = {
+    containers.storage.settings.storage.graphroot = "/srv/containsers/storage";
+
+    vmware.guest = {
       enable = true;
-      efiSupport = true;
-      useOSProber = false;
-    }; # grub
-  }; # bootloader
-
-  boot.initrd.availableKernelModules = ["ata_piix" "mptspi" "ahci" "sd_mod" "sr_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/system";
-    fsType = "ext4";
+      headless = true;
+    };
   };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
-    fsType = "vfat";
-  };
-
-  fileSystems."/srv" = {
-    device = "/dev/disk/by-label/srv-data";
-    fsType = "ext4";
-  };
-
-  fileSystems."/cache" = {
-    device = "/dev/disk/by-label/cache-storage";
-    fsType = "ext4";
-  };
-
-  virtualisation.containers.storage.settings.storage.graphroot = "/srv/containsers/storage";
 
   swapDevices = [
     {
@@ -60,8 +74,6 @@
   ];
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  virtualisation.vmware.guest.enable = true;
-  virtualisation.vmware.guest.headless = true;
 
   networking = {
     useDHCP = false;

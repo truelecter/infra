@@ -9,7 +9,7 @@
   s = stdenvNoCC.mkDerivation {
     name = "${klipper.pname}-source";
 
-    src = klipper.src;
+    inherit (klipper) src;
 
     dontConfigure = true;
 

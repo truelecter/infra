@@ -12,8 +12,7 @@
 stdenv.mkDerivation {
   name = "wsl-modules-${kernel.name}.vhdx";
 
-  version = kernel.version;
-  src = kernel.src;
+  inherit (kernel) version src;
 
   nativeBuildInputs = [
     qemu-utils

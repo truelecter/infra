@@ -2,7 +2,7 @@
   pkgs,
   engines,
 }: data: let
-  lefthook = pkgs.lefthook;
+  inherit (pkgs) lefthook;
 
   # Add an extra hook for adding required stages whenever the file changes
   skip_attrs = [

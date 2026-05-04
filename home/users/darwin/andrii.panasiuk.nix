@@ -10,7 +10,7 @@
   inherit (config.users.users.${username}) home;
 in {
   imports = [
-    (import ./__common-gui.nix {username = username;})
+    (import ./__common-gui.nix {inherit username;})
   ];
 
   home-manager.users.${username} = {

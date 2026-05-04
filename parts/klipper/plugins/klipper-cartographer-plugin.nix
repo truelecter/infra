@@ -67,10 +67,9 @@ in
 
       pythonDependencies = _: [cartographerPlugin];
 
+      inherit project python src;
+
       plugin = cartographerPlugin;
-      project = project;
-      python = python;
-      src = src;
     };
 
     meta = with lib; {

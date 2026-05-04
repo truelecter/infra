@@ -24,34 +24,38 @@ in {
         enableACME = true;
         forceSSL = true;
 
-        locations."/".extraConfig = ''
-          return 404;
-        '';
+        locations = {
+          "/".extraConfig = ''
+            return 404;
+          '';
 
-        locations."/_matrix" = {
-          proxyPass = "http://127.0.0.1:8008";
-        };
+          "/_matrix" = {
+            proxyPass = "http://127.0.0.1:8008";
+          };
 
-        locations."/_synapse/client" = {
-          proxyPass = "http://127.0.0.1:8008";
+          "/_synapse/client" = {
+            proxyPass = "http://127.0.0.1:8008";
+          };
         };
       };
 
       ${sCfg.server-name} = {
-        locations."/.well-known/matrix/server" = {
-          extraConfig = ''
-            default_type application/json;
-            add_header "Access-Control-Allow-Origin" *;
-            return 200 '{ "m.server": "${sCfg.homeserver-hostname}:443" }';
-          '';
-        };
+        locations = {
+          "/.well-known/matrix/server" = {
+            extraConfig = ''
+              default_type application/json;
+              add_header "Access-Control-Allow-Origin" *;
+              return 200 '{ "m.server": "${sCfg.homeserver-hostname}:443" }';
+            '';
+          };
 
-        locations."/.well-known/matrix/client" = {
-          extraConfig = ''
-            default_type application/json;
-            add_header "Access-Control-Allow-Origin" *;
-            return 200 '{ "m.homeserver": { "base_url": "https://${sCfg.homeserver-hostname}" } }';
-          '';
+          "/.well-known/matrix/client" = {
+            extraConfig = ''
+              default_type application/json;
+              add_header "Access-Control-Allow-Origin" *;
+              return 200 '{ "m.homeserver": { "base_url": "https://${sCfg.homeserver-hostname}" } }';
+            '';
+          };
         };
       };
     };

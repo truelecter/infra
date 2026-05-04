@@ -82,17 +82,19 @@
         type = "ed25519";
       }
     ];
+
+    services.earlyoom = {
+      enable = true;
+    };
+
+    services.speechd = {
+      enable = lib.mkOverride 999 false;
+    };
   };
 
   programs.ssh.extraConfig = ''
     Include /etc/ssh/ssh_config.d/*
   '';
-
-  # Service that makes Out of Memory Killer more effective
-  services.earlyoom.enable = true;
-
-  # Disable by default (why is it enabled even lol)
-  services.speechd.enable = lib.mkOverride 999 false;
 
   catppuccin = {
     flavor = "mocha";

@@ -15,10 +15,6 @@
 
   users.groups.dma-heap = {};
 
-  services.udev.extraRules = ''
-    SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
-  '';
-
   tl.services.camera-streamer.instances = {
     nozzle = {
       enable = false;
@@ -84,33 +80,39 @@
     };
   };
 
-  services.go2rtc = {
-    enable = false;
-    settings = {
-      streams = {
-        printer = "ffmpeg:device?video=/dev/v4l/by-id/usb-3DO_3DO_USB_CAMERA_V2_3DO-video-index0&input_format=mjpeg&video_size=1280x720#video=h264#hardware";
+  services = {
+    udev.extraRules = ''
+      SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
+    '';
+
+    go2rtc = {
+      enable = false;
+      settings = {
+        streams = {
+          printer = "ffmpeg:device?video=/dev/v4l/by-id/usb-3DO_3DO_USB_CAMERA_V2_3DO-video-index0&input_format=mjpeg&video_size=1280x720#video=h264#hardware";
+        };
       };
     };
-  };
 
-  services.nginx = {
-    enable = true;
-    # upstreams = {
-    #   go2rtc-webrtc = {
-    #     servers."localhost:8555" = {};
-    #   };
-    # };
-    # virtualHosts = {
-    #   "localhost".locations."/camera/printer/" = {
-    #     proxyPass = "http://go2rtc-webrtc/printer";
-    #     proxyWebsockets = true;
-    #     extraConfig = ''
-    #       postpone_output 0;
-    #       proxy_buffering off;
-    #       proxy_ignore_headers X-Accel-Buffering;
-    #     '';
-    #   };
-    # };
+    nginx = {
+      enable = true;
+      # upstreams = {
+      #   go2rtc-webrtc = {
+      #     servers."localhost:8555" = {};
+      #   };
+      # };
+      # virtualHosts = {
+      #   "localhost".locations."/camera/printer/" = {
+      #     proxyPass = "http://go2rtc-webrtc/printer";
+      #     proxyWebsockets = true;
+      #     extraConfig = ''
+      #       postpone_output 0;
+      #       proxy_buffering off;
+      #       proxy_ignore_headers X-Accel-Buffering;
+      #     '';
+      #   };
+      # };
+    };
   };
 
   # boot.kernelParams = [

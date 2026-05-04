@@ -1,4 +1,4 @@
-{...}: {
+_: {
   services.samba = {
     enable = true;
     nmbd.enable = true;
