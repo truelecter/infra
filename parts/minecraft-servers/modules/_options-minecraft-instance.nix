@@ -16,7 +16,7 @@
 
   instanceName = name;
 in {
-  options = rec {
+  options = {
     enable = mkEnableOption "Enable minecraft server instance ${name}";
 
     openRcon = mkOption {
@@ -192,7 +192,7 @@ in {
 
     backup.restic = mkOption {
       type = types.submodule (import ./_options-backup-restic.nix {
-        inherit pkgs globalOptions;
+        inherit globalOptions;
         instanceConfig = config;
       });
       default = {enable = false;};
