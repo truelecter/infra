@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = [
     (
       pkgs.v4l-utils.override

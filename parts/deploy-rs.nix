@@ -51,12 +51,7 @@ in {
     };
   };
 
-  perSystem = {
-    config,
-    system,
-    pkgs,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     devshells.default = {
       commands = [
         {

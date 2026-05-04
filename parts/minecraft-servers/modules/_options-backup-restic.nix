@@ -1,12 +1,7 @@
 {
-  pkgs,
   globalOptions,
   instanceConfig,
-}: {
-  lib,
-  config,
-  ...
-}: let
+}: {lib, ...}: let
   l = builtins // lib;
   inherit (lib) types mkOption mkEnableOption;
   filteredOptions = [

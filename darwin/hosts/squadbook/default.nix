@@ -1,6 +1,5 @@
 {
   suites,
-  inputs,
   profiles,
   users,
   ...

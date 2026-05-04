@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{config, ...}: {
   users.groups.wifi.members = ["klipper-screen" "truelecter"];
 
   networking.wireless = {

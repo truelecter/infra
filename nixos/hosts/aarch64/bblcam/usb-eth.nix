@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   boot.kernelModules = ["dwc2" "g_ether"];
 
   boot.kernel.sysctl = {

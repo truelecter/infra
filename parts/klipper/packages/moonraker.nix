@@ -3,8 +3,6 @@
   stdenvNoCC,
   python3,
   makeWrapper,
-  unstableGitUpdater,
-  nixosTests,
   sources,
   ...
 }: let
@@ -23,7 +21,7 @@
       preprocess-cancellation
       jinja2
       (
-        dbus-next.overrideAttrs (o: rec {
+        dbus-next.overrideAttrs (_: {
           doInstallCheck = false;
         })
       )
@@ -33,7 +31,7 @@
       dbus-fast
     ]);
 in
-  stdenvNoCC.mkDerivation rec {
+  stdenvNoCC.mkDerivation {
     pname = "moonraker";
 
     inherit (sources.moonraker) version src;
@@ -48,10 +46,9 @@ in
         --add-flags "$out/lib/moonraker/moonraker.py"
     '';
 
-    meta = with lib; {
+    meta = {
       description = "API web server for Klipper";
       homepage = "https://github.com/Arksine/moonraker";
-      license = licenses.gpl3Only;
-      maintainers = with maintainers; [zhaofengli];
+      license = lib.licenses.gpl3Only;
     };
   }

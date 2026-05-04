@@ -1,7 +1,4 @@
-{
-  inputs,
-  lib,
-}: let
+{inputs, ...}: let
   haumea = inputs.haumea.lib;
 in
   src: {

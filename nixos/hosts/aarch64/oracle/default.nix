@@ -1,7 +1,6 @@
 {
   suites,
   profiles,
-  overlays,
   ...
 }: {
   imports =

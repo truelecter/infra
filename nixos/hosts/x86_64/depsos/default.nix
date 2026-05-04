@@ -1,8 +1,6 @@
 {
-  inputs,
   suites,
   profiles,
-  overlays,
   ...
 }: {
   imports =

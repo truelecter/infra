@@ -3,7 +3,7 @@
   lib,
 }:
 lib.makeExtensible (
-  self: let
+  _: let
     limp = p: import p {inherit inputs lib;};
   in {
     rakeLeaves = limp ./rake-leaves.nix;

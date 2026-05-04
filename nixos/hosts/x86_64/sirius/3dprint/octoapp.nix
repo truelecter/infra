@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  inputs,
-  ...
-}: let
+{lib, ...}: let
   # FIXME: change to static version number when release is made
   # Or even better - package it as a nix package
   # https://github.com/crysxd/OctoApp-Plugin/pkgs/container/octoapp-plugin/versions

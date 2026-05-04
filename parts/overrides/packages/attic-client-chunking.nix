@@ -6,7 +6,7 @@
 }: let
   inherit (sources.attic) src;
 in
-  attic-client.overrideAttrs (o: {
+  attic-client.overrideAttrs (_: {
     inherit src;
 
     pname = "attic-client-chunking";

@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
+{lib, ...}: {
   services.zigbee2mqtt = {
     enable = true;
     dataDir = "/srv/home-assistant/zigbee2mqtt";

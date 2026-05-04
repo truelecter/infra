@@ -29,7 +29,7 @@
   };
 
   python = python3.override {
-    packageOverrides = self: super: {
+    packageOverrides = _self: super: {
       inherit pre-commit ruff;
 
       psycopg2-binary = super.psycopg2;

@@ -1,5 +1,4 @@
 {
-  lib,
   buildUBoot,
   rkbin,
   sources,

@@ -4,7 +4,8 @@
   ...
 }: {
   programs.vscode.profiles.default = {
-    extensions = pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
+    extensions =
+      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
       [
         "rust-lang.rust-analyzer"
         "probe-rs.probe-rs-debugger"

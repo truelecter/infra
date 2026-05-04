@@ -12,7 +12,7 @@
       mcu = "rpi";
       firmwareConfig = ./firmwares/klipper-rpi-4;
     })
-    .overrideAttrs (o: {
+    .overrideAttrs (_: {
       patches = [
         ./firmwares/rpi-fw.patch
       ];

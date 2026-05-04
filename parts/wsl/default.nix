@@ -1,7 +1,6 @@
 {
   lib,
   self,
-  inputs,
   ...
 }: let
   mkModulesImage = pkgs': kernel:
@@ -22,9 +21,6 @@
     };
 in {
   perSystem = {
-    config,
-    self',
-    inputs',
     pkgs,
     system,
     ...

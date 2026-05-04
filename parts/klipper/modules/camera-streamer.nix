@@ -5,7 +5,7 @@
   modulesPath,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types literalExpression mkMerge;
+  inherit (lib) mkEnableOption mkOption types literalExpression;
 
   mkEnabledOption = desc: (mkEnableOption desc) // {default = true;};
   mkBoolIntOpion = default: desc:

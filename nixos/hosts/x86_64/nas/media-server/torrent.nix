@@ -1,10 +1,4 @@
 {
-  inputs,
-  pkgs,
-  suites,
-  profiles,
-  ...
-}: {
   nixarr.transmission = {
     enable = true;
     # peerPort = 50000; # Set this to the port forwarded by your VPN

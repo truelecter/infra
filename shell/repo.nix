@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  inherit (pkgs) writeScriptBin nvfetcher-bin nix4vscode cachix attic-client-chunking;
+  inherit (pkgs) writeScriptBin nvfetcher-bin cachix attic-client-chunking;
 
   update-sources = writeScriptBin "update-sources" ''
     function updatePartsSources {

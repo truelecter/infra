@@ -55,7 +55,7 @@
     };
   };
 
-  customUsrsctp = usrsctp.overrideAttrs (finalAttrs: previousAttrs: {
+  customUsrsctp = usrsctp.overrideAttrs (_: {
     version = "unstable-2021-10-08";
 
     patches = [];

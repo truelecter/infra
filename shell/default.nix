@@ -3,11 +3,7 @@
     ./nixago
   ];
 
-  perSystem = {
-    config,
-    pkgs,
-    ...
-  }: {
+  perSystem = _: {
     devshells.default = {
       name = "infra";
 

@@ -1,5 +1,4 @@
 {username}: {
-  pkgs,
   hmSuites,
   profiles,
   config,

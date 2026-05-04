@@ -1,5 +1,5 @@
 {config, ...}: let
-  inherit (config.lib.topology) mkInternet mkRouter mkConnection mkSwitch;
+  inherit (config.lib.topology) mkRouter mkConnection mkSwitch;
 in {
   nodes = {
     x290-router = mkRouter "Mikrotik" {

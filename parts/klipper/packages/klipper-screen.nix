@@ -4,7 +4,7 @@
   sources,
   ...
 }:
-klipperscreen.overrideAttrs (_: prev: {
+klipperscreen.overrideAttrs (_: {
   inherit (sources.klipper-screen) version src;
 
   pythonPath = with python3.pkgs; [

@@ -1,6 +1,5 @@
 {config, ...}: let
   klipperCfg = config.tl.services.klipper;
-  moonrakerCfg = config.services.moonraker;
 in {
   services.moonraker = {
     enable = false;

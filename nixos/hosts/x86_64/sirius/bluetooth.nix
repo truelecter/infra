@@ -1,11 +1,4 @@
 {
-  config,
-  lib,
-  utils,
-  ...
-}: let
-  bt = config.hardware.bluetooth;
-in {
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;

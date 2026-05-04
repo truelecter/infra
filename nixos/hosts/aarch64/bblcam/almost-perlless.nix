@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   boot.initrd.systemd.enable = lib.mkDefault true;
   system.etc.overlay.enable = lib.mkDefault true;
   services.userborn.enable = lib.mkDefault true;

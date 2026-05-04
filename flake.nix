@@ -263,14 +263,7 @@
           ./home
         ];
 
-        perSystem = {
-          config,
-          self',
-          inputs',
-          pkgs,
-          system,
-          ...
-        }: {
+        perSystem = {...}: {
           nixpkgs = {
             config = {
               allowUnfree = true;
@@ -279,7 +272,7 @@
               inputs.deploy-rs.overlays.default
               inputs.nvfetcher.overlays.default
               # inputs.nix4vscode.overlays.nix4vscode
-              (final: prev: {
+              (_final: prev: {
                 nix4vscode = inputs.nix4vscode.packages.${prev.stdenv.hostPlatform.system}.default;
               })
               self.overlays.latest-packages

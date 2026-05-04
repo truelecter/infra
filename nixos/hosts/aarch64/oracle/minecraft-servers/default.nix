@@ -24,7 +24,7 @@
     (l.filterAttrs (_: v: l.isAttrs v && l.hasAttr "mod" v))
     l.attrValues
     (builtins.groupBy (mod: mod.mod))
-    (l.mapAttrs (k: engine-by-versions))
+    (l.mapAttrs (_: engine-by-versions))
   ];
 in {
   _module.args = {

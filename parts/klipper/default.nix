@@ -149,7 +149,7 @@ in {
     };
 
   flake = {
-    overlays.klipper = final: prev: mkPackages final;
+    overlays.klipper = final: _prev: mkPackages final;
 
     modules.nixos = {
       klipper = self.lib.combineModules ./modules;

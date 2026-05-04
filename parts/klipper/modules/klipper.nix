@@ -245,7 +245,7 @@ in {
     environment.etc = let
       pluginsWithConfig = l.filter (p: p ? klipper && p.klipper.config) (cfg.package.plugins ++ cfg.extraConfigurationPackages);
 
-      enabledFirmwares = l.filterAttrs (n: v: v.enable) cfg.firmwares;
+      enabledFirmwares = l.filterAttrs (_n: v: v.enable) cfg.firmwares;
       enabledFirmwarePackages =
         l.mapAttrs' (
           name: fcfg:
@@ -261,7 +261,7 @@ in {
         )
         enabledFirmwares;
 
-      enabledKatapultFirmwares = l.filterAttrs (n: v: v.enable) cfg.katapult;
+      enabledKatapultFirmwares = l.filterAttrs (_n: v: v.enable) cfg.katapult;
       enabledKatapultFirmwarePackages =
         l.mapAttrs' (
           name: fcfg:

@@ -6,7 +6,7 @@
 }: let
   inherit (self) profiles users;
 
-  suites = self.lib.buildSuites profiles (profiles: suites: {
+  suites = self.lib.buildSuites profiles (profiles: _suites: {
     base =
       (with profiles; [
         common.core

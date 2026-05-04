@@ -170,7 +170,7 @@ in {
     };
 
     users = {
-      users = eachEnabledInstance (name: icfg: {
+      users = eachEnabledInstance (_name: icfg: {
         isSystemUser = true;
         group = "minecraft-servers";
         home = icfg.dirnames.base;

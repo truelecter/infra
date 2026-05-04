@@ -4,7 +4,6 @@
   profiles,
   pkgs,
   lib,
-  config,
   ...
 }: {
   imports =

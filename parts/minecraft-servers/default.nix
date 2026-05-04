@@ -1,8 +1,4 @@
-{
-  self,
-  inputs,
-  ...
-}: let
+{self, ...}: let
   mkPackages = pkgs:
     self.lib.importPackages {
       nixpkgs = pkgs;
@@ -10,20 +6,13 @@
       sources = ./sources/generated.nix;
     };
 in {
-  perSystem = {
-    config,
-    self',
-    inputs',
-    pkgs,
-    system,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     packages = mkPackages pkgs;
   };
 
   flake = {
-    overlays.minecraft-servers = final: prev: mkPackages final;
-    overlays.minecraft-mods = final: prev: mkPackages final;
+    overlays.minecraft-servers = final: _prev: mkPackages final;
+    overlays.minecraft-mods = final: _prev: mkPackages final;
 
     modules.nixos = {
       minecraft-servers = self.lib.combineModules ./modules;

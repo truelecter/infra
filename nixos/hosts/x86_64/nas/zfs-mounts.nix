@@ -1,8 +1,4 @@
 {
-  config,
-  pkgs,
-  ...
-}: {
   services.zfs = {
     trim.enable = true;
     autoScrub.pools = ["tank"];

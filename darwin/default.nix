@@ -6,7 +6,7 @@
 }: let
   inherit (self) profiles users;
 
-  suites = self.lib.buildSuites profiles (profiles: suites: {
+  suites = self.lib.buildSuites profiles (profiles: _suites: {
     base = with profiles;
       [
         common.core
@@ -47,7 +47,7 @@
     arch ? "aarch64",
     configuration,
   }: let
-    inherit (inputs) nixpkgs darwin home latest nix-topology;
+    inherit (inputs) nixpkgs darwin home latest;
     system = "${arch}-darwin";
   in {
     ${hostname} = darwin.lib.darwinSystem {
@@ -62,11 +62,7 @@
         ]
         ++ [
           (
-            {
-              lib,
-              config,
-              ...
-            }: {
+            {lib, ...}: {
               networking.hostName = lib.mkDefault hostname;
 
               nix.registry.nixpkgs.flake = nixpkgs;

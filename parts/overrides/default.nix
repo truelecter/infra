@@ -10,14 +10,7 @@
       sources = ./sources/generated.nix;
     };
 in {
-  perSystem = {
-    config,
-    self',
-    inputs',
-    pkgs,
-    system,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     packages = mkPackages pkgs;
   };
 

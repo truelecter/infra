@@ -7,7 +7,6 @@
   bintools-unwrapped,
   libffi,
   libusb1,
-  wxGTK32,
   python3,
   gcc-arm-embedded,
   klipper,
