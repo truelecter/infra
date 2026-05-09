@@ -422,16 +422,15 @@
         "website-builder": "website-builder"
       },
       "locked": {
-        "lastModified": 1777593107,
-        "narHash": "sha256-J0/iHRq39vxXnZtBUquHNn+hZwW63xhzxRCZimizWVI=",
+        "lastModified": 1777926760,
+        "narHash": "sha256-kt2MVO9p6OS+cRntlWemfLVTx2zB27epugXLHN+2uJA=",
         "owner": "rasmus-kirk",
         "repo": "nixarr",
-        "rev": "8ef06f850598335a71da535c2ae5a588d245036c",
+        "rev": "55ce80165e8c2509d4e200daeaa9c2bce039c867",
         "type": "github"
       },
       "original": {
         "owner": "rasmus-kirk",
-        "ref": "refs/pull/158/merge",
         "repo": "nixarr",
         "type": "github"
       }
