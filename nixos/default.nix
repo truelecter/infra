@@ -156,7 +156,7 @@ in {
     self.lib.rakeLeaves
     (lib.mapAttrsToList (arch: hosts: (lib.mapAttrsToList (hostname: configuration: {inherit arch hostname configuration;}) hosts)))
     lib.flatten
-    (builtins.map mkHost)
+    (map mkHost)
     lib.mkMerge
   ];
 }

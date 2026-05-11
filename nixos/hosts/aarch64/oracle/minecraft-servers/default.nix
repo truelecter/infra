@@ -6,7 +6,7 @@
   listToMods = list:
     pkgs.lib.pipe list [
       (
-        builtins.map (v: {
+        map (v: {
           inherit (v) name;
           value = v.src;
         })

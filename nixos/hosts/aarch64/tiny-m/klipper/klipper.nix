@@ -32,7 +32,7 @@ in {
   boot.kernelModules = ["gpiod"];
 
   environment.etc = builtins.listToAttrs (
-    builtins.map (
+    map (
       p: {
         name = "klipper/${lib.path.removePrefix ./configs/klipper.d p}";
         value = {

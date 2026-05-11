@@ -12,8 +12,6 @@ lib.makeExtensible (
 
     haumea.transformers.defaultAsRoot = _: mod: mod.default or mod;
 
-    dirNames = dir: builtins.attrNames (builtins.readDir dir);
-
     importPackages = limp ./import-packages.nix;
 
     combineModules = limp ./combine-modules.nix;

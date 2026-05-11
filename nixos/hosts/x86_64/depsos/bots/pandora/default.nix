@@ -34,7 +34,7 @@ in {
       volumes = lib.pipe ./configs [
         builtins.readDir
         builtins.attrNames
-        (builtins.map (d: "${./configs/${d}}:/opt/pandora-overrides/${d}"))
+        (map (d: "${./configs/${d}}:/opt/pandora-overrides/${d}"))
       ];
 
       environment = {

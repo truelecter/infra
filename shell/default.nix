@@ -1,6 +1,7 @@
 {
   imports = [
     ./nixago
+    ./touchup.nix
   ];
 
   perSystem = _: {

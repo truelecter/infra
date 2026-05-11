@@ -36,7 +36,7 @@ in {
   nix = {
     distributedBuilds = true;
 
-    buildMachines = builtins.map mkBuildMachine [
+    buildMachines = map mkBuildMachine [
       {
         maxJobs = 4;
         hostName = "oracle";

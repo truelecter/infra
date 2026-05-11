@@ -13,7 +13,7 @@
     engines = inputs.nixago.engines.${system};
 
     nixago-exts = lib.pipe ["conform" "ghsettings"] [
-      (builtins.map (name: {
+      (map (name: {
         inherit name;
         value = inputs.nixago-exts.${name}.${system};
       }))
@@ -37,7 +37,7 @@
       devshell.startup.nixago.text = lib.pipe ./configs [
         self.lib.rakeLeaves
         builtins.attrValues
-        (builtins.map (cfg: self.lib.importAttrOrFunction cfg {inherit self exts pkgs lib engines;}))
+        (map (cfg: self.lib.importAttrOrFunction cfg {inherit self exts pkgs lib engines;}))
         nixago.makeAll
         (v: v.shellHook)
       ];

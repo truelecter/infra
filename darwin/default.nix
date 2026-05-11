@@ -92,7 +92,7 @@ in {
   flake.darwinConfigurations = lib.pipe ./hosts [
     self.lib.rakeLeaves
     (lib.mapAttrsToList (hostname: configuration: {inherit hostname configuration;}))
-    (builtins.map mkHost)
+    (map mkHost)
     self.lib.merge
   ];
 

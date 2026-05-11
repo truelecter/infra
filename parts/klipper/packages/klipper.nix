@@ -18,7 +18,7 @@
       lib.unique (
         (
           lib.flatten (
-            builtins.map (
+            map (
               plugin:
                 if plugin.passthru.klipper ? pythonDependencies
                 then (plugin.passthru.klipper.pythonDependencies pythonPackages)
@@ -120,7 +120,7 @@ in
       # Symlink plugins
       ${
         lib.concatStringsSep "\n" (
-          builtins.map
+          map
           # Filter only plugins with extras. There was a lib function for getting output in lib/attrset.nix
           (plugin: "ln -sf ${plugin}/lib/extras/* $out/lib/${libDir}/${pluginInstallDir plugin}/")
           (builtins.filter (p: p ? klipper && p.klipper.extras) plugins)

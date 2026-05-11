@@ -123,7 +123,7 @@
     lib.pipe ./users/${system} [
       self.lib.rakeLeaves
       lib.attrsToList
-      (builtins.map (v: mkUser system v.name v.value))
+      (map (v: mkUser system v.name v.value))
       self.lib.merge
     ];
 in {
