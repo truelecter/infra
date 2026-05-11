@@ -3,22 +3,6 @@
   self,
   ...
 }: let
-  mkModulesImage = pkgs': kernel:
-    pkgs'.callPackage ./lib/mkModulesImage.nix {
-      inherit kernel;
-    };
-
-  mkKernels = pkgs':
-    self.lib.importPackages {
-      nixpkgs = pkgs';
-      packages = ./kernels;
-      sources = ./sources/generated.nix;
-    };
-
-  mkWslBundle = pkgs': kernel: modulesImage:
-    pkgs'.callPackage ./lib/mkWslBundle.nix {
-      inherit kernel modulesImage;
-    };
 in {
   perSystem = {
     pkgs,
@@ -27,12 +11,26 @@ in {
   }:
     lib.optionalAttrs (system == "x86_64-linux") {
       packages = let
-        kernels = mkKernels pkgs;
+        kernels = self.lib.importPackages {
+          nixpkgs = pkgs;
+          packages = ./kernels;
+          sources = ./sources/generated.nix;
+        };
+
+        mkModulesImage = kernel:
+          pkgs.callPackage ./lib/mkModulesImage.nix {
+            inherit kernel;
+          };
+
+        mkWslBundle = kernel: modulesImage:
+          pkgs.callPackage ./lib/mkWslBundle.nix {
+            inherit kernel modulesImage;
+          };
 
         wslBundle = kernel: let
-          modulesImage = mkModulesImage pkgs kernel;
+          modulesImage = mkModulesImage kernel;
         in
-          mkWslBundle pkgs kernel modulesImage;
+          mkWslBundle kernel modulesImage;
 
         bundles = lib.mapAttrs' (name: kernel: lib.nameValuePair "${name}-bundle" (wslBundle kernel)) kernels;
       in

@@ -12,6 +12,10 @@ stdenvNoCC.mkDerivation {
   dontBuild = true;
   dontPatch = true;
 
+  passthru = {
+    inherit kernel modulesImage;
+  };
+
   installPhase = ''
     mkdir -p $out
 

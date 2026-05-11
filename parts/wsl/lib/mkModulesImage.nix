@@ -27,7 +27,7 @@ stdenv.mkDerivation {
 
     mkdir -p ./rootImage
 
-    cp -r "${kernel}/lib/modules/${kernel.modDirVersion}"/* ./rootImage
+    cp -r "${kernel.modules}/lib/modules/${kernel.modDirVersion}"/* ./rootImage
 
     numInodes=$(find ./rootImage | wc -l)
     numDataBlocks=$(du -s -c -B 4096 --apparent-size ./rootImage | tail -1 | awk '{ print int($1 * 1.20) }')

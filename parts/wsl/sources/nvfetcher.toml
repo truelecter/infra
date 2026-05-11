@@ -2,3 +2,17 @@
 fetch.github = "microsoft/WSL2-Linux-Kernel"
 src.manual = "linux-msft-wsl-6.6.87.2"
 passthru = { tag = "6.6.87.2" }
+
+[wsl-xanmod-lts]
+fetch.github = "Locietta/xanmod-kernel-WSL2"
+src.github = "Locietta/xanmod-kernel-WSL2"
+src.include_regex = ".*-lts"
+
+# Sync with wsl-xanmod-lts to keep kconfig valid
+[xanmod-lts]
+src.github = "Locietta/xanmod-kernel-WSL2"
+src.include_regex = ".*-lts"
+src.from_pattern = "^([0-9]+\\.[0-9]+\\.[0-9]+).+"
+src.to_pattern = "\\1-xanmod1"
+
+fetch.git = "https://gitlab.com/xanmod/linux.git"

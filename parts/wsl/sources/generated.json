@@ -21,5 +21,46 @@
             "type": "github"
         },
         "version": "linux-msft-wsl-6.6.87.2"
+    },
+    "wsl-xanmod-lts": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "wsl-xanmod-lts",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "Locietta",
+            "repo": "xanmod-kernel-WSL2",
+            "rev": "6.18.27-locietta-WSL2-xanmod1.1-lts",
+            "sha256": "sha256-xOF69Flerj00LZCzctgLpyS+pat9UWQv/Jkyi1AMafY=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "6.18.27-locietta-WSL2-xanmod1.1-lts"
+    },
+    "xanmod-lts": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "xanmod-lts",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "6.18.27-xanmod1",
+            "sha256": "sha256-KfCMx6MJw0ELaE12vPC4V5AJV8/EFHLVAUaJS1POl40=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://gitlab.com/xanmod/linux.git"
+        },
+        "version": "6.18.27-xanmod1"
     }
 }
