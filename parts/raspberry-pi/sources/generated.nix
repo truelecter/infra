@@ -51,13 +51,13 @@
   };
   mediamtx-rpicamera = {
     pname = "mediamtx-rpicamera";
-    version = "v2.5.7";
+    version = "v2.6.0";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx-rpicamera";
-      rev = "v2.5.7";
+      rev = "v2.6.0";
       fetchSubmodules = false;
-      sha256 = "sha256-uUCDz6jDLH3cCXs5NeATaJXQxLkc0550ClMsGwOOBuU=";
+      sha256 = "sha256-opTE58PMhG0k8Y8zAeheAb6aRN0Qq+ozMDPx1yyiHT0=";
     };
   };
 }
