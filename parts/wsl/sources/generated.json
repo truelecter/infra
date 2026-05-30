@@ -36,12 +36,12 @@
             "name": null,
             "owner": "Locietta",
             "repo": "xanmod-kernel-WSL2",
-            "rev": "7.0.9-locietta-WSL2-xanmod1.1",
-            "sha256": "sha256-VfkY8yckJJrq/fXcHr3XpOA8oMQQgv74U8WZFIY7q18=",
+            "rev": "7.0.10-locietta-WSL2-xanmod1.1",
+            "sha256": "sha256-blGNYfqpqMqdwUyowWApq62Jg0Lrmx0HaHrlkM/zcE0=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "7.0.9-locietta-WSL2-xanmod1.1"
+        "version": "7.0.10-locietta-WSL2-xanmod1.1"
     },
     "xanmod-lts": {
         "cargoLock": null,
@@ -55,12 +55,12 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "7.0.9-xanmod1",
-            "sha256": "sha256-QlCbzTqHtVROdIEoqwrAf8mylLh2WHSqFY/eQ3jvrW8=",
+            "rev": "7.0.10-xanmod1",
+            "sha256": "sha256-6sanwas9XXjeGVHe7WvLOVnbHJ6g0RXek9sfOCE8080=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://gitlab.com/xanmod/linux.git"
         },
-        "version": "7.0.9-xanmod1"
+        "version": "7.0.10-xanmod1"
     }
 }
