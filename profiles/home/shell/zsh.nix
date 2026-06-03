@@ -38,11 +38,15 @@
           lib.mkOrder 550 ''
             export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
 
+            emulate zsh -c "$(direnv hook zsh)"
+
             if [[ -z $CURSOR_AGENT ]]; then
               # p10k instant prompt
               P10K_INSTANT_PROMPT="''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
               [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
             fi
+
+            emulate zsh -c "$(direnv hook zsh)"
           ''
         )
         (
@@ -50,7 +54,6 @@
             [[ -f "$HOME/.sh.local" ]] && source "$HOME/.sh.local"
             export GPG_TTY=$TTY
 
-            (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 
             if [[ -n $CURSOR_AGENT ]]; then
               ZSH_THEME="robbyrussell"  # Use a simpler theme in Cursor
@@ -60,8 +63,6 @@
               source "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme"
               source ${./_files/p10k-config/p10k.zsh}
             fi
-
-            (( ''${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
           ''
         )
       ];
