@@ -56,15 +56,15 @@
   };
   klipper = {
     pname = "klipper";
-    version = "b7c0329f1dcc159bb20148afa65b113a34c51efa";
+    version = "2fb3d54e2f8086fb310936c9136dbb05dc753ed5";
     src = fetchFromGitHub {
       owner = "Klipper3d";
       repo = "klipper";
-      rev = "b7c0329f1dcc159bb20148afa65b113a34c51efa";
+      rev = "2fb3d54e2f8086fb310936c9136dbb05dc753ed5";
       fetchSubmodules = false;
-      sha256 = "sha256-gbh8XFqLQS8p7OcDjcH4zW8saT8sKgOAYBvbDMpEgtc=";
+      sha256 = "sha256-jJ24cLoeJRdxNr0Ixz9O2JWxwDzZ4CJGRmK9dygDrZc=";
     };
-    date = "2026-05-27";
+    date = "2026-06-01";
   };
   klipper-cartographer = {
     pname = "klipper-cartographer";
@@ -210,15 +210,15 @@
   };
   klipper-screen = {
     pname = "klipper-screen";
-    version = "7b0b0fa1b03f4991b27bd9caab7d02524638e1b5";
+    version = "60ab1c6d6a105ab09919ef63561e5fd80580762a";
     src = fetchFromGitHub {
       owner = "jordanruthe";
       repo = "KlipperScreen";
-      rev = "7b0b0fa1b03f4991b27bd9caab7d02524638e1b5";
+      rev = "60ab1c6d6a105ab09919ef63561e5fd80580762a";
       fetchSubmodules = false;
-      sha256 = "sha256-4eva33lsHcCEHnm/wA+OuT9jCeNseg3oztYgMYBpDZ0=";
+      sha256 = "sha256-hiUO3+Acwc413VrMfmGazWQ01FMzj2KkXJADvmj1Bmg=";
     };
-    date = "2026-05-25";
+    date = "2026-06-02";
   };
   klipper-z-calibration = {
     pname = "klipper-z-calibration";
@@ -245,15 +245,15 @@
   };
   libdatachannel_latest = {
     pname = "libdatachannel_latest";
-    version = "74f9680928f721c8d6e306e07e667816ff3d1b20";
+    version = "ed2fb2c73f872c166d2266b11842448db3171eb1";
     src = fetchFromGitHub {
       owner = "paullouisageneau";
       repo = "libdatachannel";
-      rev = "74f9680928f721c8d6e306e07e667816ff3d1b20";
+      rev = "ed2fb2c73f872c166d2266b11842448db3171eb1";
       fetchSubmodules = true;
-      sha256 = "sha256-yk/tEXO1zFn4aiwiFhxwiPMB+3TIX1T4vWIZm0Dvu8k=";
+      sha256 = "sha256-hvnPke7JZ3eaEUqXv5ftjJ0/PFiMnHdKG/3IPS3arzI=";
     };
-    date = "2026-05-29";
+    date = "2026-06-03";
   };
   libjuice = {
     pname = "libjuice";
