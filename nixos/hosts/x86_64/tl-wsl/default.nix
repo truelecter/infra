@@ -42,6 +42,10 @@
 
   services.openssh.enable = true;
 
+  users.users.truelecter = {
+    uid = 1001;
+  };
+
   home-manager.users.truelecter = {
     imports = [
       inputs.nixos-vscode-server.homeModules.default

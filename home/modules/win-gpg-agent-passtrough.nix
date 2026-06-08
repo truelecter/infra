@@ -42,7 +42,7 @@
         };
 
         Service = {
-          Environment = "PATH=${pkgs.wslu}/bin:${pkgs.socat}/bin:${pkgs.coreutils}/bin";
+          Environment = "PATH=${pkgs.socat}/bin:${pkgs.coreutils}/bin";
           ExecStart = pkgs.writeShellScript "win-gpg-agent-${name}" ''
             getWinEnv() {
               # TODO this should be configurable
