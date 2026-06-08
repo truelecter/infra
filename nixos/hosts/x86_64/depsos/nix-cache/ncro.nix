@@ -89,6 +89,7 @@ in {
       settings = {
         server = {
           listen = "127.0.0.1:${ncroPort}";
+          cache_priority = 25;
         };
 
         upstreams = let
@@ -105,7 +106,7 @@ in {
           ++ [
             {
               url = "http://${config.services.atticd.settings.listen}/workflows";
-              priority = 90;
+              priority = 25;
               public_key = "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw=";
             }
           ];
