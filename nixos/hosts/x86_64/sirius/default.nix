@@ -1,8 +1,13 @@
-{suites, ...}: {
+{
+  suites,
+  profiles,
+  ...
+}: {
   imports =
     suites.base
     ++ suites._3d-printing
     ++ [
+      profiles.nixos.fs.zfs
       ./hardware-configuration.nix
       ./wifi.nix
       ./network-switch.nix

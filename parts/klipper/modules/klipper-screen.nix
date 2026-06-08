@@ -86,11 +86,11 @@ in {
             wantedBy = ["multi-user.target"];
 
             path = [
-              pkgs.xorg.xorgserver
-              pkgs.xorg.xauth
-              pkgs.xorg.xinit
-              pkgs.xorg.xsetroot
-              pkgs.xorg.xset
+              pkgs.xorg-server
+              pkgs.xauth
+              pkgs.xinit
+              pkgs.xsetroot
+              pkgs.xset
               pkgs.nettools
               pkgs.util-linux
             ];

@@ -5,19 +5,19 @@
   inputs = {
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     latest.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos.follows = "nixpkgs";
     # nixos.follows = "latest";
 
     darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+      url = "github:LnL7/nix-darwin/nix-darwin-26.05";
       inputs = {
         nixpkgs.follows = "nixos";
       };
     };
 
     home = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs = {
         nixpkgs.follows = "nixos";
       };
@@ -170,15 +170,26 @@
     };
 
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix/release-26.05";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
     };
 
-    # ncps = {
-    #   url = "github:kalbasit/ncps";
-    # };
+    ncps = {
+      url = "github:kalbasit/ncps/v0.10.0-rc9";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+
+    ncro = {
+      # url = "github:manic-systems/ncro";
+      url = "github:truelecter/ncro/feat/netrc";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
 
     # attic = {
     #   url = "github:ByteZ1337/attic/feat/upload-in-parts";
@@ -186,14 +197,6 @@
     #     nixpkgs.follows = "nixpkgs";
     #     nixpkgs-stable.follows = "nixpkgs";
     #     flake-parts.follows = "flake-parts";
-    #   };
-    # };
-
-    # zen-browser-flake = {
-    #   url = "github:0xc000022070/zen-browser-flake";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #     home-manager.follows = "home";
     #   };
     # };
   };
@@ -206,6 +209,12 @@
     extra-trusted-public-keys = [
       "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="
       "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "mic92.cachix.org-1:gi8IhgiT3CYZnJsaW7fxznzTkMUOn1RY4GmXdT/nXYQ="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
+      "truelecter.cachix.org-1:bWHkQ/OM0MLHB9L6gftyaawCrEYkeZyygAcuojwslE0="
+      "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
     ];
   };
 

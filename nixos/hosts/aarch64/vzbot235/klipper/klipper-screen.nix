@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   tl.services.klipper-screen = {
     enable = true;
     # package = pkgs.klipperscreen;
@@ -45,22 +45,5 @@
         params = ''{"script":"LED_FULL"}'';
       };
     };
-  };
-
-  services.xserver = {
-    enable = true;
-    logFile = "/dev/null";
-
-    displayManager = {
-      startx.enable = true;
-      xserverArgs = ["-keeptty" "-logverbose" "-verbose"];
-    };
-
-    excludePackages = with pkgs; [
-      xterm
-      xdg-utils
-      nixos-icons
-      xorg.iceauth
-    ];
   };
 }

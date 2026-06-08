@@ -15,6 +15,8 @@
       enable = true;
       enableCompletion = true;
 
+      dotDir = config.home.homeDirectory;
+
       history = {
         extended = true;
         ignoreDups = true;

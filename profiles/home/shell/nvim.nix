@@ -18,6 +18,9 @@
 
     plugins = [];
 
+    withRuby = false;
+    withPython3 = false;
+
     extraConfig = "";
   };
 }

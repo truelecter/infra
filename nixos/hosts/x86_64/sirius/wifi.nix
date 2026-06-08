@@ -5,7 +5,7 @@
 }: let
   wifiInterface = "wifi-ext";
 in {
-  users.groups.wifi.members = ["truelecter"];
+  users.groups.wpa_supplicant.members = ["truelecter"];
 
   networking.wireless = {
     enable = true;
@@ -25,12 +25,15 @@ in {
         priority = 100;
       };
     };
+
     secretsFile = config.sops.secrets.xata-password-env.path;
+
     extraConfig = ''
-      ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wifi
-      country=US
+      country=UA
       update_config=1
     '';
+
+    userControlled = true;
   };
 
   boot.extraModprobeConfig = ''

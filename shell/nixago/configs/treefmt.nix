@@ -1,9 +1,7 @@
 {pkgs, ...}: {
   output = "treefmt.toml";
   format = "toml";
-  # hook.extra = lib.stringsWithDeps.noDepEntry ''
-  #   export NODE_PATH=${pkgs.nodePackages.prettier-plugin-toml}/lib/node_modules:''${NODE_PATH:-}
-  # '';
+
   data = {
     global.excludes = ["**/sources/generated.*" "secrets/*" "parts/vscode-plugins/nix4vscode/generated.nix" ".direnv" "result"];
     formatter = {
@@ -12,7 +10,7 @@
         includes = ["*.nix"];
       };
       prettier = {
-        command = "${pkgs.nodePackages.prettier}/bin/prettier";
+        command = "${pkgs.prettier}/bin/prettier";
         # options = ["--plugin" "prettier-plugin-toml" "--write"];
         includes = [
           "*.css"

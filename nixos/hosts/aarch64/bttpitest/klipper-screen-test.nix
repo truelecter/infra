@@ -27,48 +27,6 @@
     };
   };
 
-  services.xserver = {
-    enable = true;
-    logFile = "/dev/null";
-
-    # videoDrivers = ["mesa"];
-
-    displayManager = {
-      startx.enable = true;
-      xserverArgs = ["-logverbose" "-verbose" "5" "-logverbose" "5"];
-    };
-
-    excludePackages = with pkgs; [
-      xterm
-      xdg-utils
-      nixos-icons
-      xorg.iceauth
-    ];
-
-    # extraConfig = ''
-    #   Section "Monitor"
-    #       Identifier "DSI-1"
-    #       Modeline "800x480_56" 26.10 800 859 861 913 480 487 489 510 -hsync -vsync
-    #   EndSection
-
-    #   Section "Screen"
-    #       Identifier "Screen0"
-    #       Device "Framebuffer"
-    #       Monitor "DSI-1"
-    #       DefaultDepth 24
-    #       SubSection "Display"
-    #           Modes "800x480_56"
-    #       EndSubSection
-    #   EndSection
-
-    #   Section "Device"
-    #       Identifier "Framebuffer"
-    #       Driver "fbdev"
-    #       Option "fbdev" "/dev/fb0"
-    #   EndSection
-    # '';
-  };
-
   hardware = {
     # firmware = [
     #   ((

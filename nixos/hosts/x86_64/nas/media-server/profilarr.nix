@@ -15,7 +15,7 @@ in {
   ];
 
   virtualisation.oci-containers.containers.profilarr = {
-    image = "santiagosayshey/profilarr:v1.1.4";
+    image = "ghcr.io/dictionarry-hub/profilarr:2.0.8";
 
     volumes = [
       "${stateDir}:/config"

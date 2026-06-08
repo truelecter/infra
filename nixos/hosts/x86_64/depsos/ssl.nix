@@ -7,7 +7,7 @@
     acceptTerms = true;
     defaults = {
       email = "andrew.panassiouk@gmail.com";
-      credentialsFile = config.sops.secrets.cloudflare.path;
+      environmentFile = config.sops.secrets.cloudflare.path;
       dnsProvider = "cloudflare";
     };
   };

@@ -62,9 +62,11 @@ in {
         prowlarr
         #shell
         lefthook
-        ncps
+        # ncps
         unifi
         ;
+
+      ncps = inputs.ncps.packages.${final.stdenv.hostPlatform.system}.default;
     };
 
     overlays.lix = final: prev: {

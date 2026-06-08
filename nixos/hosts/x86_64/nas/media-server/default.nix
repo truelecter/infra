@@ -27,7 +27,7 @@
       settings-sync.transmission.enable = true;
     };
 
-    jellyseerr.enable = true;
+    seerr.enable = true;
   };
 
   services.sonarr.settings.auth.required = "DisabledForLocalAddresses";

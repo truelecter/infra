@@ -1,6 +1,6 @@
 {
   imports = [
-    ./ncps.nix
     ./attic.nix
+    ./ncro.nix
   ];
 }
