@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home.shellAliases = {
     cursor = "~/.config/path/cursor";
     code = "~/.config/path/cursor";
@@ -17,8 +21,11 @@
     };
   };
 
-  programs.vscode = {
+  programs.cursor = {
     enable = true;
-    package = pkgs.code-cursor;
+
+    # Until I come up with better solution. See https://github.com/nix-community/home-manager/pull/8851
+    # Use everything from vscode as other modules set its settings
+    profiles.default = config.programs.vscode.profiles.default;
   };
 }
