@@ -4,7 +4,7 @@
   # nixpkgs & home-manager
   inputs = {
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    latest.url = "github:nixos/nixpkgs/nixos-unstable";
+    latest.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos.follows = "nixpkgs";
     # nixos.follows = "latest";
@@ -204,7 +204,6 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-proxy.tlctr.me"
-      "https://nix-cache.tlctr.me/workflows"
     ];
     extra-trusted-public-keys = [
       "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="

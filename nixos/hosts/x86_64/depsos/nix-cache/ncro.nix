@@ -17,6 +17,10 @@ in {
       # real_ip_header CF-Connecting-IP;
       # real_ip_recursive on;
 
+      appendConfig = ''
+        worker_rlimit_nofile 65536;
+      '';
+
       appendHttpConfig = ''
         proxy_cache_path ${storagePath} keys_zone=ncro-cache:100m levels=1:2 use_temp_path=off inactive=${cacheValidityDays}d max_size=250g;
 
