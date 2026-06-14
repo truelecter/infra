@@ -32,3 +32,4 @@ runs:
         endpoint: https://nix-cache.tlctr.me/
         cache: workflows
         token: ${{ inputs.attic-push-token }}
+        skip-use: true
