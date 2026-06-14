@@ -204,7 +204,6 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-proxy.tlctr.me"
-      "https://nix-cache.tlctr.me/workflows"
     ];
     extra-trusted-public-keys = [
       "nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk="
