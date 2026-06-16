@@ -106,8 +106,6 @@ in {
 
               eval "$(${pkgs.zsh-patina}/bin/zsh-patina activate)"
             fi
-
-            PENIS=2
           ''
         )
       ];

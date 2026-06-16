@@ -9,7 +9,7 @@
   oh-tmux-conf-local = "oh-my-tmux-local.conf";
   oh-tmux-conf-local-path = "${config.xdg.configHome}/${oh-tmux-conf-local}";
 
-  oh-my-tmux = pkgs.stdenvNoCC.mkDerivation rec {
+  oh-my-tmux = pkgs.stdenvNoCC.mkDerivation {
     pname = "oh-my-tmux";
 
     src = pkgs.fetchFromGitHub {
@@ -70,9 +70,6 @@ in {
       source-file "${oh-my-tmux-conf-path}";
     '';
   };
-
-  # xdg.configFile."tmux/tmux.conf".text = "";
-  # xdg.configFile."tmux/tmux.conf".source = "${oh-my-tmux}/.tmux.conf";
 
   xdg.configFile = {
     "${oh-my-tmux-conf}" = {

@@ -23,13 +23,5 @@
 
   programs.cursor = {
     enable = true;
-
-    # Until I come up with better solution. See https://github.com/nix-community/home-manager/pull/8851
-    # Use everything from vscode as other modules set its settings
-    # profiles.default = config.programs.vscode.profiles.default;
   };
-
-  programs.vscode-universal.usedDistributions = [
-    "cursor"
-  ];
 }
