@@ -2,7 +2,7 @@
   imports =
     suites.base
     ++ suites._3d-printing
-    ++ suites.rpi4
+    ++ suites.cm4
     ++ [
       ./hardware-configuration.nix
       ./klipper

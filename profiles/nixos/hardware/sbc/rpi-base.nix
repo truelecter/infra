@@ -4,6 +4,8 @@
   ...
 }: {
   boot = {
+    supportedFilesystems = ["vfat" "ext4"];
+
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {

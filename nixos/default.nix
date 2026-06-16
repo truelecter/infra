@@ -53,6 +53,17 @@
       }
     ];
 
+    cm4 = [
+      profiles.nixos.hardware.sbc.cm4
+      {
+        imports = [
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          self.modules.nixos.raspberry-pi-overlay
+          self.modules.nixos.nixos-raspberry-pi-overlays
+        ];
+      }
+    ];
+
     minecraft-server = with profiles; [
       {imports = [self.modules.nixos.minecraft-servers-with-overlay];}
       nixos.secrets.minecraft-servers
