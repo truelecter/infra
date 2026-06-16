@@ -3,13 +3,11 @@
   pkgs,
   ...
 }: {
-  programs.vscode.profiles.default = {
-    extensions =
-      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
-      [
-        "4ops.packer"
-        "hashicorp.terraform"
-      ];
+  programs.vscode-universal.profiles.default = {
+    extensions = [
+      "4ops.packer"
+      "hashicorp.terraform"
+    ];
 
     userSettings = {
       "[terraform]" = {
@@ -23,6 +21,7 @@
       "terraform.codelens.referenceCount" = true;
     };
   };
+
   home.packages = with pkgs; [
     tfenv
     terragrunt

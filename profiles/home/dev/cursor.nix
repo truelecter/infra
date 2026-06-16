@@ -1,6 +1,6 @@
 {
   pkgs,
-  config,
+  lib,
   ...
 }: {
   home.shellAliases = {
@@ -9,7 +9,7 @@
   };
 
   home.file = let
-    cursor = "${pkgs.code-cursor}/Applications/Cursor.app/Contents/Resources/app/bin/code";
+    cursor = lib.getExe pkgs.code-cursor;
   in {
     ".config/path/cursor" = {
       executable = true;
@@ -26,6 +26,10 @@
 
     # Until I come up with better solution. See https://github.com/nix-community/home-manager/pull/8851
     # Use everything from vscode as other modules set its settings
-    profiles.default = config.programs.vscode.profiles.default;
+    # profiles.default = config.programs.vscode.profiles.default;
   };
+
+  programs.vscode-universal.usedDistributions = [
+    "cursor"
+  ];
 }

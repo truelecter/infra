@@ -1,16 +1,10 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
-  programs.vscode.profiles.default = {
-    extensions =
-      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
-      [
-        # "arrterian.nix-env-selector"
-        "bbenoist.nix"
-        "jnoortheen.nix-ide"
-      ];
+{pkgs, ...}: {
+  programs.vscode-universal.profiles.default = {
+    extensions = [
+      # "arrterian.nix-env-selector"
+      "bbenoist.nix"
+      "jnoortheen.nix-ide"
+    ];
 
     userSettings = {
       "nix.serverPath" = "nixd";

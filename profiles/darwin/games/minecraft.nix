@@ -1,7 +1,7 @@
 {
   homebrew.casks = [
     "prismlauncher"
-    "zulu8"
-    "zulu17"
+    "zulu@8"
+    "zulu@17"
   ];
 }

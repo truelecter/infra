@@ -41,7 +41,6 @@
       la = "ls -la";
 
       path = "printf \\\"%b\\\\n\\\" \\\"\\\${PATH//:/\\\\\\n}\\\"";
-      tm = "tmux new-session -A -s main";
 
       issh = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
 
@@ -60,7 +59,7 @@
       LESS_TERMCAP_me = "$(tput sgr0 2> /dev/null)";
 
       # Don't clear the screen after quitting a `man` page.
-      MANPAGER = "less -X";
+      MANPAGER = lib.mkDefault "less -X";
     };
   };
 

@@ -67,6 +67,7 @@ in {
         ;
 
       ncps = inputs.ncps.packages.${final.stdenv.hostPlatform.system}.default;
+      zsh-patina = inputs.zsh-patina.packages.${final.stdenv.hostPlatform.system}.default;
     };
 
     overlays.lix = final: prev: {
@@ -84,7 +85,6 @@ in {
       overrides-overlay = {
         nixpkgs.overlays = [
           self.overlays.latest-packages
-          inputs.attic.overlays.default
         ];
       };
     };

@@ -191,14 +191,10 @@
       };
     };
 
-    # attic = {
-    #   url = "github:ByteZ1337/attic/feat/upload-in-parts";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #     nixpkgs-stable.follows = "nixpkgs";
-    #     flake-parts.follows = "flake-parts";
-    #   };
-    # };
+    zsh-patina = {
+      url = "github:michel-kraemer/zsh-patina";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -261,6 +257,7 @@
           ./parts/deploy-rs.nix
           ./parts/wsl
           ./parts/topology
+          ./parts/universal-vscode-setup.nix
 
           ./shell
 

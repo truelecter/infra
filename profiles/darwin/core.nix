@@ -76,7 +76,6 @@
     enable = true;
     casks = [
       "launchcontrol"
-      "alt-tab"
     ];
   };
 

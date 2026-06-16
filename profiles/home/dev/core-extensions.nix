@@ -1,14 +1,9 @@
 {
-  pkgs,
-  config,
-  ...
-}: {
-  programs.vscode = {
+  programs.vscode-universal = {
     profiles.default = {
       enableExtensionUpdateCheck = false;
       enableUpdateCheck = false;
       extensions =
-        pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
         [
           "coolbear.systemd-unit-file"
           "davidanson.vscode-markdownlint"

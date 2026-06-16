@@ -1,19 +1,13 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{pkgs, ...}: let
   helm-wrapped = pkgs.wrapHelm pkgs.kubernetes-helm {plugins = [pkgs.kubernetes-helmPlugins.helm-diff];};
 in {
-  programs.vscode.profiles.default = {
-    extensions =
-      pkgs.nix4vscode.forVscodeVersion config.programs.vscode.package.vscodeVersion
-      [
-        "lunuan.kubernetes-templates"
-        "ipedrazas.kubernetes-snippets"
-        "ms-kubernetes-tools.vscode-kubernetes-tools"
-        "tim-koehler.helm-intellisense"
-      ];
+  programs.vscode-universal.profiles.default = {
+    extensions = [
+      "lunuan.kubernetes-templates"
+      "ipedrazas.kubernetes-snippets"
+      "ms-kubernetes-tools.vscode-kubernetes-tools"
+      "tim-koehler.helm-intellisense"
+    ];
 
     userSettings = {
       "vscode-kubernetes.kubectl-path" = "${pkgs.kubectl}/bin/kubectl";

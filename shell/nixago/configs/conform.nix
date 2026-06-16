@@ -24,7 +24,7 @@
       builtins.readDir
       lib.attrsToList
       (map partName)
-      (builtins.filter (name: builtins.elem name ignoreParts))
+      (builtins.filter (name: !(builtins.elem name ignoreParts)))
     ];
 in
   exts.conform {

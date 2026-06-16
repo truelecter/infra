@@ -77,8 +77,6 @@ in {
     };
   };
 
-  environment.etc."flake".source = ../../../../.;
-
   sops.secrets = let
     inherit (config.services.archisteamfarm) dataDir;
 

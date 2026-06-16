@@ -927,7 +927,8 @@
         "nixpkgs-master": "nixpkgs-master",
         "nvfetcher": "nvfetcher",
         "pyproject-nix": "pyproject-nix",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "zsh-patina": "zsh-patina"
       }
     },
     "sops-nix": {
@@ -1092,6 +1093,26 @@
       "original": {
         "owner": "rasmus-kirk",
         "repo": "website-builder",
+        "type": "github"
+      }
+    },
+    "zsh-patina": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781451642,
+        "narHash": "sha256-M14IeK+Nsst+6RK6ayhq37YSoFPVptNqE9blVHDI1YM=",
+        "owner": "michel-kraemer",
+        "repo": "zsh-patina",
+        "rev": "fdbdce4514b146afbead7362d3f31662bbcd111b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michel-kraemer",
+        "repo": "zsh-patina",
         "type": "github"
       }
     }

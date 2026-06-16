@@ -39,6 +39,10 @@
     };
   };
 in {
+  home.shellAliases = {
+    tm = "tmux new-session -A -s main";
+  };
+
   programs.tmux = {
     enable = true;
 
