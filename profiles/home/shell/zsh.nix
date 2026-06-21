@@ -119,6 +119,10 @@ in {
         DISABLE_UNTRACKED_FILES_DIRTY = "true";
         HIST_STAMPS = "dd.mm.yyyy";
       };
+
+      setOptions = [
+        "INC_APPEND_HISTORY_TIME"
+      ];
     };
   };
 

@@ -3,6 +3,10 @@
   lib,
   ...
 }: {
+  imports = [
+    ./_core-extensions.nix
+  ];
+
   home.shellAliases = {
     cursor = "~/.config/path/cursor";
     code = "~/.config/path/cursor";

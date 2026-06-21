@@ -4,7 +4,7 @@
   },
   "yaml.format.singleQuote": true,
 
-  "terminal.integrated.scrollback": 1000000000000,
+  "terminal.integrated.scrollback": 100000,
   "update.mode": "none",
   "extensions.autoCheckUpdates": false,
   "terminal.integrated.macOptionClickForcesSelection": true,
@@ -54,12 +54,6 @@
     "switch:command"
   ],
   "gitlens.views.branches.branches.layout": "list",
-
-  "markdown-pdf.headerTemplate": "<div style=\"font-size: 9px; margin-left: 1cm;\">Andrii Panasiuk</div>",
-
-  "vetur.experimental.templateInterpolationService": true,
-  "vetur.format.options.useTabs": true,
-  "vetur.validation.templateProps": true,
 
   "typescript.updateImportsOnFileMove.enabled": "always",
 

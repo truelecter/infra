@@ -3,32 +3,17 @@
 in {
   programs.vscode-universal.profiles.default = {
     extensions = [
-      "lunuan.kubernetes-templates"
-      "ipedrazas.kubernetes-snippets"
-      "ms-kubernetes-tools.vscode-kubernetes-tools"
       "tim-koehler.helm-intellisense"
     ];
-
-    userSettings = {
-      "vscode-kubernetes.kubectl-path" = "${pkgs.kubectl}/bin/kubectl";
-      "vscode-kubernetes.helm-path" = "${helm-wrapped}/bin/helm";
-      "vscode-kubernetes.log-viewer.follow" = true;
-      # "vs-kubernetes" = {
-      #   "vscode-kubernetes.kubectl-path" = "${pkgs.kubectl}/bin/kubectl";
-      #   "vscode-kubernetes.helm-path" = "${pkgs.kubernetes-helm}/bin/helm";
-      #   "vscode-kubernetes.log-viewer.follow" = true;
-      # };
-    };
   };
 
   home.packages = with pkgs; [
     helm-wrapped
 
     kubectl
+    kubelogin-oidc
 
     dive
-    kubelogin-oidc
-    minikube
   ];
 
   programs.k9s = {

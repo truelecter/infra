@@ -45,7 +45,11 @@
         renderExtentions = nix4vscode.forVscodeVersion config.programs.${distribution}.package.vscodeVersion;
       in {
         programs.${distribution} = {
-          profiles = lib.mapAttrs (_: profile: profile // {extensions = renderExtentions profile.extensions;}) unviersal.profiles;
+          profiles =
+            lib.mapAttrs (
+              _: profile: profile // {extensions = renderExtentions (lib.unique profile.extensions);}
+            )
+            unviersal.profiles;
         };
       };
     in

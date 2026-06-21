@@ -25,11 +25,11 @@
     develop = with profiles.home; [
       dev.aws
       dev.k8s
-      dev.terraform
-      dev.nix
-      dev.go
-      dev.python
-      dev.embedded
+      dev.lang.terraform
+      dev.lang.nix
+      dev.lang.go
+      dev.lang.python
+      dev.lang.rust
     ];
 
     git = with profiles.home; [
@@ -39,8 +39,7 @@
     workstation = lib.flatten (
       with profiles.home;
         [
-          dev.cursor
-          dev.core-extensions
+          dev.ide.cursor
           dev.android
         ]
         ++ suites.base

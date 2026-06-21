@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: let
+  inherit (pkgs) alejandra nixd;
+in {
   programs.vscode-universal.profiles.default = {
     extensions = [
       # "arrterian.nix-env-selector"
@@ -7,11 +13,11 @@
     ];
 
     userSettings = {
-      "nix.serverPath" = "nixd";
+      "nix.serverPath" = "${lib.getExe nixd}";
       "nix.serverSettings" = {
         nixd = {
           formatting = {
-            command = ["alejandra"];
+            command = ["${lib.getExe alejandra}"];
           };
           # TODO: port https://github.com/MattSturgeon/nix-config/blob/27142064ea7f2ffc20172acc801c718e4589f8d3/nvim/config/lsp.nix#L21-L55 ?
           # options = {
@@ -23,8 +29,7 @@
     };
   };
 
-  home.packages = with pkgs; [
+  home.packages = [
     alejandra
-    nixd
   ];
 }
