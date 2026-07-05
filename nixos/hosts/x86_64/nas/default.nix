@@ -7,10 +7,11 @@
   imports =
     suites.base
     ++ [
-      inputs.nixarr.nixosModules.default
+      inputs.nixflix.nixosModules.default
 
       profiles.common.remote-builder
       profiles.nixos.fs.zfs
+      profiles.nixos.https-certificate-issuer
 
       profiles.nixos.containers.docker
 
@@ -18,7 +19,6 @@
 
       ./hardware-configuration.nix
       ./zfs-mounts.nix
-      # ./torrent.nix
       ./video-card.nix
       ./external.nix
       ./postgres.nix

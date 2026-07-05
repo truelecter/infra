@@ -1,5 +1,5 @@
 {config, ...}: let
-  stateDir = "${config.nixarr.stateDir}/profilarr";
+  stateDir = "${config.nixflix.stateDir}/profilarr";
 in {
   users = {
     groups.profilarr = {};

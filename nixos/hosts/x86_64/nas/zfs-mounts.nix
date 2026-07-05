@@ -10,6 +10,7 @@
     "d /mnt/db 775 share share"
     "d /mnt/pv 775 share share"
     "d /mnt/nixarr 775 root root"
+    "d /mnt/media-server 775 root root"
     "d /mnt/public 775 root media"
     "d /mnt/public/media 775 root media"
   ];
@@ -27,6 +28,11 @@
 
     "/mnt/nixarr" = {
       device = "tank/nixarr";
+      fsType = "zfs";
+    };
+
+    "/mnt/media-server" = {
+      device = "tank/media-server";
       fsType = "zfs";
     };
 

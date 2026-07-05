@@ -72,12 +72,9 @@
                 hostPlatform = system;
 
                 overlays = [
-                  # inputs.nix-vscode-extensions.overlays.default
                   self.overlays.latest-packages
 
                   inputs.nix4vscode.overlays.forVscode
-
-                  # inputs.zen-flake.overlay
                 ];
 
                 config.allowUnfree = true;

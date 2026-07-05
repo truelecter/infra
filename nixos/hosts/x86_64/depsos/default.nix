@@ -7,6 +7,7 @@
     suites.base
     ++ [
       profiles.common.remote-builder
+      profiles.nixos.https-certificate-issuer
 
       ./hardware-configuration.nix
 
@@ -21,11 +22,11 @@
       ./bots/pandora
       ./bots/asf.nix
 
-      ./ssl.nix
-
-      # ./matrix
+      ./nginx.nix
 
       ./nix-cache
+
+      ./sso.nix
     ];
 
   networking.networkmanager = {

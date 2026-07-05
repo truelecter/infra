@@ -3,63 +3,66 @@
   inputs,
   lib,
   ...
-}: {
-  nixarr.prowlarr = {
+}: let
+  secret = key: config.sops.secrets.${key}.path;
+in {
+  nixflix.prowlarr = {
     enable = true;
 
-    settings-sync = {
-      enable-nixarr-apps = true;
+    config = {
+      apiKey._secret = secret "prowlarr-api-key";
+
+      hostConfig = {
+        password._secret = secret "prowlarr-password";
+        authenticationRequired = "disabledForLocalAddresses";
+      };
 
       indexers = [
         {
-          sort_name = "0day kiev";
-          fields = {
-            username.secret = config.sops.secrets.prowlarr-0day-username.path;
-            password.secret = config.sops.secrets.prowlarr-0day-password.path;
-            stripcyrillic = true;
-          };
+          # name = "0day kiev";
+          name = "0day.kiev";
+          username._secret = secret "prowlarr-0day-username";
+          password._secret = secret "prowlarr-0day-password";
+          stripcyrillic = true;
           priority = 10;
         }
         {
-          sort_name = "toloka to";
-          fields = {
-            username.secret = config.sops.secrets.prowlarr-toloka-username.path;
-            password.secret = config.sops.secrets.prowlarr-toloka-password.path;
-            stripCyrillicLetters = true;
-          };
+          # name = "toloka to";
+          name = "Toloka.to";
+          username._secret = secret "prowlarr-toloka-username";
+          password._secret = secret "prowlarr-toloka-password";
+          stripCyrillicLetters = true;
           priority = 10;
         }
         {
-          sort_name = "mazepa";
-          fields = {
-            username.secret = config.sops.secrets.prowlarr-mazepa-username.path;
-            password.secret = config.sops.secrets.prowlarr-mazepa-password.path;
-            stripcyrillic = true;
-          };
+          # name = "mazepa";
+          name = "Mazepa";
+          username._secret = secret "prowlarr-mazepa-username";
+          password._secret = secret "prowlarr-mazepa-password";
+          stripcyrillic = true;
           priority = 10;
         }
         {
-          sort_name = "nyaa si";
+          # name = "nyaa si";
+          name = "Nyaa.si";
         }
         {
-          sort_name = "pirate bay";
+          # name = "pirate bay";
+          name = "The Pirate Bay";
           priority = 50;
         }
         {
-          sort_name = "rutracker org";
-          fields = {
-            username.secret = config.sops.secrets.prowlarr-rutracker-username.path;
-            password.secret = config.sops.secrets.prowlarr-rutracker-password.path;
-            russianLetters = true;
-            baseUrl = "https://rutracker.org/";
-          };
+          # name = "rutracker org";
+          name = "RuTracker.org";
+          username._secret = secret "prowlarr-rutracker-username";
+          password._secret = secret "prowlarr-rutracker-password";
+          russianLetters = true;
+          baseUrl = "https://rutracker.org/";
           priority = 49;
         }
       ];
     };
   };
-
-  services.prowlarr.settings.auth.required = "DisabledForLocalAddresses";
 
   sops.secrets = let
     sopsFile = "${inputs.self}/secrets/arr.yaml";
@@ -77,9 +80,24 @@
     };
   in
     lib.mergeAttrsList (
-      lib.mapCartesianProduct mkProwlarrSecret {
-        service = ["0day" "toloka" "mazepa" "rutracker"];
-        type = ["username" "password"];
-      }
+      (
+        lib.mapCartesianProduct mkProwlarrSecret {
+          service = ["0day" "toloka" "mazepa" "rutracker"];
+          type = ["username" "password"];
+        }
+      )
+      ++ [
+        {
+          "prowlarr-password" = {
+            inherit sopsFile owner;
+            key = "prowlarr/password";
+          };
+
+          "prowlarr-api-key" = {
+            inherit sopsFile owner;
+            key = "prowlarr/api-key";
+          };
+        }
+      ]
     );
 }

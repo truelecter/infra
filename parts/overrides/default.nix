@@ -52,14 +52,13 @@ in {
         nix-diff
         csvlens
         #
-        ffmpeg_5-full
         code-cursor
         tailscale
         vscode-extensions
         mosquitto
-        # nixarr
-        jellyseerr
+        # media-server
         prowlarr
+        ffmpeg_5-full
         #shell
         lefthook
         # ncps
@@ -68,6 +67,7 @@ in {
 
       ncps = inputs.ncps.packages.${final.stdenv.hostPlatform.system}.default;
       zsh-patina = inputs.zsh-patina.packages.${final.stdenv.hostPlatform.system}.default;
+      jellarr = inputs.jellarr.packages.${final.stdenv.hostPlatform.system}.default;
     };
 
     overlays.lix = final: prev: {

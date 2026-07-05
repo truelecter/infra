@@ -3,33 +3,36 @@
     ./samba.nix
 
     ./torrent.nix
-    # ./recyclarr
     ./prowlarr.nix
     ./profilarr.nix
+    ./radarr.nix
+    ./sonarr.nix
+
+    ./nginx.nix
+
+    ./jellyfin.nix
+    ./seerr.nix
+
+    ./users.nix
+
+    ./arr-oauth.nix
   ];
 
-  nixarr = {
+  users.users.truelecter.extraGroups = ["media"];
+
+  nixflix = {
     enable = true;
 
-    mediaDir = "/mnt/public/media";
+    stateDir = "/mnt/media-server";
+    downloadsDir = "/mnt/public/downloads";
+    mediaDir = "/mnt/public/media/library";
+
     mediaUsers = ["share" "truelecter"];
-    stateDir = "/mnt/nixarr";
 
-    jellyfin.enable = true;
-
-    sonarr = {
+    theme = {
       enable = true;
-      settings-sync.transmission.enable = true;
-    };
 
-    radarr = {
-      enable = true;
-      settings-sync.transmission.enable = true;
+      name = "overseerr";
     };
-
-    seerr.enable = true;
   };
-
-  services.sonarr.settings.auth.required = "DisabledForLocalAddresses";
-  services.radarr.settings.auth.required = "DisabledForLocalAddresses";
 }

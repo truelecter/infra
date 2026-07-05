@@ -7,7 +7,6 @@
     latest.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos.follows = "nixpkgs";
-    # nixos.follows = "latest";
 
     darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-26.05";
@@ -125,8 +124,8 @@
       url = "github:nvmd/nixos-raspberrypi/develop";
     };
 
-    nixarr = {
-      url = "github:rasmus-kirk/nixarr";
+    nixflix = {
+      url = "github:kiriwalawren/nixflix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
@@ -171,13 +170,6 @@
 
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    ncps = {
-      url = "github:kalbasit/ncps/v0.10.0-rc9";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
