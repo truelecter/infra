@@ -13,6 +13,7 @@ in {
 
       serverConfig = {
         LegalNotice.Accepted = true;
+        BitTorrent.Session.QueueingSystemEnabled = false;
         Preferences = {
           WebUI = {
             Username = "admin";
