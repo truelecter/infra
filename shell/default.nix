@@ -1,5 +1,7 @@
-{
+{inputs, ...}: {
   imports = [
+    inputs.devshell.flakeModule
+
     ./nixago
     ./touchup.nix
   ];

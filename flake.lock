@@ -203,6 +203,27 @@
         "type": "github"
       }
     },
+    "flake-parts_3": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "terranix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778716662,
+        "narHash": "sha256-m1Yf0wZ8j1OHjTc2UwHwyQRSnNeSgLJOd7q5Y45hzi4=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "f7c1a2d347e4c52d5fb8d10cb4d94b5884e546fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -321,16 +342,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1781975483,
-        "narHash": "sha256-YCvEHbRjncjdpIjX1bFND6J862FTcFzN24rPxVYumdQ=",
-        "owner": "truelecter",
+        "lastModified": 1784212632,
+        "narHash": "sha256-E4sJw/ySR3bEGd3eyqXErmDtjj0TF+8JGYXH9uDPctc=",
+        "owner": "manic-systems",
         "repo": "ncro",
-        "rev": "6415e02cf4a5f0454c8f1dd7b5b9ac14ce8e8d07",
+        "rev": "8681ec50b9570de825786f9ec599b1301214a1ff",
         "type": "github"
       },
       "original": {
-        "owner": "truelecter",
-        "ref": "feat/netrc",
+        "owner": "manic-systems",
         "repo": "ncro",
         "type": "github"
       }
@@ -757,6 +777,7 @@
         "nvfetcher": "nvfetcher",
         "pyproject-nix": "pyproject-nix",
         "sops-nix": "sops-nix",
+        "terranix": "terranix",
         "zsh-patina": "zsh-patina"
       }
     },
@@ -808,6 +829,43 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "terranix": {
+      "inputs": {
+        "flake-parts": "flake-parts_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1779965098,
+        "narHash": "sha256-Jh0Zk+g0pEbNopADEtqvrnhrl83rlNFHpn3Zhz4s+VM=",
+        "owner": "terranix",
+        "repo": "terranix",
+        "rev": "36ed5bdee452978d0e9c4450de872483ab541006",
+        "type": "github"
+      },
+      "original": {
+        "owner": "terranix",
+        "repo": "terranix",
         "type": "github"
       }
     },

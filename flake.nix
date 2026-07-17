@@ -75,6 +75,13 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+
+    terranix = {
+      url = "github:terranix/terranix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   # Tools
@@ -176,8 +183,7 @@
     };
 
     ncro = {
-      # url = "github:manic-systems/ncro";
-      url = "github:truelecter/ncro/feat/netrc";
+      url = "github:manic-systems/ncro";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
@@ -237,8 +243,6 @@
 
         imports = [
           inputs.flake-parts.flakeModules.modules
-          inputs.devshell.flakeModule
-          inputs.nix-topology.flakeModule
 
           ./parts/nixpkgs.nix
           ./parts/klipper
@@ -256,6 +260,8 @@
           ./nixos
           ./darwin
           ./home
+
+          ./terranix
         ];
 
         perSystem = {...}: {
