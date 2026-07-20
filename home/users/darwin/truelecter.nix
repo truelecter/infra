@@ -24,6 +24,5 @@ in {
   system.defaults.dock.persistent-apps = [
     "/Applications/Zen.app"
     "${home}/Applications/Home Manager Apps/Ghostty.app"
-    "${pkgs.vscode}/Applications/Visual Studio Code.app"
   ];
 }
