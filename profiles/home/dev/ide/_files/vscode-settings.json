@@ -34,8 +34,8 @@
   "terminal.integrated.fontSize": 14,
   "security.workspace.trust.untrustedFiles": "open",
   "workbench.fontAliasing": "antialiased",
-  "workbench.preferredDarkColorTheme": "Abyss",
   "workbench.iconTheme": "material-icon-theme",
+  "window.autoDetectColorScheme": false,
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter.notebook.ipynb"
   },
