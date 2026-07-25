@@ -40,13 +40,13 @@
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.19.2";
+    version = "v1.19.3";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.19.2";
+      rev = "v1.19.3";
       fetchSubmodules = false;
-      sha256 = "sha256-jUyA0XjR92I6RNTXtFKqrUG0v7P3DDnoThWHSxTQE2I=";
+      sha256 = "sha256-64nz3rtFCpB9+wbwm3uO9AtZHltkwWqQyM5CUYObIQk=";
     };
   };
   mediamtx-rpicamera = {

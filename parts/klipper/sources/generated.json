@@ -43,7 +43,7 @@
     },
     "kalico": {
         "cargoLock": null,
-        "date": "2026-07-15",
+        "date": "2026-07-19",
         "extract": null,
         "name": "kalico",
         "passthru": null,
@@ -55,12 +55,12 @@
             "name": null,
             "owner": "KalicoCrew",
             "repo": "kalico",
-            "rev": "708c9b13704ac9618cba6f65f4055eff19a1c3fa",
-            "sha256": "sha256-AcxVQBvXuDN3GDgAfzB7A0ej1FdSn8Bo1ia1f9ijJ+E=",
+            "rev": "f2532ee344d7c442c01c70c77069288482f940cb",
+            "sha256": "sha256-yXRq1JHJDmMwpOQKqIstPwy1Ukh2FGaq3zvPX63TeAI=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "708c9b13704ac9618cba6f65f4055eff19a1c3fa"
+        "version": "f2532ee344d7c442c01c70c77069288482f940cb"
     },
     "katapult": {
         "cargoLock": null,
@@ -358,7 +358,7 @@
     },
     "klipper-screen": {
         "cargoLock": null,
-        "date": "2026-07-18",
+        "date": "2026-07-22",
         "extract": null,
         "name": "klipper-screen",
         "passthru": null,
@@ -370,12 +370,12 @@
             "name": null,
             "owner": "jordanruthe",
             "repo": "KlipperScreen",
-            "rev": "4e9ca99997b5674e94a66e031b20e22d7303cd2a",
-            "sha256": "sha256-4Ri6AUXOfQVvzVFvPJBm44yXcjq7cukCd07G/YDDzgI=",
+            "rev": "ed40799f92f8a5044082aee75b832a9e97084c7f",
+            "sha256": "sha256-MfOtLjF1bZMf1dFGWjZBvR4Ev4YYEnJs8fq2iTuAd90=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "4e9ca99997b5674e94a66e031b20e22d7303cd2a"
+        "version": "ed40799f92f8a5044082aee75b832a9e97084c7f"
     },
     "klipper-z-calibration": {
         "cargoLock": null,
@@ -421,7 +421,7 @@
     },
     "libdatachannel_latest": {
         "cargoLock": null,
-        "date": "2026-07-18",
+        "date": "2026-07-24",
         "extract": null,
         "name": "libdatachannel_latest",
         "passthru": null,
@@ -433,12 +433,12 @@
             "name": null,
             "owner": "paullouisageneau",
             "repo": "libdatachannel",
-            "rev": "d5d31c7d794345d7aa536c074a9e17cbec95089d",
-            "sha256": "sha256-X41czDh2BGKS9Kq69vE6puBqoPp6plimIHRzbrSDjJ4=",
+            "rev": "a2627fb96c85c75064676ec2b1131d3779c1fc2a",
+            "sha256": "sha256-CiqAYMShH6qSjmMgmnkCwANwhICmwXsrG4rfTvgb5II=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "d5d31c7d794345d7aa536c074a9e17cbec95089d"
+        "version": "a2627fb96c85c75064676ec2b1131d3779c1fc2a"
     },
     "libjuice": {
         "cargoLock": null,
@@ -477,7 +477,7 @@
     },
     "mainsail": {
         "cargoLock": null,
-        "date": "2026-07-18",
+        "date": "2026-07-23",
         "extract": null,
         "name": "mainsail",
         "passthru": null,
@@ -489,12 +489,12 @@
             "name": null,
             "owner": "mainsail-crew",
             "repo": "mainsail",
-            "rev": "4b3358577beda37f04f2f43aad92aafbbd82babc",
-            "sha256": "sha256-sAzjca2fVxlcaPJsLcMedWTBx8SutZqFwWjopARDO3Y=",
+            "rev": "df0ef3e34b57cb3d2efc6247b22367052b14f4cb",
+            "sha256": "sha256-8Oyh2BfGe/yZ1jjTHO7VzDAjH5sWzAtyCqmKSq7x2dU=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "4b3358577beda37f04f2f43aad92aafbbd82babc"
+        "version": "df0ef3e34b57cb3d2efc6247b22367052b14f4cb"
     },
     "mobileraker-companion": {
         "cargoLock": null,
@@ -592,10 +592,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-YzWrujhiWNul9EWVeosqKWw5rUlaN8PiTH36+60g22I=",
+            "sha256": "sha256-TSyrq6d1DaCHwLyWmFItQ9QtqXySo4cl9KLo06OEq/k=",
             "type": "url",
-            "url": "https://github.com/Donkie/Spoolman/releases/download/v0.24.0/spoolman.zip"
+            "url": "https://github.com/Donkie/Spoolman/releases/download/v0.25.0/spoolman.zip"
         },
-        "version": "v0.24.0"
+        "version": "v0.25.0"
     }
 }
