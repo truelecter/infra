@@ -164,10 +164,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-y4/5dG/w7DSb3xZ2jxeplB0I06qCTYNM0+bxxnGUHtA=",
+            "sha256": "sha256-8z8l5z3iSZ7wy61RFI1zkYytnRfMbD/F1EJzUPY6PIM=",
             "type": "url",
-            "url": "https://github.com/EnigmaticaModpacks/ServerStarter/releases/download/v2.4.1/serverstarter-2.4.1.jar"
+            "url": "https://github.com/EnigmaticaModpacks/ServerStarter/releases/download/v2.4.6/serverstarter-2.4.6.jar"
         },
-        "version": "2.4.1"
+        "version": "2.4.6"
     }
 }
