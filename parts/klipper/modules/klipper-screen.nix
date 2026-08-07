@@ -115,12 +115,17 @@ in {
         lib.mkIf (!config.services.xserver.enable) {
           systemd.services."cage-tty1".serviceConfig.Restart = "always";
 
+          users.users.${cfg.user}.linger = true; # So that cage sessions work
+
           services.cage = {
             enable = true;
+
             inherit (cfg) user;
+
             environment = {
               GDK_BACKEND = "wayland";
             };
+
             extraArguments = ["-ds"];
             program = "${cfg.package}/bin/KlipperScreen --configfile /etc/klipper-screen.cfg";
           };

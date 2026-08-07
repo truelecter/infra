@@ -22,6 +22,7 @@ stdenvNoCC.mkDerivation {
   passthru.klipper = {
     config = false;
     extras = true;
+    forceExtrasDir = true;
     pythonDependencies = p:
       with p; [
         matplotlib
