@@ -8,15 +8,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-Ccgnlp5wLoK+aU2oDb8W299f9oGcM6N0sXV+G8CttFg=",
+            "sha256": "sha256-JmCJDTL/8sUQuOjnIQ20aZ/F3z6BwzSE4pE6AhcTCQE=",
             "type": "url",
-            "url": "https://github.com/video-dev/hls.js/releases/download/v1.6.16/release.zip"
+            "url": "https://github.com/video-dev/hls.js/releases/download/v1.6.17/release.zip"
         },
-        "version": "v1.6.16"
+        "version": "v1.6.17"
     },
     "libcamera": {
         "cargoLock": null,
-        "date": "2026-06-08",
+        "date": "2026-08-07",
         "extract": null,
         "name": "libcamera",
         "passthru": null,
@@ -28,12 +28,12 @@
             "name": null,
             "owner": "raspberrypi",
             "repo": "libcamera",
-            "rev": "06c385619acb10bbfb33f52f3abeb8f8c095f42b",
-            "sha256": "sha256-qSCaAW5WuHcdg+i6YVLEF0rj3uM0Usw+I+hjde7yWvQ=",
+            "rev": "ca0ba53ef1eec5e59dee7255863b943f5eaf6cfd",
+            "sha256": "sha256-i+CwRp5SEGHKMCpzIIySwm9n+/WDnpfrdit0/6D7PlA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "06c385619acb10bbfb33f52f3abeb8f8c095f42b"
+        "version": "ca0ba53ef1eec5e59dee7255863b943f5eaf6cfd"
     },
     "libcamera-apps": {
         "cargoLock": null,
@@ -70,12 +70,12 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx",
-            "rev": "v1.19.3",
-            "sha256": "sha256-64nz3rtFCpB9+wbwm3uO9AtZHltkwWqQyM5CUYObIQk=",
+            "rev": "v1.20.0",
+            "sha256": "sha256-bnbuIf3GdT+TCUHzAqvsS9wLPjDUGunpJoQBJFY4aTo=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v1.19.3"
+        "version": "v1.20.0"
     },
     "mediamtx-rpicamera": {
         "cargoLock": null,
