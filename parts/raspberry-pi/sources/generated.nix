@@ -8,10 +8,10 @@
 {
   hls-js = {
     pname = "hls-js";
-    version = "v1.6.17";
+    version = "v1.7.0";
     src = fetchurl {
-      url = "https://github.com/video-dev/hls.js/releases/download/v1.6.17/release.zip";
-      sha256 = "sha256-JmCJDTL/8sUQuOjnIQ20aZ/F3z6BwzSE4pE6AhcTCQE=";
+      url = "https://github.com/video-dev/hls.js/releases/download/v1.7.0/release.zip";
+      sha256 = "sha256-5vdCkXAg5vQ7VCcNcQZXY/LZLErPMtzPfddssogyssM=";
     };
   };
   libcamera = {
