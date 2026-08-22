@@ -12,7 +12,6 @@
 
       ./hardware-configuration.nix
       ./minecraft-servers
-      ./github-actions-builder.nix
     ];
 
   systemd.services.NetworkManager-wait-online.enable = false;
