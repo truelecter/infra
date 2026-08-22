@@ -8,6 +8,7 @@
     ++ suites.minecraft-server
     ++ [
       profiles.common.remote-builder
+      profiles.common.github-actions-builder
 
       ./hardware-configuration.nix
       ./minecraft-servers

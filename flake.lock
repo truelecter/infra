@@ -795,8 +795,7 @@
         "nvfetcher": "nvfetcher",
         "pyproject-nix": "pyproject-nix",
         "sops-nix": "sops-nix",
-        "terranix": "terranix",
-        "zsh-patina": "zsh-patina"
+        "terranix": "terranix"
       }
     },
     "sops-nix": {
@@ -921,26 +920,6 @@
       "original": {
         "owner": "Maroka-chan",
         "repo": "VPN-Confinement",
-        "type": "github"
-      }
-    },
-    "zsh-patina": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787327478,
-        "narHash": "sha256-Na3kL5r+GepWVWorAKGbmd3ZbC7fU548HQ6+34TdZ3c=",
-        "owner": "michel-kraemer",
-        "repo": "zsh-patina",
-        "rev": "47195cbdfaa0b7a6fdafa1b6be18b76b9f382086",
-        "type": "github"
-      },
-      "original": {
-        "owner": "michel-kraemer",
-        "repo": "zsh-patina",
         "type": "github"
       }
     }

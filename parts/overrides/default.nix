@@ -61,12 +61,12 @@ in {
         ffmpeg_5-full
         #shell
         lefthook
+        zsh-patina
         # ncps
         unifi
         ;
 
       ncps = inputs.ncps.packages.${final.stdenv.hostPlatform.system}.default;
-      zsh-patina = inputs.zsh-patina.packages.${final.stdenv.hostPlatform.system}.default;
       jellarr = inputs.jellarr.packages.${final.stdenv.hostPlatform.system}.default;
     };
 
