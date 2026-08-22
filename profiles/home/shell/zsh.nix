@@ -9,7 +9,7 @@
   direnv = lib.getExe config.programs.direnv.package;
 
   pkill =
-    if pkgs.stdenv.isDarwin
+    if pkgs.stdenv.hostPlatform.isDarwin
     then "/usr/bin/pkill"
     else "${pkgs.procps}/bin/pkill";
 in {

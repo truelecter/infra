@@ -74,30 +74,38 @@ in {
   };
 
   nixflix = {
-    radarr.settings = {
-      auth = {
-        required = lib.mkForce "Enabled";
-        method = lib.mkForce "External";
-      };
-    };
-    sonarr.settings = {
-      auth = {
-        required = lib.mkForce "Enabled";
-        method = lib.mkForce "External";
-      };
-    };
-    sonarr-anime.settings = {
-      auth = {
-        required = lib.mkForce "Enabled";
-        method = lib.mkForce "External";
-      };
-    };
-    prowlarr.settings = {
-      auth = {
-        required = lib.mkForce "Enabled";
-        method = lib.mkForce "External";
-      };
-    };
+    radarr.config.hostConfig.authenticationMethod = "external";
+
+    sonarr.config.hostConfig.authenticationMethod = "external";
+
+    sonarr-anime.config.hostConfig.authenticationMethod = "external";
+
+    prowlarr.config.hostConfig.authenticationMethod = "external";
+
+    # radarr.settings = {
+    #   auth = {
+    #     required = lib.mkForce "Enabled";
+    #     method = lib.mkForce "External";
+    #   };
+    # };
+    # sonarr.settings = {
+    #   auth = {
+    #     required = lib.mkForce "Enabled";
+    #     method = lib.mkForce "External";
+    #   };
+    # };
+    # sonarr-anime.settings = {
+    #   auth = {
+    #     required = lib.mkForce "Enabled";
+    #     method = lib.mkForce "External";
+    #   };
+    # };
+    # prowlarr.settings = {
+    #   auth = {
+    #     required = lib.mkForce "Enabled";
+    #     method = lib.mkForce "External";
+    #   };
+    # };
 
     torrentClients.qbittorrent.serverConfig.Preferences.WebUI = {
       LocalHostAuth = lib.mkForce false;

@@ -1,5 +1,6 @@
 {
   config,
+  options,
   inputs,
   lib,
   ...
@@ -18,20 +19,14 @@ in {
     };
   };
 
-  nixflix.seerr.radarr.Radarr = {
-    activeProfileName = "1080p Balanced";
-
-    # default values (overriden because of how module created)
-    hostname = config.nixflix.radarr.connectionAddress;
-    port = config.nixflix.radarr.config.hostConfig.port or 7878;
-    inherit (config.nixflix.radarr.config) apiKey;
-    baseUrl = config.nixflix.radarr.config.hostConfig.urlBase;
-    activeDirectory = builtins.head (config.nixflix.radarr.mediaDirs or ["/data/media/movies"]);
-    isDefault = true;
-    externalUrl =
-      if config.nixflix.reverseProxy.enable
-      then "${config.nixflix.seerr.externalUrlScheme}://${config.nixflix.radarr.subdomain}.${config.nixflix.reverseProxy.domain}${config.nixflix.radarr.config.hostConfig.urlBase}"
-      else "";
+  nixflix.seerr.radarr = let
+    inherit (options.nixflix.seerr.radarr.default) Radarr;
+  in {
+    Radarr =
+      Radarr
+      // {
+        activeProfileName = "1080p Balanced";
+      };
   };
 
   sops.secrets = let
