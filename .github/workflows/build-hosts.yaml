@@ -86,12 +86,12 @@ jobs:
         ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
         mkdir -p /etc/ssh/
-        echo "Host linux-builder"                      | sudo tee -a /etc/ssh/ssh_config
-        echo "  Hostname $BUILDER_HOST"                | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  Port $BUILDER_PORT"                    | sudo tee -a /etc/ssh/ssh_config
-        echo "  HostKeyAlias $BUILDER_HOST"            | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  IdentityFile /etc/nix/builder_ed25519" | sudo tee -a /etc/ssh/ssh_config
-        echo "  User gha-builder"                      | sudo tee -a /etc/ssh/ssh_config
+        echo "Host linux-builder"                           | sudo tee -a /etc/ssh/ssh_config
+        echo "  Hostname $BUILDER_HOST"                     | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  Port $BUILDER_PORT"                         | sudo tee -a /etc/ssh/ssh_config
+        echo "  HostKeyAlias [$BUILDER_HOST]:$BUILDER_PORT" | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  IdentityFile /etc/nix/builder_ed25519"      | sudo tee -a /etc/ssh/ssh_config
+        echo "  User gha-builder"                           | sudo tee -a /etc/ssh/ssh_config
 
         echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
 
