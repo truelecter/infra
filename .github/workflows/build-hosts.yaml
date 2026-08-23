@@ -83,7 +83,7 @@ jobs:
         sudo chmod 600 /etc/nix/builder_ed25519
 
         sudo mkdir -p /var/root/.ssh
-        ssh-keyscan -H "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
+        ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
         mkdir -p /etc/ssh/
         echo "Host linux-builder"                      | sudo tee -a /etc/ssh/ssh_config
