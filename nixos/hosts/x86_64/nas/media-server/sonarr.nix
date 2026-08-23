@@ -1,5 +1,6 @@
 {
   config,
+  options,
   inputs,
   lib,
   ...
@@ -7,44 +8,20 @@
   secret = key: config.sops.secrets.${key}.path;
 in {
   nixflix = {
-    seerr.sonarr = {
-      Sonarr = {
-        activeProfileName = "1080p Balanced";
+    seerr.sonarr = let
+      defaults = options.nixflix.seerr.sonarr.default;
+    in {
+      Sonarr =
+        defaults.Sonarr
+        // {
+          activeProfileName = "1080p Balanced";
+        };
 
-        # default values (overriden because of how module created)
-        hostname = config.nixflix.sonarr.connectionAddress;
-        port = config.nixflix.sonarr.config.hostConfig.port or 8989;
-        inherit (config.nixflix.sonarr.config) apiKey;
-        baseUrl = config.nixflix.sonarr.config.hostConfig.urlBase;
-        activeDirectory = builtins.head (config.nixflix.sonarr.mediaDirs or ["/data/media/tv"]);
-        activeAnimeDirectory = builtins.head (config.nixflix.sonarr.mediaDirs or ["/data/media/tv"]);
-        seriesType = "standard";
-        animeSeriesType = "standard";
-        isDefault = true;
-        externalUrl =
-          if config.nixflix.reverseProxy.enable
-          then "${config.nixflix.seerr.externalUrlScheme}://${config.nixflix.sonarr.subdomain}.${config.nixflix.reverseProxy.domain}${config.nixflix.sonarr.config.hostConfig.urlBase}"
-          else "";
-      };
-
-      "Sonarr Anime" = {
-        # activeProfileName = "Anime 1080p";
-
-        # default values (overriden because of how module created)
-        hostname = config.nixflix."sonarr-anime".connectionAddress;
-        port = config.nixflix.sonarr-anime.config.hostConfig.port or 8990;
-        inherit (config.nixflix.sonarr-anime.config) apiKey;
-        baseUrl = config.nixflix.sonarr-anime.config.hostConfig.urlBase;
-        activeDirectory = builtins.head (config.nixflix.sonarr-anime.mediaDirs or ["/data/media/anime"]);
-        activeAnimeDirectory = builtins.head (config.nixflix.sonarr-anime.mediaDirs or ["/data/media/anime"]);
-        seriesType = "standard";
-        animeSeriesType = "anime";
-        isDefault = false;
-        externalUrl =
-          if config.nixflix.reverseProxy.enable
-          then "${config.nixflix.seerr.externalUrlScheme}://${config.nixflix.sonarr-anime.subdomain}.${config.nixflix.reverseProxy.domain}${config.nixflix.sonarr-anime.config.hostConfig.urlBase}"
-          else "";
-      };
+      "Sonarr Anime" =
+        defaults."Sonarr Anime"
+        // {
+          activeProfileName = "Anime 1080p";
+        };
     };
 
     sonarr = {

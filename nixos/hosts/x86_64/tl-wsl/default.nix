@@ -70,5 +70,10 @@
     };
   };
 
+  environment.systemPackages = [
+    pkgs.nixd
+    pkgs.alejandra
+  ];
+
   # boot.binfmt.emulatedSystems = ["aarch64-linux"];
 }

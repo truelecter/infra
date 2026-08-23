@@ -28,7 +28,7 @@ lib.mkMerge [
     };
   }
   (
-    lib.mkIf pkgs.stdenv.isDarwin {
+    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       programs.ghostty = {
         package = pkgs.ghostty-bin;
 

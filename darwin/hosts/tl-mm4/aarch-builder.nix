@@ -26,6 +26,7 @@
       }
       profiles.common.remote-builder
       profiles.nixos.faster-linux
+      profiles.common.github-actions-builder
     ];
   };
 in {

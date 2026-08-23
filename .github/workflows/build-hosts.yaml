@@ -63,25 +63,35 @@ jobs:
         attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Tailscale
+      if: ${{ startsWith(matrix.host.os, 'macos') }}
+      uses: tailscale/github-action@v4
+      with:
+        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+        tags: tag:ci
+        ping: tl-mm4
+
     - name: Create aarch64-linux builder
       if: ${{ startsWith(matrix.host.os, 'macos') }}
       env:
         BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
-        BUILDER_HOST: ${{secrets.AARCH64_BUILDER_HOSTNAME}}
+        BUILDER_HOST: tl-mm4
+        BUILDER_PORT: 3022
       run: |
         echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
         sudo chmod 600 /etc/nix/builder_ed25519
 
         sudo mkdir -p /var/root/.ssh
-        ssh-keyscan -H "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
+        ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
         mkdir -p /etc/ssh/
-        echo "Host linux-builder"                      | sudo tee -a /etc/ssh/ssh_config
-        echo "  Hostname $BUILDER_HOST"                | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  Port 22"                               | sudo tee -a /etc/ssh/ssh_config
-        echo "  HostKeyAlias $BUILDER_HOST"            | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  IdentityFile /etc/nix/builder_ed25519" | sudo tee -a /etc/ssh/ssh_config
-        echo "  User gha-builder"                      | sudo tee -a /etc/ssh/ssh_config
+        echo "Host linux-builder"                           | sudo tee -a /etc/ssh/ssh_config
+        echo "  Hostname $BUILDER_HOST"                     | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  Port $BUILDER_PORT"                         | sudo tee -a /etc/ssh/ssh_config
+        echo "  HostKeyAlias [$BUILDER_HOST]:$BUILDER_PORT" | sudo tee -a /etc/ssh/ssh_config > /dev/null
+        echo "  IdentityFile /etc/nix/builder_ed25519"      | sudo tee -a /etc/ssh/ssh_config
+        echo "  User gha-builder"                           | sudo tee -a /etc/ssh/ssh_config
 
         echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
 

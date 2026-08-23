@@ -8,10 +8,10 @@
     ++ suites.minecraft-server
     ++ [
       profiles.common.remote-builder
+      profiles.common.github-actions-builder
 
       ./hardware-configuration.nix
       ./minecraft-servers
-      ./github-actions-builder.nix
     ];
 
   systemd.services.NetworkManager-wait-online.enable = false;

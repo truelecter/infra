@@ -37,13 +37,13 @@ in {
     distributedBuilds = true;
 
     buildMachines = map mkBuildMachine [
-      {
-        maxJobs = 4;
-        hostName = "oracle";
-        systems = [
-          "aarch64-linux"
-        ];
-      }
+      # {
+      #   maxJobs = 4;
+      #   hostName = "oracle";
+      #   systems = [
+      #     "aarch64-linux"
+      #   ];
+      # }
       {
         maxJobs = 10;
         hostName = "mm4-builder";

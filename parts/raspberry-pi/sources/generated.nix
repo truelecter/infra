@@ -8,45 +8,45 @@
 {
   hls-js = {
     pname = "hls-js";
-    version = "v1.7.0";
+    version = "v1.7.1";
     src = fetchurl {
-      url = "https://github.com/video-dev/hls.js/releases/download/v1.7.0/release.zip";
-      sha256 = "sha256-5vdCkXAg5vQ7VCcNcQZXY/LZLErPMtzPfddssogyssM=";
+      url = "https://github.com/video-dev/hls.js/releases/download/v1.7.1/release.zip";
+      sha256 = "sha256-hjzDEoDTiOb+ueCNCyRrmLiN1qFv2B2e4V3T47Lsyes=";
     };
   };
   libcamera = {
     pname = "libcamera";
-    version = "ca0ba53ef1eec5e59dee7255863b943f5eaf6cfd";
+    version = "6c1dd9d55573010f710c9e190a73e7e76f0d9432";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera";
-      rev = "ca0ba53ef1eec5e59dee7255863b943f5eaf6cfd";
+      rev = "6c1dd9d55573010f710c9e190a73e7e76f0d9432";
       fetchSubmodules = false;
-      sha256 = "sha256-i+CwRp5SEGHKMCpzIIySwm9n+/WDnpfrdit0/6D7PlA=";
+      sha256 = "sha256-r3ste6OwCrNvgD0oAQ+XaoWYPNVJihFW1moPDueNtnM=";
     };
-    date = "2026-08-07";
+    date = "2026-08-17";
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "9270b6013c4575dff2e0625c0f4b8ae750218b0f";
+    version = "200165a6f8e055aae613b927137b6ac7cceba37f";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "9270b6013c4575dff2e0625c0f4b8ae750218b0f";
+      rev = "200165a6f8e055aae613b927137b6ac7cceba37f";
       fetchSubmodules = false;
-      sha256 = "sha256-VYMC4WgRyJ0cTqBjSj4+FePyGokVoAvifyKgU6n1314=";
+      sha256 = "sha256-zXVGwry9bpQejNfzBrhKECm6mGWwxY70uC3SzcKhyjs=";
     };
-    date = "2026-07-30";
+    date = "2026-08-20";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.20.0";
+    version = "v1.20.1";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.20.0";
+      rev = "v1.20.1";
       fetchSubmodules = false;
-      sha256 = "sha256-bnbuIf3GdT+TCUHzAqvsS9wLPjDUGunpJoQBJFY4aTo=";
+      sha256 = "sha256-L9dRwOD5JCu3ZczTxeb3a6ShHMXGWNXVN5KAa/7bcjM=";
     };
   };
   mediamtx-rpicamera = {
