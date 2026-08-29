@@ -99,9 +99,6 @@
 
         users.${username} = {
           home.stateVersion = lib.mkDefault "22.11";
-
-          # Silence gemini-cli -> antigravity warning
-          catppuccin.gemini-cli.enable = false;
         };
       };
 
