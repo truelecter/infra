@@ -91,11 +91,11 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx-rpicamera",
-            "rev": "v2.8.0",
-            "sha256": "sha256-dqrpsHJa0e3k2qAD9XVeRTakGajKCgt+bDgXj2iJwYY=",
+            "rev": "v2.9.0",
+            "sha256": "sha256-YZg5XvfMJlyt0BO9EzHLmYjXzurVZ/2zQB++hxPDhF4=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v2.8.0"
+        "version": "v2.9.0"
     }
 }
