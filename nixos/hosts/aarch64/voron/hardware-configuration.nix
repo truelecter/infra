@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   # Breaks bluetooth
   # imports = [
   #   "${modulesPath}/installer/sd-card/sd-image-aarch64-installer.nix"
@@ -31,7 +27,9 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  hardware.deviceTree.filter = "bcm2711-rpi-4-b.dtb";
-
-  environment.etc."uboot/u-boot.bin".source = "${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin";
+  hardware.raspberry-pi.configtxt.settings.all = {
+    start_x = 1;
+    gpu_mem = 256;
+    max_framebuffers = 2;
+  };
 }

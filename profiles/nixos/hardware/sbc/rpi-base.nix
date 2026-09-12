@@ -54,4 +54,16 @@
   systemd.tmpfiles.packages = [
     pkgs.raspberrypi-udev-rules
   ];
+
+  # preffered the deviceTree from nixos-hardware
+  boot.loader.generic-extlinux-compatible.useGenerationDeviceTree = lib.mkOverride 999 false;
+
+  # from nixos-hardware
+  hardware.raspberry-pi.firmware = {
+    enable = lib.mkOverride 999 true;
+    uboot = {
+      enable = true;
+      package = pkgs.ubootRaspberryPiAarch64;
+    };
+  };
 }

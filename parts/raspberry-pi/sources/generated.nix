@@ -8,10 +8,10 @@
 {
   hls-js = {
     pname = "hls-js";
-    version = "v1.7.1";
+    version = "v1.7.3";
     src = fetchurl {
-      url = "https://github.com/video-dev/hls.js/releases/download/v1.7.1/release.zip";
-      sha256 = "sha256-hjzDEoDTiOb+ueCNCyRrmLiN1qFv2B2e4V3T47Lsyes=";
+      url = "https://github.com/video-dev/hls.js/releases/download/v1.7.3/release.zip";
+      sha256 = "sha256-q72oXz6bgyX8a42/T6YS6ocUTrrZPCFQWU5kqtWOxSk=";
     };
   };
   libcamera = {
@@ -28,25 +28,25 @@
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "200165a6f8e055aae613b927137b6ac7cceba37f";
+    version = "6ddd6ba738df3f2c97065899ed41fe6177b634c8";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "200165a6f8e055aae613b927137b6ac7cceba37f";
+      rev = "6ddd6ba738df3f2c97065899ed41fe6177b634c8";
       fetchSubmodules = false;
-      sha256 = "sha256-zXVGwry9bpQejNfzBrhKECm6mGWwxY70uC3SzcKhyjs=";
+      sha256 = "sha256-0wYwPRbVZCW8DtpxQGyNqEBhwUsrOl+yGJ7AJdVNQzs=";
     };
-    date = "2026-08-20";
+    date = "2026-09-03";
   };
   mediamtx = {
     pname = "mediamtx";
-    version = "v1.20.1";
+    version = "v1.21.0";
     src = fetchFromGitHub {
       owner = "bluenviron";
       repo = "mediamtx";
-      rev = "v1.20.1";
+      rev = "v1.21.0";
       fetchSubmodules = false;
-      sha256 = "sha256-L9dRwOD5JCu3ZczTxeb3a6ShHMXGWNXVN5KAa/7bcjM=";
+      sha256 = "sha256-Cuj5xUTDu9wl1Q2bHgBNMqU0YEtqkRvQrQRkKbK3QUk=";
     };
   };
   mediamtx-rpicamera = {

@@ -5,6 +5,7 @@
     ++ suites.cm4
     ++ [
       ./hardware-configuration.nix
+      ./camera.nix
       ./klipper
       ./network.nix
       # ./wifi.nix

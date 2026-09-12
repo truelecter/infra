@@ -27,11 +27,14 @@ disable_overscan=1
 # Supported in newer board revisions
 arm_boost=1
 
+# Try 2711 XHCI USB for camera
+# otg_mode=1
+
 [cm4]
 # Enable host mode on the 2711 built-in XHCI USB controller.
 # This line should be removed if the legacy DWC2 controller is required
 # (e.g. for USB device mode) or if USB support is not required.
-# otg_mode=1
+otg_mode=1
 
 [all]
 # Boot in 64-bit mode.
@@ -46,6 +49,9 @@ enable_uart=1
 # when attempting to show low-voltage or overtemperature warnings.
 avoid_warnings=1
 
+#over_voltage=2
+#gpu_freq=200
 start_x=1
-dtparam=ant2
+gpu_mem=256
+max_framebuffers=2
 ```

@@ -10,6 +10,8 @@
   # sdImage.compressImage = false;
 
   boot = {
+    # until hardware.deviceTree.overlays are migrated to hardware.raspberry-pi.configtxt.deviceTreeOverlays
+    loader.generic-extlinux-compatible.useGenerationDeviceTree = true;
     kernelParams = [
       "console=ttyS0,115200"
       "console=tty1"
@@ -59,21 +61,13 @@
     };
   };
 
-  environment.systemPackages = [
-    (
-      pkgs.v4l-utils.override
-      {
-        withGUI = false;
-      }
-    )
-    pkgs.camera-streamer
-  ];
-
-  users.groups.dma-heap = {};
-
-  services.udev.extraRules = ''
-    SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
-  '';
-
   powerManagement.cpuFreqGovernor = "performance";
+
+  # Not ported yet
+  hardware.raspberry-pi.firmware.enable = false;
+  hardware.raspberry-pi.configtxt.settings.all = {
+    start_x = 1;
+    gpu_mem = 256;
+    max_framebuffers = 2;
+  };
 }

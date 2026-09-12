@@ -117,8 +117,7 @@
 
   boot.blacklistedKernelModules = ["snd-usb-audio"]; # Disable mic on cameras for some USB bandwidth
 
-  hardware.raspberry-pi."4".dwc2 = {
-    enable = true;
-    dr_mode = "host";
-  };
+  hardware.raspberry-pi.configtxt.deviceTreeOverlays.pi4 = [
+    {dwc2.dr_mode = "host";}
+  ];
 }

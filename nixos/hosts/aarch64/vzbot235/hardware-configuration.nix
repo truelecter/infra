@@ -10,6 +10,8 @@
   # sdImage.compressImage = false;
 
   boot = {
+    # until hardware.deviceTree.overlays are migrated to hardware.raspberry-pi.configtxt.deviceTreeOverlays
+    loader.generic-extlinux-compatible.useGenerationDeviceTree = true;
     kernelParams = [
       "console=ttyS0,115200"
       "console=tty1"
@@ -31,7 +33,6 @@
 
   hardware = {
     deviceTree = {
-      filter = "bcm2711-rpi-4-b.dtb";
       overlays = let
         overlay = name: {
           inherit name;
@@ -52,4 +53,12 @@
   };
 
   powerManagement.cpuFreqGovernor = "performance";
+
+  # Not ported yet
+  hardware.raspberry-pi.firmware.enable = false;
+  hardware.raspberry-pi.configtxt.settings.all = {
+    start_x = 1;
+    gpu_mem = 256;
+    max_framebuffers = 2;
+  };
 }

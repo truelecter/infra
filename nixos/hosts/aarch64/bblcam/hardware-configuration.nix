@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{config, ...}: {
   # imports = [
   #   "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   # ];
@@ -36,7 +32,12 @@
     };
   };
 
-  boot.kernelParams = ["8250.nr_uarts=1" "console=ttyS0,115200n8"];
+  boot = {
+    kernelParams = ["8250.nr_uarts=1" "console=ttyS0,115200n8"];
+
+    # until hardware.deviceTree.overlays are migrated to hardware.raspberry-pi.configtxt.deviceTreeOverlays
+    loader.generic-extlinux-compatible.useGenerationDeviceTree = true;
+  };
 
   powerManagement.cpuFreqGovernor = "performance";
 
@@ -72,6 +73,4 @@
       }
     ];
   };
-
-  environment.etc."uboot/u-boot.bin".source = "${pkgs.ubootRaspberryPi3_64bit}/u-boot.bin";
 }
