@@ -12,6 +12,7 @@
 
     ./jellyfin.nix
     ./seerr.nix
+    ./patches/seerr-libraries.nix
 
     ./users.nix
 
@@ -24,7 +25,7 @@
     enable = true;
 
     stateDir = "/mnt/media-server";
-    downloadsDir = "/mnt/public/downloads";
+    downloadsDir = "/mnt/public/media/downloads";
     mediaDir = "/mnt/public/media/library";
 
     mediaUsers = ["share" "truelecter"];

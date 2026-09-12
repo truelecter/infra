@@ -63,7 +63,7 @@
     enable = lib.mkOverride 999 true;
     uboot = {
       enable = true;
-      package = pkgs.ubootRaspberryPiAarch64;
+      package = lib.mkOverride 999 pkgs.ubootRaspberryPiAarch64;
     };
   };
 }

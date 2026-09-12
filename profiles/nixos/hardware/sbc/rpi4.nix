@@ -14,5 +14,5 @@
 
   # from nixos-hardware
   hardware.raspberry-pi.firmware.uboot.package = pkgs.ubootRaspberryPi4_64bit;
-  hardware.deviceTree.filter = "bcm2711-rpi-4-b.dtb";
+  hardware.deviceTree.filter = lib.mkOverride 999 "bcm2711-rpi-4-b.dtb";
 }

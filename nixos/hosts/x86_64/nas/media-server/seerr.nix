@@ -14,8 +14,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "michaelhthomas";
       repo = "seerr";
-      rev = "aebd4433738ff01a471642210537bb4e1020d1c2";
-      sha256 = "sha256-6HR1OMqwaDds0B8u6iA/LTcxF9qtuywzhYsdJ0e3Mkw=";
+      rev = "2d1a2ed233d13ee216b147951afda8321d42f5d2";
+      sha256 = "sha256-eu3ITUhwQYzMPdMu0Adi/Hpu5e+ho18ye/pX/KsDaVw==";
     };
 
     pname = "seerr";
@@ -26,7 +26,7 @@
     pnpmDeps = pkgs.fetchPnpmDeps {
       inherit pname version src pnpm;
       fetcherVersion = 3;
-      hash = "sha256-sraOsE7jPhSpidcV5X6l8xvHkPGUPoNSN2/6UTMymTs=";
+      hash = "sha256-bfdmNLBypcoJ79/lMRSgRKSIddQJJohcn3/dL21edog=";
     };
   });
 

@@ -47,8 +47,6 @@
     };
 
     deviceTree = {
-      filter = "bcm2711-rpi-cm4.dtb";
-
       overlays = let
         overlay = name: {
           inherit name;

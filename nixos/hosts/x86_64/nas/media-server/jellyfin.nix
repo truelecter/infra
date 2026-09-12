@@ -1,12 +1,25 @@
 {
   config,
   inputs,
+  lib,
+  pkgs,
   ...
 }: let
   inherit (inputs.nixflix.lib.jellyfinPlugins) fromRepo;
+
+  # nixflix strips only one trailing ".0" from plugin targetAbi ("12.0.0.0" ->
+  # "12.0.0") and then version-compares it to pkgs.jellyfin.version ("12.0").
+  # Nix treats 12.0 as older than 12.0.0, so every Jellyfin 12 plugin looks
+  # incompatible. Pad to three components so fromRepo can resolve.
+  jellyfinAbiVersion = let
+    parts = lib.splitVersion pkgs.jellyfin.version;
+    padded = parts ++ lib.genList (_: "0") (3 - builtins.length parts);
+  in
+    lib.concatStringsSep "." (lib.take 3 padded);
 in {
   nixflix.jellyfin = {
     enable = true;
+    package = pkgs.jellyfin // {version = jellyfinAbiVersion;};
     apiKey._secret = config.sops.secrets."jellyfin-api-key".path;
 
     encoding = {
@@ -72,22 +85,28 @@ in {
     };
 
     system.pluginRepositories = {
-      "SSO Authentication" = {
+      "Jellyfin Universal Plugin Repo" = {
         enabled = true;
-        url = "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/6ad72eb9556f00b893035f56ace880acb1df641a/manifest.json";
-        # nix store prefetch-file --json "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json" | jq -r .hash
-        hash = "sha256-lX45HueVfT/xfIxkYn5eQobmVXBoi5jdpJCx43edRA0=";
+        # Snapshot of https://repo.jellyfin.org/files/plugin/manifest.json
+        url = lib.mkForce "https://raw.githubusercontent.com/kiriwalawren/nixflix/d77a3861a6a8c1468b38f9f2b81cee2d6ae26c7b/modules/jellyfin/system/jellyfin-universal-plugin-manifest.json";
+        hash = lib.mkForce "sha256-XcOdBwMClQy2LDY/vqLfGXvM6GqGoF5nxuH9DLtlQFA=";
+      };
+
+      "SSO-Auth" = {
+        enabled = true;
+        url = "https://raw.githubusercontent.com/Buco7854/jellyfin-plugin-sso/4ac0ec4c8afeb43918a31060e263c92c4bd5c2ec/manifest.json";
+        # nix store prefetch-file --json "https://raw.githubusercontent.com/Buco7854/jellyfin-plugin-sso/4ac0ec4c8afeb43918a31060e263c92c4bd5c2ec/manifest.json" | jq -r .hash
+        hash = "sha256-aucud5ZCB/Gk6sMpkDbMlr3yF9yOCmj3aBzDO5x2dhs=";
       };
     };
 
-    plugins."SSO Authentication" = {
+    plugins."SSO-Auth" = {
       package = fromRepo {
-        version = "4.0.0.4";
-        # nix store prefetch-file --json --unpack https://github.com/9p4/jellyfin-plugin-sso/releases/download/v4.0.0.4/sso-authentication_4.0.0.4.zip | jq -r .hash
-        hash = "sha256-MJTyE6CeVLk7mlugauJ/F6bpi1kYwNtzNmQeH3+CFeQ=";
+        version = "5.0.0.2";
+        # nix store prefetch-file --json --unpack https://github.com/Buco7854/jellyfin-plugin-sso/releases/download/v5.0.0.2/sso-auth_5.0.0.2.zip | jq -r .hash
+        hash = "sha256-p6vdHnzPocdVVRJzmM0cNzG1meyRfS0Z3pWUBghd4xE=";
+        repository = "SSO-Auth";
       };
-
-      apiName = "SSO-Auth";
 
       config = {
         OidConfigs = let
@@ -127,6 +146,12 @@ in {
           };
         };
       };
+    };
+
+    plugins.AniDB.package = fromRepo {
+      version = "13.0.0.0";
+      # nix store prefetch-file --json --unpack https://repo.jellyfin.org/files/plugin/anidb/anidb_13.0.0.0.zip | jq -r .hash
+      hash = "sha256-TiMl1kloW43CpKrLGaU9uZxrHi/oZHTA8Eu7MsRDneM=";
     };
   };
 
