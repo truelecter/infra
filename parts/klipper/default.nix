@@ -19,7 +19,7 @@
       packages = ./packages;
 
       extraArguments = {
-        inherit (inputs) pyproject-nix;
+        inherit (inputs) pyproject-nix uv2nix pyproject-build-systems;
         inherit (latest) libdatachannel;
       };
     };

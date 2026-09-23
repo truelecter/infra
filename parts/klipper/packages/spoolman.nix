@@ -1,17 +1,16 @@
 {
   lib,
   unzip,
+  callPackage,
   pyproject-nix,
+  uv2nix,
+  pyproject-build-systems,
   python3,
   stdenvNoCC,
   sources,
-  makeWrapper,
-  # Deps
-  pre-commit,
-  ruff,
   ...
 }: let
-  source = stdenvNoCC.mkDerivation rec {
+  source = stdenvNoCC.mkDerivation {
     pname = "spoolman-source";
 
     inherit (sources.spoolman) version src;
@@ -24,42 +23,36 @@
     '';
   };
 
-  project = pyproject-nix.lib.project.loadPyproject {
-    projectRoot = source;
+  # Versions come from the release's uv.lock. Spoolman itself is a virtual
+  # project there, so the venv gets its dependencies and uvicorn imports the
+  # unpacked release tree.
+  workspace = uv2nix.lib.workspace.loadWorkspace {
+    workspaceRoot = source;
   };
 
-  python = python3.override {
-    packageOverrides = _self: super: {
-      inherit pre-commit ruff;
+  pythonSet =
+    (callPackage pyproject-nix.build.packages {
+      python = python3;
+    }).overrideScope
+    (
+      lib.composeManyExtensions [
+        pyproject-build-systems.overlays.wheel
+        (workspace.mkPyprojectOverlay {
+          sourcePreference = "wheel";
+        })
+      ]
+    );
 
-      psycopg2-binary = super.psycopg2;
-
-      scheduler = super.buildPythonPackage {
-        inherit (sources.python-scheduler) pname version src;
-
-        pyproject = true;
-        propagatedBuildInputs = [
-          super.setuptools
-          super.typeguard
-        ];
-      };
-    };
-  };
-
-  pythonEnv = python.withPackages (
-    project.renderers.withPackages {
-      inherit python;
-    }
-  );
+  pythonEnv = pythonSet.mkVirtualEnv "spoolman-env" workspace.deps.default;
 in
-  stdenvNoCC.mkDerivation rec {
+  stdenvNoCC.mkDerivation {
     pname = "spoolman";
 
     inherit (sources.spoolman) version;
 
     src = source;
 
-    nativeBuildInputs = [makeWrapper unzip];
+    nativeBuildInputs = [unzip];
 
     installPhase = ''
       mkdir -p $out/lib
@@ -67,7 +60,8 @@ in
     '';
 
     passthru = {
-      inherit python pythonEnv;
+      inherit pythonEnv;
+      python = pythonSet.python;
     };
 
     meta = with lib; {

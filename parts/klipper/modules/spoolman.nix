@@ -74,18 +74,14 @@ in {
         WorkingDirectory = "${cfg.package}/lib/spoolman/";
       };
 
-      environment = let
-        pythonPackages = cfg.package.pythonEnv;
-      in {
-        PYTHONPATH = "${pythonPackages}/${pythonPackages.sitePackages}";
+      environment = {
         SPOOLMAN_DIR_DATA = cfg.dataDir;
       };
 
       script = let
-        inherit (cfg.package) python;
         networking = "--host ${cfg.host} --port ${toString cfg.port}";
       in ''
-        ${python.pkgs.uvicorn}/bin/uvicorn ${networking} \
+        ${cfg.package.pythonEnv}/bin/uvicorn ${networking} \
             --app-dir ${cfg.package}/lib/spoolman/ \
             spoolman.main:app
       '';
