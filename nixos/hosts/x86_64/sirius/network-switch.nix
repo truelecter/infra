@@ -34,14 +34,13 @@ in {
           };
 
           matchConfig = {
-            PermanentMACAddress = "a0:02:a5:89:d9:ba";
+            PermanentMACAddress = [
+              "a0:02:a5:89:d9:ba" # Intel AX210
+              "2c:98:11:a2:0b:95" # QCNCM865
+              "14:ac:60:f9:f1:d9" # MT7927
+            ];
           };
         };
-
-        # External USB Dongles
-        # TPLink 00:c0:ca:b6:86:ff
-        # Alfa AWUS036ACH 00:c0:ca:b6:73:ff
-        # Alfa AWUS036AXM c8:3a:35:ac:03:f0
 
         "10-wifi-ap" = {
           linkConfig = {
@@ -49,7 +48,14 @@ in {
           };
 
           matchConfig = {
-            PermanentMACAddress = "1c:79:2d:f9:92:d8";
+            PermanentMACAddress = [
+              "1c:79:2d:f9:92:d8" # RTL8852BE
+
+              # External USB Dongles
+              "00:c0:ca:b6:86:ff" # TPLink
+              "00:c0:ca:b6:73:ff" # Alfa AWUS036ACH
+              "c8:3a:35:ac:03:f0" # Alfa AWUS036AXM
+            ];
           };
         };
 
