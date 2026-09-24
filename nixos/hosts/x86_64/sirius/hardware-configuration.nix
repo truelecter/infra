@@ -31,8 +31,6 @@
       supportedFilesystems = ["zfs"];
     };
 
-    kernelPackages = pkgs.linuxPackages_6_12;
-
     kernelModules = ["kvm-intel"];
     extraModulePackages = [];
 

@@ -96,7 +96,7 @@
     arch,
     configuration,
   }: let
-    inherit (inputs) catppuccin nix-topology ncro;
+    inherit (inputs) catppuccin nix-topology ncro mt7927;
     system = "${arch}-linux";
 
     isLatest = hostname == "nas";
@@ -125,6 +125,7 @@
           catppuccin.nixosModules.catppuccin
           nix-topology.nixosModules.default
           ncro.nixosModules.ncro
+          mt7927.nixosModules.default
         ]
         ++ [
           profiles.nixos.topology-common

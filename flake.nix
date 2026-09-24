@@ -205,6 +205,8 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+
+    mt7927.url = "github:cmspam/mt7927-nixos";
   };
 
   nixConfig = {
