@@ -70,12 +70,12 @@
             "name": null,
             "owner": "bluenviron",
             "repo": "mediamtx",
-            "rev": "v1.21.0",
-            "sha256": "sha256-Cuj5xUTDu9wl1Q2bHgBNMqU0YEtqkRvQrQRkKbK3QUk=",
+            "rev": "v1.21.1",
+            "sha256": "sha256-uunpfHEiBpcmzxAeV4GZnIy5sz06dye8glH8DK8DCic=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v1.21.0"
+        "version": "v1.21.1"
     },
     "mediamtx-rpicamera": {
         "cargoLock": null,
