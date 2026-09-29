@@ -8,4 +8,5 @@ in [
   (cache "https://nrdxp.cachix.org" "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4=" 30)
   (cache "https://truelecter.cachix.org" "truelecter.cachix.org-1:bWHkQ/OM0MLHB9L6gftyaawCrEYkeZyygAcuojwslE0=" 30)
   (cache "https://nabam-nixos-rockchip.cachix.org" "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM=" 30)
+  (cache "https://cache.numtide.com" "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" 30)
 ]
