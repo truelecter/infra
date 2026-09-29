@@ -18,7 +18,7 @@
 
       users.darwin."andrii.panasiuk"
 
-      ./aarch-builder.nix
+      # ./aarch-builder.nix
     ];
 
   networking = {
