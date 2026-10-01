@@ -73,8 +73,8 @@
 
                 overlays = [
                   self.overlays.latest-packages
-
-                  inputs.nix4vscode.overlays.forVscode
+                  self.overlays.common-external
+                  self.overlays.ai
                 ];
 
                 config.allowUnfree = true;

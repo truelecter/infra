@@ -1,0 +1,20 @@
+{
+  "name": "omp-nix-settings-notice",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Tells when OMP changes a setting that Home Manager manages, with the Nix line to make it stick",
+  "omp": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test shared/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3"
+  }
+}

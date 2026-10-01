@@ -52,6 +52,8 @@ in {
 
       # Reload interractive shells after config change
       envExtra = ''
+        [[ -f "$HOME/.shenv.local" ]] && source "$HOME/.shenv.local"
+
         TRAPUSR1() {
           if [[ -o INTERACTIVE ]]; then
             {echo; echo reload after config change } 1>&2

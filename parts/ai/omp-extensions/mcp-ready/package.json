@@ -1,0 +1,20 @@
+{
+  "name": "omp-mcp-ready",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Holds the first prompt until configured MCP servers have mounted their tools",
+  "omp": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test shared/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -206,6 +206,17 @@
       };
     };
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+    };
+
+    paseo = {
+      url = "github:getpaseo/paseo/v0.10.2";
+      inputs = {
+        nixpkgs.follows = "latest";
+      };
+    };
+
     mt7927.url = "github:cmspam/mt7927-nixos";
   };
 
@@ -222,6 +233,7 @@
       "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
       "truelecter.cachix.org-1:bWHkQ/OM0MLHB9L6gftyaawCrEYkeZyygAcuojwslE0="
       "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
   };
 
@@ -235,7 +247,7 @@
       }: let
         selfLib = import ./lib {inherit inputs lib;};
       in {
-        debug = true;
+        # debug = true;
 
         systems = [
           "aarch64-darwin"
@@ -258,6 +270,7 @@
         imports = [
           inputs.flake-parts.flakeModules.modules
 
+          ./parts/ai
           ./parts/nixpkgs.nix
           ./parts/klipper
           ./parts/minecraft-servers

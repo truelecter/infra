@@ -41,6 +41,7 @@
         [
           dev.ide.cursor
           dev.android
+          dev.ai
         ]
         ++ suites.base
         ++ suites.develop

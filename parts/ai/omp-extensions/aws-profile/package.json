@@ -1,0 +1,20 @@
+{
+  "name": "omp-aws-profile",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Pins the AWS profile OMP uses for Bedrock and hides it from agent shell commands",
+  "omp": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test shared/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,1 @@
+/var/folders/rh/mvr59wvn10lbxdnw0f3wvhn00000gp/T/tmp.XPY48lcSdW/agent/rules/smoke.md

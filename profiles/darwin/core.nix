@@ -55,6 +55,10 @@
       trusted-users = ["@admin"];
 
       sandbox = "relaxed";
+      # ICU data for Bun/JSC `Intl.*`
+      extra-sandbox-paths = [
+        "/usr/share/icu"
+      ];
     };
   };
 

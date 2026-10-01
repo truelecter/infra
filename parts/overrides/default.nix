@@ -10,20 +10,37 @@
       sources = ./sources/generated.nix;
     };
 in {
-  perSystem = {pkgs, ...}: {
-    packages = mkPackages pkgs;
+  perSystem = {
+    pkgs,
+    lib,
+    ...
+  }: {
+    # Hide packages not supported on this platform (e.g. darwin-only orca).
+    packages =
+      lib.filterAttrs
+      (_: lib.meta.availableOn pkgs.stdenv.hostPlatform)
+      (mkPackages pkgs);
   };
 
   flake = {
     overlays.latest-packages = final: prev: let
       pkgs = mkPackages final;
 
+      inherit (prev.stdenv.hostPlatform) system;
+
       latest = import inputs.latest {
-        inherit (prev.stdenv.hostPlatform) system;
+        inherit system;
         config.allowUnfree = true;
       };
     in {
-      inherit (pkgs) tfenv transmissionic-web attic-client-chunking attic-server-chunking unifi-os-server-image;
+      inherit
+        (pkgs)
+        tfenv
+        transmissionic-web
+        attic-client-chunking
+        attic-server-chunking
+        unifi-os-server-image
+        ;
 
       inherit
         (latest)
@@ -51,6 +68,7 @@ in {
         act
         nix-diff
         csvlens
+        bun
         #
         code-cursor
         tailscale
@@ -66,9 +84,25 @@ in {
         unifi
         ;
 
-      ncps = inputs.ncps.packages.${final.stdenv.hostPlatform.system}.default;
-      jellarr = inputs.jellarr.packages.${final.stdenv.hostPlatform.system}.default;
+      # upstream nix/npm-deps.hash stale for v0.10.1 -> override
+      paseo = inputs.paseo.packages.${system}.default.override {
+        npmDepsHash = "sha256-tT7qrQpJSxXTJMc9KinfnDQoeTdvLt7NWanYANKunqg=";
+      };
+
+      paseo-desktop = inputs.paseo.packages.${system}.desktop.override {
+        inherit (final) paseo;
+      };
+
+      inherit
+        (inputs.llm-agents.packages.${system})
+        omp
+        ;
     };
+
+    overlays.common-external = inputs.nixpkgs.lib.composeManyExtensions [
+      inputs.nix4vscode.overlays.forVscode
+      inputs.llm-agents.overlays.shared-nixpkgs
+    ];
 
     overlays.lix = final: prev: {
       nixStable = prev.nix;
