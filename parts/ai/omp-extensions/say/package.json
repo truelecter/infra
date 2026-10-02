@@ -1,9 +1,9 @@
 {
-  "name": "omp-ask-preamble",
+  "name": "omp-say",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Blocks OMP ask calls that have no visible explanation before them",
+  "description": "Adds a say tool for verbatim chat messages and requires one before every OMP ask form",
   "omp": {
     "extensions": [
       "./index.ts"

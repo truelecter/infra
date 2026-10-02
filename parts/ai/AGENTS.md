@@ -6,8 +6,9 @@ How to change and test the oh-my-pi (`omp`) Home Manager module, the OMP extensi
 
 ```text
 parts/ai/
-  default.nix                 flake-parts module: packages, overlays.ai, homeModules.oh-my-pi
+  default.nix                 flake-parts module: packages, overlays.ai, homeModules.oh-my-pi, homeModules.searxng
   homeModules/oh-my-pi.nix    the programs.oh-my-pi Home Manager module
+  homeModules/searxng.nix     the services.searxng Home Manager module (local SearXNG user service)
   omp-extensions/
     default.nix               builds every <name>/ folder, plus `gsd` from packages/gsd-omp
     <name>/                   one OMP extension per folder
@@ -25,6 +26,7 @@ Outputs, all from `default.nix`:
 | `packages.<system>.gsd-omp` | the gsd-omp CLI |
 | `overlays.ai` | `pkgs.omp-extensions.<name>` and `pkgs.gsd-omp`; the darwin and NixOS configurations apply it |
 | `homeModules.oh-my-pi` | `programs.oh-my-pi`; also shared into every Home Manager user |
+| `homeModules.searxng` | `services.searxng`; also shared into every Home Manager user |
 
 Provider choices belong to the user, not the shared profile: `profiles/home/dev/ai.nix` routes agents to role names (`task.agentModelOverrides`, `@gsd-deep`, ...), and each user's file under `home/users/` maps those roles to models (`programs.oh-my-pi.settings.modelRoles`, `retry.fallbackChains`, `models`). Unset roles resolve to no model, and OMP falls back to the session model. This repository is public: keep secrets and internal endpoints (credentials, MCP servers on internal hosts) out of it. The module loads such settings from a later overlay through `extraConfigFiles` or an `OMP_CONFIG_FILES` line in `~/.omp/agent/.env`, kept outside this repository; secrets themselves go in `~/.omp/agent/.env`.
 
@@ -154,6 +156,17 @@ Observed limits worth knowing before designing an extension:
 - `omp-extension-gsd` runs `gsd-omp install --root $out`, so GSD's runtime root is its own store path: the extension, `agents/`, and `skills/` all load from there, and GSD's `GSD_AGENTS_DIR` hint points at `$out/agents`.
 - After a bump, build `omp-extension-gsd` and check in an isolated OMP that the `/gsd-*` commands register and a GSD subagent (for example `gsd-planner`) is available.
 - Not supported with the store install: `gsd-omp doctor` and `update` (no manifest in the agent directory, no global npm), and `/gsd-surface` (it rewrites the skills directory in place). Hide GSD skills with `programs.oh-my-pi.settings.skills.ignoredSkills` (glob patterns) instead. A hidden skill's `/gsd-<name>` command stays registered but can no longer read its skill, and GSD hooks dispatch skills by name (`code-review`, `validate-phase`, `secure-phase`, `ui-review`, `ui-phase`, `ai-integration-phase`, `mempalace-*`), so don't hide a skill that a command you use or an active hook needs.
+
+## SearXNG module
+
+`services.searxng` follows the NixOS `services.searx` options (`settings`, `settingsFile`, `environmentFile`, `faviconsSettings`, `limiterSettings`, `redisCreateLocally`, `package`) as a user service: a systemd user unit on Linux, a launchd agent on macOS. The system-only options (`configureUwsgi`, `configureNginx`, `uwsgiConfig`, `domain`, `openFirewall`) are left out.
+
+- One launcher script runs on both platforms: it sources `environmentFile` (shell `KEY=value`), renders `settings` through `envsubst` into `$XDG_STATE_HOME/searxng/settings.yml` (mode 600), links `favicons.toml` and `limiter.toml` next to it (SearXNG reads them from the settings file's folder), and starts `searxng-run`.
+- SearXNG exits on the default `ultrasecretkey`. Without `settings.server.secret_key` and a custom `settingsFile`, the launcher generates `$XDG_STATE_HOME/searxng/secret_key` once and exports it as `SEARXNG_SECRET`; a `SEARXNG_SECRET` from `environmentFile` wins.
+- `redisCreateLocally` runs Valkey as a second user service (`searxng-valkey`) on `$XDG_STATE_HOME/searxng/valkey.sock`.
+- macOS logs go to `~/Library/Logs/searxng.log`; Linux logs go to the journal (`journalctl --user -u searxng`). The built-in server logs queries.
+- `profiles/home/dev/ai.nix` enables it on `127.0.0.1:8888` with JSON output and routes OMP's `web_search` to OMP's built-in `web/searxng` provider (`modelRoles.web`, `searxng.endpoint`, `searxng.engines`), falling back to `web/exa` and `web/parallel`. The default scraped engines (DuckDuckGo, Brave, Startpage) answer bots with captchas or rate limits, so `searxng.engines` picks ones that return results. Check from the shell: `omp search --compact -l 3 '<query>'` shows `Provider: SearXNG`.
+- Test it like the OMP module: build a throwaway `homeManagerConfiguration` with `f.homeModules.searxng`, then run the launcher from the generated plist (`<result>/LaunchAgents/org.nix-community.home.searxng.plist`) and query `http://127.0.0.1:8888/search?q=test&format=json` (needs `settings.search.formats = ["html" "json"]`).
 
 ## Before you finish
 

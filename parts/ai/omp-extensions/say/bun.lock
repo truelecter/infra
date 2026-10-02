@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "omp-ask-preamble",
+      "name": "omp-say",
       "devDependencies": {
         "@types/node": "^22.10.0",
         "typescript": "^5.9.3",

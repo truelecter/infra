@@ -83,20 +83,6 @@ in {
         # ncps
         unifi
         ;
-
-      # upstream nix/npm-deps.hash stale for v0.10.1 -> override
-      paseo = inputs.paseo.packages.${system}.default.override {
-        npmDepsHash = "sha256-tT7qrQpJSxXTJMc9KinfnDQoeTdvLt7NWanYANKunqg=";
-      };
-
-      paseo-desktop = inputs.paseo.packages.${system}.desktop.override {
-        inherit (final) paseo;
-      };
-
-      inherit
-        (inputs.llm-agents.packages.${system})
-        omp
-        ;
     };
 
     overlays.common-external = inputs.nixpkgs.lib.composeManyExtensions [

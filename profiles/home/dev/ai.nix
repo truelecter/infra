@@ -1,13 +1,15 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }: let
+  searxngServer = config.services.searxng.settings.server;
   agents = [
     pkgs.paseo-desktop
   ];
 
-  toolkits = with pkgs.llm-agents; [
+  toolkits = with pkgs; [
     spec-kit
     openspec
   ];
@@ -32,6 +34,18 @@ in {
     ++ toolkits
     ++ commonTools;
 
+  # Local SearXNG backs OMP's web_search; JSON output is what OMP's provider queries.
+  services.searxng = {
+    enable = true;
+    settings = {
+      server = {
+        bind_address = "127.0.0.1";
+        port = 8888;
+      };
+      search.formats = ["html" "json"];
+    };
+  };
+
   programs.oh-my-pi = {
     enable = true;
 
@@ -42,16 +56,22 @@ in {
       mcp-ready
       caveman
       paseo-agent-id
-      ask-preamble
+      say
       gsd
     ];
 
     mutableSettings = true;
 
     settings = {
-      # Exa and Parallel work without an API key; the default scraped engines block bots.
-      modelRoles.web = "web/exa";
-      retry.fallbackChains.web = ["web/parallel"];
+      # Local SearXNG first. Its default scraped engines (DuckDuckGo, Brave, Startpage) block
+      # bots, so queries go to engines that answer. Exa and Parallel work without an API key and
+      # take over when SearXNG is down or returns nothing.
+      modelRoles.web = "web/searxng";
+      retry.fallbackChains.web = ["web/exa" "web/parallel"];
+      searxng = {
+        endpoint = "http://${searxngServer.bind_address}:${toString searxngServer.port}";
+        engines = "google, bing, mojeek, github, wikipedia";
+      };
 
       providers.cacheRetention = "long";
 
