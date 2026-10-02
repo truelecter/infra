@@ -72,8 +72,10 @@ const INTENSITY: Record<Level, string> = {
     "Extreme abbreviation while keeping classical Chinese feel. Maximum compression.",
 };
 
+const HEADING = "# Caveman mode";
+
 export function buildPrompt(level: Level): string {
-  return `# Caveman mode (${level})
+  return `${HEADING} (${level})
 
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
 
@@ -88,4 +90,29 @@ Active every response, even when unsure. No drift back to verbose prose.
 Auto-Clarity: write normal for security warnings, irreversible action confirmations, multi-step sequences where terse order could be misread, and when the user is confused or repeats a question. Resume caveman after.
 
 Boundaries: code, commits, and PRs written normal. User switches level with \`/caveman <level>\` and turns it off with \`/caveman off\`, "stop caveman", or "normal mode".`;
+}
+
+/** Custom message type of the section when it has to travel as a message. */
+export const SECTION_MESSAGE_TYPE = "caveman-mode";
+
+/** The fields of an OMP agent message read here. */
+export interface ContextMessage {
+  role: string;
+  customType?: string;
+}
+
+/**
+ * Whether a model request lacks the caveman section. OMP runs a turn that an
+ * extension starts (for example a GSD `/gsd-*` command) without
+ * `before_agent_start`, so a session opened that way has none in its system
+ * prompt. A section for another level counts: the next prompted turn swaps it.
+ */
+export function needsSection(
+  mode: Mode,
+  messages: readonly ContextMessage[],
+  systemPrompt: readonly string[],
+): boolean {
+  if (mode === "off") return false;
+  if (systemPrompt.some((part) => part.startsWith(HEADING))) return false;
+  return !messages.some((m) => m.role === "custom" && m.customType === SECTION_MESSAGE_TYPE);
 }

@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
+import type { AgentMessage, ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
 import { getAgentDir } from "@oh-my-pi/pi-utils";
 import {
   DEFAULT_LEVEL,
@@ -11,7 +11,9 @@ import {
   detectToggle,
   isLevel,
   isMode,
+  needsSection,
   parseModeArg,
+  SECTION_MESSAGE_TYPE,
 } from "./shared/modes.ts";
 
 // Session entries record every mode change, so resuming, branching, or
@@ -142,5 +144,22 @@ export default function caveman(pi: ExtensionAPI): void {
     await load();
     if (mode === "off") return;
     return { systemPrompt: [...event.systemPrompt, buildPrompt(mode)] };
+  });
+
+  // Turns an extension starts skip before_agent_start; give those requests the
+  // section as a hidden message in front, where it keeps the cached prefix stable.
+  // A fresh object per request: OMP tags context messages with history indexes.
+  pi.on("context", async (event, ctx) => {
+    await load();
+    if (mode === "off" || !needsSection(mode, event.messages, ctx.getSystemPrompt())) return;
+    const message: AgentMessage = {
+      role: "custom",
+      customType: SECTION_MESSAGE_TYPE,
+      content: buildPrompt(mode),
+      display: false,
+      attribution: "agent",
+      timestamp: 0,
+    };
+    return { messages: [message, ...event.messages] };
   });
 }

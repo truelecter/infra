@@ -8,6 +8,8 @@ Paseo starts every agent process with `PASEO_AGENT_ID` set, but never shows the 
 
 - Reads `PASEO_AGENT_ID` once at load. If it is unset, empty, or not a plain id (letters, digits, `-`), the extension does nothing, so terminal sessions are unaffected.
 - Before each request, appends a short system prompt section naming the id, telling the agent to pass it as `agentId` for Paseo tools acting on itself, and to check at the start of each turn whether the focus moved away from its title (then retitle first). Paseo's own `appendSystemPrompt` rule alone was not enough: in testing the agent only retitled when asked.
+- The same section tells the agent to retitle in its first batch of tool calls when its title is still the provisional one, and once more when its reads show what the work is about. Paseo names a new agent after the first line of its first prompt (at most 60 characters), so an agent started with a slash command is called `/gsd-execute-phase 8`. A drift-only rule never fires there, because the work keeps matching the command, and the agent kept that title for its whole life.
+- Turns that an extension starts (`pi.sendMessage` with `triggerTurn: true`, which is how GSD's `/gsd-*` commands run) skip `before_agent_start` in OMP, so a session opened by such a command had no section at all. A `context` handler covers that case: when the system prompt lacks the section, it puts the section in front of the request as a hidden custom message. In isolated runs of `/gsd-progress`, the agent retitled in 0 of 3 runs with only the new wording, 0 of 4 with only the message, and 4 of 4 with both.
 
 ## Install
 
@@ -19,8 +21,8 @@ programs.oh-my-pi.extensions = [pkgs.omp-extensions.paseo-agent-id];
 
 ## Layout
 
-- `index.ts`: the extension: reads the variable, registers `before_agent_start`.
-- `shared/prompt.ts`: pure logic (id check, prompt text), tested.
+- `index.ts`: the extension: reads the variable, registers `before_agent_start` and `context`.
+- `shared/prompt.ts`: pure logic (id check, prompt text, when a request needs the section as a message), tested.
 - `types/omp.d.ts`: minimal types for the parts of OMP's extension API used here. OMP provides `@oh-my-pi/pi-coding-agent` at runtime, so it is not installed.
 
 ## Develop

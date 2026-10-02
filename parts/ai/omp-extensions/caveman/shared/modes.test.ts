@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import { LEVELS, buildPrompt, detectToggle, parseModeArg } from "./modes.ts";
+import { LEVELS, SECTION_MESSAGE_TYPE, buildPrompt, detectToggle, needsSection, parseModeArg } from "./modes.ts";
 
 describe("parseModeArg", () => {
   it("accepts every level and off", () => {
@@ -49,5 +49,23 @@ describe("buildPrompt", () => {
 
   it("describes every level", () => {
     for (const level of LEVELS) assert.doesNotMatch(buildPrompt(level), /undefined/);
+  });
+});
+
+describe("needsSection", () => {
+  const command = { role: "custom", customType: "gsd-native-progress" };
+
+  it("adds the section to a turn started by an extension command", () => {
+    assert.equal(needsSection("full", [command], ["base prompt"]), true);
+  });
+
+  it("skips requests whose system prompt has a section, at any level", () => {
+    assert.equal(needsSection("full", [command], ["base prompt", buildPrompt("lite")]), false);
+  });
+
+  it("never adds the section twice or when off", () => {
+    const injected = { role: "custom", customType: SECTION_MESSAGE_TYPE };
+    assert.equal(needsSection("full", [injected, command], ["base prompt"]), false);
+    assert.equal(needsSection("off", [command], ["base prompt"]), false);
   });
 });

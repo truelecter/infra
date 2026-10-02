@@ -37,7 +37,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
     - **tl-mm4** - aarch64-darwin and aarch64-linux builder
 - `/home` - Home-manager configurations
 - `/parts` - flake-parts modules
-  - `/parts/ai` - AI agent tooling: the `programs.oh-my-pi` Home Manager module (`homeModules.oh-my-pi`), the `services.searxng` Home Manager module for a local SearXNG user service (`homeModules.searxng`), oh-my-pi extensions (`omp-extension-*`), and the `gsd-omp` package
+  - `/parts/ai` - AI agent tooling for Home-Manager
   - `/parts/klipper` - Klipper 3D printer related configurations
   - `/parts/raspberry-pi` - Raspberry Pi specific configurations
   - `/parts/rockchip` - Rockchip SoC configurations
