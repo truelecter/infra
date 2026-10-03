@@ -92,10 +92,10 @@
   };
   server-starter = {
     pname = "server-starter";
-    version = "2.4.6";
+    version = "2.5.1";
     src = fetchurl {
-      url = "https://github.com/EnigmaticaModpacks/ServerStarter/releases/download/v2.4.6/serverstarter-2.4.6.jar";
-      sha256 = "sha256-8z8l5z3iSZ7wy61RFI1zkYytnRfMbD/F1EJzUPY6PIM=";
+      url = "https://github.com/EnigmaticaModpacks/ServerStarter/releases/download/v2.5.1/serverstarter-2.5.1.jar";
+      sha256 = "sha256-r9TtemmEghY5soQhMoGYKlmYw7eUq0cUrEyAXzlSNaY=";
     };
   };
 }
