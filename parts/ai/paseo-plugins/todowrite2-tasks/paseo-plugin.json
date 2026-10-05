@@ -1,0 +1,7 @@
+{
+  "id": "todowrite2-tasks",
+  "description": "Tasks pill and compact task rows for the OpenCode todowrite2 tool.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

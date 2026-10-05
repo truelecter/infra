@@ -1,0 +1,7 @@
+{
+  "id": "beautiful-chat",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  },
+  "description": "Redraws the OMP chat stream (tool calls, reasoning, prompts, approvals, checklists) as typed cards. Vendored from ABorakati/beautiful-chat."
+}

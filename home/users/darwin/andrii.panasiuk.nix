@@ -13,9 +13,6 @@
   opus48 = bedrock "anthropic.claude-opus-4-8";
   sonnet55 = bedrock "anthropic.claude-sonnet-5-5";
   fable51 = bedrock "anthropic.claude-fable-5-1";
-  # Sonnet 5+ on Bedrock rejects the `temperature: 0` that smol jobs (skill description
-  # compression) send; Haiku 4.5 accepts it (can1357/oh-my-pi#13636).
-  haiku45 = bedrock "anthropic.claude-haiku-4-5-20251001-v1:0";
   gpt6 = name: bedrock "openai.gpt-6-${name}";
 
   # Every thinking level for models the omp catalog lists only up to `high` (Opus/Sonnet 5.5
@@ -43,8 +40,8 @@ in {
           slow = opus55 "xhigh";
           plan = opus55 "xhigh";
           task = opus55 "medium";
-          smol = haiku45 "low";
-          tiny = haiku45 "low";
+          smol = sonnet55 "low";
+          tiny = sonnet55 "low";
           commit = gpt6 "luna" "low";
           review = gpt6 "astra" "high";
           secreview = gpt6 "sol" "high";
@@ -76,6 +73,19 @@ in {
         "global.anthropic.claude-sonnet-5-5" = adaptiveThinking;
         "global.anthropic.claude-opus-4-8" = adaptiveThinking;
       };
+    };
+
+    # Per user: the model Paseo generates agent titles and summaries with (Paseo takes the model id
+    # without a thinking level), and the Tunnelblick VPN plugin for this machine's work VPN. The rest
+    # of programs.paseo is in profiles/home/dev/ai.nix.
+    programs.paseo = {
+      settings.agents.metadataGeneration.providers = [
+        {
+          provider = "omp";
+          model = "amazon-bedrock/global.anthropic.claude-haiku-4-5-20251001-v1:0";
+        }
+      ];
+      plugins.vpn = {};
     };
   };
 

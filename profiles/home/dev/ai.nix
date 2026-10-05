@@ -156,6 +156,69 @@ in {
     agents = ./_files/omp/agents;
   };
 
+  # Paseo daemon settings merged into ~/.paseo/config.json, and its plugins (parts/ai/paseo-plugins).
+  # `daemon.hostnames` is left to the tailscale-listener plugin, which writes it. The model for
+  # title generation (`agents.metadataGeneration`) is per user, next to the user's OMP models.
+  programs.paseo = {
+    enable = true;
+
+    settings = {
+      daemon = {
+        listen = "127.0.0.1:6767";
+        mcp.injectIntoAgents = true;
+        browserTools.enabled = true;
+        enableTerminalAgentHooks = true;
+        appendSystemPrompt = "When the conversation's focus moves away from what your agent title describes, call the Paseo `update_agent` tool on yourself with a new title of at most 60 characters describing the current work. Don't retitle for small detours.";
+        terminalProfiles = [
+          {
+            id = "profile_mum3f4d9_qfk51hlr8v";
+            name = "omp";
+            command = "omp";
+            args = ["{{{prompt}}}"];
+          }
+        ];
+        cors.allowedOrigins = ["https://app.paseo.sh"];
+        relay.enabled = false;
+      };
+      app.baseUrl = "https://app.paseo.sh";
+      pluginsEnabled = true;
+      agents = {
+        providers = {
+          cursor = {
+            extends = "acp";
+            label = "Cursor";
+            description = "Cursor's coding agent";
+            command = ["cursor-agent" "acp"];
+            env = {};
+            enabled = false;
+          };
+          claude.enabled = false;
+          codex.enabled = false;
+          copilot.enabled = false;
+          pi.enabled = false;
+          omp.enabled = true;
+          opencode.enabled = false;
+        };
+        skills.selection = {
+          mode = "custom";
+          skills = ["paseo" "paseo-help" "paseo-plugin"];
+        };
+      };
+    };
+
+    plugins = {
+      backlog = {};
+      beautiful-chat = {};
+      catppuccin-mocha = {};
+      header-tab-name = {};
+      project-groups = {};
+      tailscale-listener = {};
+      todowrite2-tasks.enabled = false;
+      wide-chat = {};
+      workspace-title-sync = {};
+    };
+  };
+
   home.activation.signPaseo = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
     lib.hm.dag.entryAfter ["copyApps"] ''
       app="$HOME/Applications/Home Manager Apps/Paseo.app"

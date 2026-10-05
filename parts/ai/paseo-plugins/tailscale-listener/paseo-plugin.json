@@ -1,0 +1,7 @@
+{
+  "id": "tailscale-listener",
+  "description": "Exposes the loopback-only daemon on this machine's Tailscale IP by forwarding TCP to the daemon listener.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

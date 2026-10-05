@@ -1,0 +1,7 @@
+{
+  "id": "workspace-title-sync",
+  "description": "Gives a workspace its agent's title when that agent is the workspace's only top-level agent.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

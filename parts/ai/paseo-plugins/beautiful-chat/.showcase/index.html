@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Beautiful Chat showcase</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+      }
+      #root {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.__err = [];
+      window.addEventListener("error", (e) =>
+        window.__err.push(String(e.error && e.error.stack ? e.error.stack : e.message)),
+      );
+      window.addEventListener("unhandledrejection", (e) =>
+        window.__err.push("rejection " + String(e.reason)),
+      );
+    </script>
+    <script src="./showcase.js"></script>
+  </body>
+</html>

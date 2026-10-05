@@ -1,0 +1,7 @@
+{
+  "id": "catppuccin-mocha",
+  "description": "Adds the Catppuccin Mocha app theme to Settings → Appearance.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

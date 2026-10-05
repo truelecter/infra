@@ -1,0 +1,7 @@
+{
+  "id": "backlog",
+  "description": "A backlog of things to follow up on (MRs, issues, ideas) that agents add and check through the backlog CLI.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# Adds, lists, and updates items in the Paseo backlog plugin, through its Unix socket.
+# Run `backlog help` for usage.
+set -euo pipefail
+
+dir="${PASEO_BACKLOG_DIR:-$HOME/.local/share/paseo-backlog}"
+socket="$dir/backlog.sock"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  backlog add TITLE [--description MARKDOWN] [--status STATUS] [--agent ID] [--json]
+  backlog list [--status STATUS[,STATUS]] [--all] [--json]
+  backlog show ID [--json]
+  backlog update ID [--title TEXT] [--description MARKDOWN] [--status STATUS] [--log TEXT]
+                    [--agent ID] [--json]
+  backlog rm ID
+
+STATUS is open, waiting, or done. `list` shows open and waiting items unless told otherwise.
+--description is Markdown, shown rendered in Paseo; put links to MRs and issues there.
+`--description -` reads it from standard input. On update it replaces the old description.
+--agent defaults to $PASEO_AGENT_ID, the Paseo agent running the command; an item's agent is the
+chat it came from, and an update's agent is recorded on the history entry.
+--log appends a history entry, for example the result of a status check.
+EOF
+}
+
+die() {
+  echo "backlog: $*" >&2
+  exit 1
+}
+
+# api METHOD PATH [JSON]: prints the response body, or fails with the plugin's error message.
+api() {
+  local args=(-sS --unix-socket "$socket" -X "$1" -H 'content-type: application/json' -w $'\n%{http_code}')
+  [[ $# -ge 3 ]] && args+=(--data-binary "$3")
+  local out
+  out=$(curl "${args[@]}" "http://backlog$2" 2>/dev/null) ||
+    die "cannot reach the backlog plugin at $socket; is it running? (paseo plugin ls)"
+  local code="${out##*$'\n'}" body="${out%$'\n'*}"
+  [[ $code == 2* ]] || die "$(jq -r '.error // .' <<<"$body" 2>/dev/null || printf '%s' "$body")"
+  printf '%s\n' "$body"
+}
+
+need_value() {
+  [[ $2 -ge 2 ]] || die "$1 needs a value"
+}
+
+need_id() {
+  [[ ${1:-} =~ ^[0-9]+$ ]] || die "expected an item id, got '${1:-}'"
+}
+
+# description_value VALUE: the value itself, or standard input for "-".
+description_value() {
+  if [[ $1 == - ]]; then cat; else printf '%s' "$1"; fi
+}
+
+# jq definitions shared by the human-readable views.
+jq_defs='
+def when: .[0:16] | sub("T"; " ") + "Z";
+def entry: [(.at | when), (.status // empty), (.text // empty), (if .agentId then "by agent \(.agentId)" else empty end)] | join("  ");
+def head: "#\(.id) [\(.status)] \(.title)";
+def body:
+  (if .description != "" then (.description | split("\n")[] | "    " + .) else empty end),
+  (if .agentId then "    from agent: \(.agentId)" else empty end);
+'
+
+print_item() {
+  jq -r "$jq_defs"'
+    head, body,
+    (if .cwd then "    cwd: \(.cwd)" else empty end),
+    "    created \(.createdAt | when), updated \(.updatedAt | when)",
+    "    history:", (.log | reverse[] | "      " + entry)'
+}
+
+cmd="${1:-help}"
+[[ $# -gt 0 ]] && shift
+agent="${PASEO_AGENT_ID:-}"
+json=false
+
+case "$cmd" in
+  add)
+    [[ $# -ge 1 && $1 != --* ]] || die "add needs a TITLE"
+    title="$1"
+    shift
+    description="" status=""
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --description) need_value "$1" $#; description="$(description_value "$2")"; shift 2 ;;
+        --status) need_value "$1" $#; status="$2"; shift 2 ;;
+        --agent) need_value "$1" $#; agent="$2"; shift 2 ;;
+        --json) json=true; shift ;;
+        *) die "unknown option for add: $1" ;;
+      esac
+    done
+    body=$(jq -n --arg title "$title" --arg description "$description" --arg status "$status" \
+      --arg agent "$agent" --arg cwd "${PASEO_AGENT_CWD:-$PWD}" '
+      {title: $title, cwd: $cwd}
+      + (if $description != "" then {description: $description} else {} end)
+      + (if $status != "" then {status: $status} else {} end)
+      + (if $agent != "" then {agentId: $agent} else {} end)')
+    item=$(api POST /items "$body")
+    if $json; then printf '%s\n' "$item"; else print_item <<<"$item"; fi
+    ;;
+
+  list | ls)
+    statuses="open,waiting"
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --status) need_value "$1" $#; statuses="$2"; shift 2 ;;
+        --all) statuses=""; shift ;;
+        --json) json=true; shift ;;
+        *) die "unknown option for list: $1" ;;
+      esac
+    done
+    items=$(api GET "/items?status=$statuses")
+    if $json; then
+      printf '%s\n' "$items"
+    else
+      jq -r "$jq_defs"'
+        if .items == [] then "No items." else
+          .items[] | head, body, (.log[-1] | "    last: " + entry)
+        end' <<<"$items"
+    fi
+    ;;
+
+  show)
+    need_id "${1:-}"
+    id="$1"
+    shift
+    [[ ${1:-} == --json ]] && json=true
+    item=$(api GET "/items/$id")
+    if $json; then printf '%s\n' "$item"; else print_item <<<"$item"; fi
+    ;;
+
+  update)
+    need_id "${1:-}"
+    id="$1"
+    shift
+    # Built up as jq arguments so that only the given fields are sent.
+    fields=()
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --title) need_value "$1" $#; fields+=(--arg title "$2"); shift 2 ;;
+        --description) need_value "$1" $#; fields+=(--arg description "$(description_value "$2")"); shift 2 ;;
+        --status) need_value "$1" $#; fields+=(--arg status "$2"); shift 2 ;;
+        --log) need_value "$1" $#; fields+=(--arg log "$2"); shift 2 ;;
+        --agent) need_value "$1" $#; agent="$2"; shift 2 ;;
+        --json) json=true; shift ;;
+        *) die "unknown option for update: $1" ;;
+      esac
+    done
+    [[ -n $agent ]] && fields+=(--arg agentId "$agent")
+    body=$(jq -n ${fields[@]+"${fields[@]}"} '$ARGS.named')
+    item=$(api PATCH "/items/$id" "$body")
+    if $json; then printf '%s\n' "$item"; else print_item <<<"$item"; fi
+    ;;
+
+  rm | delete)
+    need_id "${1:-}"
+    item=$(api DELETE "/items/$1")
+    jq -r '"Deleted #\(.id) \(.title)"' <<<"$item"
+    ;;
+
+  help | -h | --help) usage ;;
+  *) usage >&2; exit 1 ;;
+esac

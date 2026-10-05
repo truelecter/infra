@@ -1,0 +1,7 @@
+{
+  "id": "vpn",
+  "description": "VPN screen for Tunnelblick: connection status, connect and disconnect, and a field for the TOTP code the server asks for.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}
