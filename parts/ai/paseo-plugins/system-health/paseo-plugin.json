@@ -1,0 +1,7 @@
+{
+  "id": "system-health",
+  "description": "System health screen: memory pressure, swap, and CPU, the apps using the most memory, Paseo agent sessions with their MCP servers, and long-running outliers.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}

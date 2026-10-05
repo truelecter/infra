@@ -47,6 +47,9 @@
       text = builtins.readFile ./backlog/cli/backlog;
     };
 
+    # Samples macOS tools (top, vm_stat, sysctl, lsof, osascript), so it is Darwin-only like vpn.
+    system-health.meta.platforms = lib.platforms.darwin;
+
     # Tunnelblick runs the challenge script with a fixed environment, so it calls the system curl by
     # absolute path. The sandbox has no /usr/bin/curl; the tests run a copy that uses Nix's curl,
     # and the original is put back before install.
@@ -132,6 +135,7 @@
   # `_`-prefixed folders aren't plugins (`_test-deps`).
   names = lib.attrNames (lib.filterAttrs (name: type: type == "directory" && !lib.hasPrefix "_" name) (builtins.readDir ./.));
 in
-  # Plugins whose meta.platforms excludes the host (vpn: Tunnelblick and osascript are macOS-only)
-  # are left out, so `pkgs.paseo-plugins.vpn` and `.#paseo-plugin-vpn` don't exist on Linux.
+  # Plugins whose meta.platforms excludes the host (vpn: Tunnelblick and osascript; system-health:
+  # top, vm_stat, and lsof's macOS output) are left out, so `pkgs.paseo-plugins.vpn` and
+  # `.#paseo-plugin-vpn` don't exist on Linux.
   lib.filterAttrs (_: lib.meta.availableOn stdenvNoCC.hostPlatform) (lib.genAttrs names mkPlugin)

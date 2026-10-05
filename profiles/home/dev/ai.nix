@@ -212,6 +212,8 @@ in {
       catppuccin-mocha = {};
       header-tab-name = {};
       project-groups = {};
+      # macOS only: it samples top, vm_stat, and lsof (the package doesn't exist on Linux).
+      system-health = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {};
       tailscale-listener = {};
       todowrite2-tasks.enabled = false;
       wide-chat = {};
