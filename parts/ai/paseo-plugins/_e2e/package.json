@@ -1,0 +1,9 @@
+{
+  "name": "paseo-plugins-e2e",
+  "private": true,
+  "description": "End-to-end tests of the Paseo plugins against an isolated Paseo daemon and its web UI. Playwright comes from nixpkgs; these are the suite's own packages.",
+  "dependencies": {
+    "@getpaseo/client": "0.10.2",
+    "ws": "8.22.0"
+  }
+}

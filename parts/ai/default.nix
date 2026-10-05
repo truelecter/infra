@@ -24,9 +24,17 @@
 in {
   perSystem = {pkgs, ...}: let
     packages = mkPackages pkgs;
+    inherit (pkgs.stdenv.hostPlatform) system;
   in {
     packages =
-      {inherit (packages) gsd-omp;}
+      {
+        inherit (packages) gsd-omp;
+        # Paseo's daemon and headless Chromium against every plugin; runs on Linux and macOS.
+        paseo-plugins-e2e = pkgs.callPackage ./paseo-plugins/_e2e {
+          paseo = mkPaseo system;
+          plugins = packages.paseo-plugins;
+        };
+      }
       // lib.mapAttrs' (name: lib.nameValuePair "omp-extension-${name}") packages.omp-extensions
       // lib.mapAttrs' (name: lib.nameValuePair "paseo-plugin-${name}") packages.paseo-plugins;
   };
