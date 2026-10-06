@@ -24,9 +24,9 @@ in {
     overlays.btt-pi-v2 = final: prev: let
       pkgs = mkPackages final;
     in {
-      inherit (pkgs) btt-6_12-dtb uboot-btt panel-simple-btt raspits_ft5426;
+      inherit (pkgs) uboot-btt raspits_ft5426 tc358762-burst;
 
-      linuxPackages_bttPi2_6_12 = inputs.nixos-rockchip.legacyPackages.${prev.stdenv.hostPlatform.system}.kernel_linux_6_12_rockchip;
+      linuxPackages_bttPi2 = inputs.nixos-rockchip.legacyPackages.${prev.stdenv.hostPlatform.system}.kernel_linux_latest_rockchip_stable;
 
       deviceTree =
         prev.deviceTree

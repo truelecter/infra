@@ -1,0 +1,17 @@
+--- a/drivers/gpu/drm/bridge/tc358762.c	2026-10-06 04:02:17.209972000 +0300
++++ b/drivers/gpu/drm/bridge/tc358762.c	2026-10-06 04:02:27.089750326 +0300
+@@ -277,8 +277,12 @@
+ 	/* TODO: Find out how to get dual-lane mode working */
+ 	dsi->lanes = 1;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+-	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+-			  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO_HSE;
++	/*
++	 * Burst mode: the Rockchip DW MIPI DSI host runs the link faster than
++	 * the pixel rate, which shifts the picture in non-burst sync-pulse mode.
++	 */
++	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++			  MIPI_DSI_MODE_LPM;
+ 
+ 	ret = tc358762_parse_dt(ctx);
+ 	if (ret < 0)

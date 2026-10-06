@@ -3,26 +3,28 @@
   kernel ? linuxPackages.kernel,
   ...
 }:
+# Mainline tc358762 bridge driver switched to DSI burst mode, installed under
+# updates/ so it takes precedence over the in-tree module.
 kernel.stdenv.mkDerivation {
-  name = "raspits_ft5426";
+  name = "tc358762-burst";
 
   inherit (kernel) version src;
 
   patches = [
-    ./_patches/raspits_ft5426.patch
+    ./_patches/tc358762-burst.patch
   ];
 
   kernel = kernel.dev;
   kernelVersion = kernel.modDirVersion;
 
-  modulePath = "drivers/input/touchscreen";
+  modulePath = "drivers/gpu/drm/bridge";
 
   buildPhase = ''
     sourceRoot="$(pwd -P)"
 
     cd $sourceRoot/$modulePath
 
-    echo 'obj-$(CONFIG_DRM_PANEL_SIMPLE) += raspits_ft5426.o' > Makefile
+    echo 'obj-m += tc358762.o' > Makefile
 
     make -C $kernel/lib/modules/$kernelVersion/build modules "M=$(pwd -P)"
 

@@ -3,20 +3,16 @@
   lib,
   pkgs,
   ...
-}: let
-  customDtbSource = true;
-  dtbSource = pkgs.btt-6_12-dtb.override {inherit (config.boot.kernelPackages) kernel;};
-in {
+}: {
   boot = {
-    kernelPackages = pkgs.linuxPackages_bttPi2_6_12;
+    kernelPackages = pkgs.linuxPackages_bttPi2;
 
-    kernelModules = [
-      # "raspits_ft5426"
-    ];
+    # driver has no OF match table, so udev never autoloads it
+    kernelModules = ["raspits_ft5426"];
 
     extraModulePackages = [
-      (pkgs.panel-simple-btt.override {inherit (config.boot.kernelPackages) kernel;})
       (pkgs.raspits_ft5426.override {inherit (config.boot.kernelPackages) kernel;})
+      (pkgs.tc358762-burst.override {inherit (config.boot.kernelPackages) kernel;})
     ];
 
     loader = {
@@ -57,33 +53,25 @@ in {
     };
   };
 
-  hardware.deviceTree =
-    {
-      enable = true;
+  hardware.deviceTree = {
+    enable = true;
 
-      # dtbSource = "${dbtSource}/dtbs";
-      name = "rockchip/rk3566-bigtreetech-pi2.dtb";
-      filter = "rk3566-bigtreetech-pi2.dtb";
+    name = "rockchip/rk3566-bigtreetech-pi2.dtb";
+    filter = "rk3566-bigtreetech-pi2.dtb";
 
-      overlays = [
-        # {
-        #   name = "opp";
-        #   dtsFile = ./opp.dts;
-        # }
-      ];
-    }
-    // lib.optionalAttrs customDtbSource {
-      dtbSource = "${dtbSource}/dtbs";
-    };
+    overlays = [
+      {
+        name = "btt-pitft";
+        dtsFile = ./btt-pitft.dtso;
+      }
+      # {
+      #   name = "opp";
+      #   dtsFile = ./opp.dts;
+      # }
+    ];
+  };
 
-  system.nixos.tags = [
-    "K${config.boot.kernelPackages.kernel.version}"
-    "DTB-${
-      if customDtbSource
-      then dtbSource.name
-      else "kernel"
-    }"
-  ];
+  system.nixos.tags = ["K${config.boot.kernelPackages.kernel.version}"];
 
   environment.etc."uboot/uboot-rockchip.bin".source = "${config.rockchip.uBoot}/u-boot-rockchip.bin";
 
@@ -99,6 +87,30 @@ in {
       RemainAfterExit = true;
       ExecStart = "${pkgs.irqbalance.out}/bin/irqbalance --foreground --oneshot";
     };
+  };
+
+  # The panel ATtiny can answer its first ID read with garbage after a warm
+  # reboot; rpi-panel-attiny-regulator then fails with -ENODEV and never retries,
+  # leaving the bridge and panel unprobed. Re-bind until the driver sticks.
+  systemd.services."attiny-panel-rebind" = {
+    description = "Retry probing the DSI panel ATtiny regulator";
+    wantedBy = ["multi-user.target"];
+    after = ["systemd-modules-load.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      dev=/sys/bus/i2c/devices/2-0045
+      drv=/sys/bus/i2c/drivers/rpi_touchscreen_attiny
+      for _ in $(seq 1 10); do
+        [ -e "$dev/driver" ] && exit 0
+        [ -e "$drv/bind" ] && echo 2-0045 > "$drv/bind" || true
+        sleep 1
+      done
+      echo "ATtiny at 2-0045 still unbound" >&2
+      exit 1
+    '';
   };
 
   hardware.enableRedistributableFirmware = true;
