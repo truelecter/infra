@@ -36,6 +36,7 @@
       profiles.nixos.hardware.sbc.rpi02
       {
         imports = [
+          inputs.nixos-hardware.nixosModules.raspberry-pi-3
           self.modules.nixos.raspberry-pi-overlay
           self.modules.nixos.nixos-raspberry-pi-overlays
         ];
