@@ -210,6 +210,7 @@ in {
       backlog = {};
       beautiful-chat = {};
       catppuccin-mocha = {};
+      gsd-watch = {};
       header-tab-name = {};
       project-groups = {};
       # macOS only: it samples top, vm_stat, and lsof (the package doesn't exist on Linux).

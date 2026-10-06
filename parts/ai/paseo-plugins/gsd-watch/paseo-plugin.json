@@ -1,0 +1,7 @@
+{
+  "id": "gsd-watch",
+  "description": "Live GSD project status for a workspace: phases, plans, lifecycle badges, quick tasks, and the next step, read from its .planning/ folder.",
+  "requirements": {
+    "paseo": ">=0.10.0"
+  }
+}
