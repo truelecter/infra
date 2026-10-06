@@ -113,55 +113,62 @@ export function createSiblingFilter(
  * only its own row, so each one records its list here and reads the latest
  * list from before its own time to find what it changed. Entries stay after a
  * row scrolls out of view, so the rows below it keep their changes.
+ *
+ * A closure, not a class: React Native's Hermes cannot parse `class`, and
+ * Paseo hands plugin client bundles to it without lowering them.
  */
-export class TodoHistory {
-  private readonly agents = new Map<string, Map<number, readonly TodoTask[]>>();
-  private readonly listeners = new Set<() => void>();
-
-  subscribe = (listener: () => void): (() => void) => {
-    this.listeners.add(listener);
-    return () => {
-      this.listeners.delete(listener);
-    };
-  };
-
-  record(agentId: string, at: number, tasks: readonly TodoTask[]): void {
-    let snapshots = this.agents.get(agentId);
-    if (!snapshots) {
-      snapshots = new Map();
-      this.agents.set(agentId, snapshots);
-    }
-    if (snapshots.get(at) === tasks) return;
-    snapshots.set(at, tasks);
-    this.publish();
-  }
-
+export interface TodoHistory {
+  subscribe(listener: () => void): () => void;
+  record(agentId: string, at: number, tasks: readonly TodoTask[]): void;
   /** Drops a row's earlier entry once the host has moved that row to a later time. */
-  forget(agentId: string, at: number): void {
-    if (this.agents.get(agentId)?.delete(at)) this.publish();
-  }
-
+  forget(agentId: string, at: number): void;
   /** The latest list recorded before `at`, or null when none has been drawn. */
-  previous(agentId: string, at: number): readonly TodoTask[] | null {
-    const snapshots = this.agents.get(agentId);
-    if (!snapshots) return null;
-    let bestAt = -Infinity;
-    let best: readonly TodoTask[] | null = null;
-    for (const [time, tasks] of snapshots) {
-      if (time < at && time > bestAt) {
-        bestAt = time;
-        best = tasks;
-      }
-    }
-    return best;
-  }
-
-  private publish(): void {
-    for (const listener of this.listeners) listener();
-  }
+  previous(agentId: string, at: number): readonly TodoTask[] | null;
 }
 
-const history = new TodoHistory();
+export function createTodoHistory(): TodoHistory {
+  const agents = new Map<string, Map<number, readonly TodoTask[]>>();
+  const listeners = new Set<() => void>();
+  const publish = () => {
+    for (const listener of listeners) listener();
+  };
+  return {
+    subscribe(listener) {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+    record(agentId, at, tasks) {
+      let snapshots = agents.get(agentId);
+      if (!snapshots) {
+        snapshots = new Map();
+        agents.set(agentId, snapshots);
+      }
+      if (snapshots.get(at) === tasks) return;
+      snapshots.set(at, tasks);
+      publish();
+    },
+    forget(agentId, at) {
+      if (agents.get(agentId)?.delete(at)) publish();
+    },
+    previous(agentId, at) {
+      const snapshots = agents.get(agentId);
+      if (!snapshots) return null;
+      let bestAt = -Infinity;
+      let best: readonly TodoTask[] | null = null;
+      for (const [time, tasks] of snapshots) {
+        if (time < at && time > bestAt) {
+          bestAt = time;
+          best = tasks;
+        }
+      }
+      return best;
+    },
+  };
+}
+
+const history = createTodoHistory();
 
 /**
  * Records this row's list and returns what it changed since the list drawn

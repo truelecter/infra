@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
-  TodoHistory,
+  createTodoHistory,
   createSiblingFilter,
   deriveTodoChanges,
   normalizeTodoTasks,
@@ -78,12 +78,12 @@ describe("createSiblingFilter", () => {
   });
 });
 
-describe("TodoHistory", () => {
+describe("createTodoHistory", () => {
   const list = tasks(["A", "pending"]);
   const later = tasks(["A", "completed"]);
 
   it("returns the latest list from before a row's time, whatever order rows recorded in", () => {
-    const history = new TodoHistory();
+    const history = createTodoHistory();
     history.record("agent", 300, later);
     history.record("agent", 100, list);
     history.record("agent", 200, later);
@@ -93,13 +93,13 @@ describe("TodoHistory", () => {
   });
 
   it("keeps each agent's lists apart", () => {
-    const history = new TodoHistory();
+    const history = createTodoHistory();
     history.record("a", 100, list);
     assert.equal(history.previous("b", 200), null);
   });
 
   it("stops comparing with a row's old time once that row moves", () => {
-    const history = new TodoHistory();
+    const history = createTodoHistory();
     history.record("agent", 100, list);
     history.record("agent", 200, later);
     history.forget("agent", 200);
@@ -108,7 +108,7 @@ describe("TodoHistory", () => {
   });
 
   it("tells subscribers about a new list, not about the same list again", () => {
-    const history = new TodoHistory();
+    const history = createTodoHistory();
     let calls = 0;
     const unsubscribe = history.subscribe(() => calls++);
     history.record("agent", 100, list);
