@@ -55,6 +55,12 @@ in {
           path = storagePath;
         };
 
+        # Clients push NARs in parts of this size, below Cloudflare's
+        # 100 MB request body limit.
+        upload = {
+          max-chunk-size = 33554432; # 32 MiB
+        };
+
         chunking = {
           nar-size-threshold = 65536;
           min-size = 16384;

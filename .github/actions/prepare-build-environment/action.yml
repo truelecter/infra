@@ -38,7 +38,7 @@ runs:
     - name: Install Attic with chunking support
       shell: bash
       run: |
-        nix profile install github:ByteZ1337/attic/feat/upload-in-parts#attic-client
+        nix profile install github:truelecter/attic/chunked-uploads-ranges#attic-client
 
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0.4.1

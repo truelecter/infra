@@ -10,7 +10,9 @@ fetch.github = "tfutils/tfenv"
 src.git = "https://github.com/peak/s5cmd"
 fetch.github = "peak/s5cmd"
 
+# PR zhaofengli/attic#342 (chunked uploads) plus NAR range requests, on
+# top of upstream main. Branch: chunked-uploads-ranges
 [attic]
-fetch.github = "ByteZ1337/attic"
-src.manual = "5fc1b918c12c2658603f6d88a75aa4a2e74080df"
+fetch.github = "truelecter/attic"
+src.manual = "4732905d3bc405b9206098d12080247fc3cf1963"
 # cargo_lock = ["Cargo.lock"] # TODO move to importCargoLock

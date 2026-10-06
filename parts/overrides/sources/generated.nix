@@ -8,13 +8,13 @@
 {
   attic = {
     pname = "attic";
-    version = "5fc1b918c12c2658603f6d88a75aa4a2e74080df";
+    version = "4732905d3bc405b9206098d12080247fc3cf1963";
     src = fetchFromGitHub {
-      owner = "ByteZ1337";
+      owner = "truelecter";
       repo = "attic";
-      rev = "5fc1b918c12c2658603f6d88a75aa4a2e74080df";
+      rev = "4732905d3bc405b9206098d12080247fc3cf1963";
       fetchSubmodules = false;
-      sha256 = "sha256-1koNX1T45G/Qz8xPFE7lR/awpkiJUY0omL/ofTYd60I=";
+      sha256 = "sha256-ucOLiszacFOE9DqxuOizdhyIW7rLJVC9Yyc6zlanuYM=";
     };
   };
   s5cmd = {
