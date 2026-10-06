@@ -10,7 +10,7 @@ export const LEVELS = [
 export type Level = (typeof LEVELS)[number];
 export type Mode = Level | "off";
 
-export const DEFAULT_LEVEL: Level = "full";
+export const DEFAULT_LEVEL: Level = "ultra";
 
 const ALIASES: Record<string, Mode> = {
   wenyan: "wenyan-full",

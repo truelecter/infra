@@ -6,7 +6,7 @@ Modelled on [TophC7's `caveman.ts`](https://github.com/TophC7/dot.nix/blob/main/
 
 ## What it does
 
-- Appends a caveman section to the system prompt before each request, for the active level: `lite`, `full` (default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`.
+- Appends a caveman section to the system prompt before each request, for the active level: `lite`, `full`, `ultra` (default), `wenyan-lite`, `wenyan-full`, `wenyan-ultra`.
 - Turns that an extension starts (`pi.sendMessage` with `triggerTurn: true`, which is how GSD's `/gsd-*` commands run) skip `before_agent_start` in OMP, so a session opened by such a command had no caveman section. A `context` handler covers that case: when the system prompt has no caveman section, it puts the section in front of the request as a hidden custom message.
 - `/caveman` toggles on/off; `/caveman <level>` or `/caveman off` sets it. `wenyan` is short for `wenyan-full`.
 - Plain messages also switch it: "stop caveman" or "normal mode" turns it off, "talk like caveman" or "caveman mode" turns it back on at the last level.
