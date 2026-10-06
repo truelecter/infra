@@ -12,7 +12,7 @@
       inherit gsd-omp;
     };
     paseo-plugins = import ./paseo-plugins {
-      inherit (pkgs) lib stdenvNoCC bun curl jq writeShellApplication;
+      inherit (pkgs) lib stdenvNoCC bun curl esbuild fetchurl jq writeShellApplication;
       # Plugins are checked against the pinned Paseo (requirements.paseo).
       paseoVersion = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default.version;
     };

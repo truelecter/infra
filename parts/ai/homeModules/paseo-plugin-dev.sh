@@ -62,7 +62,8 @@ link)
   manifest_id=$(jq -r '.id // empty' "$folder/paseo-plugin.json" 2>/dev/null) ||
     die "$folder/paseo-plugin.json is missing or not JSON"
   [[ $manifest_id == "$id" ]] || die "$folder is plugin '$manifest_id', not '$id'"
-  # Runtime dependencies come from the store build's node_modules; a checkout needs its own.
+  # The store build bundles runtime dependencies in; Paseo compiles a checkout from source, so it
+  # needs its own node_modules.
   if jq -e '(.dependencies // {}) | length > 0' "$folder/package.json" >/dev/null 2>&1 &&
     [[ ! -d $folder/node_modules ]]; then
     die "$id has dependencies: run \`bun install\` in $folder first"
