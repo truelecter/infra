@@ -32,14 +32,14 @@ export function TodoSummary({ changes, tasks, tokens }: TodoSummaryProps) {
         line: { flexDirection: "row", alignItems: "center", gap: 6 },
         label: {
           fontFamily: tokens.fontUi,
-          fontSize: 12,
+          fontSize: tokens.fs(12),
           fontWeight: "600",
           color: tokens.foregroundMuted,
         },
         text: {
           flexShrink: 1,
           fontFamily: tokens.fontUi,
-          fontSize: 13,
+          fontSize: tokens.fs(13),
           color: tokens.foreground,
         },
       }),

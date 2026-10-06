@@ -2,34 +2,9 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
   DEFAULT_COLLAPSE_KINDS,
-  collapseGroupForTool,
   isCardExpanded,
   parseCollapseKinds,
 } from "./collapse";
-
-describe("collapseGroupForTool", () => {
-  it("counts the thinking tool as reasoning", () => {
-    assert.equal(collapseGroupForTool("thinking", "thinking"), "reasoning");
-  });
-
-  it("counts a bash kind as shell only when the call is named bash", () => {
-    assert.equal(collapseGroupForTool("bash", "bash"), "shell");
-    // The renderer falls back to the bash kind for tools it has no card for.
-    assert.equal(collapseGroupForTool("bash", "web_search"), "other");
-    assert.equal(collapseGroupForTool("git", "bash"), "shell");
-  });
-
-  it("groups file and agent tools", () => {
-    assert.equal(collapseGroupForTool("edit", "edit"), "files");
-    assert.equal(collapseGroupForTool("hub", "hub"), "agents");
-    assert.equal(collapseGroupForTool("paseo", "create_agent"), "agents");
-  });
-
-  it("puts kinds without a group of their own under other", () => {
-    assert.equal(collapseGroupForTool("github", "write"), "other");
-    assert.equal(collapseGroupForTool("lsp", "lsp"), "other");
-  });
-});
 
 describe("parseCollapseKinds", () => {
   it("keeps reasoning open and collapses the rest by default", () => {

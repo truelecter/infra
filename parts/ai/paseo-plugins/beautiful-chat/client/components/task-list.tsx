@@ -1,15 +1,8 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from "react";
 import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
 import { Glyph } from "./glyph";
-import { frosted } from "./frosted";
-import { surfaceProps } from "./view-props";
-import { glowing } from "./glow";
-import { Glow, Rotate } from "./motion";
-import { Breathe } from "./breathe";
-import { PulseDot } from "./pulse-dot";
 import { radius } from "./theme-tokens";
 import { selectableSurface, unselectable } from "./selection";
-import { selectionSurface } from "./selection-actions";
 import type { ExtendedThemeTokens } from "./theme-tokens";
 import type { TaskListData, TaskItemData, TaskStatus } from "../../shared/contracts";
 
@@ -95,17 +88,15 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
     () =>
       StyleSheet.create({
         container: {
-          marginVertical: 10,
+          marginTop: -8,
+          marginBottom: 0,
           borderRadius: radius.card,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
           borderWidth: 1,
           borderColor: tokens.borderSubtle,
           overflow: "hidden",
           ...tokens.boxShadow,
           ...selectableSurface,
-        },
-        containerFolded: {
-          marginVertical: 4,
         },
         headerFolded: {
           paddingTop: 9,
@@ -121,7 +112,7 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
           paddingBottom: 12,
           borderBottomWidth: 1,
           borderBottomColor: tokens.borderSubtle,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
         },
         headerTop: {
           flexDirection: "row",
@@ -155,11 +146,11 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
         },
         icon: {
           fontFamily: tokens.fontUi,
-          fontSize: 16,
+          fontSize: tokens.fs(16),
         },
         phaseBadge: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontWeight: "600",
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -171,12 +162,12 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
         },
         headerTitle: {
           fontFamily: tokens.fontUi,
-          fontSize: 14,
+          fontSize: tokens.fs(14),
           fontWeight: "700",
           color: tokens.foreground,
         },
         progressRatio: {
-          fontSize: 12,
+          fontSize: tokens.fs(12),
           fontWeight: "600",
           fontFamily: tokens.fontUi,
           color: tokens.foregroundMuted,
@@ -186,14 +177,9 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
           alignItems: "center",
           gap: 8,
         },
-        statusRow: {
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 6,
-        },
         statusText: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontWeight: "600",
           color: tokens.accent,
         },
@@ -212,7 +198,7 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
           paddingHorizontal: 16,
           paddingTop: 12,
           paddingBottom: 16,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
         },
         timelineContainer: {
           position: "relative",
@@ -251,8 +237,8 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
         },
         taskTitle: {
           fontFamily: tokens.fontUi,
-          fontSize: 13,
-          lineHeight: 18,
+          fontSize: tokens.fs(13),
+          lineHeight: tokens.fs(18),
           color: tokens.foreground,
         },
         taskTitleCompleted: {
@@ -270,13 +256,13 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
         },
         statusLabel: {
           fontFamily: tokens.fontUi,
-          fontSize: 10,
+          fontSize: tokens.fs(10),
           fontWeight: "600",
           textTransform: "uppercase",
           letterSpacing: 0.5,
         },
         durationBadge: {
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontFamily: tokens.fontUi,
           color: tokens.foregroundSubtle,
         },
@@ -284,15 +270,15 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
           marginTop: 6,
           padding: 8,
           borderRadius: radius.block,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
           borderWidth: 1,
           borderColor: tokens.warningBorder,
         },
         blockedReasonText: {
           fontFamily: tokens.fontUi,
-          fontSize: 12,
+          fontSize: tokens.fs(12),
           color: tokens.warning,
-          lineHeight: 16,
+          lineHeight: tokens.fs(16),
         },
       }),
     [tokens],
@@ -309,14 +295,11 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
   };
 
   // A folded card is one of many rows in the chat, each holding the list as
-  // it stood then; only an unfolded card should pulse for a running task.
+  // it stood then; only an unfolded card should flag a running task.
   const showWorking = isWorking && expanded;
 
   return (
-    <View
-      {...surfaceProps(frosted, glowing(tokens.isDark), selectionSurface)}
-      style={[styles.container, foldable && styles.containerFolded]}
-    >
+    <View style={styles.container}>
       <Pressable
         disabled={!foldable}
         accessibilityRole={foldable ? "button" : undefined}
@@ -327,9 +310,7 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
         <View style={[styles.headerTop, !expanded && styles.headerTopFolded]}>
           <View style={styles.headerLeft}>
             <View style={styles.iconBubble}>
-              <Breathe active={showWorking}>
-                <Glyph name="ListChecks" size={15} color={tokens.accent} />
-              </Breathe>
+              <Glyph name="ListChecks" size={15} color={tokens.accent} />
             </View>
             <View style={styles.titleContainer}>
               {foldable ? (
@@ -348,12 +329,9 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
           </View>
           <View style={styles.headerRight}>
             {showWorking ? (
-              <View style={styles.statusRow}>
-                <PulseDot color={tokens.accent} size={6} />
-                <Text selectable style={styles.statusText}>
-                  Tasks
-                </Text>
-              </View>
+              <Text selectable style={styles.statusText}>
+                Tasks
+              </Text>
             ) : null}
             <Text selectable style={styles.progressRatio}>
               {foldable
@@ -361,9 +339,11 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
                 : `${completedCount}/${totalCount} (${progressPercent}%)`}
             </Text>
             {foldable ? (
-              <Rotate active={expanded}>
-                <Glyph name="ChevronDown" size={14} color={tokens.foregroundMuted} />
-              </Rotate>
+              <Glyph
+                name={expanded ? "ChevronDown" : "ChevronRight"}
+                size={14}
+                color={tokens.foregroundMuted}
+              />
             ) : null}
           </View>
         </View>
@@ -401,13 +381,11 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
                   ) : isBlocked ? (
                     <Glyph name="AlertCircle" size={13} color={tokens.warning} />
                   ) : (
-                    <Glow active={isActive} color={tokens.accent} size={22}>
-                      <Glyph
-                        name="Circle"
-                        size={13}
-                        color={isActive ? tokens.accent : tokens.foregroundSubtle}
-                      />
-                    </Glow>
+                    <Glyph
+                      name="Circle"
+                      size={13}
+                      color={isActive ? tokens.accent : tokens.foregroundSubtle}
+                    />
                   )}
                 </Pressable>
 

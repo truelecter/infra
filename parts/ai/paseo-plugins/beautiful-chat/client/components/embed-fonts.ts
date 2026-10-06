@@ -1,5 +1,4 @@
 import { EMBEDDED_FONTS } from "./font-data";
-import { fontMono, fontUi } from "./theme-tokens";
 
 const STYLE_ELEMENT_ID = "beautiful-chat-fonts";
 
@@ -51,62 +50,4 @@ export function embedFonts(): () => void {
   return () => {
     style.remove();
   };
-}
-
-/**
- * Measures whether a family renders with a uniform advance. This is the only
- * check that proves a face is actually in use: `FontFaceSet.check` reports
- * load state, so it answers false for any face nothing has painted yet.
- */
-function advanceWidths(family: string): number[] | null {
-  try {
-    const context = document.createElement("canvas").getContext("2d");
-    if (!context) return null;
-    context.font = `14px "${family}"`;
-    return [..."iWM1l.@#"].map((character) => context.measureText(character).width);
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Loads the embedded faces and reports what happened, in one line fit for the
- * surface header. Written as a probe rather than a boolean because the useful
- * information is *why* a face did not resolve: a missing style element, a
- * rejected `data:` URL, or a face that loads but is never applied.
- */
-export async function probeFonts(): Promise<string> {
-  if (typeof document === "undefined") return "Fonts: native, system default";
-  if (!document.getElementById(STYLE_ELEMENT_ID)) {
-    return "Fonts: style element missing — embedFonts did not run";
-  }
-
-  const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
-  if (!fonts) return "Fonts: FontFaceSet unavailable on this host";
-
-  const parts: string[] = [];
-  for (const family of [fontUi, fontMono]) {
-    try {
-      const faces = await fonts.load(`400 14px "${family}"`);
-      parts.push(`${family}: ${faces.length > 0 ? "loaded" : "no match"}`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      parts.push(`${family}: ${message.slice(0, 48)}`);
-    }
-  }
-
-  const widths = advanceWidths(fontMono);
-  if (widths) {
-    const uniform = new Set(widths.map((w) => w.toFixed(2))).size === 1;
-    const firstWidth = widths[0] ?? 0;
-    parts.push(`mono ${uniform ? "uniform" : "proportional"} @${firstWidth.toFixed(2)}px`);
-  }
-
-  // The host forces its own font over every plugin class, so report whether
-  // that rule is live. Without the data-pmono escape it wins regardless of
-  // what loaded.
-  const hostRule = document.getElementById("paseo-ui-font") !== null;
-  parts.push(`host rule ${hostRule ? "present" : "absent"}`);
-
-  return `Fonts: ${parts.join(" · ")}`;
 }

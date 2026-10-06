@@ -1,5 +1,5 @@
 import type { PluginTheme } from "@getpaseo/plugin";
-import { DEFAULT_PREFERENCES, type EnhancerPreferences, ACCENT_PRESETS } from "../preferences";
+import { scaleFont } from "../preferences";
 
 export type PluginSurfaceColors = PluginTheme["colors"];
 
@@ -12,36 +12,31 @@ export type PluginSurfaceColors = PluginTheme["colors"];
 export const radius = { card: 12, block: 8, chip: 5 } as const;
 
 /**
- * One family name per stack, never a comma-separated CSS list. React Native's
- * `fontFamily` takes a single family; a list is not parsed and the whole
- * declaration is dropped, which silently leaves every surface on the host
- * default. Fallbacks live in the `@font-face` `src` chain instead, so these
- * names always resolve to something.
+ * One family name per stack, never a comma-separated CSS list: React Native's
+ * `fontFamily` takes a single family, and a list is dropped whole, which
+ * silently leaves every surface on the host default. Fallbacks live in the
+ * `@font-face` `src` chain in `embed-fonts.ts` instead, so these names always
+ * resolve to something. The faces are embedded on web and Electron only; on
+ * iOS and Android the names fall through to the platform default, because a
+ * directory plugin has no way to ship native font assets.
  */
 export const fontMono = "OMP Iosevka";
-
-/**
- * The ligature cut of Iosevka, used only inside code blocks. Terminal output,
- * diffs and paths stay on `fontMono`: a shaped `->` or `=>` stops matching the
- * bytes it stands for, which is wrong for a log line or a patch.
- */
-export const fontCode = "OMP Iosevka Code";
 export const fontUi = "OMP Inter";
 
 export interface ExtendedThemeTokens {
   isDark: boolean;
   fontMono: string;
-  fontCode: string;
   fontUi: string;
+  /** The Text size setting, applied to every font size and line height. */
+  fontScale: number;
+  /** `size` at the current text scale, rounded to one decimal. */
+  fs(size: number): number;
 
   // Surfaces
   surface0: string;
   surface1: string;
   surface2: string;
   surfaceCode: string;
-  // Translucent variants, for surfaces that blur what sits behind them.
-  surfaceGlass: string;
-  surfaceCodeGlass: string;
 
   // Foreground
   foreground: string;
@@ -52,12 +47,6 @@ export interface ExtendedThemeTokens {
   accent: string;
   accentForeground: string;
   accentBg: string;
-  // The authored turn sits on a raised theme surface, exactly as the native
-  // stream draws it. It carries no accent: colour belongs to the agent's work.
-  userSurface: string;
-  userBorder: string;
-  userText: string;
-  userTextMuted: string;
 
   // Semantic status: failure, risk, and diff markers only
   success: string;
@@ -162,13 +151,10 @@ function isDarkSurface(color: string): boolean {
 // PluginTheme only carries six colours, so every other surface is derived from
 // the host foreground/accent with alpha. That keeps the plugin on-theme for any
 // Paseo theme instead of hard-coding a palette that matches only one of them.
-export function buildThemeTokens(
-  colors: PluginSurfaceColors,
-  preferences: EnhancerPreferences = DEFAULT_PREFERENCES,
-): ExtendedThemeTokens {
+export function buildThemeTokens(colors: PluginSurfaceColors, fontScale = 1): ExtendedThemeTokens {
   const isDark = isDarkSurface(colors.surface0);
   const fg = colors.foreground;
-  const accent = ACCENT_PRESETS[preferences.accent] ?? colors.accent;
+  const accent = colors.accent;
   const success = isDark ? "#4cb782" : "#1f8a5b";
   const warning = isDark ? "#d9a53f" : "#a36a00";
   const danger = colors.statusDanger;
@@ -178,25 +164,14 @@ export function buildThemeTokens(
   return {
     isDark,
     fontMono,
-    fontCode: preferences.codeFont === "plain" ? fontMono : fontCode,
-    fontUi: preferences.uiFont === "system" ? "System" : fontUi,
+    fontUi,
+    fontScale,
+    fs: (size) => scaleFont(size, fontScale),
 
     surface0: colors.surface0,
     surface1: withAlpha(fg, isDark ? 0.03 : 0.025),
     surface2: withAlpha(fg, isDark ? 0.06 : 0.045),
     surfaceCode: isDark ? "rgba(0, 0, 0, 0.22)" : withAlpha(fg, 0.03),
-    // Translucent so the blur behind them reads, but still dense enough to
-    // keep text legible over whatever scrolls past.
-    surfaceGlass: preferences.frostedGlass
-      ? withAlpha(colors.surface0, isDark ? 0.52 : 0.64)
-      : colors.surface0,
-    surfaceCodeGlass: preferences.frostedGlass
-      ? isDark
-        ? "rgba(0, 0, 0, 0.34)"
-        : withAlpha(fg, 0.05)
-      : isDark
-        ? "rgba(0, 0, 0, 0.22)"
-        : withAlpha(fg, 0.03),
 
     foreground: fg,
     foregroundMuted: colors.foregroundMuted,
@@ -205,10 +180,6 @@ export function buildThemeTokens(
     accent,
     accentForeground: colors.accentForeground,
     accentBg: withAlpha(accent, isDark ? 0.14 : 0.1),
-    userSurface: withAlpha(fg, isDark ? 0.1 : 0.06),
-    userBorder: withAlpha(fg, isDark ? 0.14 : 0.12),
-    userText: fg,
-    userTextMuted: colors.foregroundMuted,
 
     success,
     successBg: withAlpha(success, tint),

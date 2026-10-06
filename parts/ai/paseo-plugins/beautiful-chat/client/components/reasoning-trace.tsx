@@ -1,17 +1,10 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
 import { Glyph } from "./glyph";
-import { frosted } from "./frosted";
-import { surfaceProps } from "./view-props";
-import { glowing } from "./glow";
-import { Glow, Rotate } from "./motion";
-import { PulseDot } from "./pulse-dot";
-import { Breathe } from "./breathe";
 import { radius } from "./theme-tokens";
 import { selectableSurface } from "./selection";
-import { selectionSurface } from "./selection-actions";
 import type { ExtendedThemeTokens } from "./theme-tokens";
-import type { ReasoningTraceData, ReasoningStep } from "../../shared/contracts";
+import type { ReasoningTraceData } from "../../shared/contracts";
 import { SyntaxHighlightBlock } from "./syntax-highlight";
 
 interface ReasoningTraceProps {
@@ -23,14 +16,13 @@ interface ReasoningTraceProps {
 export function ReasoningTrace({ data, tokens, defaultExpanded = false }: ReasoningTraceProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
-  // Same as the tool callout: the trace mounts while the model is still
-  // streaming, so the collapse that follows arrives as a prop change.
+  // The trace mounts while the model is still streaming, so the collapse that
+  // follows arrives as a prop change.
   const previousDefaultExpanded = useRef(defaultExpanded);
   if (previousDefaultExpanded.current !== defaultExpanded) {
     previousDefaultExpanded.current = defaultExpanded;
     setIsExpanded(defaultExpanded);
   }
-  const [activeStepId, setActiveStepId] = useState<string | null>(null);
 
   const durationFormatted = (data.durationMs / 1000).toFixed(1);
   const isThinking = data.status === "thinking";
@@ -78,9 +70,10 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
     () =>
       StyleSheet.create({
         wrapper: {
-          marginVertical: 8,
+          marginTop: -8,
+          marginBottom: 0,
           borderRadius: radius.card,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
           borderWidth: 1,
           borderColor: isThinking ? tokens.borderSubtle : tokens.borderSubtle,
           overflow: "hidden",
@@ -120,7 +113,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
         },
         titleText: {
           fontFamily: tokens.fontUi,
-          fontSize: 13,
+          fontSize: tokens.fs(13),
           fontWeight: "600",
           color: tokens.foreground,
         },
@@ -131,7 +124,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
           marginTop: 2,
         },
         badge: {
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontFamily: tokens.fontUi,
           paddingHorizontal: 5,
           paddingVertical: 1,
@@ -140,7 +133,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
           color: tokens.foregroundMuted,
         },
         modelBadge: {
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontFamily: tokens.fontUi,
           color: tokens.foregroundMuted,
         },
@@ -149,14 +142,9 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
           alignItems: "center",
           gap: 8,
         },
-        statusRow: {
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 6,
-        },
         statusText: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontWeight: "600",
           color: tokens.accent,
         },
@@ -166,7 +154,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
           paddingBottom: 16,
           borderTopWidth: 1,
           borderTopColor: tokens.borderSubtle,
-          backgroundColor: tokens.surfaceGlass,
+          backgroundColor: tokens.surface0,
         },
         timelineContainer: {
           position: "relative",
@@ -206,20 +194,20 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
         },
         stepTitle: {
           fontFamily: tokens.fontUi,
-          fontSize: 13,
+          fontSize: tokens.fs(13),
           fontWeight: "600",
           color: tokens.foreground,
         },
         stepDuration: {
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           color: tokens.foregroundSubtle,
           fontFamily: tokens.fontUi,
         },
         stepContent: {
           fontFamily: tokens.fontUi,
           marginTop: 6,
-          fontSize: 12,
-          lineHeight: 18,
+          fontSize: tokens.fs(12),
+          lineHeight: tokens.fs(18),
           color: tokens.foregroundMuted,
         },
         footer: {
@@ -233,7 +221,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
         },
         footerText: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           color: tokens.foregroundSubtle,
         },
       }),
@@ -241,20 +229,15 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
   );
 
   return (
-    <View
-      {...surfaceProps(frosted, glowing(tokens.isDark), selectionSurface)}
-      style={styles.wrapper}
-    >
+    <View style={styles.wrapper}>
       <Pressable onPress={() => setIsExpanded((prev) => !prev)} style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.iconBubble}>
-            <Breathe active={isThinking}>
-              <Glyph
-                name="Brain"
-                size={13}
-                color={isThinking ? tokens.accent : tokens.foregroundMuted}
-              />
-            </Breathe>
+            <Glyph
+              name="Brain"
+              size={13}
+              color={isThinking ? tokens.accent : tokens.foregroundMuted}
+            />
           </View>
           <View style={styles.titleContainer}>
             <View style={styles.titleRow}>
@@ -291,16 +274,15 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
               says so through its duration and token count, so a green
               "Completed" pill only adds colour. */}
           {isThinking ? (
-            <View style={styles.statusRow}>
-              <PulseDot color={tokens.accent} size={6} />
-              <Text selectable style={styles.statusText}>
-                Reasoning
-              </Text>
-            </View>
+            <Text selectable style={styles.statusText}>
+              Reasoning
+            </Text>
           ) : null}
-          <Rotate active={isExpanded}>
-            <Glyph name="ChevronDown" size={16} color={tokens.foregroundMuted} />
-          </Rotate>
+          <Glyph
+            name={isExpanded ? "ChevronDown" : "ChevronRight"}
+            size={16}
+            color={tokens.foregroundMuted}
+          />
         </View>
       </Pressable>
 
@@ -312,7 +294,6 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
             {data.steps.map((step, stepIndex) => {
               const isStepActive = step.status === "active";
               const isStepDone = step.status === "completed";
-              const isDetailOpen = activeStepId === step.id || isStepActive;
 
               return (
                 <View
@@ -327,20 +308,15 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
                     {isStepDone ? (
                       <Glyph name="CheckCircle" size={13} color={tokens.success} />
                     ) : (
-                      <Glow active={isStepActive} color={tokens.accent} size={22}>
-                        <Glyph
-                          name="Circle"
-                          size={13}
-                          color={isStepActive ? tokens.accent : tokens.foregroundSubtle}
-                        />
-                      </Glow>
+                      <Glyph
+                        name="Circle"
+                        size={13}
+                        color={isStepActive ? tokens.accent : tokens.foregroundSubtle}
+                      />
                     )}
                   </View>
 
-                  <Pressable
-                    onPress={() => setActiveStepId(activeStepId === step.id ? null : step.id)}
-                    style={styles.stepHeader}
-                  >
+                  <View style={styles.stepHeader}>
                     <View style={styles.stepTitleRow}>
                       <Text selectable style={styles.stepTitle}>
                         {step.title ? `${step.number}. ${step.title}` : `Step ${step.number}`}
@@ -351,13 +327,15 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
                         {(step.durationMs / 1000).toFixed(1)}s
                       </Text>
                     ) : null}
-                  </Pressable>
+                  </View>
 
-                  <Text selectable style={styles.stepContent}>
-                    {step.content}
-                  </Text>
+                  {step.content ? (
+                    <Text selectable style={styles.stepContent}>
+                      {step.content}
+                    </Text>
+                  ) : null}
 
-                  {step.codeSnippet && isDetailOpen && (
+                  {step.codeSnippet && (
                     <SyntaxHighlightBlock
                       code={step.codeSnippet.code}
                       language={step.codeSnippet.language}

@@ -1,13 +1,12 @@
 {
   "name": "beautiful-chat",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Paseo plugin: a beautiful chat for OMP tools, reasoning, prompts, and tasks",
+  "description": "Paseo plugin: Thinking, folded TODO, tool activity, and ask cards for the OMP chat stream",
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "bun test client/*.test.ts",
-    "icons": "bun .showcase/tools/file-icons.ts"
+    "test": "bun test client/*.test.ts"
   },
   "dependencies": {
     "@shikijs/core": "^4.0.2",
@@ -17,11 +16,8 @@
   },
   "devDependencies": {
     "@getpaseo/plugin": "0.10.2",
-    "@resvg/resvg-js": "^2.6.2",
-    "@tanstack/react-query": "^5.90.11",
     "@types/node": "^22.15.3",
     "@types/react": "~19.2.0",
-    "material-icon-theme": "5.38.1",
     "react": "19.1.0",
     "react-native": "0.81.5",
     "typescript": "^5.9.3",

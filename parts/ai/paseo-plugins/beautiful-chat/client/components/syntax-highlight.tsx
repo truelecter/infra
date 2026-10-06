@@ -1,15 +1,8 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Glyph } from "./glyph";
-import { frosted } from "./frosted";
-import { surfaceProps } from "./view-props";
-import { glowing } from "./glow";
-import { Pop } from "./motion";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
-import { FileTypeLogo } from "./file-type-logo";
-import { resolveFileIcon } from "../file-icon";
 import { selectableSurface, unselectable } from "./selection";
-import { selectionCodeSurface, selectionSurface } from "./selection-actions";
 import { useHighlightedLines } from "../highlight";
 import type { HighlightLine, HighlightToken } from "../../shared/highlight-rpc";
 
@@ -20,8 +13,6 @@ interface SyntaxHighlightProps {
   showLineNumbers?: boolean;
   filename?: string;
   compact?: boolean;
-  /** Shows the file in the machine's own file manager. Omitted: plain label. */
-  onRevealFile?: () => void;
 }
 
 const STATIC_KEYWORDS: Record<string, true> = {
@@ -471,7 +462,6 @@ export function SyntaxHighlightBlock({
   showLineNumbers = false,
   filename,
   compact = false,
-  onRevealFile,
 }: SyntaxHighlightProps) {
   const [copied, setCopied] = useState(false);
 
@@ -493,12 +483,6 @@ export function SyntaxHighlightBlock({
   const codeLanguage = useMemo(
     () => dialectFor(isDiff, language, filename),
     [isDiff, language, filename],
-  );
-  // The file icon already names the language. The text badge only earns its
-  // place when no specific icon exists for the file.
-  const showLanguageBadge = useMemo(
-    () => resolveFileIcon(filename, language) === null,
-    [filename, language],
   );
   const lineDialects = useMemo(() => classifyLines(lines, codeLanguage), [lines, codeLanguage]);
   const diffBodyCode = useMemo(
@@ -523,7 +507,7 @@ export function SyntaxHighlightBlock({
       StyleSheet.create({
         container: {
           ...selectableSurface,
-          backgroundColor: tokens.surfaceCodeGlass,
+          backgroundColor: tokens.surfaceCode,
           borderRadius: radius.card,
           borderWidth: 1,
           borderColor: tokens.borderSubtle,
@@ -553,25 +537,16 @@ export function SyntaxHighlightBlock({
           minWidth: 0,
         },
         filename: {
-          fontSize: 12,
-          lineHeight: 17,
+          fontSize: tokens.fs(12),
+          lineHeight: tokens.fs(17),
           fontFamily: tokens.fontUi,
           fontWeight: "600",
           color: tokens.foregroundMuted,
           flexShrink: 1,
         },
-        filenameButton: {
-          flexShrink: 1,
-          minWidth: 0,
-        },
-        filenameLink: {
-          color: tokens.accent,
-          textDecorationLine: "underline",
-          ...unselectable,
-        },
         langBadge: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           fontWeight: "500",
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -593,7 +568,7 @@ export function SyntaxHighlightBlock({
         },
         copyText: {
           fontFamily: tokens.fontUi,
-          fontSize: 11,
+          fontSize: tokens.fs(11),
           color: copied ? tokens.success : tokens.foregroundMuted,
           fontWeight: "500",
           ...unselectable,
@@ -607,7 +582,7 @@ export function SyntaxHighlightBlock({
         },
         lineNumber: {
           width: 32,
-          fontSize: 12,
+          fontSize: tokens.fs(12),
           fontFamily: tokens.fontMono,
           color: tokens.foregroundSubtle,
           textAlign: "right",
@@ -616,9 +591,9 @@ export function SyntaxHighlightBlock({
         },
         lineContent: {
           flex: 1,
-          fontSize: 12,
-          lineHeight: 18,
-          fontFamily: tokens.fontCode,
+          fontSize: tokens.fs(12),
+          lineHeight: tokens.fs(18),
+          fontFamily: tokens.fontMono,
           color: tokens.foreground,
         },
       }),
@@ -626,49 +601,33 @@ export function SyntaxHighlightBlock({
   );
 
   return (
-    // No pointer glow here: a code block is an inner surface, and lighting it
-    // separately from the card that holds it reads as two hovers at once.
-    <View {...surfaceProps(frosted, selectionSurface)} style={styles.container}>
+    <View style={styles.container}>
       {(filename || language) && (
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <FileTypeLogo filename={filename} language={language} size="sm" />
             {filename ? (
-              onRevealFile ? (
-                <Pressable
-                  onPress={onRevealFile}
-                  accessibilityRole="link"
-                  accessibilityLabel={`Show ${filename} in the file manager`}
-                  style={styles.filenameButton}
-                >
-                  <Text style={[styles.filename, styles.filenameLink]}>{filename}</Text>
-                </Pressable>
-              ) : (
-                <Text selectable style={styles.filename}>
-                  {filename}
-                </Text>
-              )
+              <Text selectable style={styles.filename}>
+                {filename}
+              </Text>
             ) : null}
-            {showLanguageBadge ? (
+            {language ? (
               <Text selectable style={styles.langBadge}>
                 {language}
               </Text>
             ) : null}
           </View>
           <Pressable onPress={handleCopy} style={styles.copyButton}>
-            <Pop trigger={copied}>
-              <Glyph
-                name={copied ? "Check" : "Copy"}
-                size={12}
-                color={copied ? tokens.success : tokens.foregroundMuted}
-              />
-            </Pop>
+            <Glyph
+              name={copied ? "Check" : "Copy"}
+              size={12}
+              color={copied ? tokens.success : tokens.foregroundMuted}
+            />
             <Text style={styles.copyText}>{copied ? "Copied" : "Copy"}</Text>
           </Pressable>
         </View>
       )}
 
-      <View {...selectionCodeSurface} style={styles.codeArea}>
+      <View style={styles.codeArea}>
         {lines.map((line, idx) => {
           const shikiLine = shikiLines?.[idx];
           // The patched file's tokens, and only for a line the file owns. A
@@ -1106,115 +1065,4 @@ function renderBashTokens(line: string, tokens: ExtendedThemeTokens): React.Reac
       {parts}
     </>
   );
-}
-
-/**
- * Whole-line verdicts in command output. A line that opens with one of these
- * takes its colour, because that is the part a reader scans for.
- */
-const LINE_VERDICTS: Array<{
-  re: RegExp;
-  tone: "success" | "danger" | "warning";
-}> = [
-  { re: /^\s*(?:PASS|OK|DONE|SUCCESS|✓|✔)\b/i, tone: "success" },
-  { re: /^\s*(?:FAIL(?:ED)?|ERROR|ERR|FATAL|✕|✗|×)\b/i, tone: "danger" },
-  { re: /^\s*(?:WARN(?:ING)?|SKIP(?:PED)?|DEPRECATED)\b/i, tone: "warning" },
-];
-
-/** Inline spans worth colouring inside an otherwise plain output line. */
-const OUTPUT_TOKENS =
-  /(https?:\/\/[^\s]+|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\b[\w.-]+\.[a-z]{1,5}(?::\d+)?\b|\b\d+(?:\.\d+)?(?:ms|s|m|h|%|KB|MB|GB)?\b|\b(?:PASS|OK|DONE|SUCCESS)\b|\b(?:FAIL(?:ED)?|ERROR|FATAL)\b|\b(?:WARN(?:ING)?|SKIPPED)\b)/g;
-
-/**
- * Command output, coloured. Verdict lines take one tone end to end; everything
- * else keeps muted body text with counts, durations, paths, and quoted values
- * lifted out so the numbers are findable.
- */
-export function renderTerminalOutput(text: string, tokens: ExtendedThemeTokens): React.ReactNode {
-  const lines = text.replace(/\s+$/, "").split("\n");
-
-  return lines.map((line, lineIdx) => {
-    const key = `out-${lineIdx}`;
-
-    const verdict = LINE_VERDICTS.find((v) => v.re.test(line));
-    if (verdict) {
-      const tone =
-        verdict.tone === "success"
-          ? tokens.success
-          : verdict.tone === "danger"
-            ? tokens.danger
-            : tokens.warning;
-      return (
-        <Text key={key} selectable style={{ color: tone }}>
-          {line}
-          {lineIdx < lines.length - 1 ? "\n" : ""}
-        </Text>
-      );
-    }
-
-    if (line.startsWith("+")) {
-      return (
-        <Text key={key} selectable style={{ color: tokens.syntax.diffAddMarker }}>
-          {line}
-          {lineIdx < lines.length - 1 ? "\n" : ""}
-        </Text>
-      );
-    }
-    if (line.startsWith("-") && !line.startsWith("--")) {
-      return (
-        <Text key={key} selectable style={{ color: tokens.syntax.diffRemoveMarker }}>
-          {line}
-          {lineIdx < lines.length - 1 ? "\n" : ""}
-        </Text>
-      );
-    }
-
-    const parts: React.ReactNode[] = [];
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-    OUTPUT_TOKENS.lastIndex = 0;
-
-    while ((match = OUTPUT_TOKENS.exec(line)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(line.slice(lastIndex, match.index));
-      }
-      const token = match[0];
-      const spanKey = `${key}-${match.index}`;
-      let color = tokens.foreground;
-
-      if (/^https?:\/\//.test(token)) {
-        color = tokens.accent;
-      } else if (token.startsWith('"') || token.startsWith("'")) {
-        color = tokens.syntax.string;
-      } else if (/^(?:PASS|OK|DONE|SUCCESS)$/i.test(token)) {
-        color = tokens.success;
-      } else if (/^(?:FAIL(?:ED)?|ERROR|FATAL)$/i.test(token)) {
-        color = tokens.danger;
-      } else if (/^(?:WARN(?:ING)?|SKIPPED)$/i.test(token)) {
-        color = tokens.warning;
-      } else if (/^\d/.test(token)) {
-        color = tokens.syntax.number;
-      } else {
-        color = tokens.syntax.property;
-      }
-
-      parts.push(
-        <Text key={spanKey} selectable style={{ color }}>
-          {token}
-        </Text>,
-      );
-      lastIndex = match.index + token.length;
-    }
-
-    if (lastIndex < line.length) {
-      parts.push(line.slice(lastIndex));
-    }
-
-    return (
-      <Text key={key} selectable style={{ color: tokens.foregroundMuted }}>
-        {parts}
-        {lineIdx < lines.length - 1 ? "\n" : ""}
-      </Text>
-    );
-  });
 }

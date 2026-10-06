@@ -1,5 +1,3 @@
-import type { ToolCallKind } from "../shared/contracts";
-
 /**
  * The kinds of card the two collapse settings can pick. "Collapse while
  * running" keeps a picked kind closed while its call is still running, so a
@@ -49,39 +47,6 @@ export function isCardExpanded(
   if (state === "failed") return true;
   const collapse = state === "running" ? settings.collapseRunning : settings.collapseFinished;
   return !collapse[group];
-}
-
-/**
- * The group a tool call belongs to. The renderer falls back to the `bash`
- * kind for any tool it has no card for, so `bash` counts as a shell only when
- * the call is named `bash`; every other fallback is "other".
- */
-export function collapseGroupForTool(tool: ToolCallKind, rawName: string): CollapseGroup {
-  switch (tool) {
-    case "thinking":
-      return "reasoning";
-    case "shell":
-    case "git":
-      return "shell";
-    case "bash":
-      return rawName === "bash" ? "shell" : "other";
-    case "read":
-    case "write":
-    case "edit":
-      return "files";
-    case "task":
-    case "hub":
-    case "paseo":
-      return "agents";
-    case "eval":
-      return "eval";
-    case "mcp":
-      return "mcp";
-    case "ask":
-      return "ask";
-    default:
-      return "other";
-  }
 }
 
 /** Reads a stored map; a missing or malformed entry takes its default. */

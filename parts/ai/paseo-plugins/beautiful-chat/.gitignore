@@ -1,5 +1,3 @@
 node_modules/
 dist/
 *.tsbuildinfo
-.showcase/showcase.js
-.showcase/tools/collect.cjs

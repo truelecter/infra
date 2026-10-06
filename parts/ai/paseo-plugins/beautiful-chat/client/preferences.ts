@@ -1,171 +1,89 @@
 import { useSyncExternalStore } from "react";
 import { DEFAULT_COLLAPSE_KINDS, parseCollapseKinds, type CollapseKinds } from "./collapse";
 
-export const ACCENT_PRESETS = {
-  host: undefined,
-  jade: "#10b981",
-  violet: "#8b5cf6",
-  amber: "#f59e0b",
-  rose: "#f43f5e",
-} as const;
-
-export type AccentPreset = keyof typeof ACCENT_PRESETS;
-export type UiFontPreference = "inter" | "system";
-export type CodeFontPreference = "code" | "plain";
-export type MarkdownVariantPreference = "document" | "compact" | "terminal";
-
 export interface EnhancerPreferences {
-  accent: AccentPreset;
-  uiFont: UiFontPreference;
-  codeFont: CodeFontPreference;
-  frostedGlass: boolean;
-  /**
-   * A light that follows the pointer across a card. Web and desktop only:
-   * touch platforms have no hover, so the attribute is inert there.
-   */
-  pointerGlow: boolean;
-  /**
-   * Paseo maps a stream item to the plugin timeline item before any transformer
-   * runs, and that mapping carries only the text. Pasted images therefore never
-   * reach plugin code, so the enhanced bubble cannot draw them. Turning this off
-   * hands prompts back to the host, whose own bubble still shows them.
-   */
-  enhancedUserBubble: boolean;
-  /**
-   * The Copy / Add to chat bar that follows a highlight. Web and desktop only:
-   * iOS and Android route selection through the platform's own menu, which the
-   * plugin cannot extend, so the toggle has no effect there.
-   */
-  selectionActions: boolean;
-  /**
-   * The plugin's own markdown rendering for assistant replies. Off hands the
-   * turn back to Paseo's renderer, which is the safety valve: the plugin
-   * cannot import the host markdown pipeline, so its version is a reasonable
-   * subset rather than a superset.
-   */
-  assistantMarkdown: boolean;
-  /** Which look the markdown renderer uses. */
-  markdownVariant: MarkdownVariantPreference;
-  /**
-   * Which kinds of card stay closed while their call is still running. A long
-   * streaming output (a shell grep, say) otherwise grows the card and pushes
-   * the chat around until the call ends.
-   */
+  /** Which kinds of card stay closed while their call is still running. */
   collapseRunning: CollapseKinds;
-  /**
-   * Which kinds of card close themselves once they finish. A kind left out
-   * stays open after it finishes, which is the better read when the output
-   * itself is the answer. A card toggled by hand keeps the state the hand gave
-   * it either way, and a failed call always opens.
-   */
+  /** Which kinds of card close themselves once they finish. */
   collapseFinished: CollapseKinds;
+  /** Multiplies every text size and line height in the plugin's cards. */
+  fontScale: number;
 }
 
 const STORAGE_KEY = "paseo/beautiful-chat/preferences/v1";
 
-export const DEFAULT_PREFERENCES: Readonly<EnhancerPreferences> = {
-  accent: "host",
-  uiFont: "inter",
-  codeFont: "code",
-  frostedGlass: true,
-  pointerGlow: true,
-  enhancedUserBubble: true,
-  selectionActions: true,
-  assistantMarkdown: true,
-  markdownVariant: "document",
+export const FONT_SCALE_MIN = 0.85;
+export const FONT_SCALE_MAX = 1.3;
+
+const DEFAULT_PREFERENCES: Readonly<EnhancerPreferences> = {
   collapseRunning: DEFAULT_COLLAPSE_KINDS,
   collapseFinished: DEFAULT_COLLAPSE_KINDS,
+  fontScale: 1,
 };
 
-const listeners = new Set<() => void>();
+/** A stored scale, clamped to the supported range; anything else is the default. */
+export function parseFontScale(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return DEFAULT_PREFERENCES.fontScale;
+  return Math.min(FONT_SCALE_MAX, Math.max(FONT_SCALE_MIN, value));
+}
 
 function storage(): Storage | undefined {
-  const candidate = globalThis as typeof globalThis & { localStorage?: Storage };
-  return candidate.localStorage;
+  // React Native has no `localStorage`; the web and desktop builds do.
+  return typeof localStorage === "undefined" ? undefined : localStorage;
 }
 
-function isAccentPreset(value: unknown): value is AccentPreset {
-  return typeof value === "string" && value in ACCENT_PRESETS;
+/** `size` at `scale`, rounded to one decimal; scale 1 returns `size` unchanged. */
+export function scaleFont(size: number, scale: number): number {
+  return Math.round(size * scale * 10) / 10;
 }
 
-function loadPreferences(): EnhancerPreferences {
+/** Reads the saved preferences; anything missing or malformed takes its default. */
+export function loadPreferences(): EnhancerPreferences {
   try {
     const stored = storage()?.getItem(STORAGE_KEY);
     if (!stored) return { ...DEFAULT_PREFERENCES };
-    const candidate = JSON.parse(stored) as Partial<EnhancerPreferences>;
+    const parsed = JSON.parse(stored) as Partial<Record<keyof EnhancerPreferences, unknown>>;
     return {
-      accent: isAccentPreset(candidate.accent) ? candidate.accent : DEFAULT_PREFERENCES.accent,
-      uiFont: candidate.uiFont === "system" ? "system" : DEFAULT_PREFERENCES.uiFont,
-      codeFont: candidate.codeFont === "plain" ? "plain" : DEFAULT_PREFERENCES.codeFont,
-      frostedGlass:
-        typeof candidate.frostedGlass === "boolean"
-          ? candidate.frostedGlass
-          : DEFAULT_PREFERENCES.frostedGlass,
-      pointerGlow:
-        typeof candidate.pointerGlow === "boolean"
-          ? candidate.pointerGlow
-          : DEFAULT_PREFERENCES.pointerGlow,
-      enhancedUserBubble:
-        typeof candidate.enhancedUserBubble === "boolean"
-          ? candidate.enhancedUserBubble
-          : DEFAULT_PREFERENCES.enhancedUserBubble,
-      selectionActions:
-        typeof candidate.selectionActions === "boolean"
-          ? candidate.selectionActions
-          : DEFAULT_PREFERENCES.selectionActions,
-      assistantMarkdown:
-        typeof candidate.assistantMarkdown === "boolean"
-          ? candidate.assistantMarkdown
-          : DEFAULT_PREFERENCES.assistantMarkdown,
-      markdownVariant:
-        candidate.markdownVariant === "compact" || candidate.markdownVariant === "terminal"
-          ? candidate.markdownVariant
-          : DEFAULT_PREFERENCES.markdownVariant,
-      collapseRunning: parseCollapseKinds(candidate.collapseRunning),
-      collapseFinished: parseCollapseKinds(candidate.collapseFinished),
+      collapseRunning: parseCollapseKinds(parsed.collapseRunning),
+      collapseFinished: parseCollapseKinds(parsed.collapseFinished),
+      fontScale: parseFontScale(parsed.fontScale),
     };
   } catch {
     return { ...DEFAULT_PREFERENCES };
   }
 }
 
-let preferences = loadPreferences();
+let current: EnhancerPreferences = loadPreferences();
+const listeners = new Set<() => void>();
 
-function publish(): void {
+/** The current preferences, for reads outside React. */
+export const preferences = {
+  get value(): EnhancerPreferences {
+    return current;
+  },
+};
+
+export function updateEnhancerPreferences(update: Partial<EnhancerPreferences>): void {
+  current = {
+    ...current,
+    ...update,
+    ...(update.fontScale !== undefined ? { fontScale: parseFontScale(update.fontScale) } : {}),
+  };
+  try {
+    storage()?.setItem(STORAGE_KEY, JSON.stringify(current));
+  } catch {
+    // Storage can be disabled; the change still holds for this session.
+  }
   for (const listener of listeners) listener();
 }
 
-export function getEnhancerPreferences(): EnhancerPreferences {
-  return preferences;
-}
-
-export function updateEnhancerPreferences(update: Partial<EnhancerPreferences>): void {
-  preferences = { ...preferences, ...update };
-  try {
-    storage()?.setItem(STORAGE_KEY, JSON.stringify(preferences));
-  } catch {
-    // Browser storage can be disabled. Keep the change alive for this session.
-  }
-  publish();
-}
-
-export function resetEnhancerPreferences(): void {
-  preferences = { ...DEFAULT_PREFERENCES };
-  try {
-    storage()?.removeItem(STORAGE_KEY);
-  } catch {
-    // Keep the default session value if storage is unavailable.
-  }
-  publish();
+export function subscribeEnhancerPreferences(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 export function useEnhancerPreferences(): EnhancerPreferences {
-  return useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-    getEnhancerPreferences,
-    getEnhancerPreferences,
-  );
+  return useSyncExternalStore(subscribeEnhancerPreferences, () => current, () => current);
 }
