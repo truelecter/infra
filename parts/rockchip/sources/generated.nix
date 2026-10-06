@@ -17,26 +17,15 @@
       sha256 = "sha256-nkDkV6A+fko5egnvKSCJryRA/upwgBtQUB3nCH/Wcxs=";
     };
   };
-  btt-u-boot = {
-    pname = "btt-u-boot";
-    version = "bpi-v2025.04";
-    src = fetchFromGitHub {
-      owner = "bigtreetech";
-      repo = "u-boot";
-      rev = "bpi-v2025.04";
-      fetchSubmodules = false;
-      sha256 = "sha256-WACdkm1hWzxA5N6+CYQ12QgGihVdDoxug9+GkUAVtjE=";
-    };
-  };
   uboot = {
     pname = "uboot";
-    version = "v2025.04-rc2";
+    version = "v2026.10";
     src = fetchFromGitHub {
       owner = "u-boot";
       repo = "u-boot";
-      rev = "v2025.04-rc2";
+      rev = "v2026.10";
       fetchSubmodules = false;
-      sha256 = "sha256-emuw0j2m7qsamaQveM3rsWUSfi9rym9E3qYbUa3LirY=";
+      sha256 = "sha256-BXIpyAY+uKSohrdG4BxAo0zq4CYmh2z9rFw1jA7Yu8s=";
     };
   };
   uboot-2024-10 = {

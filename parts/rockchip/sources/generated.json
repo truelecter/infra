@@ -20,27 +20,6 @@
         },
         "version": "bpi-rk-6.1-rkr5.1"
     },
-    "btt-u-boot": {
-        "cargoLock": null,
-        "date": null,
-        "extract": null,
-        "name": "btt-u-boot",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "owner": "bigtreetech",
-            "repo": "u-boot",
-            "rev": "bpi-v2025.04",
-            "sha256": "sha256-WACdkm1hWzxA5N6+CYQ12QgGihVdDoxug9+GkUAVtjE=",
-            "sparseCheckout": [],
-            "type": "github"
-        },
-        "version": "bpi-v2025.04"
-    },
     "uboot": {
         "cargoLock": null,
         "date": null,
@@ -55,12 +34,12 @@
             "name": null,
             "owner": "u-boot",
             "repo": "u-boot",
-            "rev": "v2025.04-rc2",
-            "sha256": "sha256-emuw0j2m7qsamaQveM3rsWUSfi9rym9E3qYbUa3LirY=",
+            "rev": "v2026.10",
+            "sha256": "sha256-BXIpyAY+uKSohrdG4BxAo0zq4CYmh2z9rFw1jA7Yu8s=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v2025.04-rc2"
+        "version": "v2026.10"
     },
     "uboot-2024-10": {
         "cargoLock": null,

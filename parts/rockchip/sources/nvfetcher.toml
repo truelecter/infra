@@ -1,14 +1,10 @@
 [uboot]
 fetch.github = "u-boot/u-boot"
-src.manual = "v2025.04-rc2"
+src.manual = "v2026.10"
 
 [uboot-2024-10]
 fetch.github = "u-boot/u-boot"
 src.manual = "v2024.10"
-
-[btt-u-boot]
-fetch.github = "bigtreetech/u-boot"
-src.manual = "bpi-v2025.04"
 
 [btt-linux-rockchip]
 fetch.github = "bigtreetech/linux-rockchip"
