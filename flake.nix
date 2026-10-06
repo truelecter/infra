@@ -3,7 +3,6 @@
 
   # nixpkgs & home-manager
   inputs = {
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     latest.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos.follows = "nixpkgs";
@@ -80,6 +79,7 @@
       url = "github:terranix/terranix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
       };
     };
   };
@@ -90,6 +90,7 @@
       url = "github:oddlama/nix-topology";
       inputs = {
         nixpkgs.follows = "latest";
+        flake-parts.follows = "flake-parts";
       };
     };
 
@@ -101,7 +102,12 @@
       };
     };
 
-    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-hardware = {
+      url = "github:nixos/nixos-hardware";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
 
     nixos-wsl = {
       # url = "github:nix-community/NixOS-WSL/73b681db219446267eb323763319d9438f26faf7";
@@ -129,6 +135,9 @@
 
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi/develop";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     nixflix = {
@@ -208,6 +217,10 @@
 
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
+      inputs = {
+        nixpkgs.follows = "latest";
+        flake-parts.follows = "flake-parts";
+      };
     };
 
     # Fork of getpaseo/paseo: upstream `main` plus SDK patches beautiful-chat
@@ -220,7 +233,12 @@
       };
     };
 
-    mt7927.url = "github:cmspam/mt7927-nixos";
+    mt7927 = {
+      url = "github:cmspam/mt7927-nixos";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   nixConfig = {

@@ -102,10 +102,12 @@
 
     isLatest = hostname == "nas";
 
-    nixpkgs =
+    nixpkgsInput =
       if isLatest
-      then inputs.latest
-      else inputs.nixpkgs;
+      then "latest"
+      else "nixpkgs";
+
+    nixpkgs = inputs.${nixpkgsInput};
 
     home =
       if isLatest
@@ -142,9 +144,10 @@
 
               networking.hostName = lib.mkDefault hostname;
 
-              nix = {
-                registry.nixpkgs.flake = nixpkgs;
-                registry.l.flake = inputs.latest;
+              # Locked refs keep the nixpkgs sources out of the closure, see lib/locked-ref.nix.
+              nix.registry = {
+                nixpkgs.to = self.lib.lockedRef nixpkgsInput;
+                l.to = self.lib.lockedRef "latest";
               };
 
               nixpkgs = {

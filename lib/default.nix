@@ -16,6 +16,8 @@ lib.makeExtensible (
 
     combineModules = limp ./combine-modules.nix;
 
+    lockedRef = limp ./locked-ref.nix;
+
     merge = attrs: builtins.foldl' (a: b: a // b) {} attrs;
 
     isLinux = system: builtins.match ".+-linux" system != null;

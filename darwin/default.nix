@@ -47,7 +47,7 @@
     arch ? "aarch64",
     configuration,
   }: let
-    inherit (inputs) nixpkgs darwin home latest;
+    inherit (inputs) darwin home;
     system = "${arch}-darwin";
   in {
     ${hostname} = darwin.lib.darwinSystem {
@@ -65,8 +65,9 @@
             {lib, ...}: {
               networking.hostName = lib.mkDefault hostname;
 
-              nix.registry.nixpkgs.flake = nixpkgs;
-              nix.registry.l.flake = latest;
+              # Locked refs keep the nixpkgs sources out of the closure, see lib/locked-ref.nix.
+              nix.registry.nixpkgs.to = self.lib.lockedRef "nixpkgs";
+              nix.registry.l.to = self.lib.lockedRef "latest";
 
               nixpkgs = {
                 hostPlatform = system;
