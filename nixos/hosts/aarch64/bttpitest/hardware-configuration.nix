@@ -36,6 +36,12 @@
       # "ahci_dwc"
       "phy_rockchip_naneng_combphy"
     ];
+    # Bring the panel up in the initrd so the boot console shows early
+    initrd.kernelModules = [
+      "rpi-panel-attiny-regulator"
+      "tc358762"
+      "panel-simple"
+    ];
     kernelParams = [
       "console=ttyS2,1500000n8"
       "console=tty1"
