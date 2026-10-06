@@ -8,6 +8,10 @@ export interface EnhancerPreferences {
   collapseFinished: CollapseKinds;
   /** Multiplies every text size and line height in the plugin's cards. */
   fontScale: number;
+  /** Folds a turn's tool calls into one summary line; off draws each as a row. */
+  combineToolCalls: boolean;
+  /** Shows when each card's item arrived on its header line. */
+  showTimestamps: boolean;
 }
 
 const STORAGE_KEY = "paseo/beautiful-chat/preferences/v1";
@@ -19,6 +23,8 @@ const DEFAULT_PREFERENCES: Readonly<EnhancerPreferences> = {
   collapseRunning: DEFAULT_COLLAPSE_KINDS,
   collapseFinished: DEFAULT_COLLAPSE_KINDS,
   fontScale: 1,
+  combineToolCalls: true,
+  showTimestamps: true,
 };
 
 /** A stored scale, clamped to the supported range; anything else is the default. */
@@ -47,6 +53,14 @@ export function loadPreferences(): EnhancerPreferences {
       collapseRunning: parseCollapseKinds(parsed.collapseRunning),
       collapseFinished: parseCollapseKinds(parsed.collapseFinished),
       fontScale: parseFontScale(parsed.fontScale),
+      combineToolCalls:
+        typeof parsed.combineToolCalls === "boolean"
+          ? parsed.combineToolCalls
+          : DEFAULT_PREFERENCES.combineToolCalls,
+      showTimestamps:
+        typeof parsed.showTimestamps === "boolean"
+          ? parsed.showTimestamps
+          : DEFAULT_PREFERENCES.showTimestamps,
     };
   } catch {
     return { ...DEFAULT_PREFERENCES };

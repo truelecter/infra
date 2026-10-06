@@ -3,18 +3,21 @@ import { StyleSheet, Text, View } from "react-native";
 import { Icon as HostIcon } from "@getpaseo/plugin/client/react-native";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface } from "./selection";
+import { CardTime } from "./card-time";
 
 interface AskCardProps {
   question: string;
   answer: string;
   tokens: ExtendedThemeTokens;
+  /** When the question was asked; nothing shows when undefined. */
+  time?: string;
 }
 
 /**
  * A resolved `ask`: the question, then the answer. OMP sends only the label
  * and the result text for it, so the options that were offered are not shown.
  */
-export function AskCard({ question, answer, tokens }: AskCardProps) {
+export function AskCard({ question, answer, tokens, time }: AskCardProps) {
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -78,6 +81,7 @@ export function AskCard({ question, answer, tokens }: AskCardProps) {
         <Text selectable style={styles.question}>
           {question || "Question"}
         </Text>
+        <CardTime time={time} tokens={tokens} />
       </View>
       {answer ? (
         <View style={styles.body}>

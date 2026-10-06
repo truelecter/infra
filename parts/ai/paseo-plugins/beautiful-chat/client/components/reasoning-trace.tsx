@@ -6,14 +6,17 @@ import { selectableSurface } from "./selection";
 import type { ExtendedThemeTokens } from "./theme-tokens";
 import type { ReasoningTraceData } from "../../shared/contracts";
 import { SyntaxHighlightBlock } from "./syntax-highlight";
+import { CardTime } from "./card-time";
 
 interface ReasoningTraceProps {
   data: ReasoningTraceData;
   tokens: ExtendedThemeTokens;
   defaultExpanded?: boolean;
+  /** When the reasoning started; nothing shows when undefined. */
+  time?: string;
 }
 
-export function ReasoningTrace({ data, tokens, defaultExpanded = false }: ReasoningTraceProps) {
+export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: ReasoningTraceProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   // The trace mounts while the model is still streaming, so the collapse that
@@ -278,6 +281,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false }: Reason
               Reasoning
             </Text>
           ) : null}
+          <CardTime time={time} tokens={tokens} />
           <Glyph
             name={isExpanded ? "ChevronDown" : "ChevronRight"}
             size={16}

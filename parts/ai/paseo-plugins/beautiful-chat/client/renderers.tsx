@@ -14,7 +14,9 @@ import { useEnhancerPreferences, type EnhancerPreferences } from "./preferences"
 import { isCardExpanded } from "./collapse";
 import { normalizeTodoTasks, useTodoChanges } from "./todo-history";
 import { ActivityCard } from "./components/activity-card";
+import type { ActivityPayload } from "./activity-store";
 import { AskCard } from "./components/ask-card";
+import { formatCardTime } from "./time";
 import { hostFontEscape } from "./components/host-font-escape";
 import type {
   ReasoningStep,
@@ -32,10 +34,6 @@ export interface TodoPayload {
   items: Array<Record<string, unknown>>;
   phase?: string;
 }
-
-export type ActivityPayload =
-  | { mode: "group"; runId: number }
-  | { mode: "solo"; runId: number; callId: string };
 
 export interface AskPayload {
   question: string;
@@ -90,23 +88,33 @@ function splitReasoningBlocks(text: string): ReasoningBlock[] {
 }
 
 /**
- * The card tokens at the current Text size. Reading the preferences through
- * the hook is what makes a mounted card re-render when the setting changes.
+ * The card tokens at the current Text size, and the item's time unless the
+ * setting hides it. Reading the preferences through the hook is what makes a
+ * mounted card re-render when a setting changes.
  */
-function useCardTokens(colors: PluginSurfaceColors): {
+function useCardTokens(
+  colors: PluginSurfaceColors,
+  timestamp: Date,
+): {
   tokens: ExtendedThemeTokens;
   prefs: EnhancerPreferences;
+  time: string | undefined;
 } {
   const prefs = useEnhancerPreferences();
   const tokens = useMemo(
     () => buildThemeTokens(colors, prefs.fontScale),
     [colors, prefs.fontScale],
   );
-  return { tokens, prefs };
+  const time = prefs.showTimestamps ? formatCardTime(timestamp) : undefined;
+  return { tokens, prefs, time };
 }
 
-export function ReasoningRenderer({ item, theme }: PluginTimelineItemProps<ReasoningPayload>) {
-  const { tokens, prefs } = useCardTokens(theme.colors);
+export function ReasoningRenderer({
+  item,
+  theme,
+  timestamp,
+}: PluginTimelineItemProps<ReasoningPayload>) {
+  const { tokens, prefs, time } = useCardTokens(theme.colors, timestamp);
   const data = item.data;
   const streaming = data.phase === "streaming";
   // The host owns the reveal cadence, so streamed reasoning animates the same
@@ -153,6 +161,7 @@ export function ReasoningRenderer({ item, theme }: PluginTimelineItemProps<Reaso
       <ReasoningTrace
         data={reasoningData}
         tokens={tokens}
+        time={time}
         defaultExpanded={isCardExpanded(
           "reasoning",
           streaming ? "running" : "finished",
@@ -169,7 +178,7 @@ export function TodoRenderer({
   theme,
   timestamp,
 }: PluginTimelineItemProps<TodoPayload>) {
-  const { tokens } = useCardTokens(theme.colors);
+  const { tokens, time } = useCardTokens(theme.colors, timestamp);
   const data = item.data;
 
   const todoTasks = useMemo(() => normalizeTodoTasks(data.items || []), [data]);
@@ -195,26 +204,41 @@ export function TodoRenderer({
       <TaskList
         data={taskListData}
         tokens={tokens}
+        time={time}
         summary={<TodoSummary changes={changes} tasks={todoTasks} tokens={tokens} />}
       />
     </View>
   );
 }
 
-export function ActivityRenderer({ item, theme }: PluginTimelineItemProps<ActivityPayload>) {
-  const { tokens } = useCardTokens(theme.colors);
+export function ActivityRenderer({
+  item,
+  theme,
+  timestamp,
+}: PluginTimelineItemProps<ActivityPayload>) {
+  const { tokens, prefs, time } = useCardTokens(theme.colors, timestamp);
   return (
     <View {...hostFontEscape}>
-      <ActivityCard {...item.data} tokens={tokens} />
+      <ActivityCard
+        {...item.data}
+        combine={prefs.combineToolCalls}
+        time={time}
+        tokens={tokens}
+      />
     </View>
   );
 }
 
-export function AskRenderer({ item, theme }: PluginTimelineItemProps<AskPayload>) {
-  const { tokens } = useCardTokens(theme.colors);
+export function AskRenderer({ item, theme, timestamp }: PluginTimelineItemProps<AskPayload>) {
+  const { tokens, time } = useCardTokens(theme.colors, timestamp);
   return (
     <View {...hostFontEscape}>
-      <AskCard question={item.data.question} answer={item.data.answer} tokens={tokens} />
+      <AskCard
+        question={item.data.question}
+        answer={item.data.answer}
+        time={time}
+        tokens={tokens}
+      />
     </View>
   );
 }

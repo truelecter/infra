@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import type { PluginSurfaceProps } from "@getpaseo/plugin/client";
-import { SettingsSection, SettingsSelect } from "@getpaseo/plugin/client/ui";
+import { SettingsSection, SettingsSelect, SettingsSwitch } from "@getpaseo/plugin/client/ui";
 import { buildThemeTokens, radius } from "./components/theme-tokens";
 import { hostFontEscape } from "./components/host-font-escape";
 import { updateEnhancerPreferences, useEnhancerPreferences } from "./preferences";
@@ -85,6 +85,20 @@ export function BeautifulChatSettingsPage({ theme }: PluginSurfaceProps) {
           </Text>
           <Text style={styles.sampleCode}>$ bun run typecheck</Text>
         </View>
+        <SettingsSwitch
+          label="Show times"
+          hint="Shows when each Thinking, checklist, tool activity, and question card arrived, at the right of its header line, worded like Paseo's own message times."
+          value={prefs.showTimestamps}
+          onValueChange={(value) => updateEnhancerPreferences({ showTimestamps: value })}
+        />
+      </SettingsSection>
+      <SettingsSection title="Tool activity">
+        <SettingsSwitch
+          label="Combine tool calls"
+          hint="Folds a turn's tool calls into one summary line that opens into the list of calls. Off draws every call as its own row. A turn with reasoning always draws rows."
+          value={prefs.combineToolCalls}
+          onValueChange={(value) => updateEnhancerPreferences({ combineToolCalls: value })}
+        />
       </SettingsSection>
     </View>
   );

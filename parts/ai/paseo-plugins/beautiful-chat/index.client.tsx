@@ -119,8 +119,9 @@ export default function contribute(client: PluginClientContext) {
   });
 
   // Tool calls fold into one activity line per turn, or draw as compact rows
-  // when the turn has reasoning. See `client/activity-store.ts` for how the
-  // run is worked out from transform order alone.
+  // when the turn has reasoning or the Combine tool calls setting is off. See
+  // `client/activity-store.ts` for how the run is worked out from transform
+  // order alone.
   const removeToolTransformer = client.addTimelineTransformer({
     id: "omp-activity-tool-call",
     query: { itemType: "tool_call" },
@@ -147,10 +148,12 @@ export default function contribute(client: PluginClientContext) {
         status: item.status,
         ...described,
       });
-      if (!hasThinking && !isAnchor) return { items: [] };
+      // Every call keeps an item, so the setting can redraw them in place.
       const data: JsonValue = hasThinking
         ? { mode: "solo", runId, callId: item.callId }
-        : { mode: "group", runId };
+        : isAnchor
+          ? { mode: "group", runId }
+          : { mode: "member", runId, callId: item.callId };
       return {
         items: [
           {
@@ -169,6 +172,7 @@ export default function contribute(client: PluginClientContext) {
     version: 1,
     schema: z.discriminatedUnion("mode", [
       z.object({ mode: z.literal("group"), runId: z.number() }),
+      z.object({ mode: z.literal("member"), runId: z.number(), callId: z.string() }),
       z.object({ mode: z.literal("solo"), runId: z.number(), callId: z.string() }),
     ]),
     Component: ActivityRenderer,

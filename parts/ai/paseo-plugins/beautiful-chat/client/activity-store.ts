@@ -12,11 +12,15 @@ import type { CountBucket, ToolKind } from "./tool-kind";
  *
  * A run is one stretch of tool calls between boundaries (a user prompt or an
  * assistant reply). A run that started with no reasoning before it is folded:
- * its first call is the anchor that draws the summary and the rest are
- * suppressed. Reasoning in the turn ungroups the tools that follow it: each
- * draws its own row. Reasoning that arrives after a folded run has started
- * closes that run, so the calls after it draw on their own instead of joining
- * a summary that sits above the reasoning.
+ * its first call is the anchor that draws the summary and the rest draw
+ * nothing while combining is on. Reasoning in the turn ungroups the tools that
+ * follow it: each draws its own row. Reasoning that arrives after a folded run
+ * has started closes that run, so the calls after it draw on their own instead
+ * of joining a summary that sits above the reasoning.
+ *
+ * Every call of a folded run still gets its own timeline item, so turning the
+ * Combine tool calls setting off redraws each one as a row in place, with no
+ * need for the host to transform the items again.
  */
 
 export interface ToolEntry {
@@ -45,6 +49,43 @@ export interface RecordResult {
   runId: number;
   isAnchor: boolean;
   hasThinking: boolean;
+}
+
+/**
+ * What a tool call's timeline item carries. `group` is a folded run's anchor
+ * (always the run's first call), `member` is any later call of that run, and
+ * `solo` is a call of a turn that had reasoning.
+ */
+export type ActivityPayload =
+  | { mode: "group"; runId: number }
+  | { mode: "member"; runId: number; callId: string }
+  | { mode: "solo"; runId: number; callId: string };
+
+export type ActivityView =
+  | { kind: "none" }
+  | { kind: "row"; entry: ToolEntry }
+  | { kind: "summary"; tools: ToolEntry[] };
+
+/**
+ * What one activity item draws. With `combine` off every call draws its own
+ * row, the anchor as the run's first call; with it on, the anchor draws the
+ * summary (a lone call needs none) and members draw nothing.
+ */
+export function activityView(
+  payload: ActivityPayload,
+  run: Run | undefined,
+  combine: boolean,
+): ActivityView {
+  const tools = run?.tools ?? [];
+  if (payload.mode === "group") {
+    const first = tools[0];
+    if (!first) return { kind: "none" };
+    if (!combine || tools.length === 1) return { kind: "row", entry: first };
+    return { kind: "summary", tools };
+  }
+  if (payload.mode === "member" && combine) return { kind: "none" };
+  const entry = tools.find((tool) => tool.callId === payload.callId);
+  return entry ? { kind: "row", entry } : { kind: "none" };
 }
 
 export interface ActivityStore {

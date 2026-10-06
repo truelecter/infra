@@ -5,12 +5,16 @@ import { Glyph } from "./glyph";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface } from "./selection";
 import { SyntaxHighlightBlock } from "./syntax-highlight";
-import { activityStore, type Run, type ToolEntry } from "../activity-store";
+import { activityStore, activityView, type ActivityPayload, type Run, type ToolEntry } from "../activity-store";
 import { summarizeActivity } from "../tool-kind";
+import { CardTime } from "./card-time";
 
-type ActivityCardProps =
-  | { mode: "group"; runId: number; tokens: ExtendedThemeTokens }
-  | { mode: "solo"; runId: number; callId: string; tokens: ExtendedThemeTokens };
+type ActivityCardProps = ActivityPayload & {
+  combine: boolean;
+  /** When this item's call started; nothing shows when undefined. */
+  time: string | undefined;
+  tokens: ExtendedThemeTokens;
+};
 
 /** Re-renders when the run changes; the store mutates runs in place. */
 function useRun(runId: number): Run | undefined {
@@ -42,7 +46,19 @@ function runStatus(tools: readonly ToolEntry[]): string {
   return "completed";
 }
 
-function ToolRow({ entry, tokens }: { entry: ToolEntry; tokens: ExtendedThemeTokens }) {
+/**
+ * One call. `time` is set only where the row is its call's own timeline item:
+ * rows listed inside an opened summary have no time of their own to show.
+ */
+function ToolRow({
+  entry,
+  time,
+  tokens,
+}: {
+  entry: ToolEntry;
+  time?: string;
+  tokens: ExtendedThemeTokens;
+}) {
   const styles = useMemo(() => buildStyles(tokens), [tokens]);
   const [open, setOpen] = useState(false);
   const mark = statusMark(entry.status, tokens);
@@ -61,6 +77,7 @@ function ToolRow({ entry, tokens }: { entry: ToolEntry; tokens: ExtendedThemeTok
         <Text style={styles.rowPreview} numberOfLines={1}>
           {entry.preview}
         </Text>
+        <CardTime time={time} tokens={tokens} />
         <HostIcon name={mark.icon} size={13} color={mark.color} />
         <Glyph name={open ? "ChevronDown" : "ChevronRight"} size={12} color={tokens.foregroundSubtle} />
       </Pressable>
@@ -178,9 +195,9 @@ function buildStyles(tokens: ExtendedThemeTokens) {
 }
 
 /**
- * A turn's tool calls. `group` draws the folded summary line for the whole
- * run and lists the calls when opened; `solo` draws one call as a compact row,
- * which is what a turn with reasoning gets.
+ * One tool call's item. A folded run's anchor draws the summary line for the
+ * whole run and lists the calls when opened; any other item draws its call as
+ * a compact row, or nothing for a folded run's later calls. See `activityView`.
  */
 export function ActivityCard(props: ActivityCardProps) {
   const { tokens } = props;
@@ -188,26 +205,17 @@ export function ActivityCard(props: ActivityCardProps) {
   const run = useRun(props.runId);
   const [open, setOpen] = useState(false);
 
-  if (props.mode === "solo") {
-    const entry = run?.tools.find((tool) => tool.callId === props.callId);
-    if (!entry) return null;
+  const view = activityView(props, run, props.combine);
+  if (view.kind === "none") return null;
+  if (view.kind === "row") {
     return (
       <View style={styles.soloWrap}>
-        <ToolRow entry={entry} tokens={tokens} />
+        <ToolRow entry={view.entry} time={props.time} tokens={tokens} />
       </View>
     );
   }
 
-  const tools = run?.tools ?? [];
-  if (tools.length === 0) return null;
-  // One call needs no summary: the row says everything the line would.
-  if (tools.length === 1) {
-    return (
-      <View style={styles.soloWrap}>
-        <ToolRow entry={tools[0]!} tokens={tokens} />
-      </View>
-    );
-  }
+  const tools = view.tools;
 
   const mark = statusMark(runStatus(tools), tokens);
   return (
@@ -222,6 +230,7 @@ export function ActivityCard(props: ActivityCardProps) {
         <Text style={styles.summaryText} numberOfLines={1}>
           {summarizeActivity(tools.map((tool) => tool.countBucket))}
         </Text>
+        <CardTime time={props.time} tokens={tokens} />
         <HostIcon name={mark.icon} size={13} color={mark.color} />
         <Glyph name={open ? "ChevronDown" : "ChevronRight"} size={12} color={tokens.foregroundSubtle} />
       </Pressable>

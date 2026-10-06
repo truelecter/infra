@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 
 const STORAGE_KEY = "paseo/beautiful-chat/preferences/v1";
 const saved = new Map<string, string>();
-saved.set(STORAGE_KEY, JSON.stringify({ fontScale: 1.1, collapseRunning: { shell: false } }));
+saved.set(
+  STORAGE_KEY,
+  JSON.stringify({ fontScale: 1.1, collapseRunning: { shell: false }, combineToolCalls: false }),
+);
 
 const stubStorage: Pick<Storage, "getItem" | "setItem" | "removeItem"> = {
   getItem: (key) => saved.get(key) ?? null,
@@ -53,6 +56,22 @@ describe("loadPreferences", () => {
     assert.equal(loaded.fontScale, 1.1);
     assert.equal(loaded.collapseRunning.shell, false);
     assert.equal(loaded.collapseRunning.reasoning, false);
+  });
+
+  it("keeps saved switches and turns them on when missing or malformed", () => {
+    assert.equal(loadPreferences().combineToolCalls, false);
+    assert.equal(loadPreferences().showTimestamps, true);
+    const before = saved.get(STORAGE_KEY);
+    try {
+      saved.set(STORAGE_KEY, JSON.stringify({ combineToolCalls: "no", showTimestamps: false }));
+      assert.equal(loadPreferences().combineToolCalls, true);
+      assert.equal(loadPreferences().showTimestamps, false);
+      saved.set(STORAGE_KEY, JSON.stringify({ showTimestamps: 0 }));
+      assert.equal(loadPreferences().combineToolCalls, true);
+      assert.equal(loadPreferences().showTimestamps, true);
+    } finally {
+      if (before !== undefined) saved.set(STORAGE_KEY, before);
+    }
   });
 });
 

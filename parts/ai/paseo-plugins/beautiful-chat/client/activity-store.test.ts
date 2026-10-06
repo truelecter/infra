@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { createActivityStore, type ToolEntry } from "./activity-store";
+import { activityView, createActivityStore, type ActivityView, type ToolEntry } from "./activity-store";
 
 const tool = (callId: string, status = "completed"): ToolEntry => ({
   callId,
@@ -17,7 +17,7 @@ const tool = (callId: string, status = "completed"): ToolEntry => ({
 const sync = () => createActivityStore({ schedule: (flush) => flush() });
 
 describe("activity store", () => {
-  it("folds a turn without reasoning: the first call anchors, the rest are suppressed", () => {
+  it("folds a turn without reasoning: the first call anchors the rest", () => {
     const store = sync();
     const first = store.recordTool(tool("a"));
     const second = store.recordTool(tool("b"));
@@ -98,5 +98,62 @@ describe("activity store", () => {
     // The evicted call is new again: it opens a run of its own.
     store.noteBoundary();
     assert.notEqual(store.recordTool(tool("a")).runId, first.runId);
+  });
+});
+
+describe("activityView", () => {
+  const drawn = (view: ActivityView) =>
+    view.kind === "none"
+      ? "none"
+      : view.kind === "row"
+        ? `row:${view.entry.callId}`
+        : `summary:${view.tools.map((t) => t.callId).join(",")}`;
+
+  const foldedRun = () => {
+    const store = sync();
+    const { runId } = store.recordTool(tool("a"));
+    store.recordTool(tool("b"));
+    store.recordTool(tool("c"));
+    return { runId, run: store.getRun(runId) };
+  };
+
+  it("draws the summary on the anchor and nothing on members while combining", () => {
+    const { runId, run } = foldedRun();
+    assert.equal(drawn(activityView({ mode: "group", runId }, run, true)), "summary:a,b,c");
+    assert.equal(drawn(activityView({ mode: "member", runId, callId: "b" }, run, true)), "none");
+  });
+
+  it("draws every call of a folded run as its own row with combining off", () => {
+    const { runId, run } = foldedRun();
+    assert.deepEqual(
+      [
+        activityView({ mode: "group", runId }, run, false),
+        activityView({ mode: "member", runId, callId: "b" }, run, false),
+        activityView({ mode: "member", runId, callId: "c" }, run, false),
+      ].map(drawn),
+      ["row:a", "row:b", "row:c"],
+    );
+  });
+
+  it("draws a lone call as a row, not a summary", () => {
+    const store = sync();
+    const { runId } = store.recordTool(tool("a"));
+    assert.equal(drawn(activityView({ mode: "group", runId }, store.getRun(runId), true)), "row:a");
+  });
+
+  it("draws solo calls as rows whatever the setting", () => {
+    const store = sync();
+    store.noteThinking();
+    const { runId } = store.recordTool(tool("a"));
+    const run = store.getRun(runId);
+    for (const combine of [true, false]) {
+      assert.equal(drawn(activityView({ mode: "solo", runId, callId: "a" }, run, combine)), "row:a");
+    }
+  });
+
+  it("draws nothing for a run or call the store no longer has", () => {
+    const { runId, run } = foldedRun();
+    assert.equal(drawn(activityView({ mode: "group", runId: 999 }, undefined, false)), "none");
+    assert.equal(drawn(activityView({ mode: "member", runId, callId: "x" }, run, false)), "none");
   });
 });

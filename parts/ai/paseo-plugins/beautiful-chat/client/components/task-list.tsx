@@ -5,6 +5,7 @@ import { radius } from "./theme-tokens";
 import { selectableSurface, unselectable } from "./selection";
 import type { ExtendedThemeTokens } from "./theme-tokens";
 import type { TaskListData, TaskItemData, TaskStatus } from "../../shared/contracts";
+import { CardTime } from "./card-time";
 
 interface TaskListProps {
   data: TaskListData;
@@ -15,9 +16,11 @@ interface TaskListProps {
    * Pressing the header unfolds the progress bar and the tasks.
    */
   summary?: ReactNode;
+  /** When the list was set; nothing shows when undefined. */
+  time?: string;
 }
 
-export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps) {
+export function TaskList({ data, tokens, onToggleTask, summary, time }: TaskListProps) {
   const [tasks, setTasks] = useState<TaskItemData[]>(data.tasks);
   // The host updates a row in place when a call changes nothing it files a
   // row for, so a new list can arrive for a card already on screen.
@@ -333,6 +336,7 @@ export function TaskList({ data, tokens, onToggleTask, summary }: TaskListProps)
                 Tasks
               </Text>
             ) : null}
+            <CardTime time={time} tokens={tokens} />
             <Text selectable style={styles.progressRatio}>
               {foldable
                 ? `${completedCount}/${totalCount}`
