@@ -14,16 +14,20 @@ import type { ExtendedThemeTokens } from "./theme-tokens";
  * `kind: "plugin"` (`plugins/timeline/projection.ts:96`), so once this plugin
  * renders the reply the host finds no assistant and draws no footer.
  *
- * This is the part a plugin can rebuild. Fork is not: it needs the daemon
- * client and a timeline cursor (`hooks/use-fork-agent.ts`), and the plugin SDK
- * exposes neither. Turning "Assistant markdown" off in settings hands the reply
- * back to the host, which brings the full footer with it.
+ * This is the part a plugin can rebuild. Fork needs the daemon's fork context
+ * and opens a draft (`hooks/use-fork-agent.ts`), which the plugin SDK does not
+ * expose, so the footer's Fork opens the plugin's own fork screen and the
+ * daemon side does the rest through the patched SDK (`server/agent-actions.ts`).
+ * Turning "Assistant markdown" off in settings hands the reply back to the
+ * host, which brings its full footer with it.
  */
 interface AssistantFooterProps {
   /** The reply, copied verbatim — the same text the host would copy. */
   text: string;
   at: Date;
   tokens: ExtendedThemeTokens;
+  /** Opens the fork screen for this reply; absent when the agent can't be forked. */
+  onFork?: () => void;
 }
 
 const COPIED_MS = 1600;
@@ -53,7 +57,7 @@ export function formatReplyTime(date: Date, now: Date = new Date()): string {
   return `${label} ${time}`;
 }
 
-export function AssistantFooter({ text, at, tokens }: AssistantFooterProps) {
+export function AssistantFooter({ text, at, tokens, onFork }: AssistantFooterProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -95,6 +99,21 @@ export function AssistantFooter({ text, at, tokens }: AssistantFooterProps) {
           color: copied ? tokens.success : tokens.foregroundMuted,
           ...unselectable,
         },
+        forkButton: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 4,
+          paddingHorizontal: 6,
+          paddingVertical: 3,
+          borderRadius: radius.block,
+        },
+        forkLabel: {
+          fontFamily: tokens.fontUi,
+          fontSize: 11,
+          fontWeight: "500",
+          color: tokens.foregroundMuted,
+          ...unselectable,
+        },
         time: {
           fontFamily: tokens.fontUi,
           fontSize: 11,
@@ -124,6 +143,17 @@ export function AssistantFooter({ text, at, tokens }: AssistantFooterProps) {
         />
         <Text style={styles.copyLabel}>{copied ? "Copied" : "Copy"}</Text>
       </Pressable>
+      {onFork ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Fork conversation"
+          onPress={onFork}
+          style={styles.forkButton}
+        >
+          <Glyph name="Split" size={12} color={tokens.foregroundMuted} />
+          <Text style={styles.forkLabel}>Fork</Text>
+        </Pressable>
+      ) : null}
       <Text style={styles.time}>{time}</Text>
     </View>
   );

@@ -18,6 +18,8 @@ import {
   LiveNoticeRenderer,
   LiveAssistantRenderer,
 } from "./client/live-renderers";
+import { ForkScreen } from "./client/components/fork-screen";
+import { setForkScreenOpener } from "./client/agent-actions";
 
 type JsonValue = boolean | null | number | string | JsonValue[] | { [key: string]: JsonValue };
 
@@ -44,6 +46,10 @@ export default function contribute(client: PluginClientContext) {
     icon: "Blocks",
     Component: BeautifulChatSettingsPage,
   });
+
+  // The reply footer's Fork opens this screen; it has no sidebar item.
+  const removeForkScreen = client.addSurface("fork", ForkScreen);
+  setForkScreenOpener(() => client.openSurface("fork"));
 
   // Live chat timeline interception: render real tool calls, reasoning, and todos with enhanced UI.
   const removeToolTransformer = client.addTimelineTransformer({
@@ -211,7 +217,7 @@ export default function contribute(client: PluginClientContext) {
             type: "plugin" as const,
             kind: "omp-assistant",
             version: 1,
-            data: { text: item.text },
+            data: { text: item.text, ...(item.messageId ? { messageId: item.messageId } : {}) },
           },
         ],
       };
@@ -221,7 +227,7 @@ export default function contribute(client: PluginClientContext) {
   const removeAssistantRenderer = client.addTimelineRenderer({
     kind: "omp-assistant",
     version: 1,
-    schema: z.object({ text: z.string() }),
+    schema: z.object({ text: z.string(), messageId: z.string().optional() }),
     Component: LiveAssistantRenderer,
   });
 
@@ -281,5 +287,7 @@ export default function contribute(client: PluginClientContext) {
     removeAssistantRenderer();
     removeErrorTransformer();
     removeNoticeRenderer();
+    removeForkScreen();
+    setForkScreenOpener(null);
   };
 }

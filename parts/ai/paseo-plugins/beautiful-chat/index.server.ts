@@ -5,6 +5,8 @@ import type { PluginServerContext } from "@getpaseo/plugin/server";
 import { revealPathRpc } from "./shared/file-rpc";
 import { type HighlightLine, type HighlightToken, highlightRpc } from "./shared/highlight-rpc";
 import { imageRpc } from "./shared/image-rpc";
+import { agentActionsRpc, forkRpc, rewindRpc } from "./shared/agent-rpc";
+import { agentActions, forkAgent, rewindAgent } from "./server/agent-actions";
 
 /**
  * Image types worth inlining, and the mime each one needs in its data URI.
@@ -541,6 +543,10 @@ export default function contribute(server: PluginServerContext) {
       };
     }
   });
+
+  server.handle(agentActionsRpc, async ({ agentId }, { paseo }) => agentActions(paseo, agentId));
+  server.handle(rewindRpc, async (input, { paseo }) => ({ error: await rewindAgent(paseo, input) }));
+  server.handle(forkRpc, async (input, { paseo }) => forkAgent(paseo, input));
 
   // The highlighter and the cache sit at module scope on purpose, shared by
   // every contribution, so a single teardown must not dispose them.

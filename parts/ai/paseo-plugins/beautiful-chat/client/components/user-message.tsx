@@ -7,6 +7,7 @@ import { radius } from "./theme-tokens";
 import type { ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface } from "./selection";
 import { selectionSurface } from "./selection-actions";
+import type { RewindMode } from "../../shared/agent-rpc";
 
 interface UserMessageProps {
   text: string;
@@ -14,7 +15,24 @@ interface UserMessageProps {
   /** Pasted or attached images, as anything `<Image>` accepts. */
   images?: string[];
   tokens: ExtendedThemeTokens;
+  /** Rewind modes this prompt offers; none hides the Rewind button. */
+  rewindModes?: readonly RewindMode[];
+  /** Runs the rewind; resolves to an error message, or null once it is done. */
+  onRewind?: (mode: RewindMode) => Promise<string | null>;
 }
+
+// Paseo's own Rewind menu labels (`rewind.actions.*`).
+const REWIND_LABEL: Record<RewindMode, string> = {
+  conversation: "Rewind conversation",
+  files: "Rewind files",
+  both: "Rewind conversation and files",
+};
+
+type RewindState =
+  | { step: "idle" }
+  | { step: "confirm" }
+  | { step: "running" }
+  | { step: "failed"; error: string };
 
 function formatClock(value: Date): string {
   const hh = String(value.getHours()).padStart(2, "0");
@@ -35,7 +53,28 @@ export function UserMessage({
   timestamp,
   images,
   tokens,
+  rewindModes = [],
+  onRewind,
 }: UserMessageProps) {
+  const [rewind, setRewind] = useState<RewindState>({ step: "idle" });
+  const canRewind = rewindModes.length > 0 && onRewind !== undefined;
+  const runRewind = useCallback(
+    (mode: RewindMode) => {
+      if (!onRewind) return;
+      setRewind({ step: "running" });
+      // Paseo puts a rewound prompt back in the composer. A plugin cannot reach
+      // the composer, so the prompt goes to the clipboard instead, before the
+      // rewind removes this bubble.
+      copyText(text)
+        .catch(() => {})
+        .then(() => onRewind(mode))
+        .then((error) => setRewind(error ? { step: "failed", error } : { step: "idle" }))
+        .catch((error: unknown) =>
+          setRewind({ step: "failed", error: error instanceof Error ? error.message : String(error) }),
+        );
+    },
+    [onRewind, text],
+  );
   const [copied, setCopied] = useState(false);
   const handleCopy = useCallback(() => {
     // The host owns clipboard access. Reaching for navigator directly would
@@ -86,6 +125,57 @@ export function UserMessage({
         copyButton: {
           paddingHorizontal: 4,
           paddingVertical: 2,
+        },
+        rewindPanel: {
+          marginTop: 8,
+          paddingTop: 8,
+          gap: 6,
+          borderTopWidth: 1,
+          borderTopColor: tokens.userBorder,
+        },
+        rewindNote: {
+          fontFamily: tokens.fontUi,
+          fontSize: 12,
+          lineHeight: 17,
+          color: tokens.userTextMuted,
+        },
+        rewindError: {
+          fontFamily: tokens.fontUi,
+          fontSize: 12,
+          lineHeight: 17,
+          color: tokens.danger,
+        },
+        rewindActions: {
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "flex-end",
+          gap: 6,
+        },
+        rewindAction: {
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          borderRadius: radius.chip,
+          borderWidth: 1,
+          borderColor: tokens.dangerBorder,
+          backgroundColor: tokens.dangerBg,
+        },
+        rewindActionText: {
+          fontFamily: tokens.fontUi,
+          fontSize: 12,
+          fontWeight: "600",
+          color: tokens.danger,
+        },
+        rewindCancel: {
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          borderRadius: radius.chip,
+          borderWidth: 1,
+          borderColor: tokens.userBorder,
+        },
+        rewindCancelText: {
+          fontFamily: tokens.fontUi,
+          fontSize: 12,
+          color: tokens.userText,
         },
         clock: {
           fontFamily: tokens.fontUi,
@@ -140,6 +230,17 @@ export function UserMessage({
               />
             </Pop>
           </Pressable>
+          {canRewind ? (
+            <Pressable
+              onPress={() => setRewind(rewind.step === "confirm" ? { step: "idle" } : { step: "confirm" })}
+              disabled={rewind.step === "running"}
+              accessibilityRole="button"
+              accessibilityLabel="Rewind to this prompt"
+              style={styles.copyButton}
+            >
+              <Glyph name="Rewind" size={11} color={tokens.userTextMuted} />
+            </Pressable>
+          ) : null}
         </View>
         <Text selectable style={styles.text}>
           {text}
@@ -155,6 +256,36 @@ export function UserMessage({
                 accessibilityLabel="Attached image"
               />
             ))}
+          </View>
+        ) : null}
+        {canRewind && rewind.step !== "idle" ? (
+          <View style={styles.rewindPanel}>
+            <Text style={rewind.step === "failed" ? styles.rewindError : styles.rewindNote}>
+              {rewind.step === "failed"
+                ? `Rewind failed: ${rewind.error}`
+                : rewind.step === "running"
+                  ? "Rewinding..."
+                  : "Rewind to this prompt? It and every turn after it are removed. The prompt is copied to the clipboard so you can send it again."}
+            </Text>
+            {rewind.step === "running" ? null : (
+              <View style={styles.rewindActions}>
+                <Pressable onPress={() => setRewind({ step: "idle" })} accessibilityRole="button" style={styles.rewindCancel}>
+                  <Text style={styles.rewindCancelText}>{rewind.step === "failed" ? "Close" : "Cancel"}</Text>
+                </Pressable>
+                {rewind.step === "confirm"
+                  ? rewindModes.map((mode) => (
+                      <Pressable
+                        key={mode}
+                        onPress={() => runRewind(mode)}
+                        accessibilityRole="button"
+                        style={styles.rewindAction}
+                      >
+                        <Text style={styles.rewindActionText}>{REWIND_LABEL[mode]}</Text>
+                      </Pressable>
+                    ))
+                  : null}
+              </View>
+            )}
           </View>
         ) : null}
       </View>

@@ -20,6 +20,11 @@ Unmapped tools (`browser_*`, `grep`, `todo`, ...) name themselves in the header 
 
 The prompt bubble has no token usage footer. Upstream showed the agent's latest `lastUsage` under each recent prompt, which for OMP is the running total for the whole session rather than what that prompt cost, and it disappeared once the prompt was older than five minutes.
 
+Rewind and Fork come back on the plugin's cards; upstream has neither. Replacing Paseo's prompt row and reply footer removes Paseo's Rewind menu and Fork button, so the cards rebuild them, and the daemon side calls `rewind()` and `forkContext()` on the SDK agent handle (`server/agent-actions.ts`, RPCs `agent.actions`, `agent.rewind`, and `agent.fork` in `shared/agent-rpc.ts`). Released Paseo versions don't have those methods yet; they come from a Paseo build with the agent SDK changes (the Home Manager configuration builds one). Without them both buttons stay hidden.
+
+- **Rewind**, on the prompt bubble, opens a confirmation with one action per rewind mode the agent's provider supports (for OMP only "Rewind conversation"). Paseo puts a rewound prompt back in the composer, which plugins can't reach, so the bubble copies the prompt to the clipboard instead.
+- **Fork**, in the newest reply's footer, opens the plugin's fork screen (`client/components/fork-screen.tsx`). Paseo's Fork opens a draft with the chat history attached; plugins can't open a draft, and sending the attachment alone would start a turn, so the screen asks for the first message. It then starts an agent in the same workspace with the source's provider, model, mode, thinking level, and features, the chat history up to that reply attached, and opens it. Forking into a new workspace isn't offered.
+
 Todo updates draw as folded one-line changes instead of a full checklist each (see [Checklist](#checklist)). The logic is in `client/todo-history.ts`, tested in `client/todo-history.test.ts`, and the header line is `client/components/todo-summary.tsx`.
 
 Cards also read the `plain_text` details Paseo 0.11 sends for some OMP tools (`eval`, `ask`, `wait`, `think`, `yield`, the `github` device and others): a label and the result text, without the call's arguments, where Paseo 0.10 sent the raw `input` and `output`. The label becomes the card title and the text its output; an `ask` card shows the question and the answer, but not the options offered, and an `eval` card shows its output without the source. The parsing is in `client/plain-text-detail.ts`, tested in `client/plain-text-detail.test.ts`.
@@ -150,7 +155,7 @@ actions the host owns.
 
 ### Prompt bubble
 
-The authored turn on a raised theme surface with a square tail and a copy button.
+The authored turn on a raised theme surface with a square tail, a copy button, and a Rewind button when the agent can rewind (see [Vendored copy](#vendored-copy)).
 
 ![Prompt bubble](docs/images/user.png)
 
@@ -259,18 +264,23 @@ timestamp, item}`, and plugin navigation offers only `openSettings`, `openSurfac
 beautiful-chat/
   paseo-plugin.json          # Manifest: id and Paseo requirement
   index.client.tsx           # Timeline transformers, renderers, settings screen
-  index.server.ts            # Daemon-side RPCs (file.reveal)
+  index.server.ts            # Daemon-side RPCs (file.reveal, image, highlight, agent.actions, agent.rewind, agent.fork)
   shared/
     contracts.ts             # Data contracts shared by client and server
     file-rpc.ts              # file.reveal contract
+    agent-rpc.ts             # agent.actions, agent.rewind, and agent.fork contracts
+  server/
+    agent-actions.ts         # Rewind and Fork through the SDK agent handle, when the host has them
   client/
     file-icon.ts             # Path and language to material icon name
     live-renderers.tsx       # Timeline item to component mapping
+    agent-actions.ts         # Rewind and Fork offered per agent, looked up once; the pending Fork target
     settings-page.tsx        # Settings screen
     preferences.ts           # Client-side presentation preferences
     todo-history.ts          # What each todo update changed, worked out per agent
     plain-text-detail.ts     # Reads Paseo 0.11 `plain_text` tool details (label + result text)
     components/              # Cards, syntax block, glyphs, motion, theme tokens
+      fork-screen.tsx        # The screen Fork opens: first message, then the new agent
       mark-bitmaps.ts        # GENERATED PNG rasters of every brand mark
       file-icon-data.ts      # GENERATED PNG rasters and lookup tables of the file icons
       lobe-marks.ts          # Vendor SVG sources, read only by the generator

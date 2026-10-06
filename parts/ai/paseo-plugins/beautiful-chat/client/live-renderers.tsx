@@ -41,6 +41,8 @@ import type {
   GitHubToolData,
 } from "../shared/contracts";
 import { revealPathRpc } from "../shared/file-rpc";
+import { type RewindMode, rewindRpc } from "../shared/agent-rpc";
+import { startFork, useAgentActions } from "./agent-actions";
 import { buildGitHubData } from "./github-request";
 import { extractPlainAskAnswers, readPlainTextDetail } from "./plain-text-detail";
 import { useImageFile } from "./image-file";
@@ -775,6 +777,8 @@ export function LiveTodoRenderer({
 
 export interface LiveAssistantPayload {
   text: string;
+  /** The host's own id for this reply, when the provider gave one. */
+  messageId?: string;
 }
 
 /**
@@ -809,6 +813,15 @@ export function LiveAssistantRenderer({
   // the model's words, so they are drawn as a card, not as prose.
   const envelope = useMemo(() => parseSystemEnvelope(item.data.text), [item.data.text]);
 
+  // Fork lives in the footer, which only the newest reply draws, as in Paseo.
+  const canFork = useAgentActions(agentId, isTail && !envelope).fork;
+  const messageId = item.data.messageId;
+  const sourceTitle = useAgent(agentId, (agent) => agent.title);
+  const onFork = useCallback(
+    () => startFork({ agentId, sourceTitle, ...(messageId ? { boundaryMessageId: messageId } : {}) }),
+    [agentId, messageId, sourceTitle],
+  );
+
   return (
     <View {...hostFontEscape}>
       {envelope ? (
@@ -817,7 +830,12 @@ export function LiveAssistantRenderer({
         <MarkdownView text={item.data.text} tokens={tokens} variant={preferences.markdownVariant} />
       )}
       {isTail && !envelope ? (
-        <AssistantFooter text={item.data.text} at={timestamp} tokens={tokens} />
+        <AssistantFooter
+          text={item.data.text}
+          at={timestamp}
+          tokens={tokens}
+          onFork={canFork ? onFork : undefined}
+        />
       ) : null}
       <TimelineTailHub
         agentId={agentId}
@@ -871,6 +889,7 @@ export interface LiveUserMessagePayload {
 }
 
 export function LiveUserMessageRenderer({
+  agentId,
   item,
   theme,
   timestamp,
@@ -888,6 +907,16 @@ export function LiveUserMessageRenderer({
   // user bubble.
   const envelope = useMemo(() => parseSystemEnvelope(item.data.text), [item.data.text]);
 
+  // Rewind needs the provider's id for this prompt; an optimistic echo has none yet.
+  const messageId = envelope ? undefined : item.data.messageId;
+  const rewindModes = useAgentActions(agentId, messageId !== undefined).rewindModes;
+  const rewindCall = useRpc(rewindRpc);
+  const onRewind = useCallback(
+    async (mode: RewindMode) =>
+      messageId === undefined ? "This prompt has no message id yet." : (await rewindCall({ agentId, messageId, mode })).error,
+    [agentId, messageId, rewindCall],
+  );
+
   return (
     <View {...surfaceProps(hostFontEscape, promptRowAnchor(item.data.messageId))}>
       {envelope ? (
@@ -898,6 +927,8 @@ export function LiveUserMessageRenderer({
           images={item.data.images}
           timestamp={timestamp}
           tokens={tokens}
+          rewindModes={rewindModes}
+          onRewind={onRewind}
         />
       )}
     </View>
