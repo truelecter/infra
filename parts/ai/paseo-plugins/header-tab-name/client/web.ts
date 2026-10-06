@@ -4,6 +4,8 @@
 //
 // - Each header title (`workspace-header-title`) belongs to the nearest ancestor that also holds a
 //   tabs row (`workspace-tabs-row`). Its selected chips (`aria-selected="true"`) are one per pane.
+//   The Explorer sidebar (`workspace-explorer-sidebar`) draws the same tabs row since Paseo 0.11;
+//   its chips are skipped, so its Files or Changes tab never names the header.
 // - The focused pane's chip is the one filled with `surface2`; Paseo gives the selected chip of an
 //   unfocused pane `surface1`. A hidden probe resolves the theme variable to compare against.
 // - The name goes into a node of ours appended to the title's flex row. React tolerates extra
@@ -32,6 +34,7 @@ interface El {
   getAttribute(name: string): string | null;
   querySelector(selector: string): El | null;
   querySelectorAll(selector: string): ArrayLike<El>;
+  closest(selector: string): El | null;
 }
 declare const document: {
   readonly head: El;
@@ -63,6 +66,7 @@ const PLUGIN_ID = "header-tab-name";
 const TITLE = '[data-testid="workspace-header-title"]';
 const TABS_ROW = '[data-testid="workspace-tabs-row"]';
 const SELECTED_TAB = `${TABS_ROW} [data-testid^="workspace-tab-"][aria-selected="true"]`;
+const EXPLORER = '[data-testid="workspace-explorer-sidebar"]';
 const SEPARATOR = "\u203a";
 
 // The row is Paseo's title group: a flex row on wide layouts with an 8px gap. Only wide layouts
@@ -122,6 +126,7 @@ export function startHeaderTabName(): HeaderTabName | null {
     const tabs: SelectedTab[] = [];
     for (let index = 0; index < chips.length; index++) {
       const chip = chips[index];
+      if (chip.closest(EXPLORER)) continue;
       tabs.push({
         label: chip.textContent ?? "",
         focused: window.getComputedStyle(chip).backgroundColor === focusedColor,

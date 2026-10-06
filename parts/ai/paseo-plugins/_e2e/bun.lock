@@ -5,17 +5,17 @@
     "": {
       "name": "paseo-plugins-e2e",
       "dependencies": {
-        "@getpaseo/client": "0.10.2",
+        "@getpaseo/client": "0.11.0-beta.5",
         "ws": "8.22.0",
       },
     },
   },
   "packages": {
-    "@getpaseo/client": ["@getpaseo/client@0.10.2", "", { "dependencies": { "@getpaseo/protocol": "0.10.2", "@getpaseo/relay": "0.10.2", "zod": "^4.4.3" } }, "sha512-dc9qnxG1U3Q2KeVUiQeIPcqC8t7SQuTcLcTPLi0h+U6hU80KQGQ8E8GhTVLU5kkaV5vtu1BHEHE149p5bc11qQ=="],
+    "@getpaseo/client": ["@getpaseo/client@0.11.0-beta.5", "", { "dependencies": { "@getpaseo/protocol": "0.11.0-beta.5", "@getpaseo/relay": "0.11.0-beta.5", "zod": "^4.4.3" } }, "sha512-2PE9GPK78EDP3B30scc4yLRO5FAmA77WnrGIZHUhO2oV9cdwablAem2AZCcFCkhiAqgNWs9b47w1veVBQ5nMoA=="],
 
-    "@getpaseo/protocol": ["@getpaseo/protocol@0.10.2", "", { "dependencies": { "semver": "^7.8.5", "zod": "^4.4.3" } }, "sha512-NCm1VkBdgNZ/+hSImXhTB0V2kCJ7+NonNjvNuTKXAJXjLzJhY5ULPgvFNKtxdu7gub136kBKp3yNZaKZFRFgkg=="],
+    "@getpaseo/protocol": ["@getpaseo/protocol@0.11.0-beta.5", "", { "dependencies": { "semver": "^7.8.5", "zod": "^4.4.3" } }, "sha512-57/NPdKvlRl3eUecoE7W47SHzC1gRiPY03LaummNd8OtOTtwW8grexvGEhtdB2FrvQp75YhagrNh4WAjqZH4fg=="],
 
-    "@getpaseo/relay": ["@getpaseo/relay@0.10.2", "", { "dependencies": { "base64-js": "^1.5.1", "tweetnacl": "^1.0.3", "ws": "^8.14.2" } }, "sha512-1RF04/8DYAjB79lUmPeP3rG+oj4boPWIxLlz1GOZU/txmY6RFb9GMY3YwptcDxXVEdDFRBZuSInL+DdbUHkPCQ=="],
+    "@getpaseo/relay": ["@getpaseo/relay@0.11.0-beta.5", "", { "dependencies": { "base64-js": "^1.5.1", "tweetnacl": "^1.0.3", "ws": "^8.14.2" } }, "sha512-4cnqaA5UgItpW2mZ5TxFCTpCs6Amhsc96pr10vTEuTYCpc8hMfMTFiARNuuxP98zmq96DxSxVmxfKRGWcOpgJg=="],
 
     "base64-js": ["base64-js@1.5.1", "", {}, "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA=="],
 

@@ -210,8 +210,11 @@
       url = "github:numtide/llm-agents.nix";
     };
 
+    # Fork of getpaseo/paseo: upstream `main` plus SDK patches beautiful-chat
+    # needs (agent fork context, getpaseo/paseo#5003; agent rewind). Rebase the
+    # `local` branch onto newer upstream commits; see parts/ai/AGENTS.md.
     paseo = {
-      url = "github:getpaseo/paseo/v0.10.2";
+      url = "github:truelecter/paseo/local";
       inputs = {
         nixpkgs.follows = "latest";
       };

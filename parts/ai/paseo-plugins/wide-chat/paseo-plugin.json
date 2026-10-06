@@ -2,6 +2,6 @@
   "id": "wide-chat",
   "description": "Widens the chat column (timeline and composer) past Paseo's fixed 820px on desktop and web.",
   "requirements": {
-    "paseo": "~0.10.2"
+    "paseo": "~0.11.0"
   }
 }

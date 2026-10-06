@@ -17,7 +17,7 @@ There is no server entry, so no subprocess runs.
 ## Limits
 
 - Desktop app and browser only. iOS and Android render natively, and the compact layout already shows the open tab in its tab switcher.
-- It depends on Paseo's DOM, checked against Paseo 0.10.2: the `workspace-header-title` and `workspace-tabs-row` test IDs, `aria-selected` on tab chips, and the focused pane's chip being filled with the `surface2` theme color. A Paseo update that changes these can break it; the usual symptom is the name disappearing, and the header then looks as stock.
+- It depends on Paseo's DOM, checked against Paseo 0.11.0-beta.5: the `workspace-header-title` and `workspace-tabs-row` test IDs, `aria-selected` on tab chips, the focused pane's chip being filled with the `surface2` theme color, and the Explorer sidebar's tabs sitting inside `workspace-explorer-sidebar` (they are skipped; since 0.11 the Explorer draws the same tabs row as the panes). A Paseo update that changes these can break it; the usual symptom is the name disappearing, and the header then looks as stock.
 
 ## Develop
 

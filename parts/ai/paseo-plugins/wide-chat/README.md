@@ -5,9 +5,9 @@ track, and the new-agent form) use more of the agent pane on desktop and in the 
 
 ## Why
 
-Paseo limits every chat-column container to `MAX_CONTENT_WIDTH = 820` px
-(`packages/app/src/constants/layout.ts` in Paseo 0.10.1). There is no setting for it.
-In a 1350 px pane that is about 60% of the width.
+Paseo limits every chat-column container to its content width, 820 px by default (`DEFAULT_CONTENT_MAX_WIDTH` in `packages/app/src/styles/theme.ts`). In a 1350 px pane that is about 60% of the width.
+
+Paseo 0.11 added its own fixed width for this (Settings → Appearance → Content width, 600 to 4000 px). The plugin finds Paseo's rules by their `820px` value, so it only works while that setting is left at the default; with a custom width it does nothing. What it adds over the setting is a width that is a share of the pane rather than a fixed number of pixels.
 
 ## What it does
 

@@ -3,11 +3,7 @@
   inputs,
   ...
 }: let
-  # upstream nix/npm-deps.hash stale for v0.10.1 -> override
-  mkPaseo = system:
-    inputs.paseo.packages.${system}.default.override {
-      npmDepsHash = "sha256-tT7qrQpJSxXTJMc9KinfnDQoeTdvLt7NWanYANKunqg=";
-    };
+  mkPaseo = system: inputs.paseo.packages.${system}.default;
 
   mkPackages = pkgs: rec {
     gsd-omp = pkgs.callPackage ./packages/gsd-omp {};

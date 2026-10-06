@@ -1,7 +1,8 @@
 import type { ChatWidth } from "../shared/settings.ts";
 
-// Paseo's MAX_CONTENT_WIDTH (packages/app/src/constants/layout.ts). Every chat-column
-// container — timeline rows, composer, task/subagent track, draft form — caps at this value.
+// Paseo's default chat width (DEFAULT_CONTENT_MAX_WIDTH, packages/app/src/styles/theme.ts). Every
+// chat-column container — timeline rows, composer, task/subagent track, draft form — caps at
+// `theme.contentMaxWidth`, which is this value unless Settings → Appearance → Content width is set.
 export const STOCK_MAX_WIDTH = "820px";
 
 // The slice of CSSOM that selector collection needs, so it runs without a DOM.

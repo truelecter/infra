@@ -2,6 +2,6 @@
   "id": "project-groups",
   "description": "Nests sidebar projects into collapsible groups, any number of levels deep, on desktop and web.",
   "requirements": {
-    "paseo": "~0.10.2"
+    "paseo": "~0.11.0"
   }
 }
