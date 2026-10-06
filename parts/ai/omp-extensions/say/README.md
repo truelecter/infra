@@ -6,7 +6,7 @@ On Claude Opus 5.5 (and Fable 5.x), reply text written after a tool result and b
 
 ## What it does
 
-- Registers `say({message})` as an essential tool, so it is in the tool list from the first request. It sends `message` as a displayed custom message (`customType: "say"`) with `deliverAs: "aside"` and returns "Shown to the user in the chat.". Paseo shows displayed custom messages as assistant messages, rendered as Markdown; the TUI shows them in a framed block.
+- Registers `say({message})` as an essential tool, so it is in the tool list from the first request. It sends `message` as a displayed custom message (`customType: "say"`) with `deliverAs: "aside"` and returns "Shown to the user in the chat.". Paseo shows displayed custom messages as assistant messages, rendered as Markdown; the TUI shows them in a framed block. Upstream Paseo 0.11 (getpaseo/paseo#6090) files them as collapsed tool rows instead; the fork in the `paseo` input restores the old behaviour for OMP (branch `revert/omp-custom-message-rows`).
 - An aside message appears at the next step boundary, after every tool call of the current response has finished. So `say` and `ask` must be in separate responses: in the same response the form would open (and wait) before the explanation shows up.
 - Removes `say` messages from what the model sees (`context` event). The model already has the text in its own `say` call; as a custom message it would arrive a second time as a user message.
 - Checks every `ask` call (`tool_call` event). It goes through when any of these holds, and is blocked with instructions otherwise:
