@@ -37,6 +37,16 @@
     ];
   };
 
+  homebrew = {
+    taps = ["omlahore/tap"];
+    brews = [
+      {
+        name = "omlahore/tap/removemacai";
+        trusted = true;
+      }
+    ];
+  };
+
   system.stateVersion = 5;
 
   system.primaryUser = "truelecter";

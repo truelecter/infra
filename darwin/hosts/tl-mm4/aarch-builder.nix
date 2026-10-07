@@ -10,9 +10,13 @@
   darwin-builder = nixpkgs.lib.nixosSystem {
     system = linuxSystem;
     modules = [
+      # Migrate to vz-vm when released
+      # "${nixpkgs}/nixos/modules/profiles/nix-builder-vz-vm.nix"
       "${nixpkgs}/nixos/modules/profiles/nix-builder-vm.nix"
       {
         virtualisation = {
+          # Migrate to vz-vm when released
+          # vz.rosetta = false;
           host.pkgs = pkgs;
           cores = 8;
 
