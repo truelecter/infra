@@ -15,7 +15,35 @@ on:
   workflow_call:
 
 jobs:
+  # Several aarch64 hosts (the Raspberry Pi ones) use the same kernel. Build
+  # each kernel shared by two or more hosts once here and push it to Attic, so
+  # the host jobs below substitute it instead of each building its own copy.
+  # `ci.<system>.shared-kernels` is defined in nixos/default.nix.
+  build_shared_kernels:
+    runs-on: ubuntu-22.04-arm
+    steps:
+    - name: Bind mount /nix
+      run: |
+        sudo mkdir /mnt/nix /nix
+        sudo chmod 0755 /nix
+        sudo mount --bind /mnt/nix /nix
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Prepare build environment
+      uses: ./.github/actions/prepare-build-environment
+      with:
+        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build shared kernels
+      run: nix build --keep-going --no-link -L .#ci.aarch64-linux.shared-kernels
+
   build_system:
+    needs: [build_shared_kernels]
+    # A failed kernel build must not skip unrelated hosts.
+    if: ${{ !cancelled() }}
     strategy:
       fail-fast: false
       matrix:
@@ -105,7 +133,7 @@ jobs:
   hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: [build_system]
+    needs: [build_shared_kernels, build_system]
     steps:
     - run: exit 1
       # see https://stackoverflow.com/a/67532120/4907315

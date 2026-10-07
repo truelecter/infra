@@ -292,6 +292,7 @@
           inputs.flake-parts.flakeModules.modules
 
           ./parts/ai
+          ./parts/ci.nix
           ./parts/nixpkgs.nix
           ./parts/klipper
           ./parts/minecraft-servers

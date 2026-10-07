@@ -169,6 +169,32 @@
     };
   };
 in {
+  # Kernels used by two or more hosts of a system. CI builds this once before
+  # the host builds, so each host substitutes the kernel instead of rebuilding it.
+  perSystem = {
+    pkgs,
+    system,
+    ...
+  }: let
+    hosts =
+      lib.filter
+      (host: host.pkgs.stdenv.hostPlatform.system == system)
+      (lib.attrValues self.nixosConfigurations);
+
+    kernelsByDrv =
+      lib.groupBy
+      (kernel: builtins.unsafeDiscardStringContext kernel.drvPath)
+      (map (host: host.config.boot.kernelPackages.kernel) hosts);
+
+    sharedKernels = lib.filterAttrs (_: kernels: lib.length kernels > 1) kernelsByDrv;
+  in {
+    ci.shared-kernels = pkgs.linkFarm "shared-kernels" (lib.mapAttrsToList (drv: kernels: {
+        name = lib.removeSuffix ".drv" (baseNameOf drv);
+        path = lib.head kernels;
+      })
+      sharedKernels);
+  };
+
   flake.nixosConfigurations = lib.pipe ./hosts [
     self.lib.rakeLeaves
     (lib.mapAttrsToList (arch: hosts: (lib.mapAttrsToList (hostname: configuration: {inherit arch hostname configuration;}) hosts)))
