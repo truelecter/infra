@@ -111,7 +111,16 @@ jobs:
         sudo chmod 600 /etc/nix/builder_ed25519
 
         sudo mkdir -p /var/root/.ssh
-        ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
+        # sshd may briefly refuse connections; an empty scan leads to
+        # "Host key verification failed" later, so retry until keys arrive.
+        for attempt in 1 2 3 4 5; do
+          keys=$(ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" 2>/dev/null || true)
+          [ -n "$keys" ] && break
+          echo "ssh-keyscan returned no keys (attempt $attempt), retrying"
+          sleep $((attempt * 5))
+        done
+        [ -n "$keys" ] || { echo "::error::no host keys from $BUILDER_HOST:$BUILDER_PORT"; exit 1; }
+        echo "$keys" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
         mkdir -p /etc/ssh/
         echo "Host linux-builder"                           | sudo tee -a /etc/ssh/ssh_config

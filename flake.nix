@@ -95,7 +95,7 @@
     };
 
     deploy-rs = {
-      url = "github:serokell/deploy-rs";
+      url = "github:serokell/deploy-rs/refs/pull/404/merge";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         utils.follows = "flake-utils";
@@ -319,7 +319,7 @@
               allowUnfree = true;
             };
             overlays = [
-              inputs.deploy-rs.overlays.default
+              self.overlays.deploy-rs
               inputs.nvfetcher.overlays.default
               # inputs.nix4vscode.overlays.nix4vscode
               (_final: prev: {

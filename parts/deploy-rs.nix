@@ -13,9 +13,23 @@
     };
   };
 
+  # deploy-rs with its test suite disabled: the file-watcher tests in
+  # `activate` time out inside the Darwin build sandbox.
+  deployRsOverlay = lib.composeExtensions inputs.deploy-rs.overlays.default (_final: prev: {
+    deploy-rs =
+      prev.deploy-rs
+      // {
+        deploy-rs = prev.deploy-rs.deploy-rs.overrideAttrs {doCheck = false;};
+      };
+  });
+
   mkNode = name: cfg: let
     inherit (cfg.pkgs.stdenv.hostPlatform) system;
-    deployLib = inputs.deploy-rs.lib.${system};
+    deployLib =
+      (import inputs.nixpkgs {
+        inherit system;
+        overlays = [deployRsOverlay];
+      }).deploy-rs.lib;
 
     activator =
       if self.lib.isLinux system
@@ -43,6 +57,8 @@
     // (lib.mapAttrs mkNode self.darwinConfigurations);
 in {
   flake = {
+    overlays.deploy-rs = deployRsOverlay;
+
     deploy = {
       autoRollback = true;
       magicRollback = true;

@@ -27,6 +27,11 @@
             memorySize = 12 * 1024;
           };
         };
+
+        # QEMU user networking NATs every forwarded connection to one source,
+        # so ssh-keyscan probes trip per-source penalties and lock everyone
+        # out ("Not allowed at this time"). VM is reachable only via VPN.
+        services.openssh.settings.PerSourcePenalties = "no";
       }
       profiles.common.remote-builder
       profiles.nixos.faster-linux
@@ -34,22 +39,7 @@
     ];
   };
 in {
-  nix.distributedBuilds = true;
-  nix.buildMachines = [
-    {
-      hostName = "localhost";
-      sshUser = "builder";
-      sshKey = config.sops.secrets.remote-builder-pk.path;
-      system = linuxSystem;
-      maxJobs = 8;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "kvm"
-        "big-parallel"
-      ];
-    }
-  ];
+  # The VM is reached as `mm4-builder` via profiles.common.build-machines.
 
   launchd.daemons.darwin-builder = {
     environment = {
