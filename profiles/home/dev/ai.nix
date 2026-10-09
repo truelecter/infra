@@ -54,8 +54,7 @@ in {
     extensions = with pkgs.omp-extensions; [
       aws-profile
       mcp-ready
-      caveman
-      paseo-agent-id
+      paseo-tools
       say
       gsd
     ];
@@ -86,6 +85,8 @@ in {
       # Auto QA reports (xd://report_issue) go nowhere without consent, and with it they would send
       # local paths and internal URLs out; either way agents spend turns writing them.
       dev.autoqa = false;
+      # The rules (caveman, writing style) set the tone, so OMP's personality block only adds tokens.
+      personality = "none";
 
       # GSD skills that can't work with the store install (update, surface), don't fit this setup,
       # or only list other commands. GSD hooks call code-review, validate-phase, secure-phase,
@@ -108,8 +109,15 @@ in {
 
       tools = {
         approvalMode = "write";
-        # Paseo retitling (see the paseo-agent-id extension) without an approval card.
+        # The `i` intent field on every tool call only shows in OMP's terminal status line;
+        # Paseo ignores it.
+        intentTracing = false;
+        # Paseo retitling without an approval card: `set_title` (paseo-tools extension)
+        # and the Paseo `update_agent` tool on the agent itself.
+        approval.set_title = "allow";
         approval.update_agent = "allow";
+        # Switching Paseo's browser_* tools on or off only changes this session's tool set.
+        approval.enable_browser_tools = "allow";
       };
 
       bash.direnvLoadTimeoutMs = 120000;
@@ -180,7 +188,9 @@ in {
         mcp.injectIntoAgents = true;
         browserTools.enabled = true;
         enableTerminalAgentHooks = true;
-        appendSystemPrompt = "When the conversation's focus moves away from what your agent title describes, call the Paseo `update_agent` tool on yourself with a new title of at most 60 characters describing the current work. Don't retitle for small detours.";
+        # Empty on purpose: the retitle rules live in the `set_title` tool of the paseo-tools OMP
+        # extension (OMP is the only enabled provider). The sync keeps keys missing here, so clear it.
+        appendSystemPrompt = "";
         terminalProfiles = [
           {
             id = "profile_mum3f4d9_qfk51hlr8v";

@@ -1,6 +1,6 @@
 # workspace-title-sync
 
-Server-only Paseo plugin that gives a workspace the title of its agent, as long as that agent is the workspace's only top-level agent. A one-agent workspace then reads like its conversation, and follows it when the agent retitles itself after a topic change (see `omp/paseo-agent-id`) or is renamed in the UI.
+Server-only Paseo plugin that gives a workspace the title of its agent, as long as that agent is the workspace's only top-level agent. A one-agent workspace then reads like its conversation, and follows it when the agent retitles itself after a topic change (see the `paseo-tools` OMP extension) or is renamed in the UI.
 
 - Counts agents only: subagents (the `paseo.parent-agent-id` label) and archived agents are skipped, terminals are not agents. With a second top-level agent in the workspace, its title stays as it is. A subagent never renames its workspace.
 - Syncs on a change of the agent's title, not on every turn: a workspace title you set by hand survives until the agent's title changes again.

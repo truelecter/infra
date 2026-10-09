@@ -285,7 +285,7 @@ in {
     extensions = mkOption {
       type = types.listOf (types.either types.package types.path);
       default = [];
-      example = literalExpression "[ pkgs.omp-extensions.caveman ./my-extension.ts ]";
+      example = literalExpression "[ pkgs.omp-extensions.say ./my-extension.ts ]";
       description = ''
         Extensions, prepended to `extensions` in {option}`programs.oh-my-pi.settings`. OMP also
         stacks plugins registered with `omp plugin link`/`install` on top of this list.

@@ -58,7 +58,7 @@ Knowing this avoids most surprises. Versions refer to omp 18.3.2; recheck after 
 
 ## Extension anatomy
 
-Copy an existing folder (`caveman` is the fullest example) and keep this shape:
+Copy an existing folder (`paseo-tools` is the fullest example) and keep this shape:
 
 - `package.json`: `"name": "omp-<name>"`, a `version`, `"omp": { "extensions": ["./index.ts"] }`, scripts `typecheck` (`tsc --noEmit`) and `test` (`bun test shared/*.test.ts`), and only `@types/node` and `typescript` as dev dependencies. The version ends up in the store path name; bump it when behavior changes.
 - `index.ts`: `export default function <name>(pi: ExtensionAPI): void`. Wiring only: event handlers, commands, reading the environment. Imports use explicit `.ts` extensions.

@@ -1,9 +1,9 @@
 {
-  "name": "omp-caveman",
+  "name": "omp-paseo-tools",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Caveman terse-response mode for Oh My Pi, with /caveman levels and natural-language toggles",
+  "description": "Paseo tools for OMP agents running under Paseo: set_title renames the agent and the session; Paseo's browser_* tools stay off until switched on",
   "omp": {
     "extensions": [
       "./index.ts"

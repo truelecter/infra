@@ -1,9 +1,9 @@
 {
   "lockfileVersion": 2,
-  "configVersion": 0,
+  "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "omp-caveman",
+      "name": "omp-paseo-tools",
       "devDependencies": {
         "@types/node": "^22.10.0",
         "typescript": "^5.9.3",
