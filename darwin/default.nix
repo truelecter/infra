@@ -59,6 +59,7 @@
       modules =
         [
           home.darwinModules.home-manager
+          inputs.nix-homebrew.darwinModules.nix-homebrew
         ]
         ++ [
           (

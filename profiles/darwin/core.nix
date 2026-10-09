@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }: {
   programs.zsh.enable = true;
@@ -76,11 +77,32 @@
     };
   };
 
+  # Homebrew itself comes from the nix-homebrew flake input, so its version
+  # moves with flake.lock instead of going stale against the cask API.
+  # Taps are pinned too: every tap in `homebrew.taps` needs a matching
+  # `nix-homebrew.taps` entry, `brew tap` no longer works imperatively.
+  nix-homebrew = {
+    enable = true;
+    user = config.system.primaryUser;
+    autoMigrate = true;
+    mutableTaps = false;
+    taps = {
+      "homebrew/homebrew-core" = inputs.homebrew-core;
+      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+    };
+  };
+
   homebrew = {
     enable = true;
+    taps = [
+      "homebrew/core"
+      "homebrew/cask"
+    ];
     casks = [
       "launchcontrol"
     ];
+    # Anything not declared in nix gets uninstalled, app data included.
+    onActivation.cleanup = "zap";
   };
 
   system.systemBuilderArgs = lib.mkIf (config.nix.settings.sandbox == "relaxed") {

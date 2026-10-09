@@ -14,6 +14,33 @@
       };
     };
 
+    # Pins the Homebrew version; `nix flake update nix-homebrew` bumps brew.
+    nix-homebrew = {
+      url = "github:zhaofengli/nix-homebrew";
+    };
+
+    # Homebrew taps, pinned for nix-homebrew (mutableTaps = false). Bump the
+    # core/cask taps together with nix-homebrew so brew understands their DSL.
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+
+    homebrew-otsge-keg = {
+      url = "github:otsge/homebrew-keg";
+      flake = false;
+    };
+
+    homebrew-omlahore-tap = {
+      url = "github:omlahore/homebrew-tap";
+      flake = false;
+    };
+
     home = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs = {

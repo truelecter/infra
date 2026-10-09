@@ -37,6 +37,8 @@
     ];
   };
 
+  nix-homebrew.taps."omlahore/homebrew-tap" = inputs.homebrew-omlahore-tap;
+
   homebrew = {
     taps = ["omlahore/tap"];
     brews = [
