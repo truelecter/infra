@@ -1,0 +1,20 @@
+{
+  "name": "omp-gsd",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Lazy entry for gsd-omp: hides GSD's skills, agents, and gsd_invoke outside GSD projects until the first /gsd-* command",
+  "omp": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test shared/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3"
+  }
+}

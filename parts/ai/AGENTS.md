@@ -13,7 +13,7 @@ parts/ai/
   homeModules/paseo-plugin-dev.sh  `paseo-plugin-dev`: points a plugin link at a checkout or back, without a switch
   homeModules/searxng.nix     the services.searxng Home Manager module (local SearXNG user service)
   omp-extensions/
-    default.nix               builds every <name>/ folder, plus `gsd` from packages/gsd-omp
+    default.nix               builds every <name>/ folder, plus `gsd` from packages/gsd-omp and gsd/
     <name>/                   one OMP extension per folder
   paseo-plugins/
     default.nix               builds every <id>/ folder; requirements.paseo check, node_modules hashes
@@ -166,8 +166,9 @@ Observed limits worth knowing before designing an extension:
 ## GSD
 
 - `packages/gsd-omp/README.md` has the version bump procedure.
-- `omp-extension-gsd` runs `gsd-omp install --root $out`, so GSD's runtime root is its own store path: the extension, `agents/`, and `skills/` all load from there, and GSD's `GSD_AGENTS_DIR` hint points at `$out/agents`.
-- After a bump, build `omp-extension-gsd` and check in an isolated OMP that the `/gsd-*` commands register and a GSD subagent (for example `gsd-planner`) is available.
+- `omp-extension-gsd` runs `gsd-omp install --root $out`, so GSD's runtime root is its own store path: the extension, `agents/`, and `skills/` all load from there, and GSD's `GSD_AGENTS_DIR` hint points at `$out/agents`. The build replaces the generated `extensions/gsd-omp.ts` with the lazy entry from `omp-extensions/gsd/` (see its README), which loads the same `extension.cjs` and runtime root from `gsd-runtime.json`. The `gsd/` folder is not built as a separate extension.
+- The lazy entry loads GSD in full when a `.planning/` directory exists between OMP's working directory and the git root. Elsewhere it hides GSD's skills, agents, and `gsd_invoke` through runtime-only overrides of `skills.ignoredSkills` and `task.disabledAgents` (saving about 5k prompt tokens per request) and switches them back on at the first `/gsd-*` command. It relies on OMP behavior to recheck after upgrades (checked on 18.6.1 and 18.8.4): `Setting.override`/`clearOverride` and `lookup()` (`config/registry.ts`), the main session's `cfgSkillsAndCommandsDiscovery.listen` that rediscovers skills on a skills setting change (`sdk.ts`), `task` reading `task.disabledAgents` on every description build (`task/index.ts`), subagent settings as overlays of the parent (`task/executor.ts`), subagents taking the parent's live `session.skills` at spawn (`task/structured-subagent.ts`), and `getActiveSkills()` plus `ctx.getSystemPrompt()` for the reload wait.
+- After a bump, build `omp-extension-gsd` and check in an isolated OMP that the `/gsd-*` commands register and a GSD subagent (for example `gsd-planner`) is available, in a repository with `.planning/` and, after a `/gsd-*` command, in one without it.
 - Not supported with the store install: `gsd-omp doctor` and `update` (no manifest in the agent directory, no global npm), and `/gsd-surface` (it rewrites the skills directory in place). Hide GSD skills with `programs.oh-my-pi.settings.skills.ignoredSkills` (glob patterns) instead. A hidden skill's `/gsd-<name>` command stays registered but can no longer read its skill, and GSD hooks dispatch skills by name (`code-review`, `validate-phase`, `secure-phase`, `ui-review`, `ui-phase`, `ai-integration-phase`, `mempalace-*`), so don't hide a skill that a command you use or an active hook needs.
 
 ## Paseo
