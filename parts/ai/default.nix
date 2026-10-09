@@ -56,9 +56,14 @@ in {
           inherit (final) paseo;
         };
 
+        # The install check's `omp --smoke-test` fails in the Darwin sandbox
+        # ("Port 0 is in use") when it starts the stats server.
+        omp = inputs.llm-agents.packages.${system}.omp.overrideAttrs {
+          doInstallCheck = false;
+        };
+
         inherit
           (inputs.llm-agents.packages.${system})
-          omp
           spec-kit
           openspec
           ;
