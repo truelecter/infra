@@ -32,6 +32,10 @@
         # so ssh-keyscan probes trip per-source penalties and lock everyone
         # out ("Not allowed at this time"). VM is reachable only via VPN.
         services.openssh.settings.PerSourcePenalties = "no";
+
+        # launchd restarts kill the VM uncleanly; without fsync a freshly
+        # built path can be registered valid while its files are still empty.
+        nix.settings.fsync-store-paths = true;
       }
       profiles.common.remote-builder
       profiles.nixos.faster-linux
