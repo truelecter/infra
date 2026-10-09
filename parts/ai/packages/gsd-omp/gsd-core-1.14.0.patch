@@ -1,9 +1,9 @@
 diff --git a/package-lock.json b/package-lock.json
-index 6d5a74d2293a..76d1cca62011 100644
+index ba662bb829ba..9ea1e1a8e1a9 100644
 --- a/package-lock.json
 +++ b/package-lock.json
 @@ -9,7 +9,7 @@
-       "version": "1.0.24",
+       "version": "1.0.25",
        "license": "MIT",
        "dependencies": {
 -        "@opengsd/gsd-core": "^1.12.0"
@@ -15,9 +15,9 @@ index 6d5a74d2293a..76d1cca62011 100644
        }
      },
      "node_modules/@opengsd/gsd-core": {
--      "version": "1.12.0",
--      "resolved": "https://registry.npmjs.org/@opengsd/gsd-core/-/gsd-core-1.12.0.tgz",
--      "integrity": "sha512-fMjtqWQLJooD9HrkRLsfwmVmKwLN96Lea3TKTPhFl0CZ9ZFsv4Dr5f/vB0TxIgR1Hm2MgzkeMynS0MQy382N5A==",
+-      "version": "1.15.0",
+-      "resolved": "https://registry.npmjs.org/@opengsd/gsd-core/-/gsd-core-1.15.0.tgz",
+-      "integrity": "sha512-GwdlJeupozyM22g2INdxiNfkpDm5hFS7G42leRqQwHb/0BclBG3TpgyGtWIkf47shjkfGRtrK5iK+pPZ61DvMA==",
 +      "version": "1.14.0",
 +      "resolved": "https://registry.npmjs.org/@opengsd/gsd-core/-/gsd-core-1.14.0.tgz",
 +      "integrity": "sha512-e05sV2c8KlcQ2hoJ4U3U1OBjqswQOon4C29Cs75fEAr+tq7qJ/XyFYrN/nwblREWUkPUUoxmVzLVj4Im2KjQxQ==",
@@ -25,7 +25,7 @@ index 6d5a74d2293a..76d1cca62011 100644
        "dependencies": {
          "@anthropic-ai/claude-agent-sdk": "^0.2.84",
 diff --git a/package.json b/package.json
-index 5492d3946bce..25a563545a91 100644
+index 8dae6dbcf83e..f264cb7c4a00 100644
 --- a/package.json
 +++ b/package.json
 @@ -24,7 +24,7 @@
