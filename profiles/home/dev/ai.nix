@@ -75,6 +75,18 @@ in {
 
       providers.cacheRetention = "long";
 
+      # checkpoint/rewind let the agent drop exploration it no longer needs from its context.
+      checkpoint.enabled = true;
+      # Structural search next to ast_edit (on by default).
+      astGrep.enabled = true;
+      # Diagnostics after edits too, not only after whole-file writes.
+      lsp.diagnosticsOnEdit = true;
+      # Idle recaps only show in the terminal UI; agents mostly run in Paseo.
+      recap.enabled = false;
+      # Auto QA reports (xd://report_issue) go nowhere without consent, and with it they would send
+      # local paths and internal URLs out; either way agents spend turns writing them.
+      dev.autoqa = false;
+
       # GSD skills that can't work with the store install (update, surface), don't fit this setup,
       # or only list other commands. GSD hooks call code-review, validate-phase, secure-phase,
       # ui-review, ui-phase, and ai-integration-phase by name, so those stay visible.
