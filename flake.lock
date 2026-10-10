@@ -765,23 +765,20 @@
     },
     "nixos-vscode-server": {
       "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
+        "flake-parts": [
+          "flake-parts"
         ]
       },
       "locked": {
-        "lastModified": 1741400471,
-        "narHash": "sha256-Bx7DOPLhkr8Z60U9Qw4l0OidzHoqLDKQH5rDV5ef59A=",
-        "owner": "truelecter",
+        "lastModified": 1784312229,
+        "narHash": "sha256-2uHCSUw341o3my1R0U0YCfbnMEazylxb58evWsjGL50=",
+        "owner": "nix-community",
         "repo": "nixos-vscode-server",
-        "rev": "7943271335904017d3fafbf6fea395beebe42239",
+        "rev": "2f984dfbe7e5271b5c413d3e734374cc1306c921",
         "type": "github"
       },
       "original": {
-        "owner": "truelecter",
+        "owner": "nix-community",
         "repo": "nixos-vscode-server",
         "type": "github"
       }
