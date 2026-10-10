@@ -51,7 +51,7 @@ in {
         default = {
           aarch64-linux = "ubuntu-22.04-arm";
           x86_64-linux = "ubuntu-22.04";
-          aarch64-darwin = "macos-14";
+          aarch64-darwin = "macos-26";
         };
         description = "GitHub Actions runner for each system.";
       };
@@ -72,6 +72,8 @@ in {
 
   config = {
     transposition.ci = {};
+
+    ci.excludeHosts = ["bttpitest"];
 
     flake.ciMatrix = {
       shared.include = sharedEntries;

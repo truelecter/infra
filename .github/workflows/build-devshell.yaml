@@ -10,7 +10,7 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
-          - macos-14
+          - macos-26
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
