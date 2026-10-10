@@ -82,6 +82,7 @@ in {
         zsh-patina
         # ncps
         unifi
+        pnpm_10
         ;
     };
 
