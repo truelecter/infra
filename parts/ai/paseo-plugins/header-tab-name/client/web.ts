@@ -166,7 +166,8 @@ export function startHeaderTabName(): HeaderTabName | null {
         // Borrow the title's typography (font, size, color, one-line ellipsis) from its classes.
         const className = `${title.className} htn-label`;
         if (label.className !== className) label.className = className;
-        if (label.getAttribute("title") !== name) label.setAttribute("title", name);
+        if (label.getAttribute("title") !== name)
+          label.setAttribute("title", name);
         setText(label, name);
       }
       kept.add(wrapper);
@@ -204,7 +205,8 @@ export function startHeaderTabName(): HeaderTabName | null {
       observer.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
       const wrappers = document.querySelectorAll(".htn-tab");
-      for (let index = 0; index < wrappers.length; index++) wrappers[index].remove();
+      for (let index = 0; index < wrappers.length; index++)
+        wrappers[index].remove();
       probe.remove();
       style.remove();
     },

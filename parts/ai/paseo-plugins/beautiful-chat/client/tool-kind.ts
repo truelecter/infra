@@ -12,7 +12,12 @@ export type ToolKind =
   | "ask"
   | "other";
 
-export type CountBucket = "commands" | "files read" | "files edited" | "searches" | "tools";
+export type CountBucket =
+  | "commands"
+  | "files read"
+  | "files edited"
+  | "searches"
+  | "tools";
 
 export interface ToolCallInput {
   name: string;
@@ -124,7 +129,13 @@ function kindOf(name: string, detail: ToolCallDetail): ToolKind {
   }
   if (SHELL_NAMES[lower] === true) return "shell";
   if (SEARCH_NAMES[lower] === true) return "search";
-  if (lower === "read" || lower === "edit" || lower === "write" || lower === "task") return lower;
+  if (
+    lower === "read" ||
+    lower === "edit" ||
+    lower === "write" ||
+    lower === "task"
+  )
+    return lower;
   return "other";
 }
 
@@ -145,7 +156,9 @@ function labelOf(kind: ToolKind, name: string, detail: ToolCallDetail): string {
     case "write":
       return "Write File";
     case "search":
-      return detail.type === "search" && detail.toolName === "web_search" ? "Web Search" : "Search";
+      return detail.type === "search" && detail.toolName === "web_search"
+        ? "Web Search"
+        : "Search";
     case "task":
       return detail.type === "sub_agent" && detail.subAgentType
         ? humanizeToolName(detail.subAgentType)
@@ -167,7 +180,9 @@ function labelOf(kind: ToolKind, name: string, detail: ToolCallDetail): string {
 function firstLine(text: string | undefined): string {
   if (!text) return "";
   const line = text.trim().split("\n")[0]!.trim();
-  return line.length > MAX_PREVIEW_CHARS ? `${line.slice(0, MAX_PREVIEW_CHARS - 3)}...` : line;
+  return line.length > MAX_PREVIEW_CHARS
+    ? `${line.slice(0, MAX_PREVIEW_CHARS - 3)}...`
+    : line;
 }
 
 function previewOf(detail: ToolCallDetail): string {
@@ -205,7 +220,10 @@ function detailOf(detail: ToolCallDetail): { text: string; language?: string } {
   switch (detail.type) {
     case "shell": {
       const output = detail.output?.replace(/\s+$/, "") ?? "";
-      return { text: output ? `$ ${detail.command}\n${output}` : `$ ${detail.command}`, language: "bash" };
+      return {
+        text: output ? `$ ${detail.command}\n${output}` : `$ ${detail.command}`,
+        language: "bash",
+      };
     }
     case "read":
       return { text: detail.content ?? "" };
@@ -218,7 +236,11 @@ function detailOf(detail: ToolCallDetail): { text: string; language?: string } {
     case "search": {
       if (detail.content) return { text: detail.content };
       if (detail.webResults?.length) {
-        return { text: detail.webResults.map((r) => `${r.title}\n${r.url}`).join("\n\n") };
+        return {
+          text: detail.webResults
+            .map((r) => `${r.title}\n${r.url}`)
+            .join("\n\n"),
+        };
       }
       return { text: detail.filePaths?.join("\n") ?? "" };
     }
@@ -229,13 +251,18 @@ function detailOf(detail: ToolCallDetail): { text: string; language?: string } {
     case "plan":
       return { text: detail.text };
     case "sub_agent":
-      return { text: [detail.description, detail.log].filter(Boolean).join("\n\n") };
+      return {
+        text: [detail.description, detail.log].filter(Boolean).join("\n\n"),
+      };
     case "worktree_setup":
       return { text: detail.log };
     case "unknown": {
       const input = stringify(detail.input);
       const output = stringify(detail.output);
-      return { text: [input, output].filter(Boolean).join("\n\n"), language: "json" };
+      return {
+        text: [input, output].filter(Boolean).join("\n\n"),
+        language: "json",
+      };
     }
   }
 }
@@ -251,7 +278,8 @@ export function describeTool(item: ToolCallInput): ToolDescription {
       : detail.text;
   return {
     kind,
-    icon: lower === "think" || lower === "thinking" ? "Brain" : KIND_ICONS[kind],
+    icon:
+      lower === "think" || lower === "thinking" ? "Brain" : KIND_ICONS[kind],
     label: labelOf(kind, item.name, item.detail),
     preview: previewOf(item.detail),
     countBucket: KIND_BUCKETS[kind],
@@ -260,7 +288,12 @@ export function describeTool(item: ToolCallInput): ToolDescription {
   };
 }
 
-const BUCKET_PHRASES: Array<{ bucket: CountBucket; verb: string; one: string; many: string }> = [
+const BUCKET_PHRASES: Array<{
+  bucket: CountBucket;
+  verb: string;
+  one: string;
+  many: string;
+}> = [
   { bucket: "commands", verb: "Ran", one: "command", many: "commands" },
   { bucket: "files read", verb: "Read", one: "file", many: "files" },
   { bucket: "files edited", verb: "Edited", one: "file", many: "files" },
@@ -278,6 +311,8 @@ export function summarizeActivity(buckets: readonly CountBucket[]): string {
     const count = buckets.filter((b) => b === bucket).length;
     if (count > 0) parts.push(`${verb} ${count} ${count === 1 ? one : many}`);
   }
-  parts.push(`Used ${buckets.length} ${buckets.length === 1 ? "tool" : "tools"}`);
+  parts.push(
+    `Used ${buckets.length} ${buckets.length === 1 ? "tool" : "tools"}`,
+  );
   return parts.join(" · ");
 }

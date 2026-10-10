@@ -1,17 +1,43 @@
 import assert from "node:assert/strict";
 import net from "node:net";
 import { after, describe, it } from "node:test";
-import { parseListen, planForwarding, readDaemonSettings } from "./daemon-target.ts";
+import {
+  parseListen,
+  planForwarding,
+  readDaemonSettings,
+} from "./daemon-target.ts";
 import { TailscaleForwarder } from "./forwarder.ts";
-import { findTailscaleIPv4, isTailscaleIPv4, tailscaleAddress } from "./tailscale.ts";
+import {
+  findTailscaleIPv4,
+  isTailscaleIPv4,
+  tailscaleAddress,
+} from "./tailscale.ts";
 
 describe("parseListen", () => {
   it("parses TCP, port-only, IPv6, and socket forms", () => {
-    assert.deepEqual(parseListen("127.0.0.1:6767"), { kind: "tcp", host: "127.0.0.1", port: 6767 });
-    assert.deepEqual(parseListen("7777"), { kind: "tcp", host: "127.0.0.1", port: 7777 });
-    assert.deepEqual(parseListen("[::1]:6767"), { kind: "tcp", host: "::1", port: 6767 });
-    assert.deepEqual(parseListen("unix:///tmp/paseo.sock"), { kind: "socket", path: "/tmp/paseo.sock" });
-    assert.deepEqual(parseListen("/tmp/paseo.sock"), { kind: "socket", path: "/tmp/paseo.sock" });
+    assert.deepEqual(parseListen("127.0.0.1:6767"), {
+      kind: "tcp",
+      host: "127.0.0.1",
+      port: 6767,
+    });
+    assert.deepEqual(parseListen("7777"), {
+      kind: "tcp",
+      host: "127.0.0.1",
+      port: 7777,
+    });
+    assert.deepEqual(parseListen("[::1]:6767"), {
+      kind: "tcp",
+      host: "::1",
+      port: 6767,
+    });
+    assert.deepEqual(parseListen("unix:///tmp/paseo.sock"), {
+      kind: "socket",
+      path: "/tmp/paseo.sock",
+    });
+    assert.deepEqual(parseListen("/tmp/paseo.sock"), {
+      kind: "socket",
+      path: "/tmp/paseo.sock",
+    });
   });
 
   it("rejects pipes and invalid ports", () => {
@@ -53,20 +79,33 @@ describe("readDaemonSettings", () => {
 
 describe("planForwarding", () => {
   it("forwards a loopback TCP daemon on the same port", () => {
-    assert.deepEqual(planForwarding({ listen: "127.0.0.1:6767", hasPassword: false }), {
-      kind: "forward",
-      port: 6767,
-      upstream: { kind: "tcp", host: "127.0.0.1", port: 6767 },
-    });
+    assert.deepEqual(
+      planForwarding({ listen: "127.0.0.1:6767", hasPassword: false }),
+      {
+        kind: "forward",
+        port: 6767,
+        upstream: { kind: "tcp", host: "127.0.0.1", port: 6767 },
+      },
+    );
   });
 
   it("skips daemons that already listen on a non-loopback address", () => {
-    assert.equal(planForwarding({ listen: "0.0.0.0:6767", hasPassword: false }).kind, "skip");
-    assert.equal(planForwarding({ listen: "100.101.102.103:6767", hasPassword: false }).kind, "skip");
+    assert.equal(
+      planForwarding({ listen: "0.0.0.0:6767", hasPassword: false }).kind,
+      "skip",
+    );
+    assert.equal(
+      planForwarding({ listen: "100.101.102.103:6767", hasPassword: false })
+        .kind,
+      "skip",
+    );
   });
 
   it("forwards a socket daemon on the default port", () => {
-    const plan = planForwarding({ listen: "unix:///tmp/paseo.sock", hasPassword: false });
+    const plan = planForwarding({
+      listen: "unix:///tmp/paseo.sock",
+      hasPassword: false,
+    });
     assert.equal(plan.kind === "forward" && plan.port, 6767);
   });
 });
@@ -109,8 +148,17 @@ describe("tailscale address detection", () => {
       internal: false,
       cidr: "100.112.44.18/32",
     };
-    assert.equal(tailscaleAddress({ PASEO_TAILSCALE_ADDRESS: " ::1 " }, { utun4: [entry] }), "::1");
-    assert.equal(tailscaleAddress({ PASEO_TAILSCALE_ADDRESS: "" }, { utun4: [entry] }), "100.112.44.18");
+    assert.equal(
+      tailscaleAddress(
+        { PASEO_TAILSCALE_ADDRESS: " ::1 " },
+        { utun4: [entry] },
+      ),
+      "::1",
+    );
+    assert.equal(
+      tailscaleAddress({ PASEO_TAILSCALE_ADDRESS: "" }, { utun4: [entry] }),
+      "100.112.44.18",
+    );
     assert.equal(tailscaleAddress({}, {}), null);
   });
 });
@@ -148,7 +196,9 @@ describe("TailscaleForwarder", () => {
   after(() => new Promise<void>((resolve) => upstream.close(() => resolve())));
 
   it("forwards traffic and follows address changes", async () => {
-    await new Promise<void>((resolve) => upstream.listen(0, "127.0.0.1", resolve));
+    await new Promise<void>((resolve) =>
+      upstream.listen(0, "127.0.0.1", resolve),
+    );
     const upstreamPort = (upstream.address() as net.AddressInfo).port;
     const port = await freePort();
     let address: string | null = "127.0.0.1";
@@ -192,6 +242,9 @@ describe("TailscaleForwarder", () => {
     await forwarder.reconcile();
     await forwarder.stop();
     assert.equal(forwarder.address, null);
-    assert.equal(logs.filter((line) => line.startsWith("Cannot listen")).length, 1);
+    assert.equal(
+      logs.filter((line) => line.startsWith("Cannot listen")).length,
+      1,
+    );
   });
 });

@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseEtime, parseLsof, parsePs, parseSize, parseSwap, parseTop, parseVmStat } from "./parse.ts";
+import {
+  parseEtime,
+  parseLsof,
+  parsePs,
+  parseSize,
+  parseSwap,
+  parseTop,
+  parseVmStat,
+} from "./parse.ts";
 
 const TOP = `Processes: 746 total, 7 running, 739 sleeping, 5638 threads 
 2026/10/06 00:24:06
@@ -25,7 +33,11 @@ PID    MEM    CMPRS  %CPU
 
 test("top: only the last sample counts, sizes keep their change markers out", () => {
   const sample = parseTop(TOP);
-  assert.deepEqual(sample.cpu, { userPercent: 29.18, sysPercent: 28.23, idlePercent: 42.57 });
+  assert.deepEqual(sample.cpu, {
+    userPercent: 29.18,
+    sysPercent: 28.23,
+    idlePercent: 42.57,
+  });
   assert.deepEqual(sample.processes.get(47743), {
     memBytes: 2930 * 1024 ** 2,
     compressedBytes: 2161 * 1024 ** 2,
@@ -37,7 +49,13 @@ test("top: only the last sample counts, sizes keep their change markers out", ()
 });
 
 test("top: output without a process table is an error, not an empty sample", () => {
-  assert.throws(() => parseTop("Processes: 1 total\nCPU usage: 1.0% user, 1.0% sys, 98.0% idle\n"), /process table/);
+  assert.throws(
+    () =>
+      parseTop(
+        "Processes: 1 total\nCPU usage: 1.0% user, 1.0% sys, 98.0% idle\n",
+      ),
+    /process table/,
+  );
 });
 
 test("sizes in binary units, fractions included; unknown units rejected", () => {
@@ -48,7 +66,8 @@ test("sizes in binary units, fractions included; unknown units rejected", () => 
 });
 
 test("vm_stat: page size and counters, quoted labels included", () => {
-  const vm = parseVmStat(`Mach Virtual Memory Statistics: (page size of 16384 bytes)
+  const vm =
+    parseVmStat(`Mach Virtual Memory Statistics: (page size of 16384 bytes)
 Pages free:                                    22619.
 "Translation faults":                    61760332853.
 Pages occupied by compressor:                 409932.
@@ -62,10 +81,13 @@ Swapins:                                   460066505.
 });
 
 test("swap usage in MB", () => {
-  assert.deepEqual(parseSwap("total = 9216.00M  used = 8670.62M  free = 545.38M  (encrypted)"), {
-    totalBytes: 9216 * 1024 ** 2,
-    usedBytes: Math.round(8670.62 * 1024 ** 2),
-  });
+  assert.deepEqual(
+    parseSwap("total = 9216.00M  used = 8670.62M  free = 545.38M  (encrypted)"),
+    {
+      totalBytes: 9216 * 1024 ** 2,
+      usedBytes: Math.round(8670.62 * 1024 ** 2),
+    },
+  );
 });
 
 test("ps elapsed time with and without days and hours", () => {
@@ -95,7 +117,9 @@ test("ps: executable paths and self-set titles keep their spaces", () => {
 });
 
 test("lsof: files grouped by pid with their descriptor", () => {
-  const files = parseLsof("p25417\nfcwd\nn/Users/me\nftxt\nn/Applications/Paseo.app/Contents/MacOS/Paseo\np99\nftxt\nn/bin/zsh\n");
+  const files = parseLsof(
+    "p25417\nfcwd\nn/Users/me\nftxt\nn/Applications/Paseo.app/Contents/MacOS/Paseo\np99\nftxt\nn/bin/zsh\n",
+  );
   assert.deepEqual(files.get(25417), [
     { fd: "cwd", name: "/Users/me" },
     { fd: "txt", name: "/Applications/Paseo.app/Contents/MacOS/Paseo" },

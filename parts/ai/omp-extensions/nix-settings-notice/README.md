@@ -17,6 +17,7 @@ OMP saves settings changes from the settings UI, `/model`, and extensions to `co
   ```
 
   Record settings such as `modelRoles` list only the entries that changed. Each distinct change is shown once per session.
+
 - With a writable `config.yml` it stays silent: OMP saves the change itself.
 
 It can't see a change that has no effect, such as writing a key that a settings overlay (`OMP_CONFIG_FILES`) also sets: OMP only notifies listeners when the effective value changes. `omp config set` runs without extensions; with a read-only `config.yml` it fails on its own.

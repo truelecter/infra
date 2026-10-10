@@ -13,10 +13,14 @@ export const MAX_WAIT_SECONDS = 45;
  * Tunnelblick runs it with a fixed environment; PASEO_VPN_DIR is for tests.
  */
 export function vpnDir(): string {
-  return process.env.PASEO_VPN_DIR ?? join(homedir(), ".local", "share", "paseo-vpn");
+  return (
+    process.env.PASEO_VPN_DIR ?? join(homedir(), ".local", "share", "paseo-vpn")
+  );
 }
 
-async function readForm(request: IncomingMessage): Promise<URLSearchParams | null> {
+async function readForm(
+  request: IncomingMessage,
+): Promise<URLSearchParams | null> {
   const chunks: Buffer[] = [];
   let size = 0;
   for await (const chunk of request) {
@@ -35,13 +39,17 @@ export function createChallengeServer(broker: ChallengeBroker): Server {
   return createServer(async (request, response) => {
     const url = new URL(request.url ?? "/", "http://paseo-vpn");
     if (url.pathname !== "/challenge" || request.method !== "POST") {
-      response.writeHead(404, { "content-type": "text/plain" }).end("Use POST /challenge\n");
+      response
+        .writeHead(404, { "content-type": "text/plain" })
+        .end("Use POST /challenge\n");
       return;
     }
     const form = await readForm(request);
     const wait = Number(url.searchParams.get("wait") ?? MAX_WAIT_SECONDS);
     if (!form || !Number.isFinite(wait)) {
-      response.writeHead(400, { "content-type": "text/plain" }).end("Bad request\n");
+      response
+        .writeHead(400, { "content-type": "text/plain" })
+        .end("Bad request\n");
       return;
     }
 
@@ -60,7 +68,10 @@ export function createChallengeServer(broker: ChallengeBroker): Server {
 }
 
 /** Listens on `socketPath`, readable only by this user, replacing a socket left behind by an earlier run. */
-export async function listen(server: Server, socketPath: string): Promise<() => Promise<void>> {
+export async function listen(
+  server: Server,
+  socketPath: string,
+): Promise<() => Promise<void>> {
   await mkdir(dirname(socketPath), { recursive: true, mode: 0o700 });
   await rm(socketPath, { force: true });
   const listening = Promise.withResolvers<void>();

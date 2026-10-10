@@ -27,7 +27,9 @@ export default function say(pi: ExtensionAPI): void {
     name: "say",
     label: "Say",
     description: SAY_DESCRIPTION,
-    parameters: z.object({ message: z.string().describe(SAY_PARAMETER_DESCRIPTION) }),
+    parameters: z.object({
+      message: z.string().describe(SAY_PARAMETER_DESCRIPTION),
+    }),
     // Declared from the first request: adding a tool mid-session invalidates earlier thinking blocks.
     loadMode: "essential",
     approval: "read",
@@ -35,7 +37,12 @@ export default function say(pi: ExtensionAPI): void {
       // "aside" shows the message at the next step boundary without interrupting
       // the current tool batch; a steering message could skip the remaining calls.
       pi.sendMessage(
-        { customType: SAY_MESSAGE_TYPE, content: params.message, display: true, attribution: "agent" },
+        {
+          customType: SAY_MESSAGE_TYPE,
+          content: params.message,
+          display: true,
+          attribution: "agent",
+        },
         { deliverAs: "aside" },
       );
       return { content: [{ type: "text", text: SAY_RESULT }] };
@@ -53,7 +60,9 @@ export default function say(pi: ExtensionAPI): void {
   // The model already has the text in its `say` call; as a custom message it
   // would reach the model a second time, as if the user had written it.
   pi.on("context", (event) => ({
-    messages: event.messages.filter((m) => !(m.role === "custom" && m.customType === SAY_MESSAGE_TYPE)),
+    messages: event.messages.filter(
+      (m) => !(m.role === "custom" && m.customType === SAY_MESSAGE_TYPE),
+    ),
   }));
 
   pi.on("agent_start", () => gate.runStarted());

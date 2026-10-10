@@ -39,7 +39,12 @@ export type LayoutEntry =
 
 export type StatusBucket = "needs_input" | "failed" | "running" | "attention";
 
-const STATUS_PRIORITY: readonly StatusBucket[] = ["needs_input", "failed", "running", "attention"];
+const STATUS_PRIORITY: readonly StatusBucket[] = [
+  "needs_input",
+  "failed",
+  "running",
+  "attention",
+];
 
 export function normalizeGroupPath(input: string): string {
   return input
@@ -68,13 +73,17 @@ export function splitProjectName(name: string): { path: string; leaf: string } {
   return { path, leaf };
 }
 
-export function placeProject(project: SidebarProject, assignments: Assignments): Placement {
+export function placeProject(
+  project: SidebarProject,
+  assignments: Assignments,
+): Placement {
   const fromName = splitProjectName(project.name);
   const manual = Object.hasOwn(assignments, project.key)
     ? normalizeGroupPath(assignments[project.key])
     : undefined;
   const path = manual ?? fromName.path;
-  const label = fromName.path && fromName.path === path ? fromName.leaf : project.name;
+  const label =
+    fromName.path && fromName.path === path ? fromName.leaf : project.name;
   return { path, label };
 }
 
@@ -121,14 +130,21 @@ export function buildLayout(
   for (const project of projects) {
     const { path, label } = placeProject(project, assignments);
     ensure(path).children.push({ key: project.key, label });
-    for (let at = path; at; at = parentGroupPath(at)) groups.get(at)?.projectKeys.push(project.key);
+    for (let at = path; at; at = parentGroupPath(at))
+      groups.get(at)?.projectKeys.push(project.key);
   }
 
   const entries: LayoutEntry[] = [];
   function walk(node: GroupNode, depth: number, hidden: boolean) {
     for (const child of node.children) {
       if (!isGroup(child)) {
-        entries.push({ kind: "project", key: child.key, label: child.label, depth, hidden });
+        entries.push({
+          kind: "project",
+          key: child.key,
+          label: child.label,
+          depth,
+          hidden,
+        });
         continue;
       }
       const isCollapsed = collapsed.has(child.path);
@@ -166,9 +182,14 @@ export function assignProject(
 }
 
 /** New path for `path` when group `from` becomes `to`; undefined when `path` is outside `from`. */
-export function rewriteGroupPath(path: string, from: string, to: string): string | undefined {
+export function rewriteGroupPath(
+  path: string,
+  from: string,
+  to: string,
+): string | undefined {
   if (path === from) return normalizeGroupPath(to);
-  if (path.startsWith(`${from}/`)) return normalizeGroupPath(`${to}${path.slice(from.length)}`);
+  if (path.startsWith(`${from}/`))
+    return normalizeGroupPath(`${to}${path.slice(from.length)}`);
   return undefined;
 }
 
@@ -187,7 +208,11 @@ export function moveGroup(
   let next: Record<string, string> = { ...assignments };
   if (!from || from === to) return next;
   for (const project of projects) {
-    const moved = rewriteGroupPath(placeProject(project, assignments).path, from, to);
+    const moved = rewriteGroupPath(
+      placeProject(project, assignments).path,
+      from,
+      to,
+    );
     if (moved !== undefined) next = assignProject(next, project, moved);
   }
   return next;
@@ -199,11 +224,20 @@ export function dissolveGroup(
   path: string,
 ): Record<string, string> {
   const normalized = normalizeGroupPath(path);
-  return moveGroup(assignments, projects, normalized, parentGroupPath(normalized));
+  return moveGroup(
+    assignments,
+    projects,
+    normalized,
+    parentGroupPath(normalized),
+  );
 }
 
 /** Collapsed group paths after moving group `from` to `to`. */
-export function moveCollapsed(collapsed: ReadonlySet<string>, from: string, to: string): Set<string> {
+export function moveCollapsed(
+  collapsed: ReadonlySet<string>,
+  from: string,
+  to: string,
+): Set<string> {
   const next = new Set<string>();
   for (const path of collapsed) {
     const moved = rewriteGroupPath(path, from, to);
@@ -214,19 +248,30 @@ export function moveCollapsed(collapsed: ReadonlySet<string>, from: string, to: 
 }
 
 export function groupPaths(layout: readonly LayoutEntry[]): string[] {
-  return layout.flatMap((entry) => (entry.kind === "group" ? [entry.path] : []));
+  return layout.flatMap((entry) =>
+    entry.kind === "group" ? [entry.path] : [],
+  );
 }
 
 /** Existing groups matching what the user typed, for the picker. */
-export function suggestGroups(paths: readonly string[], query: string, limit = 8): string[] {
+export function suggestGroups(
+  paths: readonly string[],
+  query: string,
+  limit = 8,
+): string[] {
   const needle = normalizeGroupPath(query).toLowerCase();
   return paths
-    .filter((path) => path.toLowerCase() !== needle && path.toLowerCase().includes(needle))
+    .filter(
+      (path) =>
+        path.toLowerCase() !== needle && path.toLowerCase().includes(needle),
+    )
     .slice(0, limit);
 }
 
 /** The status a collapsed group should show: the most urgent one among its projects. */
-export function pickGroupStatus(buckets: Iterable<string>): StatusBucket | null {
+export function pickGroupStatus(
+  buckets: Iterable<string>,
+): StatusBucket | null {
   const present = new Set(buckets);
   return STATUS_PRIORITY.find((bucket) => present.has(bucket)) ?? null;
 }

@@ -31,7 +31,10 @@ test("a mock turn renders the plugin's compact tool activity, not Paseo's tool r
 
   // The tool calls become the plugin's compact activity: a folded summary counting them.
   await expect(
-    chat.locator(PLUGIN_ROW).filter({ hasText: /Used \d+ tools?/ }).first(),
+    chat
+      .locator(PLUGIN_ROW)
+      .filter({ hasText: /Used \d+ tools?/ })
+      .first(),
   ).toBeVisible();
 
   // Because the plugin intercepts tool_call rows, Paseo's own tool badge is gone.
@@ -53,8 +56,12 @@ test("the Combine tool calls setting draws each call as its own row when off", a
   await finishTurn(workspace.client, agentId);
 
   await openApp(page, `/settings/hosts/${env.serverId}/plugins`);
-  await page.getByRole("button", { name: "Actions for beautiful-chat", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Chat presentation", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Actions for beautiful-chat", exact: true })
+    .click();
+  await page
+    .getByRole("menuitem", { name: "Chat presentation", exact: true })
+    .click();
   const toggle = page.getByRole("switch", { name: "Combine tool calls" });
   await expect(toggle).toBeChecked();
   await toggle.click();
@@ -63,13 +70,23 @@ test("the Combine tool calls setting draws each call as its own row when off", a
   await openAgent(page, workspace.workspaceId, agentId);
   const chat = page.getByTestId("agent-chat-scroll");
   await expect(chat.locator(PLUGIN_ROW).first()).toBeVisible();
-  await expect(chat.locator(PLUGIN_ROW).filter({ hasText: /Used \d+ tools?/ })).toHaveCount(0);
-  await expect(chat.locator(PLUGIN_ROW).filter({ hasText: /echo|Shell|Read|Edit|Search/ }).nth(1)).toBeVisible();
+  await expect(
+    chat.locator(PLUGIN_ROW).filter({ hasText: /Used \d+ tools?/ }),
+  ).toHaveCount(0);
+  await expect(
+    chat
+      .locator(PLUGIN_ROW)
+      .filter({ hasText: /echo|Shell|Read|Edit|Search/ })
+      .nth(1),
+  ).toBeVisible();
 });
 
 // Cards show when their item arrived, worded like Paseo's message times (a same-day turn shows
 // only the time), and the Show times setting hides it.
-test("cards show their time, and the Show times setting hides it", async ({ page, seed }) => {
+test("cards show their time, and the Show times setting hides it", async ({
+  page,
+  seed,
+}) => {
   const workspace = await seed("beautiful-chat-times");
   const agentId = await createMockAgent(workspace, {
     title: "Beautiful chat times agent",
@@ -81,12 +98,18 @@ test("cards show their time, and the Show times setting hides it", async ({ page
   await openAgent(page, workspace.workspaceId, agentId);
   const chat = page.getByTestId("agent-chat-scroll");
   // Row text runs together (`list.tsx12:39 AM`), so no word boundary before the hour.
-  const timedCards = chat.locator(PLUGIN_ROW).filter({ hasText: /\d{1,2}:\d{2}/ });
+  const timedCards = chat
+    .locator(PLUGIN_ROW)
+    .filter({ hasText: /\d{1,2}:\d{2}/ });
   await expect(timedCards.first()).toBeVisible();
 
   await openApp(page, `/settings/hosts/${env.serverId}/plugins`);
-  await page.getByRole("button", { name: "Actions for beautiful-chat", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Chat presentation", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Actions for beautiful-chat", exact: true })
+    .click();
+  await page
+    .getByRole("menuitem", { name: "Chat presentation", exact: true })
+    .click();
   const toggle = page.getByRole("switch", { name: "Show times" });
   await expect(toggle).toBeChecked();
   await toggle.click();

@@ -1,7 +1,14 @@
 import type { PluginServerContext } from "@getpaseo/plugin/server";
-import { planForwarding, readDaemonSettings, resolvePaseoHome } from "./server/daemon-target.ts";
+import {
+  planForwarding,
+  readDaemonSettings,
+  resolvePaseoHome,
+} from "./server/daemon-target.ts";
 import { TailscaleForwarder } from "./server/forwarder.ts";
-import { createCliHostnamesConfig, HostnameSync } from "./server/hostname-sync.ts";
+import {
+  createCliHostnamesConfig,
+  HostnameSync,
+} from "./server/hostname-sync.ts";
 import { lookupHostnames } from "./server/magicdns.ts";
 import { tailscaleAddress } from "./server/tailscale.ts";
 

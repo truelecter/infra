@@ -44,6 +44,7 @@ This depends on the app's internals as of OpenVPN Connect 3.6.0 and can break on
    ```
 
    The script refers to the socket by its full default path, because Tunnelblick runs it with a fixed environment. After changing the script, install the configuration again (Tunnelblick offers to replace it).
+
 3. Connect once, from Paseo or Tunnelblick. Tunnelblick asks for the username and password; tick the box to save them in the Keychain. Then the code request shows up on the VPN screen.
 
 ## Develop

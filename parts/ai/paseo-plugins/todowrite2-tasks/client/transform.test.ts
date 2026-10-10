@@ -16,11 +16,21 @@ function run(status: string, input: unknown, name = "todowrite2") {
     error: null,
     detail: { type: "unknown", input, output: null },
   } as unknown as Input["item"];
-  return transformTodoToolCall({ item, phase: status === "running" ? "streaming" : "complete" });
+  return transformTodoToolCall({
+    item,
+    phase: status === "running" ? "streaming" : "complete",
+  });
 }
 
 const card = {
-  items: [{ type: "plugin", kind: "todowrite2-task-list", version: 1, data: { todos: list } }],
+  items: [
+    {
+      type: "plugin",
+      kind: "todowrite2-task-list",
+      version: 1,
+      data: { todos: list },
+    },
+  ],
 };
 
 test("draws a task list card for running and completed calls", () => {

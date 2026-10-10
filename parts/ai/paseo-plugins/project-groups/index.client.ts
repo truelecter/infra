@@ -1,7 +1,11 @@
 import { settingsRpc } from "@getpaseo/plugin";
 import type { PluginClientContext } from "@getpaseo/plugin/client";
 import { createAssignmentSync } from "./client/sync.ts";
-import { onWindowFocus, startSidebarGroups, type SidebarGroups } from "./client/web.ts";
+import {
+  onWindowFocus,
+  startSidebarGroups,
+  type SidebarGroups,
+} from "./client/web.ts";
 import { groupSettings } from "./shared/settings.ts";
 
 export default function contribute(client: PluginClientContext) {
@@ -16,10 +20,13 @@ export default function contribute(client: PluginClientContext) {
       return parsed.success ? parsed.data.assignments : {};
     },
     onChange: (assignments) => sidebar?.setAssignments(assignments),
-    onError: (error) => console.warn("[project-groups] Could not sync groups", error),
+    onError: (error) =>
+      console.warn("[project-groups] Could not sync groups", error),
   });
 
-  sidebar = startSidebarGroups({ update: (change) => void sync.update(change) });
+  sidebar = startSidebarGroups({
+    update: (change) => void sync.update(change),
+  });
   if (!sidebar) return () => {};
 
   void sync.refresh();

@@ -15,7 +15,11 @@ describe("parseCollapseKinds", () => {
   });
 
   it("takes stored booleans and defaults every missing or malformed entry", () => {
-    const parsed = parseCollapseKinds({ reasoning: true, shell: false, files: "no" });
+    const parsed = parseCollapseKinds({
+      reasoning: true,
+      shell: false,
+      files: "no",
+    });
     assert.equal(parsed.reasoning, true);
     assert.equal(parsed.shell, false);
     assert.equal(parsed.files, true);

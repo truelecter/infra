@@ -37,7 +37,10 @@ export function maxWidthValue({ percent, maxPx }: ChatWidth): string {
   return `max(${STOCK_MAX_WIDTH}, ${bounded})`;
 }
 
-export function buildOverrideCss(selectors: Iterable<string>, width: ChatWidth): string {
+export function buildOverrideCss(
+  selectors: Iterable<string>,
+  width: ChatWidth,
+): string {
   const list = [...selectors].sort().join(",");
   if (!list) return "";
   // A capped container inside another one (the composer inside the draft form) fills its

@@ -28,7 +28,7 @@ views:
                   - type: custom:mushroom-title-card
                     title: BBL P1S
                     alignment: start
-                    subtitle: ''
+                    subtitle: ""
                   - type: custom:mod-card
                     card:
                       type: custom:mushroom-chips-card
@@ -485,7 +485,7 @@ views:
                     conditions:
                       - condition: state
                         entity: binary_sensor.moonraker_printing
-                        state: 'on'
+                        state: "on"
                     chip:
                       type: template
                       content: >-
@@ -528,7 +528,7 @@ views:
                     conditions:
                       - condition: state
                         entity: binary_sensor.moonraker_printing
-                        state: 'on'
+                        state: "on"
                     chip:
                       type: template
                       content: >
@@ -696,7 +696,7 @@ views:
                 conditions:
                   - condition: state
                     entity: input_boolean.3d_printer_camera_view
-                    state: 'on'
+                    state: "on"
                 card:
                   type: custom:swipe-card
                   reset_after: 5
@@ -713,12 +713,12 @@ views:
                       show_name: false
                       show_state: false
                       camera_view: live
-                      aspect_ratio: '4:3'
+                      aspect_ratio: "4:3"
                     - type: picture-entity
                       entity: camera.moonraker_thumbnail
                       show_state: false
                       show_name: false
-                      aspect_ratio: '4:3'
+                      aspect_ratio: "4:3"
             card_mod:
               style: |
                 ha-card {

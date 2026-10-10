@@ -21,12 +21,18 @@ export function setTitleDescription(agentId: string): string {
 
 export const TITLE_PARAMETER_DESCRIPTION = `New title, at most ${MAX_TITLE_LENGTH} characters.`;
 
-export type TitleCheck = { ok: true; title: string } | { ok: false; error: string };
+export type TitleCheck =
+  | { ok: true; title: string }
+  | { ok: false; error: string };
 
 /** Trims the title and collapses whitespace runs (newlines included) to single spaces. */
 export function normalizeTitle(raw: string): TitleCheck {
   const title = raw.replace(/\s+/g, " ").trim();
-  if (!title) return { ok: false, error: "Title is empty. Pass a short title naming the current work." };
+  if (!title)
+    return {
+      ok: false,
+      error: "Title is empty. Pass a short title naming the current work.",
+    };
   // Count code points, as Paseo's own cut does, not UTF-16 units.
   const length = [...title].length;
   if (length > MAX_TITLE_LENGTH) {
@@ -49,7 +55,8 @@ export function toolsForAgent(
   active: readonly string[],
   mainOnly: readonly string[],
 ): string[] | null {
-  if (kind === "main" || !active.some((name) => mainOnly.includes(name))) return null;
+  if (kind === "main" || !active.some((name) => mainOnly.includes(name)))
+    return null;
   return active.filter((name) => !mainOnly.includes(name));
 }
 
@@ -65,22 +72,39 @@ export interface SetTitleResult {
   isError: boolean;
 }
 
-export async function setTitle(rawTitle: unknown, deps: SetTitleDeps): Promise<SetTitleResult> {
+export async function setTitle(
+  rawTitle: unknown,
+  deps: SetTitleDeps,
+): Promise<SetTitleResult> {
   if (deps.agentKind !== "main") {
-    return { text: `${SET_TITLE_TOOL} is for the top-level agent only; a subagent must not rename it.`, isError: true };
+    return {
+      text: `${SET_TITLE_TOOL} is for the top-level agent only; a subagent must not rename it.`,
+      isError: true,
+    };
   }
   const check = normalizeTitle(typeof rawTitle === "string" ? rawTitle : "");
   if (!check.ok) return { text: check.error, isError: true };
   const { title } = check;
 
-  const result = await deps.runCli(["agent", "update", deps.agentId, "--name", title, "--json"]);
-  if (!result.ok) return { text: `Paseo rename failed: ${result.error}`, isError: true };
+  const result = await deps.runCli([
+    "agent",
+    "update",
+    deps.agentId,
+    "--name",
+    title,
+    "--json",
+  ]);
+  if (!result.ok)
+    return { text: `Paseo rename failed: ${result.error}`, isError: true };
 
   try {
     await deps.setSessionName(title);
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
-    return { text: `Renamed to "${title}" in Paseo; the session name was not updated: ${reason}`, isError: false };
+    return {
+      text: `Renamed to "${title}" in Paseo; the session name was not updated: ${reason}`,
+      isError: false,
+    };
   }
   return { text: `Renamed to "${title}"`, isError: false };
 }

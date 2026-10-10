@@ -7,7 +7,9 @@ import { setTimeout as delay } from "node:timers/promises";
 export const GSD_SKILL_GLOB = "gsd-*";
 
 /** Tools GSD registers that stay unregistered while GSD is hidden. */
-export const DEFERRED_TOOLS: Readonly<Record<string, true>> = { gsd_invoke: true };
+export const DEFERRED_TOOLS: Readonly<Record<string, true>> = {
+  gsd_invoke: true,
+};
 
 export interface ProjectFs {
   isDirectory(path: string): boolean;
@@ -18,7 +20,10 @@ export interface ProjectFs {
  * The nearest `.planning/` directory from `cwd` upwards, stopping at the git root (the first
  * directory holding `.git`, a directory or a worktree file) or the filesystem root.
  */
-export function findPlanningDir(cwd: string, fs: ProjectFs): string | undefined {
+export function findPlanningDir(
+  cwd: string,
+  fs: ProjectFs,
+): string | undefined {
   let dir = cwd;
   for (;;) {
     const planning = join(dir, ".planning");
@@ -43,17 +48,24 @@ export function frontMatterName(markdown: string): string | undefined {
 }
 
 /** Agent names of GSD's `agents/` files (`x.md` and `x.compact.md` both define `x`), sorted, unique. */
-export function agentNames(files: readonly { file: string; content: string }[]): string[] {
+export function agentNames(
+  files: readonly { file: string; content: string }[],
+): string[] {
   const names = new Set<string>();
   for (const { file, content } of files) {
     if (!file.endsWith(".md")) continue;
-    names.add(frontMatterName(content) ?? file.replace(/(\.compact)?\.md$/, ""));
+    names.add(
+      frontMatterName(content) ?? file.replace(/(\.compact)?\.md$/, ""),
+    );
   }
   return [...names].sort();
 }
 
 /** `list` followed by the entries of `extra` it lacks. */
-export function withAdded(list: readonly string[], extra: readonly string[]): string[] {
+export function withAdded(
+  list: readonly string[],
+  extra: readonly string[],
+): string[] {
   const out = [...list];
   for (const entry of extra) if (!out.includes(entry)) out.push(entry);
   return out;
@@ -65,7 +77,9 @@ export function visibleSkills(
   ignored: readonly string[],
   matches: (pattern: string, name: string) => boolean,
 ): string[] {
-  return names.filter((name) => !ignored.some((pattern) => matches(pattern, name)));
+  return names.filter(
+    (name) => !ignored.some((pattern) => matches(pattern, name)),
+  );
 }
 
 /** How often any of `names` occurs in `text` as a whole name (not as a prefix of a longer one). */
@@ -74,7 +88,9 @@ export function countMentions(text: string, names: readonly string[]): number {
   for (const name of names) {
     if (!name) continue;
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    count += text.match(new RegExp(`(?<![\\w-])${escaped}(?![\\w-])`, "g"))?.length ?? 0;
+    count +=
+      text.match(new RegExp(`(?<![\\w-])${escaped}(?![\\w-])`, "g"))?.length ??
+      0;
   }
   return count;
 }
@@ -93,9 +109,14 @@ export interface ReloadBaseline {
  * a GSD skill, and, when the prompt renders skills, the rebuilt prompt mentions GSD skills more
  * often than before.
  */
-export function skillsReloaded(baseline: ReloadBaseline, activeSkills: readonly string[], prompt: string): boolean {
+export function skillsReloaded(
+  baseline: ReloadBaseline,
+  activeSkills: readonly string[],
+  prompt: string,
+): boolean {
   if (baseline.expected.length === 0) return true;
-  if (!baseline.expected.some((name) => activeSkills.includes(name))) return false;
+  if (!baseline.expected.some((name) => activeSkills.includes(name)))
+    return false;
   if (!baseline.promptListsSkills) return true;
   return countMentions(prompt, baseline.expected) > baseline.promptMentions;
 }

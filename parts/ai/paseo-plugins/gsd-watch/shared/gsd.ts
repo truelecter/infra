@@ -5,7 +5,15 @@ export const statusSchema = z.enum(["complete", "in_progress", "pending"]);
 export type Status = z.infer<typeof statusSchema>;
 
 /** Phase lifecycle stages, in GSD's order; each one is a file in the phase folder. */
-export const BADGES = ["discussed", "researched", "ui_spec", "planned", "executed", "verified", "uat"] as const;
+export const BADGES = [
+  "discussed",
+  "researched",
+  "ui_spec",
+  "planned",
+  "executed",
+  "verified",
+  "uat",
+] as const;
 export const badgeSchema = z.enum(BADGES);
 export type Badge = z.infer<typeof badgeSchema>;
 
@@ -60,7 +68,13 @@ export const projectSchema = z.object({
   stoppedAt: z.string().nullable(),
   lastActivity: z.string().nullable(),
   /** The next step GSD suggests in `state.json`. */
-  next: z.object({ command: z.string(), label: z.string().nullable(), reason: z.string().nullable() }).nullable(),
+  next: z
+    .object({
+      command: z.string(),
+      label: z.string().nullable(),
+      reason: z.string().nullable(),
+    })
+    .nullable(),
   modelProfile: z.string().nullable(),
   phases: z.array(phaseSchema),
   quickTasks: z.array(quickTaskSchema),
@@ -73,7 +87,11 @@ export const getProject = defineRpc({
   input: z.object({ directory: z.string().min(1) }),
   output: z.discriminatedUnion("found", [
     z.object({ found: z.literal(false), planningDirectory: z.string() }),
-    z.object({ found: z.literal(true), planningDirectory: z.string(), project: projectSchema }),
+    z.object({
+      found: z.literal(true),
+      planningDirectory: z.string(),
+      project: projectSchema,
+    }),
   ]),
 });
 export type ProjectResult = z.infer<typeof getProject.output>;

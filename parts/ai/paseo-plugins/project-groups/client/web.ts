@@ -76,7 +76,11 @@ interface El {
   remove(): void;
   contains(node: unknown): boolean;
   addEventListener(type: string, listener: Listener, capture?: boolean): void;
-  removeEventListener(type: string, listener: Listener, capture?: boolean): void;
+  removeEventListener(
+    type: string,
+    listener: Listener,
+    capture?: boolean,
+  ): void;
   getBoundingClientRect(): Rect;
   focus(): void;
 }
@@ -94,7 +98,11 @@ declare const document: {
   createElement(tagName: string): El;
   querySelectorAll(selector: string): ArrayLike<El>;
   addEventListener(type: string, listener: Listener, capture?: boolean): void;
-  removeEventListener(type: string, listener: Listener, capture?: boolean): void;
+  removeEventListener(
+    type: string,
+    listener: Listener,
+    capture?: boolean,
+  ): void;
 };
 declare const window: {
   readonly innerWidth: number;
@@ -110,7 +118,10 @@ declare const window: {
 };
 declare class MutationObserver {
   constructor(callback: (records: MutationRecordLike[]) => void);
-  observe(target: El, options: { childList: boolean; subtree: boolean; characterData: boolean }): void;
+  observe(
+    target: El,
+    options: { childList: boolean; subtree: boolean; characterData: boolean },
+  ): void;
   disconnect(): void;
 }
 
@@ -118,8 +129,13 @@ const PLUGIN_ID = "project-groups";
 const ROW_PREFIX = "sidebar-project-row-";
 // Paseo badges a project row only while the project is collapsed; otherwise each workspace row
 // carries its own status. Read both.
-const STATUS_PREFIXES = ["project-status-indicator-", "workspace-status-indicator-"] as const;
-const STATUS_SELECTOR = STATUS_PREFIXES.map((prefix) => `[data-testid^="${prefix}"]`).join(", ");
+const STATUS_PREFIXES = [
+  "project-status-indicator-",
+  "workspace-status-indicator-",
+] as const;
+const STATUS_SELECTOR = STATUS_PREFIXES.map(
+  (prefix) => `[data-testid^="${prefix}"]`,
+).join(", ");
 const SCROLL_ROOT = '[data-testid="sidebar-project-workspace-list-scroll"]';
 const COLLAPSED_KEY = "paseo-plugin:project-groups:collapsed";
 const INDENT_PX = 12;
@@ -271,10 +287,15 @@ const SWALLOWED_EVENTS = [
   "keyup",
 ] as const;
 
-function element(tagName: string, className: string, attributes: Record<string, string> = {}): El {
+function element(
+  tagName: string,
+  className: string,
+  attributes: Record<string, string> = {},
+): El {
   const node = document.createElement(tagName);
   node.className = className;
-  for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value);
+  for (const [name, value] of Object.entries(attributes))
+    node.setAttribute(name, value);
   return node;
 }
 
@@ -297,7 +318,12 @@ function setText(node: El, text: string) {
 }
 
 /** A div that acts as a button and keeps its events away from whatever it sits in. */
-function actionButton(className: string, icon: keyof typeof ICONS, label: string, onPress: () => void): El {
+function actionButton(
+  className: string,
+  icon: keyof typeof ICONS,
+  label: string,
+  onPress: () => void,
+): El {
   const button = element("div", className, {
     role: "button",
     tabindex: "0",
@@ -311,7 +337,10 @@ function actionButton(className: string, icon: keyof typeof ICONS, label: string
       if (type === "click") {
         event.preventDefault();
         onPress();
-      } else if (type === "keydown" && (event.key === "Enter" || event.key === " ")) {
+      } else if (
+        type === "keydown" &&
+        (event.key === "Enter" || event.key === " ")
+      ) {
         event.preventDefault();
         onPress();
       }
@@ -340,7 +369,9 @@ function scan(): ScannedList[] {
     const item = block?.parentElement;
     const container = item?.parentElement;
     if (!block || !item || !container) continue;
-    const key = (row.getAttribute("data-testid") ?? "").slice(ROW_PREFIX.length);
+    const key = (row.getAttribute("data-testid") ?? "").slice(
+      ROW_PREFIX.length,
+    );
     const name = block.getAttribute("aria-label") ?? "";
     const projects = lists.get(container) ?? [];
     projects.push({ key, name, item, row });
@@ -360,18 +391,27 @@ function setLabel(project: ScannedProject, label: string) {
   if (!title || title.childNodes.length !== 1) return;
   const node = title.childNodes[0];
   if (node.nodeType !== TEXT_NODE || node.nodeValue === label) return;
-  if (node.nodeValue !== project.name && node.nodeValue !== title.getAttribute("data-pg-label")) return;
+  if (
+    node.nodeValue !== project.name &&
+    node.nodeValue !== title.getAttribute("data-pg-label")
+  )
+    return;
   node.nodeValue = label;
   title.setAttribute("data-pg-label", label);
 }
 
-function memberStatus(keys: readonly string[], byKey: ReadonlyMap<string, ScannedProject>) {
+function memberStatus(
+  keys: readonly string[],
+  byKey: ReadonlyMap<string, ScannedProject>,
+) {
   const buckets: string[] = [];
   for (const key of keys) {
     const indicators = byKey.get(key)?.item.querySelectorAll(STATUS_SELECTOR);
     for (let index = 0; index < (indicators?.length ?? 0); index++) {
       const testId = indicators?.[index].getAttribute("data-testid") ?? "";
-      const prefix = STATUS_PREFIXES.find((candidate) => testId.startsWith(candidate));
+      const prefix = STATUS_PREFIXES.find((candidate) =>
+        testId.startsWith(candidate),
+      );
       if (prefix) buckets.push(testId.slice(prefix.length));
     }
   }
@@ -380,8 +420,14 @@ function memberStatus(keys: readonly string[], byKey: ReadonlyMap<string, Scanne
 
 function loadCollapsed(): Set<string> {
   try {
-    const parsed: unknown = JSON.parse(window.localStorage.getItem(COLLAPSED_KEY) ?? "[]");
-    return new Set(Array.isArray(parsed) ? parsed.filter((value) => typeof value === "string") : []);
+    const parsed: unknown = JSON.parse(
+      window.localStorage.getItem(COLLAPSED_KEY) ?? "[]",
+    );
+    return new Set(
+      Array.isArray(parsed)
+        ? parsed.filter((value) => typeof value === "string")
+        : [],
+    );
   } catch {
     return new Set();
   }
@@ -412,7 +458,10 @@ interface Popover {
 }
 
 function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
-  const root = element("div", "pg-popover", { role: "dialog", "aria-label": options.title });
+  const root = element("div", "pg-popover", {
+    role: "dialog",
+    "aria-label": options.title,
+  });
   const title = root.appendChild(element("div", "pg-pop-title"));
   title.textContent = options.title;
   const input = root.appendChild(document.createElement("input"));
@@ -422,7 +471,9 @@ function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
   input.setAttribute("spellcheck", "false");
   input.setAttribute("autocomplete", "off");
   input.value = options.value;
-  const list = root.appendChild(element("div", "pg-pop-list", { role: "listbox" }));
+  const list = root.appendChild(
+    element("div", "pg-pop-list", { role: "listbox" }),
+  );
   const hint = root.appendChild(element("div", "pg-pop-hint"));
   hint.textContent = options.hint;
   const footer = root.appendChild(element("div", "pg-pop-footer"));
@@ -449,7 +500,9 @@ function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
     active = Math.min(active, shown.length - 1);
     list.innerHTML = "";
     shown.forEach((path, index) => {
-      const option = list.appendChild(element("div", "pg-pop-option", { role: "option" }));
+      const option = list.appendChild(
+        element("div", "pg-pop-option", { role: "option" }),
+      );
       option.textContent = path;
       setAttr(option, "data-active", index === active ? "" : null);
       setAttr(option, "aria-selected", String(index === active));
@@ -459,7 +512,12 @@ function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
   }
 
   function button(label: string, className: string, onPress: () => void) {
-    const node = footer.appendChild(element("div", `pg-pop-button ${className}`, { role: "button", tabindex: "0" }));
+    const node = footer.appendChild(
+      element("div", `pg-pop-button ${className}`, {
+        role: "button",
+        tabindex: "0",
+      }),
+    );
     node.textContent = label;
     node.addEventListener("click", onPress);
     node.addEventListener("keydown", (event) => {
@@ -508,7 +566,8 @@ function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
   });
 
   function onOutside(event: DomEvent) {
-    if (!root.contains(event.target) && !options.anchor.contains(event.target)) close();
+    if (!root.contains(event.target) && !options.anchor.contains(event.target))
+      close();
   }
   document.addEventListener("pointerdown", onOutside, true);
 
@@ -518,9 +577,15 @@ function openPopover(options: PopoverOptions, onClosed: () => void): Popover {
   const anchor = options.anchor.getBoundingClientRect();
   const height = root.getBoundingClientRect().height;
   const width = 260;
-  const left = Math.max(8, Math.min(anchor.right - width, window.innerWidth - width - 8));
+  const left = Math.max(
+    8,
+    Math.min(anchor.right - width, window.innerWidth - width - 8),
+  );
   const below = anchor.bottom + 4;
-  const top = below + height + 8 > window.innerHeight ? Math.max(8, anchor.top - height - 4) : below;
+  const top =
+    below + height + 8 > window.innerHeight
+      ? Math.max(8, anchor.top - height - 4)
+      : below;
   root.style.setProperty("left", `${left}px`);
   root.style.setProperty("top", `${top}px`);
   root.style.removeProperty("visibility");
@@ -540,7 +605,9 @@ export interface SidebarGroupsOptions {
   update(change: AssignmentChange): void;
 }
 
-export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups | null {
+export function startSidebarGroups(
+  options: SidebarGroupsOptions,
+): SidebarGroups | null {
   if (Platform.OS !== "web") return null;
 
   const style = element("style", "", { "data-paseo-plugin": PLUGIN_ID });
@@ -594,11 +661,13 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
       placeholder: "Group name",
       hint: "Use / to nest groups, e.g. work/aws",
       suggestions: (query) => suggestGroups(paths, query),
-      onSave: (value) => options.update((current) => assignProject(current, project, value)),
+      onSave: (value) =>
+        options.update((current) => assignProject(current, project, value)),
       secondary: path
         ? {
             label: "Remove",
-            onPress: () => options.update((current) => assignProject(current, project, "")),
+            onPress: () =>
+              options.update((current) => assignProject(current, project, "")),
           }
         : undefined,
     });
@@ -640,7 +709,8 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
       ["pg-folder-open", "folderOpen"],
       ["pg-chevron", "chevronRight"],
     ] as const) {
-      lead.appendChild(element("span", `pg-icon ${className}`)).innerHTML = svg(icon);
+      lead.appendChild(element("span", `pg-icon ${className}`)).innerHTML =
+        svg(icon);
     }
     lead.appendChild(element("span", "pg-dot"));
     header.appendChild(element("div", "pg-name"));
@@ -656,7 +726,9 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
         dissolve(header.getAttribute("data-pg-group") ?? path);
       }),
     );
-    header.addEventListener("click", () => toggle(header.getAttribute("data-pg-group") ?? path));
+    header.addEventListener("click", () =>
+      toggle(header.getAttribute("data-pg-group") ?? path),
+    );
     header.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
@@ -670,7 +742,12 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
     if (!trailing) return;
     let button = trailing.querySelector(":scope > .pg-assign");
     if (!button) {
-      const created = actionButton("pg-assign", "folderInput", "Move to group", () => openAssign(created));
+      const created = actionButton(
+        "pg-assign",
+        "folderInput",
+        "Move to group",
+        () => openAssign(created),
+      );
       button = trailing.insertBefore(created, trailing.firstElementChild);
     }
     setAttr(button, "data-pg-key", project.key);
@@ -692,9 +769,17 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
   ) {
     const count = entry.projectKeys.length;
     setStyle(header, "order", String(order));
-    setStyle(header, "margin-left", entry.depth ? `${entry.depth * INDENT_PX}px` : "");
+    setStyle(
+      header,
+      "margin-left",
+      entry.depth ? `${entry.depth * INDENT_PX}px` : "",
+    );
     setAttr(header, "aria-expanded", String(!entry.collapsed));
-    setAttr(header, "aria-label", `${entry.path}, ${count} ${count === 1 ? "project" : "projects"}`);
+    setAttr(
+      header,
+      "aria-label",
+      `${entry.path}, ${count} ${count === 1 ? "project" : "projects"}`,
+    );
     setAttr(header, "title", entry.path);
     setAttr(header, "data-pg-hidden", entry.hidden ? "" : null);
     const name = header.querySelector(".pg-name");
@@ -702,12 +787,19 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
     const dot = header.querySelector(".pg-dot");
     if (name) setText(name, entry.name);
     if (countNode) setText(countNode, String(count));
-    if (dot) setAttr(dot, "data-status", entry.collapsed ? memberStatus(entry.projectKeys, byKey) : null);
+    if (dot)
+      setAttr(
+        dot,
+        "data-status",
+        entry.collapsed ? memberStatus(entry.projectKeys, byKey) : null,
+      );
   }
 
   function applyList(list: ScannedList) {
     const layout = buildLayout(list.projects, assignments, collapsed);
-    const byKey = new Map(list.projects.map((project) => [project.key, project]));
+    const byKey = new Map(
+      list.projects.map((project) => [project.key, project]),
+    );
     const headers = new Map<string, El>();
     for (let index = 0; index < list.container.children.length; index++) {
       const child = list.container.children[index];
@@ -729,14 +821,20 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
       const order = index + 1;
       if (entry.kind === "group") {
         used.add(entry.path);
-        const header = headers.get(entry.path) ?? list.container.appendChild(createHeader(entry.path));
+        const header =
+          headers.get(entry.path) ??
+          list.container.appendChild(createHeader(entry.path));
         applyHeader(header, entry, order, byKey);
         return;
       }
       const project = byKey.get(entry.key);
       if (!project) return;
       setStyle(project.item, "order", String(order));
-      setAttr(project.item, "data-pg-depth", entry.depth ? String(Math.min(entry.depth, MAX_INDENT_LEVELS)) : null);
+      setAttr(
+        project.item,
+        "data-pg-depth",
+        entry.depth ? String(Math.min(entry.depth, MAX_INDENT_LEVELS)) : null,
+      );
       setAttr(project.item, "data-pg-hidden", entry.hidden ? "" : null);
       setLabel(project, entry.label);
     });
@@ -749,12 +847,15 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
     const lists = scan();
     projects = new Map();
     for (const list of lists) {
-      for (const project of list.projects) projects.set(project.key, { key: project.key, name: project.name });
+      for (const project of list.projects)
+        projects.set(project.key, { key: project.key, name: project.name });
     }
     paths = [];
     for (const list of lists) applyList(list);
     paths = [...new Set(paths)];
-    watched = lists.map((list) => list.container.closest(SCROLL_ROOT) ?? list.container);
+    watched = lists.map(
+      (list) => list.container.closest(SCROLL_ROOT) ?? list.container,
+    );
     if (popover && !popover.anchor.isConnected) popover.close();
   }
 
@@ -769,14 +870,21 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
   // Streaming agent output mutates the page constantly. Only react to the sidebar, unless the
   // sidebar is not (or no longer) on the page, in which case any change may have brought it back.
   function touchesSidebar(records: MutationRecordLike[]): boolean {
-    if (watched.length === 0 || watched.some((root) => !root.isConnected)) return true;
-    return records.some((record) => watched.some((root) => root.contains(record.target)));
+    if (watched.length === 0 || watched.some((root) => !root.isConnected))
+      return true;
+    return records.some((record) =>
+      watched.some((root) => root.contains(record.target)),
+    );
   }
 
   const observer = new MutationObserver((records) => {
     if (touchesSidebar(records)) schedule();
   });
-  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
   schedule();
 
   return {
@@ -793,7 +901,8 @@ export function startSidebarGroups(options: SidebarGroupsOptions): SidebarGroups
         for (const project of list.projects) resetProject(project);
       }
       const leftovers = document.querySelectorAll(".pg-header, .pg-assign");
-      for (let index = 0; index < leftovers.length; index++) leftovers[index].remove();
+      for (let index = 0; index < leftovers.length; index++)
+        leftovers[index].remove();
       style.remove();
     },
   };

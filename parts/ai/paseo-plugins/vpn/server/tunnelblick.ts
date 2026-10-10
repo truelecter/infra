@@ -34,20 +34,36 @@ return out`;
 export function parseStatus(output: string): TunnelblickState {
   const [head, ...lines] = output.trim().split("\n");
   if (head === "STOPPED") return { tunnelblick: "stopped", configs: [] };
-  if (head !== "RUNNING") throw new Error(`Unexpected Tunnelblick status output: ${output.slice(0, 200)}`);
+  if (head !== "RUNNING")
+    throw new Error(
+      `Unexpected Tunnelblick status output: ${output.slice(0, 200)}`,
+    );
   const configs = lines
     .filter((line) => line.trim())
     .map((line) => {
-      const [name = "", state = "", bytesIn = "0", bytesOut = "0"] = line.split("\t");
-      return { name, state, bytesIn: Number(bytesIn) || 0, bytesOut: Number(bytesOut) || 0 };
+      const [name = "", state = "", bytesIn = "0", bytesOut = "0"] =
+        line.split("\t");
+      return {
+        name,
+        state,
+        bytesIn: Number(bytesIn) || 0,
+        bytesOut: Number(bytesOut) || 0,
+      };
     });
   return { tunnelblick: "running", configs };
 }
 
-async function osascript(lines: string[], args: string[] = []): Promise<string> {
-  const { stdout } = await run(OSASCRIPT, [...lines.flatMap((line) => ["-e", line]), ...args], {
-    timeout: TIMEOUT_MS,
-  });
+async function osascript(
+  lines: string[],
+  args: string[] = [],
+): Promise<string> {
+  const { stdout } = await run(
+    OSASCRIPT,
+    [...lines.flatMap((line) => ["-e", line]), ...args],
+    {
+      timeout: TIMEOUT_MS,
+    },
+  );
   return stdout;
 }
 
@@ -61,12 +77,20 @@ export async function readStatus(): Promise<TunnelblickState> {
 }
 
 /** Runs Tunnelblick's `connect` or `disconnect` verb; the name is passed as an argument, not spliced into the script. */
-async function verb(verbName: "connect" | "disconnect", config: string): Promise<void> {
+async function verb(
+  verbName: "connect" | "disconnect",
+  config: string,
+): Promise<void> {
   const result = await osascript(
-    ["on run argv", `tell application "Tunnelblick" to ${verbName} (item 1 of argv)`, "end run"],
+    [
+      "on run argv",
+      `tell application "Tunnelblick" to ${verbName} (item 1 of argv)`,
+      "end run",
+    ],
     [config],
   );
-  if (result.trim() !== "true") throw new Error(`Tunnelblick could not ${verbName} "${config}"`);
+  if (result.trim() !== "true")
+    throw new Error(`Tunnelblick could not ${verbName} "${config}"`);
 }
 
 /** Starts connecting; Tunnelblick launches if needed. Returns before the connection is up. */

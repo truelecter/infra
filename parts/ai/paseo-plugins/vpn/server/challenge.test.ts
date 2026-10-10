@@ -4,7 +4,11 @@ import { ChallengeBroker } from "./challenge.ts";
 
 test("a code typed while a challenge waits answers it", async () => {
   const broker = new ChallengeBroker();
-  const pending = broker.request("vpn-london", "Enter Authenticator Code", 5_000);
+  const pending = broker.request(
+    "vpn-london",
+    "Enter Authenticator Code",
+    5_000,
+  );
   assert.equal(broker.snapshot().challenge?.prompt, "Enter Authenticator Code");
   assert.equal(broker.answer("123456"), "answered");
   assert.equal(await pending, "123456");

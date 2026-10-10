@@ -1,5 +1,11 @@
 import { test as base, expect, type Page } from "@playwright/test";
-import { agentRoute, connectClient, seedWorkspace, type Client, type SeededWorkspace } from "./paseo";
+import {
+  agentRoute,
+  connectClient,
+  seedWorkspace,
+  type Client,
+  type SeededWorkspace,
+} from "./paseo";
 
 export const test = base.extend<
   { guard: void; seed: (name: string) => Promise<SeededWorkspace> },
@@ -10,13 +16,22 @@ export const test = base.extend<
   guard: [
     async ({ page }, provide, testInfo) => {
       await page.route(/:6767\b/, (route) => route.abort());
-      await page.routeWebSocket(/:6767\b/, (ws) => ws.close({ code: 1008, reason: "blocked in e2e" }));
+      await page.routeWebSocket(/:6767\b/, (ws) =>
+        ws.close({ code: 1008, reason: "blocked in e2e" }),
+      );
       const lines: string[] = [];
-      page.on("console", (message) => lines.push(`[${message.type()}] ${message.text()}`));
-      page.on("pageerror", (error) => lines.push(`[pageerror] ${error.message}`));
+      page.on("console", (message) =>
+        lines.push(`[${message.type()}] ${message.text()}`),
+      );
+      page.on("pageerror", (error) =>
+        lines.push(`[pageerror] ${error.message}`),
+      );
       await provide();
       if (testInfo.status !== testInfo.expectedStatus && lines.length > 0) {
-        await testInfo.attach("browser-console", { body: lines.join("\n"), contentType: "text/plain" });
+        await testInfo.attach("browser-console", {
+          body: lines.join("\n"),
+          contentType: "text/plain",
+        });
       }
     },
     { auto: true },
@@ -37,7 +52,8 @@ export const test = base.extend<
       seeded.push(workspace);
       return workspace;
     });
-    for (const workspace of seeded) await client.removeProject(workspace.projectId).catch(() => undefined);
+    for (const workspace of seeded)
+      await client.removeProject(workspace.projectId).catch(() => undefined);
   },
 });
 
@@ -50,21 +66,38 @@ export const test = base.extend<
  */
 export async function openApp(page: Page, route = "/"): Promise<void> {
   const sidebar = page.getByTestId("sidebar-project-workspace-list-scroll");
-  const onboarding = page.getByText("Connect your computer to get started", { exact: true });
+  const onboarding = page.getByText("Connect your computer to get started", {
+    exact: true,
+  });
   for (let attempt = 1; ; attempt++) {
     await page.goto("/");
     await expect(sidebar.or(onboarding)).toBeVisible({ timeout: 60_000 });
     // Give a connection that is still settling a moment before reloading.
-    if (await sidebar.waitFor({ timeout: 5_000 }).then(() => true, () => false)) break;
-    if (attempt === 3) throw new Error("the web UI did not connect to the daemon in three attempts");
+    if (
+      await sidebar.waitFor({ timeout: 5_000 }).then(
+        () => true,
+        () => false,
+      )
+    )
+      break;
+    if (attempt === 3)
+      throw new Error(
+        "the web UI did not connect to the daemon in three attempts",
+      );
   }
   if (route !== "/") await page.goto(route);
 }
 
 /** Opens an agent's tab and waits for its chat. */
-export async function openAgent(page: Page, workspaceId: string, agentId: string): Promise<void> {
+export async function openAgent(
+  page: Page,
+  workspaceId: string,
+  agentId: string,
+): Promise<void> {
   await openApp(page, agentRoute(workspaceId, agentId));
-  await expect(page.getByTestId(`workspace-tab-agent_${agentId}`)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByTestId(`workspace-tab-agent_${agentId}`)).toBeVisible({
+    timeout: 30_000,
+  });
   await expect(page.getByTestId("agent-chat-scroll")).toBeVisible();
 }
 

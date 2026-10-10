@@ -13,19 +13,19 @@ jobs:
     outputs:
       e2e: ${{ steps.filter.outputs.e2e }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Check for changes the suite depends on
-      uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          e2e:
-          - flake.lock
-          - flake.nix
-          - 'parts/ai/**'
-          - .github/workflows/paseo-plugins-e2e.yaml
+      - name: Check for changes the suite depends on
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            e2e:
+            - flake.lock
+            - flake.nix
+            - 'parts/ai/**'
+            - .github/workflows/paseo-plugins-e2e.yaml
 
   e2e:
     needs: [changes]
@@ -33,50 +33,50 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-    # Filesystem on /mnt for some reason has more space on GitHub action
-    # runner than /
-    - name: Bind mount /nix
-      run: |
-        sudo mkdir /mnt/nix /nix
-        sudo chmod 0755 /nix
-        sudo mount --bind /mnt/nix /nix
+      # Filesystem on /mnt for some reason has more space on GitHub action
+      # runner than /
+      - name: Bind mount /nix
+        run: |
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Prepare build environment
-      uses: ./.github/actions/prepare-build-environment
-      with:
-        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build-environment
+        with:
+          attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run the suite
-      env:
-        # A fixed temp root, kept on failure, so the next step knows what to upload.
-        PASEO_E2E_ROOT: ${{ runner.temp }}/paseo-e2e
-      run: nix run -L .#paseo-plugins-e2e
+      - name: Run the suite
+        env:
+          # A fixed temp root, kept on failure, so the next step knows what to upload.
+          PASEO_E2E_ROOT: ${{ runner.temp }}/paseo-e2e
+        run: nix run -L .#paseo-plugins-e2e
 
-    - name: Upload the daemon home, logs, and Playwright report
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: paseo-plugins-e2e
-        path: |
-          ${{ runner.temp }}/paseo-e2e
-          !${{ runner.temp }}/paseo-e2e/**/*.sock
-        if-no-files-found: ignore
-        retention-days: 14
+      - name: Upload the daemon home, logs, and Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: paseo-plugins-e2e
+          path: |
+            ${{ runner.temp }}/paseo-e2e
+            !${{ runner.temp }}/paseo-e2e/**/*.sock
+          if-no-files-found: ignore
+          retention-days: 14
 
   paseo_e2e_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs: [changes, e2e]
     steps:
-    # Passes when the suite passed or was not needed (e2e skipped).
-    - run: exit 1
-      if: >-
-        ${{
-          needs.changes.result != 'success'
-          || needs.e2e.result == 'failure'
-          || needs.e2e.result == 'cancelled'
-        }}
+      # Passes when the suite passed or was not needed (e2e skipped).
+      - run: exit 1
+        if: >-
+          ${{
+            needs.changes.result != 'success'
+            || needs.e2e.result == 'failure'
+            || needs.e2e.result == 'cancelled'
+          }}

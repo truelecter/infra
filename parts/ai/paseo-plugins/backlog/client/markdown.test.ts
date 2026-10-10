@@ -3,18 +3,29 @@ import assert from "node:assert/strict";
 import { parseInline, parseMarkdown } from "./markdown.ts";
 
 test("links, bare URLs, and emphasis nest; snake_case and escapes stay literal", () => {
-  assert.deepEqual(parseInline("**See [!42](https://git/x/42)** or https://git/x/43."), [
-    {
-      type: "strong",
-      children: [
-        { type: "text", text: "See " },
-        { type: "link", href: "https://git/x/42", children: [{ type: "text", text: "!42" }] },
-      ],
-    },
-    { type: "text", text: " or " },
-    { type: "link", href: "https://git/x/43", children: [{ type: "text", text: "https://git/x/43" }] },
-    { type: "text", text: "." },
-  ]);
+  assert.deepEqual(
+    parseInline("**See [!42](https://git/x/42)** or https://git/x/43."),
+    [
+      {
+        type: "strong",
+        children: [
+          { type: "text", text: "See " },
+          {
+            type: "link",
+            href: "https://git/x/42",
+            children: [{ type: "text", text: "!42" }],
+          },
+        ],
+      },
+      { type: "text", text: " or " },
+      {
+        type: "link",
+        href: "https://git/x/43",
+        children: [{ type: "text", text: "https://git/x/43" }],
+      },
+      { type: "text", text: "." },
+    ],
+  );
   assert.deepEqual(parseInline("set my_var_name, \\*not em\\*"), [
     { type: "text", text: "set my_var_name, *not em*" },
   ]);
@@ -29,14 +40,19 @@ test("inline code keeps markup inside it", () => {
 });
 
 test("fenced code is kept verbatim, including blank lines and markup", () => {
-  assert.deepEqual(parseMarkdown("```sh\ngh pr view 1\n\n# not a heading\n```\nafter"), [
-    { type: "code", lang: "sh", text: "gh pr view 1\n\n# not a heading" },
-    { type: "paragraph", children: [{ type: "text", text: "after" }] },
-  ]);
+  assert.deepEqual(
+    parseMarkdown("```sh\ngh pr view 1\n\n# not a heading\n```\nafter"),
+    [
+      { type: "code", lang: "sh", text: "gh pr view 1\n\n# not a heading" },
+      { type: "paragraph", children: [{ type: "text", text: "after" }] },
+    ],
+  );
 });
 
 test("nested task lists split by indentation, and blank lines between items keep one list", () => {
-  const [list] = parseMarkdown("- [x] merged\n- [ ] deployed\n  - staging\n  - prod\n\n- cleanup");
+  const [list] = parseMarkdown(
+    "- [x] merged\n- [ ] deployed\n  - staging\n  - prod\n\n- cleanup",
+  );
   assert.equal(list.type, "list");
   if (list.type !== "list") return;
   assert.deepEqual(
@@ -59,7 +75,9 @@ test("numbered lists keep their start, and a text line after a blank ends the li
 
 test("paragraph line breaks are kept; rules, headings, and quotes end a paragraph", () => {
   assert.deepEqual(
-    parseMarkdown("one\ntwo\n---\n## Status\n> quoted").map((block) => block.type),
+    parseMarkdown("one\ntwo\n---\n## Status\n> quoted").map(
+      (block) => block.type,
+    ),
     ["paragraph", "rule", "heading", "quote"],
   );
   assert.deepEqual(parseMarkdown("one\ntwo")[0], {

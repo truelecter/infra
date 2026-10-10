@@ -128,7 +128,8 @@ export function createActivityStore(
     while (runs.size > runLimit) {
       const oldest = runs.keys().next().value;
       if (oldest === undefined) return;
-      for (const tool of runs.get(oldest)?.tools ?? []) runByCall.delete(tool.callId);
+      for (const tool of runs.get(oldest)?.tools ?? [])
+        runByCall.delete(tool.callId);
       runs.delete(oldest);
       if (currentId === oldest) currentId = null;
     }
@@ -137,7 +138,12 @@ export function createActivityStore(
   function openRun(): Run {
     const current = currentId === null ? undefined : runs.get(currentId);
     if (current) return current;
-    const run: Run = { id: nextId++, tools: [], hasThinking: turnHasThinking, version: 0 };
+    const run: Run = {
+      id: nextId++,
+      tools: [],
+      hasThinking: turnHasThinking,
+      version: 0,
+    };
     runs.set(run.id, run);
     currentId = run.id;
     evict();
@@ -176,7 +182,9 @@ export function createActivityStore(
       const knownRunId = runByCall.get(entry.callId);
       const known = knownRunId === undefined ? undefined : runs.get(knownRunId);
       if (known) {
-        const index = known.tools.findIndex((tool) => tool.callId === entry.callId);
+        const index = known.tools.findIndex(
+          (tool) => tool.callId === entry.callId,
+        );
         if (index >= 0) known.tools[index] = entry;
         known.version += 1;
         publish();

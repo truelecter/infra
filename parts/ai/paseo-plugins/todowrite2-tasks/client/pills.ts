@@ -22,7 +22,9 @@ interface TrackedAgent {
   stop(): void;
 }
 
-export function pillPresentation(todos: readonly Todo[]): Partial<PluginButton> {
+export function pillPresentation(
+  todos: readonly Todo[],
+): Partial<PluginButton> {
   if (todos.length === 0) return { visible: false };
   const { completed, total } = todoProgress(todos);
   return { visible: true, label: `${completed}/${total} tasks` };
@@ -73,18 +75,27 @@ export function trackTaskPills(
         setAgentTodos(agent.id, todos);
         pill.update(pillPresentation(todos));
       },
-      (error) => console.warn(`[todowrite2-tasks] cannot follow agent ${agent.id}`, error),
+      (error) =>
+        console.warn(
+          `[todowrite2-tasks] cannot follow agent ${agent.id}`,
+          error,
+        ),
     );
     tracked.set(agent.id, { workspaceId, pill, stop });
   }
 
   client.paseo.agents
-    .list({ filter: { includeArchived: false }, subscribe: {}, signal: lifetime.signal })
+    .list({
+      filter: { includeArchived: false },
+      subscribe: {},
+      signal: lifetime.signal,
+    })
     .then(({ subscription }) => {
       subscription.subscribe({
         snapshot({ entries }) {
           const present = new Set(entries.map(({ agent }) => agent.id));
-          for (const agentId of [...tracked.keys()]) if (!present.has(agentId)) untrack(agentId);
+          for (const agentId of [...tracked.keys()])
+            if (!present.has(agentId)) untrack(agentId);
           for (const { agent } of entries) track(agent);
         },
         update(message) {
@@ -97,7 +108,8 @@ export function trackTaskPills(
       return undefined;
     })
     .catch((error: unknown) => {
-      if (!stopped) console.error("[todowrite2-tasks] agent observation failed", error);
+      if (!stopped)
+        console.error("[todowrite2-tasks] agent observation failed", error);
     });
 
   return () => {

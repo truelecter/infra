@@ -61,27 +61,48 @@ declare module "@oh-my-pi/pi-coding-agent" {
     object<T extends Record<string, Schema<unknown>>>(
       shape: T,
     ): Schema<{ [K in keyof T]: T[K] extends Schema<infer V> ? V : never }>;
-    string(): Schema<string> & { describe(description: string): Schema<string> };
-    boolean(): Schema<boolean> & { describe(description: string): Schema<boolean> };
+    string(): Schema<string> & {
+      describe(description: string): Schema<string>;
+    };
+    boolean(): Schema<boolean> & {
+      describe(description: string): Schema<boolean>;
+    };
   }
 
-  type Handler<E, R = void> = (event: E, ctx: ExtensionContext) => Promise<R | void> | R | void;
+  type Handler<E, R = void> = (
+    event: E,
+    ctx: ExtensionContext,
+  ) => Promise<R | void> | R | void;
 
   export interface ExtensionAPI {
     zod: Zod;
-    on(event: "session_start", handler: Handler<{ type: "session_start" }>): void;
-    on(event: "session_switch", handler: Handler<{ type: "session_switch" }>): void;
-    on(event: "session_branch", handler: Handler<{ type: "session_branch" }>): void;
+    on(
+      event: "session_start",
+      handler: Handler<{ type: "session_start" }>,
+    ): void;
+    on(
+      event: "session_switch",
+      handler: Handler<{ type: "session_switch" }>,
+    ): void;
+    on(
+      event: "session_branch",
+      handler: Handler<{ type: "session_branch" }>,
+    ): void;
     on(event: "session_tree", handler: Handler<{ type: "session_tree" }>): void;
     on(event: "input", handler: Handler<{ type: "input"; text: string }>): void;
     /** Handlers here must not return a result: a `systemPrompt` would replace the base prompt for the turn. */
-    on(event: "before_agent_start", handler: Handler<{ type: "before_agent_start" }>): void;
+    on(
+      event: "before_agent_start",
+      handler: Handler<{ type: "before_agent_start" }>,
+    ): void;
     registerTool<T>(tool: ToolDefinition<T>): void;
     registerCommand(
       name: string,
       options: {
         description?: string;
-        getArgumentCompletions?: (argumentPrefix: string) => AutocompleteItem[] | null;
+        getArgumentCompletions?: (
+          argumentPrefix: string,
+        ) => AutocompleteItem[] | null;
         handler(args: string, ctx: ExtensionContext): Promise<void>;
       },
     ): void;

@@ -21,10 +21,10 @@ Clones are shared between sessions. Only fetch and check out tags there; never c
 
 ## Examples
 
-| Tool | Repository | Version command | Tag |
-|---|---|---|---|
-| OMP (Oh My Pi) | `can1357/oh-my-pi` | `omp --version` -> `omp/18.3.2` | `v18.3.2` |
-| Paseo | `getpaseo/paseo` | `paseo --version` -> `0.10.0-beta.1` | `v0.10.0-beta.1` |
+| Tool           | Repository         | Version command                      | Tag              |
+| -------------- | ------------------ | ------------------------------------ | ---------------- |
+| OMP (Oh My Pi) | `can1357/oh-my-pi` | `omp --version` -> `omp/18.3.2`      | `v18.3.2`        |
+| Paseo          | `getpaseo/paseo`   | `paseo --version` -> `0.10.0-beta.1` | `v0.10.0-beta.1` |
 
 - **OMP:** `omp` comes from the Nix store. If it is not on `PATH`, use `/etc/profiles/per-user/$(id -un)/bin/omp`.
 - **Paseo:** the CLI is not on `PATH`; it is at `~/Applications/Home Manager Apps/Paseo.app/Contents/Resources/bin/paseo`. The desktop app and its bundled daemon have the same version.

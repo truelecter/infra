@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { Assignments } from "./groups.ts";
-import { createAssignmentSync, type SettingsRead, type SettingsWrite } from "./sync.ts";
+import {
+  createAssignmentSync,
+  type SettingsRead,
+  type SettingsWrite,
+} from "./sync.ts";
 
 function fakeDaemon(initial: Assignments) {
   let revision = 1;
@@ -15,11 +19,19 @@ function fakeDaemon(initial: Assignments) {
       revision += 1;
     },
     async read(): Promise<SettingsRead> {
-      return { status: "ready", revision: String(revision), values: { assignments: values } };
+      return {
+        status: "ready",
+        revision: String(revision),
+        values: { assignments: values },
+      };
     },
-    async write(rev: string, next: { assignments: Record<string, string> }): Promise<SettingsWrite> {
+    async write(
+      rev: string,
+      next: { assignments: Record<string, string> },
+    ): Promise<SettingsWrite> {
       writes.push(rev);
-      if (rev !== String(revision)) return { status: "conflict", error: "stale" };
+      if (rev !== String(revision))
+        return { status: "conflict", error: "stale" };
       values = next.assignments;
       revision += 1;
       return { status: "saved", revision: String(revision), values: next };
@@ -80,7 +92,11 @@ describe("createAssignmentSync", () => {
     const { sync, seen, errors } = setup({ a: "x" });
     await sync.refresh();
     const failing = createAssignmentSync({
-      read: async () => ({ status: "ready", revision: "1", values: { assignments: { a: "x" } } }),
+      read: async () => ({
+        status: "ready",
+        revision: "1",
+        values: { assignments: { a: "x" } },
+      }),
       write: async () => ({ status: "invalid", error: "nope" }),
       parse: (values) => (values as { assignments: Assignments }).assignments,
       onChange: (assignments) => seen.push(assignments),

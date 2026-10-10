@@ -50,7 +50,10 @@ describe("splitProjectName", () => {
 
 describe("placeProject", () => {
   it("groups by the name's prefix and shows only the leaf", () => {
-    assert.deepEqual(placeProject(app, {}), { path: "shepherd-companion", label: "app" });
+    assert.deepEqual(placeProject(app, {}), {
+      path: "shepherd-companion",
+      label: "app",
+    });
   });
   it("prefers a manual assignment and then shows the full name", () => {
     assert.deepEqual(placeProject(app, { "k-app": "work" }), {
@@ -69,7 +72,11 @@ describe("placeProject", () => {
 describe("buildLayout", () => {
   it("places a group at its first project and pulls the others up behind it", () => {
     const projects = [agentic, app, recorder, cdk];
-    const layout = buildLayout(projects, { "k-cdk": "shepherd-companion" }, new Set());
+    const layout = buildLayout(
+      projects,
+      { "k-cdk": "shepherd-companion" },
+      new Set(),
+    );
     assert.deepEqual(rows(layout), [
       "agentic-stuff",
       "# shepherd-companion",
@@ -87,10 +94,21 @@ describe("buildLayout", () => {
       { key: "4", name: "work/aws/api" },
     ];
     const layout = buildLayout(projects, {}, new Set());
-    assert.deepEqual(rows(layout), ["# work", "  # aws", "    infra", "    api", "  web", "solo"]);
+    assert.deepEqual(rows(layout), [
+      "# work",
+      "  # aws",
+      "    infra",
+      "    api",
+      "  web",
+      "solo",
+    ]);
     const work = layout[0];
     assert.equal(work.kind, "group");
-    assert.deepEqual(work.kind === "group" && work.projectKeys, ["1", "3", "4"]);
+    assert.deepEqual(work.kind === "group" && work.projectKeys, [
+      "1",
+      "3",
+      "4",
+    ]);
   });
 
   it("hides everything under a collapsed group", () => {
@@ -123,7 +141,10 @@ describe("assignProject", () => {
     });
   });
   it("drops the assignment when the name already says the same", () => {
-    assert.deepEqual(assignProject({ "k-app": "work" }, app, "shepherd-companion"), {});
+    assert.deepEqual(
+      assignProject({ "k-app": "work" }, app, "shepherd-companion"),
+      {},
+    );
   });
   it("stores an empty path to pull a named project out of its group", () => {
     assert.deepEqual(assignProject({}, app, ""), { "k-app": "" });
@@ -149,16 +170,28 @@ describe("moveGroup", () => {
   });
 
   it("dissolves one level into the parent", () => {
-    assert.deepEqual(dissolveGroup(assignments, projects, "work/aws"), { "1": "work", "2": "work" });
+    assert.deepEqual(dissolveGroup(assignments, projects, "work/aws"), {
+      "1": "work",
+      "2": "work",
+    });
   });
 
   it("dissolves a top-level group into no group", () => {
-    assert.deepEqual(dissolveGroup(assignments, projects, "work"), { "1": "aws", "2": "aws" });
-    assert.deepEqual(dissolveGroup({}, [{ key: "1", name: "work/infra" }], "work"), { "1": "" });
+    assert.deepEqual(dissolveGroup(assignments, projects, "work"), {
+      "1": "aws",
+      "2": "aws",
+    });
+    assert.deepEqual(
+      dissolveGroup({}, [{ key: "1", name: "work/infra" }], "work"),
+      { "1": "" },
+    );
   });
 
   it("leaves projects outside the group alone", () => {
-    assert.deepEqual(moveGroup({ "3": "workbench" }, projects, "work", "job")["3"], "workbench");
+    assert.deepEqual(
+      moveGroup({ "3": "workbench" }, projects, "work", "job")["3"],
+      "workbench",
+    );
   });
 });
 
@@ -170,7 +203,10 @@ describe("moveCollapsed", () => {
       "job/aws",
       "other",
     ]);
-    assert.deepEqual([...moveCollapsed(collapsed, "work", "")].sort(), ["aws", "other"]);
+    assert.deepEqual([...moveCollapsed(collapsed, "work", "")].sort(), [
+      "aws",
+      "other",
+    ]);
   });
 });
 
@@ -185,7 +221,10 @@ describe("suggestGroups", () => {
 
 describe("pickGroupStatus", () => {
   it("picks the most urgent status", () => {
-    assert.equal(pickGroupStatus(["running", "needs_input", "done"]), "needs_input");
+    assert.equal(
+      pickGroupStatus(["running", "needs_input", "done"]),
+      "needs_input",
+    );
     assert.equal(pickGroupStatus(["attention", "running"]), "running");
     assert.equal(pickGroupStatus(["done"]), null);
   });

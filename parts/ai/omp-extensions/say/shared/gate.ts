@@ -30,7 +30,8 @@ export const SAY_DESCRIPTION = [
   "Don't repeat the message in your reply afterwards. Not for routine status updates.",
 ].join(" ");
 
-export const SAY_PARAMETER_DESCRIPTION = "Markdown shown to the user as a chat message";
+export const SAY_PARAMETER_DESCRIPTION =
+  "Markdown shown to the user as a chat message";
 
 export const SAY_RESULT = "Shown to the user in the chat.";
 
@@ -60,12 +61,16 @@ export interface MessageLike {
  * Trimmed characters of reply text that precede the tool call, or undefined
  * when the call is not part of this message.
  */
-export function textBefore(message: MessageLike, toolCallId: string): number | undefined {
+export function textBefore(
+  message: MessageLike,
+  toolCallId: string,
+): number | undefined {
   if (!Array.isArray(message.content)) return undefined;
   let chars = 0;
   for (const block of message.content as Block[]) {
     if (block.type === "toolCall" && block.id === toolCallId) return chars;
-    if (block.type === "text" && typeof block.text === "string") chars += block.text.trim().length;
+    if (block.type === "text" && typeof block.text === "string")
+      chars += block.text.trim().length;
   }
   return undefined;
 }
@@ -76,7 +81,8 @@ export function isExplainingReply(message: MessageLike | undefined): boolean {
   let chars = 0;
   for (const block of message.content as Block[]) {
     if (block.type === "toolCall") return false;
-    if (block.type === "text" && typeof block.text === "string") chars += block.text.trim().length;
+    if (block.type === "text" && typeof block.text === "string")
+      chars += block.text.trim().length;
   }
   return chars >= MIN_TEXT_CHARS;
 }
@@ -128,7 +134,8 @@ export class AskGate {
     }
     let reason: string | undefined;
     if (this.#sayInResponse) reason = SAME_RESPONSE_REASON;
-    else if (!this.#explained && textChars < MIN_TEXT_CHARS) reason = NO_EXPLANATION_REASON;
+    else if (!this.#explained && textChars < MIN_TEXT_CHARS)
+      reason = NO_EXPLANATION_REASON;
     this.#blocked = reason ? this.#blocked + 1 : 0;
     return reason;
   }

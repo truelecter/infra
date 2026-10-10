@@ -17,8 +17,10 @@ export async function connectClient(): Promise<Client> {
     url: `ws://127.0.0.1:${env.port}/ws`,
     clientId: `plugins-e2e-${randomUUID()}`,
     clientType: "cli",
-    webSocketFactory: (url: string, options?: { headers?: Record<string, string> }) =>
-      new WebSocket(url, { headers: options?.headers }) as never,
+    webSocketFactory: (
+      url: string,
+      options?: { headers?: Record<string, string> },
+    ) => new WebSocket(url, { headers: options?.headers }) as never,
   });
   await client.connect();
   return client;
@@ -34,28 +36,58 @@ export interface SeededWorkspace {
   projectKey: string;
 }
 
-export async function seedWorkspace(client: Client, name: string): Promise<SeededWorkspace> {
-  const repoPath = path.join(env.root, "projects", `${name}-${randomUUID().slice(0, 8)}`);
+export async function seedWorkspace(
+  client: Client,
+  name: string,
+): Promise<SeededWorkspace> {
+  const repoPath = path.join(
+    env.root,
+    "projects",
+    `${name}-${randomUUID().slice(0, 8)}`,
+  );
   mkdirSync(repoPath, { recursive: true });
   writeFileSync(path.join(repoPath, "README.md"), `# ${name}\n`);
   // The runner's own git config (hooks, signing, templates) stays out of the fixture repository.
   const git = (...args: string[]) =>
-    execFileSync("git", ["-c", "user.name=e2e", "-c", "user.email=e2e@example.invalid", ...args], {
-      cwd: repoPath,
-      stdio: "ignore",
-      env: { ...process.env, HOME: env.fakeHome, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: "/dev/null" },
-    });
+    execFileSync(
+      "git",
+      ["-c", "user.name=e2e", "-c", "user.email=e2e@example.invalid", ...args],
+      {
+        cwd: repoPath,
+        stdio: "ignore",
+        env: {
+          ...process.env,
+          HOME: env.fakeHome,
+          GIT_CONFIG_NOSYSTEM: "1",
+          GIT_CONFIG_GLOBAL: "/dev/null",
+        },
+      },
+    );
   git("init", "-q", "-b", "main");
   git("add", ".");
   git("commit", "-q", "-m", "init");
 
-  const created = await client.createWorkspace({ source: { kind: "directory", path: repoPath } });
-  if (!created.workspace) throw new Error(created.error ?? `could not create a workspace for ${repoPath}`);
+  const created = await client.createWorkspace({
+    source: { kind: "directory", path: repoPath },
+  });
+  if (!created.workspace)
+    throw new Error(
+      created.error ?? `could not create a workspace for ${repoPath}`,
+    );
   const { workspace } = created;
   const projects = await client.listProjects();
-  const project = projects.projects.find((entry) => entry.projectId === workspace.projectId);
-  if (!project?.projectKey) throw new Error(`project ${workspace.projectId} has no project key`);
-  return { client, repoPath, workspaceId: workspace.id, projectId: workspace.projectId, projectKey: project.projectKey };
+  const project = projects.projects.find(
+    (entry) => entry.projectId === workspace.projectId,
+  );
+  if (!project?.projectKey)
+    throw new Error(`project ${workspace.projectId} has no project key`);
+  return {
+    client,
+    repoPath,
+    workspaceId: workspace.id,
+    projectId: workspace.projectId,
+    projectKey: project.projectKey,
+  };
 }
 
 /**
@@ -65,7 +97,11 @@ export async function seedWorkspace(client: Client, name: string): Promise<Seede
  */
 export async function createMockAgent(
   workspace: SeededWorkspace,
-  options: { title: string; initialPrompt?: string; model?: "e2e-fast-stream" | "ten-second-stream" },
+  options: {
+    title: string;
+    initialPrompt?: string;
+    model?: "e2e-fast-stream" | "ten-second-stream";
+  },
 ): Promise<string> {
   const agent = await workspace.client.createAgent({
     provider: "mock",
@@ -80,9 +116,13 @@ export async function createMockAgent(
 }
 
 /** Waits until the agent's current turn is over (`waitForFinish` resolves on idle). */
-export async function finishTurn(client: Client, agentId: string): Promise<void> {
+export async function finishTurn(
+  client: Client,
+  agentId: string,
+): Promise<void> {
   const result = await client.waitForFinish(agentId, 60_000);
-  if (result.status !== "idle") throw new Error(`agent ${agentId} ended its turn as ${result.status}`);
+  if (result.status !== "idle")
+    throw new Error(`agent ${agentId} ended its turn as ${result.status}`);
 }
 
 // encodeWorkspaceIdForPathSegment in Paseo's packages/app/src/utils/host-routes.ts.

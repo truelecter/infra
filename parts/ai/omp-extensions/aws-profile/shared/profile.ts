@@ -18,8 +18,13 @@ export function shellQuote(value: string): string {
  * the swap only while `AWS_PROFILE` still holds the Bedrock profile, so a value
  * set by a project's `.envrc` through OMP's direnv support stays untouched.
  */
-export function guardPrefix(target: string, launch: string | undefined): string {
-  const restore = launch ? `export AWS_PROFILE=${shellQuote(launch)}` : "unset -v AWS_PROFILE";
+export function guardPrefix(
+  target: string,
+  launch: string | undefined,
+): string {
+  const restore = launch
+    ? `export AWS_PROFILE=${shellQuote(launch)}`
+    : "unset -v AWS_PROFILE";
   return `[ "\${AWS_PROFILE-}" = ${shellQuote(target)} ] && ${restore};`;
 }
 
@@ -27,7 +32,9 @@ export function guardPrefix(target: string, launch: string | undefined): string 
  * Points `AWS_PROFILE` at the Bedrock profile for OMP itself and installs the
  * shell guard. Idempotent, so nested OMP processes can run it again.
  */
-export function applyBedrockProfile(env: Env): { target: string; launch: string } | null {
+export function applyBedrockProfile(
+  env: Env,
+): { target: string; launch: string } | null {
   const target = env[TARGET_VAR]?.trim();
   if (!target) return null;
 

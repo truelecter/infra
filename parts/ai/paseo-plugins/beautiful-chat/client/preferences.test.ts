@@ -5,7 +5,11 @@ const STORAGE_KEY = "paseo/beautiful-chat/preferences/v1";
 const saved = new Map<string, string>();
 saved.set(
   STORAGE_KEY,
-  JSON.stringify({ fontScale: 1.1, collapseRunning: { shell: false }, combineToolCalls: false }),
+  JSON.stringify({
+    fontScale: 1.1,
+    collapseRunning: { shell: false },
+    combineToolCalls: false,
+  }),
 );
 
 const stubStorage: Pick<Storage, "getItem" | "setItem" | "removeItem"> = {
@@ -17,7 +21,10 @@ const stubStorage: Pick<Storage, "getItem" | "setItem" | "removeItem"> = {
     saved.delete(key);
   },
 };
-Object.defineProperty(globalThis, "localStorage", { value: stubStorage, configurable: true });
+Object.defineProperty(globalThis, "localStorage", {
+  value: stubStorage,
+  configurable: true,
+});
 
 // Dynamic on purpose: the store reads storage once at module load, and static
 // imports are hoisted above the stub, so they would load it with no storage.
@@ -63,7 +70,10 @@ describe("loadPreferences", () => {
     assert.equal(loadPreferences().showTimestamps, true);
     const before = saved.get(STORAGE_KEY);
     try {
-      saved.set(STORAGE_KEY, JSON.stringify({ combineToolCalls: "no", showTimestamps: false }));
+      saved.set(
+        STORAGE_KEY,
+        JSON.stringify({ combineToolCalls: "no", showTimestamps: false }),
+      );
       assert.equal(loadPreferences().combineToolCalls, true);
       assert.equal(loadPreferences().showTimestamps, false);
       saved.set(STORAGE_KEY, JSON.stringify({ showTimestamps: 0 }));

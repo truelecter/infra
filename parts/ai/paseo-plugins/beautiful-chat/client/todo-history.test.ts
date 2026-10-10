@@ -9,13 +9,21 @@ import {
 
 const tasks = (...entries: Array<[string, string]>) =>
   normalizeTodoTasks(
-    entries.map(([text, status]) => ({ text, status, completed: status === "completed" })),
+    entries.map(([text, status]) => ({
+      text,
+      status,
+      completed: status === "completed",
+    })),
   );
 
 describe("deriveTodoChanges", () => {
   it("groups one call's changes: completed first, then started, then added", () => {
     const before = tasks(["Wave 4", "in_progress"], ["Wave 5", "pending"]);
-    const after = tasks(["Wave 4", "completed"], ["Wave 5", "in_progress"], ["Gate", "pending"]);
+    const after = tasks(
+      ["Wave 4", "completed"],
+      ["Wave 5", "in_progress"],
+      ["Gate", "pending"],
+    );
     assert.deepEqual(deriveTodoChanges(before, after), [
       { type: "completed", tasks: ["Wave 4"] },
       { type: "started", tasks: ["Wave 5"] },
@@ -24,8 +32,16 @@ describe("deriveTodoChanges", () => {
   });
 
   it("collects several tasks of one kind into one change", () => {
-    const before = tasks(["A", "in_progress"], ["B", "pending"], ["C", "pending"]);
-    const after = tasks(["A", "completed"], ["B", "completed"], ["C", "pending"]);
+    const before = tasks(
+      ["A", "in_progress"],
+      ["B", "pending"],
+      ["C", "pending"],
+    );
+    const after = tasks(
+      ["A", "completed"],
+      ["B", "completed"],
+      ["C", "pending"],
+    );
     assert.deepEqual(deriveTodoChanges(before, after), [
       { type: "completed", tasks: ["A", "B"] },
     ]);
@@ -33,12 +49,22 @@ describe("deriveTodoChanges", () => {
 
   it("matches tasks by text, so an inserted task does not make the rest new", () => {
     const before = tasks(["A", "completed"], ["B", "pending"]);
-    const after = tasks(["A", "completed"], ["New", "pending"], ["B", "pending"]);
-    assert.deepEqual(deriveTodoChanges(before, after), [{ type: "added", tasks: ["New"] }]);
+    const after = tasks(
+      ["A", "completed"],
+      ["New", "pending"],
+      ["B", "pending"],
+    );
+    assert.deepEqual(deriveTodoChanges(before, after), [
+      { type: "added", tasks: ["New"] },
+    ]);
   });
 
   it("counts a task going back to pending or dropped from the list as no change", () => {
-    const before = tasks(["A", "in_progress"], ["B", "completed"], ["C", "pending"]);
+    const before = tasks(
+      ["A", "in_progress"],
+      ["B", "completed"],
+      ["C", "pending"],
+    );
     const after = tasks(["A", "pending"], ["B", "completed"]);
     assert.deepEqual(deriveTodoChanges(before, after), []);
   });
@@ -52,9 +78,15 @@ describe("deriveTodoChanges", () => {
   });
 
   it("prefers a task id over its text, so a rename is not a new task", () => {
-    const before = normalizeTodoTasks([{ id: "1", text: "Old", status: "pending" }]);
-    const after = normalizeTodoTasks([{ id: "1", text: "New", status: "in_progress" }]);
-    assert.deepEqual(deriveTodoChanges(before, after), [{ type: "started", tasks: ["New"] }]);
+    const before = normalizeTodoTasks([
+      { id: "1", text: "Old", status: "pending" },
+    ]);
+    const after = normalizeTodoTasks([
+      { id: "1", text: "New", status: "in_progress" },
+    ]);
+    assert.deepEqual(deriveTodoChanges(before, after), [
+      { type: "started", tasks: ["New"] },
+    ]);
   });
 });
 

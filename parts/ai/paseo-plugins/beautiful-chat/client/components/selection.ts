@@ -28,4 +28,6 @@ export const selectableTextStyle = { userSelect: "text" } as TextStyle;
  * chrome. Both would land in the clipboard when a selection crosses them, so
  * they stay unselectable even inside a selectable surface.
  */
-export const unselectable = (Platform.OS === "web" ? { userSelect: "none" } : {}) as TextStyle;
+export const unselectable = (
+  Platform.OS === "web" ? { userSelect: "none" } : {}
+) as TextStyle;

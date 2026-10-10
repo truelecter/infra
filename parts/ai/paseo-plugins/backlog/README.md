@@ -28,13 +28,13 @@ The `backlog` skill (`profiles/home/dev/_files/omp/skills/backlog/` for OMP) tel
 
 Plugin RPC and an injected MCP server were the other options. Paseo has no CLI for plugin RPC, and an MCP server added through `server.before("agent.create")` reaches only agents created after the plugin, not the chats already open.
 
-| Method and path | Body | Result |
-| --- | --- | --- |
-| `GET /items?status=open,waiting` | | `{ items }`, all statuses when `status` is omitted |
-| `GET /items/<id>` | | the item |
-| `POST /items` | `{ title, description?, status?, agentId?, cwd? }` | the new item, `201` |
-| `PATCH /items/<id>` | `{ title?, description?, status?, log?, agentId? }` | the item; `description` replaces the old one |
-| `DELETE /items/<id>` | | the deleted item |
+| Method and path                  | Body                                                | Result                                             |
+| -------------------------------- | --------------------------------------------------- | -------------------------------------------------- |
+| `GET /items?status=open,waiting` |                                                     | `{ items }`, all statuses when `status` is omitted |
+| `GET /items/<id>`                |                                                     | the item                                           |
+| `POST /items`                    | `{ title, description?, status?, agentId?, cwd? }`  | the new item, `201`                                |
+| `PATCH /items/<id>`              | `{ title?, description?, status?, log?, agentId? }` | the item; `description` replaces the old one       |
+| `DELETE /items/<id>`             |                                                     | the deleted item                                   |
 
 Errors come back as `{ error }` with `400` (invalid input, unknown fields included) or `404`.
 

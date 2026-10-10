@@ -72,34 +72,55 @@ declare module "@oh-my-pi/pi-coding-agent" {
     parameters: Schema<T>;
     loadMode?: "essential" | "discoverable";
     approval?: "read" | "write" | "exec";
-    execute(toolCallId: string, params: T, signal: AbortSignal | undefined): Promise<AgentToolResult>;
+    execute(
+      toolCallId: string,
+      params: T,
+      signal: AbortSignal | undefined,
+    ): Promise<AgentToolResult>;
   }
 
   export interface Zod {
     object<T extends Record<string, Schema<unknown>>>(
       shape: T,
     ): Schema<{ [K in keyof T]: T[K] extends Schema<infer V> ? V : never }>;
-    string(): Schema<string> & { describe(description: string): Schema<string> };
+    string(): Schema<string> & {
+      describe(description: string): Schema<string>;
+    };
   }
 
   type Handler<E, R = void> = (event: E) => Promise<R | void> | R | void;
 
   export interface ExtensionAPI {
     zod: Zod;
-    on(event: "session_start", handler: Handler<{ type: "session_start" }>): void;
+    on(
+      event: "session_start",
+      handler: Handler<{ type: "session_start" }>,
+    ): void;
     on(event: "agent_start", handler: Handler<{ type: "agent_start" }>): void;
     on(event: "agent_end", handler: Handler<AgentEndEvent>): void;
     on(event: "turn_start", handler: Handler<{ type: "turn_start" }>): void;
     on(event: "message_update", handler: Handler<MessageUpdateEvent>): void;
-    on(event: "tool_call", handler: Handler<ToolCallEvent, ToolCallEventResult>): void;
-    on(event: "tool_execution_end", handler: Handler<ToolExecutionEndEvent>): void;
-    on(event: "context", handler: Handler<ContextEvent, ContextEventResult>): void;
+    on(
+      event: "tool_call",
+      handler: Handler<ToolCallEvent, ToolCallEventResult>,
+    ): void;
+    on(
+      event: "tool_execution_end",
+      handler: Handler<ToolExecutionEndEvent>,
+    ): void;
+    on(
+      event: "context",
+      handler: Handler<ContextEvent, ContextEventResult>,
+    ): void;
     registerTool<T>(tool: ToolDefinition<T>): void;
     getActiveTools(): string[];
     setActiveTools(toolNames: string[]): Promise<void>;
     sendMessage(
       message: CustomMessagePayload,
-      options?: { triggerTurn?: boolean; deliverAs?: "steer" | "followUp" | "nextTurn" | "aside" },
+      options?: {
+        triggerTurn?: boolean;
+        deliverAs?: "steer" | "followUp" | "nextTurn" | "aside";
+      },
     ): void;
   }
 }

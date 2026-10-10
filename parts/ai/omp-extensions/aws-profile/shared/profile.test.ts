@@ -2,16 +2,27 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 
-import { LAUNCH_VAR, TARGET_VAR, applyBedrockProfile, guardPrefix, shellQuote, type Env } from "./profile.ts";
+import {
+  LAUNCH_VAR,
+  TARGET_VAR,
+  applyBedrockProfile,
+  guardPrefix,
+  shellQuote,
+  type Env,
+} from "./profile.ts";
 
 // Runs `echo $AWS_PROFILE` behind the guard the way OMP does: `<prefix> <command>`.
 function shellProfile(prefix: string, awsProfile: string | undefined): string {
   const env: Env = { PATH: process.env.PATH };
   if (awsProfile !== undefined) env.AWS_PROFILE = awsProfile;
-  return execFileSync("/bin/sh", ["-c", `${prefix} echo "\${AWS_PROFILE-unset}"`], {
-    env: env as NodeJS.ProcessEnv,
-    encoding: "utf8",
-  }).trim();
+  return execFileSync(
+    "/bin/sh",
+    ["-c", `${prefix} echo "\${AWS_PROFILE-unset}"`],
+    {
+      env: env as NodeJS.ProcessEnv,
+      encoding: "utf8",
+    },
+  ).trim();
 }
 
 describe("applyBedrockProfile", () => {
@@ -23,7 +34,10 @@ describe("applyBedrockProfile", () => {
 
   it("swaps in the target and records an unset launch value", () => {
     const env: Env = { [TARGET_VAR]: "bedrock" };
-    assert.deepEqual(applyBedrockProfile(env), { target: "bedrock", launch: "" });
+    assert.deepEqual(applyBedrockProfile(env), {
+      target: "bedrock",
+      launch: "",
+    });
     assert.equal(env.AWS_PROFILE, "bedrock");
     assert.equal(env[LAUNCH_VAR], "");
     assert.equal(env.PI_SHELL_PREFIX, guardPrefix("bedrock", undefined));
@@ -46,9 +60,15 @@ describe("applyBedrockProfile", () => {
   });
 
   it("keeps a user prefix after the guard", () => {
-    const env: Env = { [TARGET_VAR]: "bedrock", CLAUDE_CODE_SHELL_PREFIX: "nice -n 5" };
+    const env: Env = {
+      [TARGET_VAR]: "bedrock",
+      CLAUDE_CODE_SHELL_PREFIX: "nice -n 5",
+    };
     applyBedrockProfile(env);
-    assert.equal(env.PI_SHELL_PREFIX, `${guardPrefix("bedrock", undefined)} nice -n 5`);
+    assert.equal(
+      env.PI_SHELL_PREFIX,
+      `${guardPrefix("bedrock", undefined)} nice -n 5`,
+    );
   });
 
   it("adds no guard when the launch profile already is the target", () => {
@@ -60,20 +80,35 @@ describe("applyBedrockProfile", () => {
 
 describe("guardPrefix in a real shell", () => {
   it("unsets the Bedrock profile when nothing was set at launch", () => {
-    assert.equal(shellProfile(guardPrefix("bedrock", undefined), "bedrock"), "unset");
+    assert.equal(
+      shellProfile(guardPrefix("bedrock", undefined), "bedrock"),
+      "unset",
+    );
   });
 
   it("restores the launch profile", () => {
-    assert.equal(shellProfile(guardPrefix("bedrock", "project"), "bedrock"), "project");
+    assert.equal(
+      shellProfile(guardPrefix("bedrock", "project"), "bedrock"),
+      "project",
+    );
   });
 
   it("leaves a different profile alone, e.g. one from a project .envrc", () => {
-    assert.equal(shellProfile(guardPrefix("bedrock", undefined), "other"), "other");
-    assert.equal(shellProfile(guardPrefix("bedrock", "project"), "other"), "other");
+    assert.equal(
+      shellProfile(guardPrefix("bedrock", undefined), "other"),
+      "other",
+    );
+    assert.equal(
+      shellProfile(guardPrefix("bedrock", "project"), "other"),
+      "other",
+    );
   });
 
   it("quotes values safely", () => {
     assert.equal(shellQuote("it's"), `'it'\\''s'`);
-    assert.equal(shellProfile(guardPrefix("bedrock", "it's"), "bedrock"), "it's");
+    assert.equal(
+      shellProfile(guardPrefix("bedrock", "it's"), "bedrock"),
+      "it's",
+    );
   });
 });

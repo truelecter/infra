@@ -12,7 +12,10 @@ function saved(content: string) {
       type: "tool_call",
       name: "todowrite2",
       status: "completed",
-      detail: { type: "unknown", input: { todos: [{ content, status: "pending" }] } },
+      detail: {
+        type: "unknown",
+        input: { todos: [{ content, status: "pending" }] },
+      },
     },
   };
 }
@@ -53,11 +56,16 @@ function fakeTimeline(pages: Page[]) {
 }
 
 function page(entries: Page["entries"], hasOlder: boolean): Page {
-  return { entries, hasOlder, startCursor: hasOlder ? { epoch: "e", seq: 1 } : null };
+  return {
+    entries,
+    hasOlder,
+    startCursor: hasOlder ? { epoch: "e", seq: 1 } : null,
+  };
 }
 
 async function settle() {
-  for (let index = 0; index < 5; index += 1) await new Promise((resolve) => setImmediate(resolve));
+  for (let index = 0; index < 5; index += 1)
+    await new Promise((resolve) => setImmediate(resolve));
 }
 
 function fail(error: unknown) {
@@ -69,7 +77,10 @@ function contents(lists: Todo[][]) {
 }
 
 test("pages back through history until it finds the last saved list", async () => {
-  const timeline = fakeTimeline([page([other], true), page([saved("Old"), other], false)]);
+  const timeline = fakeTimeline([
+    page([other], true),
+    page([saved("Old"), other], false),
+  ]);
   const lists: Todo[][] = [];
   followTodos(timeline.source, (todos) => lists.push(todos), fail);
   await settle();
@@ -100,7 +111,10 @@ test("a live list wins over a history scan still in flight", async () => {
 });
 
 test("rescans after a replacement and stops on cleanup", async () => {
-  const timeline = fakeTimeline([page([saved("First")], false), page([saved("Second")], false)]);
+  const timeline = fakeTimeline([
+    page([saved("First")], false),
+    page([saved("Second")], false),
+  ]);
   const lists: Todo[][] = [];
   const stop = followTodos(timeline.source, (todos) => lists.push(todos), fail);
   await settle();

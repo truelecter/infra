@@ -12,7 +12,10 @@ export interface SelectedTab {
  * elsewhere in the window) the first pane's tab stands in. A name that only repeats the workspace
  * title is dropped, the way Paseo drops a project name that repeats it.
  */
-export function pickTabName(tabs: readonly SelectedTab[], workspaceTitle: string): string | null {
+export function pickTabName(
+  tabs: readonly SelectedTab[],
+  workspaceTitle: string,
+): string | null {
   const tab = tabs.find((candidate) => candidate.focused) ?? tabs[0];
   const label = tab?.label.trim() ?? "";
   if (!label || label === workspaceTitle.trim()) return null;

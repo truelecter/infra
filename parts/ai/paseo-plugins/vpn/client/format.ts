@@ -1,7 +1,10 @@
 import type { PluginTheme } from "@getpaseo/plugin";
 
 /** Label and colour for a Tunnelblick state; anything in between is shown as in progress. */
-export function describeState(state: string, theme: PluginTheme): { label: string; color: string } {
+export function describeState(
+  state: string,
+  theme: PluginTheme,
+): { label: string; color: string } {
   switch (state) {
     case "CONNECTED":
       return { label: "Connected", color: theme.colors.statusSuccess };
@@ -9,12 +12,18 @@ export function describeState(state: string, theme: PluginTheme): { label: strin
     case "DISCONNECTED":
       return { label: "Disconnected", color: theme.colors.foregroundMuted };
     case "PASSWORD_WAIT":
-      return { label: "Waiting for the password in Tunnelblick", color: theme.colors.statusWarning };
+      return {
+        label: "Waiting for the password in Tunnelblick",
+        color: theme.colors.statusWarning,
+      };
     case "SLEEP":
       return { label: "Asleep", color: theme.colors.foregroundMuted };
     default: {
       const words = state.toLowerCase().replaceAll("_", " ");
-      return { label: words.charAt(0).toUpperCase() + words.slice(1), color: theme.colors.statusWarning };
+      return {
+        label: words.charAt(0).toUpperCase() + words.slice(1),
+        color: theme.colors.statusWarning,
+      };
     }
   }
 }

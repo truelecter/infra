@@ -1,12 +1,27 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { CliResult } from "./paseo-cli.ts";
-import { MAX_TITLE_LENGTH, normalizeTitle, setTitle, setTitleDescription, toolsForAgent } from "./set-title.ts";
+import {
+  MAX_TITLE_LENGTH,
+  normalizeTitle,
+  setTitle,
+  setTitleDescription,
+  toolsForAgent,
+} from "./set-title.ts";
 
 const ID = "f6be7cb5-31fd-417f-81ad-9ffdcd326416";
 
-function deps(overrides: { kind?: "main" | "sub"; cli?: CliResult; sessionError?: Error } = {}) {
-  const calls: { cli: string[][]; session: string[] } = { cli: [], session: [] };
+function deps(
+  overrides: {
+    kind?: "main" | "sub";
+    cli?: CliResult;
+    sessionError?: Error;
+  } = {},
+) {
+  const calls: { cli: string[][]; session: string[] } = {
+    cli: [],
+    session: [],
+  };
   return {
     calls,
     deps: {
@@ -14,7 +29,12 @@ function deps(overrides: { kind?: "main" | "sub"; cli?: CliResult; sessionError?
       agentKind: overrides.kind ?? ("main" as const),
       runCli: async (args: string[]) => {
         calls.cli.push(args);
-        return overrides.cli ?? { ok: true as const, stdout: '{"agentId":"x","name":"y"}' };
+        return (
+          overrides.cli ?? {
+            ok: true as const,
+            stdout: '{"agentId":"x","name":"y"}',
+          }
+        );
       },
       setSessionName: async (title: string) => {
         calls.session.push(title);
@@ -25,7 +45,10 @@ function deps(overrides: { kind?: "main" | "sub"; cli?: CliResult; sessionError?
 }
 
 test("collapses whitespace and newlines", () => {
-  assert.deepEqual(normalizeTitle("  Fix\n\tbilling   retries \n"), { ok: true, title: "Fix billing retries" });
+  assert.deepEqual(normalizeTitle("  Fix\n\tbilling   retries \n"), {
+    ok: true,
+    title: "Fix billing retries",
+  });
 });
 
 test("rejects an empty title", () => {
@@ -36,7 +59,10 @@ test("accepts exactly the limit, rejects one more without cutting", () => {
   assert.equal(normalizeTitle("a".repeat(MAX_TITLE_LENGTH)).ok, true);
   const long = normalizeTitle("a".repeat(MAX_TITLE_LENGTH + 10));
   assert.equal(long.ok, false);
-  assert.match(!long.ok ? long.error : "", /70 characters, the limit is 60\. Shorten it/);
+  assert.match(
+    !long.ok ? long.error : "",
+    /70 characters, the limit is 60\. Shorten it/,
+  );
 });
 
 test("counts code points, not UTF-16 units", () => {
@@ -46,8 +72,13 @@ test("counts code points, not UTF-16 units", () => {
 test("renames through the CLI, then the session", async () => {
   const { calls, deps: d } = deps();
   const result = await setTitle(" Auth token\nrefresh ", d);
-  assert.deepEqual(result, { text: 'Renamed to "Auth token refresh"', isError: false });
-  assert.deepEqual(calls.cli, [["agent", "update", ID, "--name", "Auth token refresh", "--json"]]);
+  assert.deepEqual(result, {
+    text: 'Renamed to "Auth token refresh"',
+    isError: false,
+  });
+  assert.deepEqual(calls.cli, [
+    ["agent", "update", ID, "--name", "Auth token refresh", "--json"],
+  ]);
   assert.deepEqual(calls.session, ["Auth token refresh"]);
 });
 
@@ -59,7 +90,9 @@ test("an invalid title never reaches the CLI", async () => {
 });
 
 test("a CLI failure is a tool error and leaves the session name alone", async () => {
-  const { calls, deps: d } = deps({ cli: { ok: false, error: "Agent not found" } });
+  const { calls, deps: d } = deps({
+    cli: { ok: false, error: "Agent not found" },
+  });
   const result = await setTitle("New title", d);
   assert.equal(result.isError, true);
   assert.match(result.text, /Agent not found/);
@@ -82,10 +115,14 @@ test("a subagent is refused and renames nothing", async () => {
 
 test("subagents lose the main-only tools, the main agent keeps its tools", () => {
   const mainOnly = ["set_title", "enable_browser_tools"];
-  assert.deepEqual(toolsForAgent("sub", ["read", "set_title", "bash", "enable_browser_tools"], mainOnly), [
-    "read",
-    "bash",
-  ]);
+  assert.deepEqual(
+    toolsForAgent(
+      "sub",
+      ["read", "set_title", "bash", "enable_browser_tools"],
+      mainOnly,
+    ),
+    ["read", "bash"],
+  );
   assert.equal(toolsForAgent("sub", ["read"], mainOnly), null);
   assert.equal(toolsForAgent("main", ["read", "set_title"], mainOnly), null);
 });

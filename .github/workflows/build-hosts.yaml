@@ -22,23 +22,23 @@ jobs:
   build_shared_kernels:
     runs-on: ubuntu-22.04-arm
     steps:
-    - name: Bind mount /nix
-      run: |
-        sudo mkdir /mnt/nix /nix
-        sudo chmod 0755 /nix
-        sudo mount --bind /mnt/nix /nix
+      - name: Bind mount /nix
+        run: |
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Prepare build environment
-      uses: ./.github/actions/prepare-build-environment
-      with:
-        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build-environment
+        with:
+          attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build shared kernels
-      run: nix build --keep-going --no-link -L .#ci.aarch64-linux.shared-kernels
+      - name: Build shared kernels
+        run: nix build --keep-going --no-link -L .#ci.aarch64-linux.shared-kernels
 
   build_system:
     needs: [build_shared_kernels]
@@ -48,107 +48,107 @@ jobs:
       fail-fast: false
       matrix:
         host:
-        - os: ubuntu-22.04-arm
-          hostname: voron
-        - os: ubuntu-22.04-arm
-          hostname: vzbot235
-        - os: ubuntu-22.04-arm
-          hostname: tiny-m
-        - os: ubuntu-22.04-arm
-          hostname: oracle
+          - os: ubuntu-22.04-arm
+            hostname: voron
+          - os: ubuntu-22.04-arm
+            hostname: vzbot235
+          - os: ubuntu-22.04-arm
+            hostname: tiny-m
+          - os: ubuntu-22.04-arm
+            hostname: oracle
 
-        - os: ubuntu-22.04
-          hostname: depsos
-        - os: ubuntu-22.04
-          hostname: sirius
-        - os: ubuntu-22.04
-          hostname: nas
-        - os: ubuntu-22.04
-          hostname: tl-wsl
+          - os: ubuntu-22.04
+            hostname: depsos
+          - os: ubuntu-22.04
+            hostname: sirius
+          - os: ubuntu-22.04
+            hostname: nas
+          - os: ubuntu-22.04
+            hostname: tl-wsl
 
-        - os: macos-14
-          hostname: squadbook
-        - os: macos-14
-          hostname: tl-mm4
+          - os: macos-14
+            hostname: squadbook
+          - os: macos-14
+            hostname: tl-mm4
 
     runs-on: ${{ matrix.host.os }}
     steps:
-    # Filesystem on /mnt for some reason has more space on GitHub action
-    # runner than /
-    - name: Bind mount /nix
-      if: ${{ ! startsWith(matrix.host.os, 'macos') }}
-      run: |
-        sudo mkdir /mnt/nix /nix
-        sudo chmod 0755 /nix
-        sudo mount --bind /mnt/nix /nix
+      # Filesystem on /mnt for some reason has more space on GitHub action
+      # runner than /
+      - name: Bind mount /nix
+        if: ${{ ! startsWith(matrix.host.os, 'macos') }}
+        run: |
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Prepare build environment
-      uses: ./.github/actions/prepare-build-environment
-      with:
-        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build-environment
+        with:
+          attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Tailscale
-      if: ${{ startsWith(matrix.host.os, 'macos') }}
-      uses: tailscale/github-action@v4
-      with:
-        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-        tags: tag:ci
-        ping: tl-mm4
+      - name: Tailscale
+        if: ${{ startsWith(matrix.host.os, 'macos') }}
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: tl-mm4
 
-    - name: Create aarch64-linux builder
-      if: ${{ startsWith(matrix.host.os, 'macos') }}
-      env:
-        BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
-        BUILDER_HOST: tl-mm4
-        BUILDER_PORT: 3022
-      run: |
-        echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
-        sudo chmod 600 /etc/nix/builder_ed25519
+      - name: Create aarch64-linux builder
+        if: ${{ startsWith(matrix.host.os, 'macos') }}
+        env:
+          BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
+          BUILDER_HOST: tl-mm4
+          BUILDER_PORT: 3022
+        run: |
+          echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
+          sudo chmod 600 /etc/nix/builder_ed25519
 
-        sudo mkdir -p /var/root/.ssh
-        # sshd may briefly refuse connections; an empty scan leads to
-        # "Host key verification failed" later, so retry until keys arrive.
-        for attempt in 1 2 3 4 5; do
-          keys=$(ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" 2>/dev/null || true)
-          [ -n "$keys" ] && break
-          echo "ssh-keyscan returned no keys (attempt $attempt), retrying"
-          sleep $((attempt * 5))
-        done
-        [ -n "$keys" ] || { echo "::error::no host keys from $BUILDER_HOST:$BUILDER_PORT"; exit 1; }
-        echo "$keys" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
+          sudo mkdir -p /var/root/.ssh
+          # sshd may briefly refuse connections; an empty scan leads to
+          # "Host key verification failed" later, so retry until keys arrive.
+          for attempt in 1 2 3 4 5; do
+            keys=$(ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" 2>/dev/null || true)
+            [ -n "$keys" ] && break
+            echo "ssh-keyscan returned no keys (attempt $attempt), retrying"
+            sleep $((attempt * 5))
+          done
+          [ -n "$keys" ] || { echo "::error::no host keys from $BUILDER_HOST:$BUILDER_PORT"; exit 1; }
+          echo "$keys" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
-        mkdir -p /etc/ssh/
-        echo "Host linux-builder"                           | sudo tee -a /etc/ssh/ssh_config
-        echo "  Hostname $BUILDER_HOST"                     | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  Port $BUILDER_PORT"                         | sudo tee -a /etc/ssh/ssh_config
-        echo "  HostKeyAlias [$BUILDER_HOST]:$BUILDER_PORT" | sudo tee -a /etc/ssh/ssh_config > /dev/null
-        echo "  IdentityFile /etc/nix/builder_ed25519"      | sudo tee -a /etc/ssh/ssh_config
-        echo "  User gha-builder"                           | sudo tee -a /etc/ssh/ssh_config
+          mkdir -p /etc/ssh/
+          echo "Host linux-builder"                           | sudo tee -a /etc/ssh/ssh_config
+          echo "  Hostname $BUILDER_HOST"                     | sudo tee -a /etc/ssh/ssh_config > /dev/null
+          echo "  Port $BUILDER_PORT"                         | sudo tee -a /etc/ssh/ssh_config
+          echo "  HostKeyAlias [$BUILDER_HOST]:$BUILDER_PORT" | sudo tee -a /etc/ssh/ssh_config > /dev/null
+          echo "  IdentityFile /etc/nix/builder_ed25519"      | sudo tee -a /etc/ssh/ssh_config
+          echo "  User gha-builder"                           | sudo tee -a /etc/ssh/ssh_config
 
-        echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
+          echo "ssh://linux-builder aarch64-linux /etc/nix/builder_ed25519 4 40 nixos-test,benchmark,kvm,big-parallel - -" | sudo tee /etc/nix/machines
 
-        sudo nix store info --store ssh://linux-builder
+          sudo nix store info --store ssh://linux-builder
 
-    - name: Build system configuration
-      run: |
-        [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
-        nix build --keep-going -L ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
+      - name: Build system configuration
+        run: |
+          [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
+          nix build --keep-going -L ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
 
   hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs: [build_shared_kernels, build_system]
     steps:
-    - run: exit 1
-      # see https://stackoverflow.com/a/67532120/4907315
-      if: >-
-        ${{
-          contains(needs.*.result, 'failure')
-          || contains(needs.*.result, 'cancelled')
-          || contains(needs.*.result, 'skipped')
-        }}
+      - run: exit 1
+        # see https://stackoverflow.com/a/67532120/4907315
+        if: >-
+          ${{
+            contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+            || contains(needs.*.result, 'skipped')
+          }}

@@ -27,7 +27,9 @@ export function isCoveredBy(hostname: string, pattern: string): boolean {
   if (!normalized) return false;
   if (normalized.startsWith(".")) {
     const base = normalized.slice(1);
-    return base.length > 0 && (hostname === base || hostname.endsWith(`.${base}`));
+    return (
+      base.length > 0 && (hostname === base || hostname.endsWith(`.${base}`))
+    );
   }
   return hostname === normalized;
 }
@@ -39,41 +41,62 @@ export function mergeHostnames(
 ): { hostnames: string[]; added: string[] } | null {
   if (current === true) return null;
   const existing = current ?? [];
-  const added = names.filter((name) => !existing.some((pattern) => isCoveredBy(name, pattern)));
+  const added = names.filter(
+    (name) => !existing.some((pattern) => isCoveredBy(name, pattern)),
+  );
   return added.length ? { hostnames: [...existing, ...added], added } : null;
 }
 
 function runCli(cli: string, args: string[]): Promise<unknown> {
   return new Promise((resolve, reject) => {
-    execFile(cli, args, { timeout: 30_000, maxBuffer: 1024 * 1024 }, (error, stdout) => {
-      let parsed: unknown;
-      try {
-        parsed = stdout.trim() ? JSON.parse(stdout) : undefined;
-      } catch {
-        parsed = undefined;
-      }
-      const message = (parsed as { error?: { message?: string } } | undefined)?.error?.message;
-      if (error || message) {
-        reject(new Error(message ?? error?.message ?? "paseo CLI failed"));
-        return;
-      }
-      resolve(parsed);
-    });
+    execFile(
+      cli,
+      args,
+      { timeout: 30_000, maxBuffer: 1024 * 1024 },
+      (error, stdout) => {
+        let parsed: unknown;
+        try {
+          parsed = stdout.trim() ? JSON.parse(stdout) : undefined;
+        } catch {
+          parsed = undefined;
+        }
+        const message = (parsed as { error?: { message?: string } } | undefined)
+          ?.error?.message;
+        if (error || message) {
+          reject(new Error(message ?? error?.message ?? "paseo CLI failed"));
+          return;
+        }
+        resolve(parsed);
+      },
+    );
   });
 }
 
-export function createCliHostnamesConfig(cli: string, home: string): HostnamesConfigAccess {
+export function createCliHostnamesConfig(
+  cli: string,
+  home: string,
+): HostnamesConfigAccess {
   const common = ["--home", home, "--json"];
   return {
     async get() {
-      const result = (await runCli(cli, ["daemon", "config", "get", "daemon.hostnames", ...common])) as
-        | { set?: boolean; value?: unknown }
-        | undefined;
+      const result = (await runCli(cli, [
+        "daemon",
+        "config",
+        "get",
+        "daemon.hostnames",
+        ...common,
+      ])) as { set?: boolean; value?: unknown } | undefined;
       if (!result?.set) return undefined;
       const { value } = result;
       if (value === true) return true;
-      if (Array.isArray(value) && value.every((item) => typeof item === "string")) return value;
-      throw new Error(`Unexpected daemon.hostnames value: ${JSON.stringify(value)}`);
+      if (
+        Array.isArray(value) &&
+        value.every((item) => typeof item === "string")
+      )
+        return value;
+      throw new Error(
+        `Unexpected daemon.hostnames value: ${JSON.stringify(value)}`,
+      );
     },
     async set(hostnames) {
       const result = (await runCli(cli, [
@@ -108,7 +131,10 @@ export class HostnameSync {
   }
 
   start(): void {
-    this.timer = setInterval(() => void this.sync(), this.options.intervalMs ?? DEFAULT_INTERVAL_MS);
+    this.timer = setInterval(
+      () => void this.sync(),
+      this.options.intervalMs ?? DEFAULT_INTERVAL_MS,
+    );
   }
 
   async stop(): Promise<void> {
@@ -125,7 +151,9 @@ export class HostnameSync {
     if (this.running) return this.running;
     this.running = this.syncOnce()
       .catch((error: unknown) => {
-        this.problem(`Hostname sync failed: ${error instanceof Error ? error.message : String(error)}`);
+        this.problem(
+          `Hostname sync failed: ${error instanceof Error ? error.message : String(error)}`,
+        );
       })
       .finally(() => {
         this.running = null;
@@ -139,7 +167,9 @@ export class HostnameSync {
 
     const names = await this.options.lookup(address);
     if (!names.length) {
-      this.problem(`No MagicDNS name found for ${address}; is MagicDNS enabled?`);
+      this.problem(
+        `No MagicDNS name found for ${address}; is MagicDNS enabled?`,
+      );
       return;
     }
     const key = names.join(",");
@@ -162,11 +192,14 @@ export class HostnameSync {
       // A daemon that is still starting (loading plugins, which is when this first runs) read
       // config.json before the change and isn't reachable for a reload yet.
       this.unapplied = true;
-      this.problem("daemon.hostnames is saved but the daemon is not ready to apply it; retrying.");
+      this.problem(
+        "daemon.hostnames is saved but the daemon is not ready to apply it; retrying.",
+      );
       this.scheduleRetry();
       return;
     }
-    if (this.unapplied) this.log("Applied daemon.hostnames to the running daemon.");
+    if (this.unapplied)
+      this.log("Applied daemon.hostnames to the running daemon.");
     this.unapplied = false;
     this.syncedKey = key;
     this.lastProblem = null;
