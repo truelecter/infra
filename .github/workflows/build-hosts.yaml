@@ -14,11 +14,12 @@ on:
   workflow_call:
 
 jobs:
-  # The host list comes from the flake: `ciMatrix.hosts` in parts/ci.nix maps
-  # every nixosConfigurations and darwinConfigurations entry to a runner.
-  host_matrix:
+  # Both matrices come from the flake (parts/ci.nix): `ciMatrix.shared` lists the
+  # `ci.<system>.<name>` derivations, `ciMatrix.hosts` every NixOS and darwin host.
+  ci_matrix:
     runs-on: ubuntu-latest
     outputs:
+      shared: ${{ steps.eval.outputs.shared }}
       hosts: ${{ steps.eval.outputs.hosts }}
     steps:
       - name: Checkout repository
@@ -30,18 +31,29 @@ jobs:
           attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Evaluate host matrix
+      - name: Evaluate matrices
         id: eval
-        run: echo "hosts=$(nix eval --json .#ciMatrix.hosts)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "shared=$(nix eval --json .#ciMatrix.shared)" >> "$GITHUB_OUTPUT"
+          echo "hosts=$(nix eval --json .#ciMatrix.hosts)" >> "$GITHUB_OUTPUT"
 
-  # Several aarch64 hosts (the Raspberry Pi ones) use the same kernel. Build
-  # each kernel shared by two or more hosts once here and push it to Attic, so
-  # the host jobs below substitute it instead of each building its own copy.
-  # `ci.<system>.shared-kernels` is defined in nixos/default.nix.
-  build_shared_kernels:
-    runs-on: ubuntu-22.04-arm
+  # Heavy derivations several hosts share, such as the kernel of the Raspberry
+  # Pi hosts (`ci.<system>.shared-kernels` in nixos/default.nix). Each is built
+  # once here and pushed to Attic, so the host jobs below substitute it instead
+  # of each building its own copy.
+  build_shared:
+    name: build_shared (${{ matrix.name }}, ${{ matrix.system }})
+    needs: [ci_matrix]
+    # An empty matrix is an error, so skip the job when there is nothing to build.
+    if: ${{ needs.ci_matrix.outputs.shared != '{"include":[]}' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.ci_matrix.outputs.shared) }}
+
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Bind mount /nix
+        if: ${{ ! startsWith(matrix.os, 'macos') }}
         run: |
           sudo mkdir /mnt/nix /nix
           sudo chmod 0755 /nix
@@ -56,17 +68,17 @@ jobs:
           attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build shared kernels
-        run: nix build --keep-going --no-link -L .#ci.aarch64-linux.shared-kernels
+      - name: Build ${{ matrix.name }}
+        run: nix build --keep-going --no-link -L ".#${{ matrix.attr }}"
 
   build_system:
     name: build_system (${{ matrix.hostname }})
-    needs: [host_matrix, build_shared_kernels]
-    # A failed kernel build must not skip unrelated hosts.
-    if: ${{ !cancelled() && needs.host_matrix.result == 'success' }}
+    needs: [ci_matrix, build_shared]
+    # A failed or skipped shared build must not skip the hosts.
+    if: ${{ !cancelled() && needs.ci_matrix.result == 'success' }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.host_matrix.outputs.hosts) }}
+      matrix: ${{ fromJSON(needs.ci_matrix.outputs.hosts) }}
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -137,13 +149,15 @@ jobs:
   hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: [host_matrix, build_shared_kernels, build_system]
+    needs: [ci_matrix, build_shared, build_system]
     steps:
       - run: exit 1
         # see https://stackoverflow.com/a/67532120/4907315
+        # build_shared is skipped when there is nothing shared to build.
         if: >-
           ${{
             contains(needs.*.result, 'failure')
             || contains(needs.*.result, 'cancelled')
-            || contains(needs.*.result, 'skipped')
+            || needs.ci_matrix.result != 'success'
+            || needs.build_system.result != 'success'
           }}
