@@ -8,16 +8,13 @@ buildNpmPackage (finalAttrs: {
   pname = "gsd-omp";
   version = "1.0.25";
 
+  # Our fork's `local` branch: the v1.0.25 tag plus feat/execute-phase-todo (README.md).
   src = fetchFromGitHub {
-    owner = "tchivs";
+    owner = "truelecter";
     repo = "gsd-omp";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-zj7zVV8+1MjxLYM61eD8xEhVnG4cgTokN4FgTnGeIeQ=";
+    rev = "d4831dd32a2aed05e475d090002aae626fbc154f";
+    hash = "sha256-yLCfxisM0DMM4ucl1LrJI4IFrHLVu5wkxSq9llUFePI=";
   };
-
-  # Upstream pins @opengsd/gsd-core ^1.12.0 (lock: 1.15.0). Pin 1.14.0, so OMP reads and
-  # writes .planning/ the same way as other agents running GSD 1.14.0.
-  patches = [./gsd-core-1.14.0.patch];
 
   # The extension runs GSD's hooks, graphify worker, and gsd-tools under Node. OMP is a
   # single-file Bun executable, so `process.execPath` is OMP itself; upstream looks for Node
@@ -29,7 +26,7 @@ buildNpmPackage (finalAttrs: {
       '[process.env.GSD_NODE_BIN, process.env.OMP_NODE_BIN, "${lib.getExe nodejs_24}"]'
   '';
 
-  npmDepsHash = "sha256-ITz3GU+0kTfULRjFwwBvqus0ZhpvwgFHM3QL+7apZTA=";
+  npmDepsHash = "sha256-CV5/+L7EUb3zBj+M6gmdUjHdleZnu71ZNegqk/kp87k=";
 
   # The CLI needs Node >= 24, and the extension runs its child scripts with it (postPatch).
   nodejs = nodejs_24;

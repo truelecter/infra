@@ -250,8 +250,8 @@
       };
     };
 
-    # Fork of getpaseo/paseo: upstream `main` plus SDK patches beautiful-chat
-    # needs (agent fork context, getpaseo/paseo#5003; agent rewind). Rebase the
+    # Fork of getpaseo/paseo: upstream `main` plus local-only OMP patches
+    # (custom messages as replies, discoverable host tools). Rebase the
     # `local` branch onto newer upstream commits; see parts/ai/AGENTS.md.
     paseo = {
       url = "github:truelecter/paseo/local";
