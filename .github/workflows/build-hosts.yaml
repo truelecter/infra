@@ -120,15 +120,18 @@ jobs:
           sudo chmod 600 /etc/nix/builder_ed25519
 
           sudo mkdir -p /var/root/.ssh
-          # sshd may briefly refuse connections; an empty scan leads to
-          # "Host key verification failed" later, so retry until keys arrive.
+          # Scan only the ed25519 key, the one ssh uses (HostKeyAlgorithms below).
+          # A scan of every key type opens several connections at once, and the
+          # VM's sshd drops some of them ("Broken pipe"), so it can come back with
+          # only the RSA key or none. ssh-keyscan also prints a `# host SSH-2.0-...`
+          # comment per connection on stdout, so check for the key line itself.
           for attempt in 1 2 3 4 5; do
-            keys=$(ssh-keyscan -H -p "$BUILDER_PORT" "$BUILDER_HOST" 2>/dev/null || true)
+            keys=$(ssh-keyscan -H -t ed25519 -p "$BUILDER_PORT" "$BUILDER_HOST" 2>/dev/null | grep ' ssh-ed25519 ' || true)
             [ -n "$keys" ] && break
-            echo "ssh-keyscan returned no keys (attempt $attempt), retrying"
+            echo "ssh-keyscan returned no ed25519 key (attempt $attempt), retrying"
             sleep $((attempt * 5))
           done
-          [ -n "$keys" ] || { echo "::error::no host keys from $BUILDER_HOST:$BUILDER_PORT"; exit 1; }
+          [ -n "$keys" ] || { echo "::error::no ed25519 host key from $BUILDER_HOST:$BUILDER_PORT"; exit 1; }
           echo "$keys" | sudo tee -a /var/root/.ssh/known_hosts > /dev/null
 
           mkdir -p /etc/ssh/
@@ -136,6 +139,7 @@ jobs:
           echo "  Hostname $BUILDER_HOST"                     | sudo tee -a /etc/ssh/ssh_config > /dev/null
           echo "  Port $BUILDER_PORT"                         | sudo tee -a /etc/ssh/ssh_config
           echo "  HostKeyAlias [$BUILDER_HOST]:$BUILDER_PORT" | sudo tee -a /etc/ssh/ssh_config > /dev/null
+          echo "  HostKeyAlgorithms ssh-ed25519"              | sudo tee -a /etc/ssh/ssh_config > /dev/null
           echo "  IdentityFile /etc/nix/builder_ed25519"      | sudo tee -a /etc/ssh/ssh_config
           echo "  User gha-builder"                           | sudo tee -a /etc/ssh/ssh_config
 
