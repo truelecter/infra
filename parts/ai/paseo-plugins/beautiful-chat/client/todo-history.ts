@@ -29,7 +29,8 @@ export interface TodoChange {
 }
 
 function statusOf(item: Record<string, unknown>): TodoStatus {
-  if (item.completed === true || item.status === "completed") return "completed";
+  if (item.completed === true || item.status === "completed")
+    return "completed";
   return item.status === "in_progress" ? "in_progress" : "pending";
 }
 
@@ -38,19 +39,27 @@ function statusOf(item: Record<string, unknown>): TodoStatus {
  * position, so inserting a task reads to it as every later task being new.
  * Matching by text, counted per repeat, survives an insert.
  */
-export function normalizeTodoTasks(items: readonly Record<string, unknown>[]): TodoTask[] {
+export function normalizeTodoTasks(
+  items: readonly Record<string, unknown>[],
+): TodoTask[] {
   const seen = new Map<string, number>();
   return items.map((item) => {
     const text = typeof item.text === "string" ? item.text : "Untitled task";
     const occurrence = seen.get(text) ?? 0;
     seen.set(text, occurrence + 1);
     const key =
-      typeof item.id === "string" && item.id.length > 0 ? `id:${item.id}` : `${occurrence}:${text}`;
+      typeof item.id === "string" && item.id.length > 0
+        ? `id:${item.id}`
+        : `${occurrence}:${text}`;
     return { key, text, status: statusOf(item) };
   });
 }
 
-const CHANGE_ORDER: readonly TodoChangeType[] = ["completed", "started", "added"];
+const CHANGE_ORDER: readonly TodoChangeType[] = [
+  "completed",
+  "started",
+  "added",
+];
 
 /**
  * The changes from `previous` to `current`, grouped by kind: tasks that
@@ -72,8 +81,10 @@ export function deriveTodoChanges(
   for (const task of current) {
     const prior = before.get(task.key);
     if (prior === undefined) push("added", task.text);
-    else if (prior !== task.status && task.status === "completed") push("completed", task.text);
-    else if (prior !== task.status && task.status === "in_progress") push("started", task.text);
+    else if (prior !== task.status && task.status === "completed")
+      push("completed", task.text);
+    else if (prior !== task.status && task.status === "in_progress")
+      push("started", task.text);
   }
   return CHANGE_ORDER.flatMap((type) => {
     const tasks = grouped.get(type);
@@ -195,6 +206,10 @@ export function useTodoChanges(
   }, [agentId, at, tasks]);
 
   const getPrevious = () => history.previous(agentId, at);
-  const previous = useSyncExternalStore(history.subscribe, getPrevious, getPrevious);
+  const previous = useSyncExternalStore(
+    history.subscribe,
+    getPrevious,
+    getPrevious,
+  );
   return previous ? deriveTodoChanges(previous, tasks) : null;
 }

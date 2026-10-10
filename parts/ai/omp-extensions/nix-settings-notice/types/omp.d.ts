@@ -23,7 +23,10 @@ declare module "@oh-my-pi/pi-coding-agent" {
   /** The parts of `Settings` (the `settings` export) used here. */
   export interface SettingsScope {
     /** Calls `listener` synchronously whenever the effective value of one of `sources` changes. */
-    onEffectiveChange(sources: readonly AnySetting[], listener: (setting: AnySetting) => void): () => void;
+    onEffectiveChange(
+      sources: readonly AnySetting[],
+      listener: (setting: AnySetting) => void,
+    ): () => void;
     /** The in-memory global layer (config.yml plus unsaved writes), deep-cloned. */
     getGlobalSettings(): Record<string, unknown>;
   }
@@ -35,7 +38,10 @@ declare module "@oh-my-pi/pi-coding-agent" {
   export interface ExtensionAPI {
     /** Package exports; `settings` is the process-wide Settings instance. */
     pi: { settings: unknown };
-    on(event: "session_start", handler: (event: unknown, ctx: ExtensionContext) => Promise<void> | void): void;
+    on(
+      event: "session_start",
+      handler: (event: unknown, ctx: ExtensionContext) => Promise<void> | void,
+    ): void;
   }
 }
 

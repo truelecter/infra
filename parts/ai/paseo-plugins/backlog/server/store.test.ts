@@ -15,7 +15,10 @@ const T1 = "2026-09-30T11:00:00.000Z";
 const T2 = "2026-09-30T12:00:00.000Z";
 
 function withItems(...titles: string[]): BacklogData {
-  return titles.reduce((data, title) => createItem(data, { title }, T0).data, emptyData());
+  return titles.reduce(
+    (data, title) => createItem(data, { title }, T0).data,
+    emptyData(),
+  );
 }
 
 test("ids keep counting after a delete, so an old id never names a new item", () => {
@@ -25,9 +28,15 @@ test("ids keep counting after a delete, so an old id never names a new item", ()
 });
 
 test("a new item starts open, with its source agent on the first history entry", () => {
-  const { result } = createItem(emptyData(), { title: "MR !42 fixes login", agentId: "agent-1" }, T0);
+  const { result } = createItem(
+    emptyData(),
+    { title: "MR !42 fixes login", agentId: "agent-1" },
+    T0,
+  );
   assert.equal(result.status, "open");
-  assert.deepEqual(result.log, [{ at: T0, status: "open", agentId: "agent-1" }]);
+  assert.deepEqual(result.log, [
+    { at: T0, status: "open", agentId: "agent-1" },
+  ]);
 });
 
 test("a status check logs its text and the status move with the checking agent", () => {
@@ -38,7 +47,12 @@ test("a status check logs its text and the status move with the checking agent",
     T1,
   );
   assert.equal(result.status, "done");
-  assert.deepEqual(result.log.at(-1), { at: T1, text: "merged", status: "done", agentId: "checker" });
+  assert.deepEqual(result.log.at(-1), {
+    at: T1,
+    text: "merged",
+    status: "done",
+    agentId: "checker",
+  });
   assert.equal(result.updatedAt, T1);
 });
 
@@ -48,9 +62,19 @@ test("setting the current status again adds no history entry", () => {
 });
 
 test("an empty description clears it, an omitted one keeps it", () => {
-  const data = createItem(emptyData(), { title: "MR", description: "See [!42](https://x)" }, T0).data;
-  assert.equal(updateItem(data, 1, { log: "checked" }, T1).result.description, "See [!42](https://x)");
-  assert.equal(updateItem(data, 1, { description: "" }, T1).result.description, "");
+  const data = createItem(
+    emptyData(),
+    { title: "MR", description: "See [!42](https://x)" },
+    T0,
+  ).data;
+  assert.equal(
+    updateItem(data, 1, { log: "checked" }, T1).result.description,
+    "See [!42](https://x)",
+  );
+  assert.equal(
+    updateItem(data, 1, { description: "" }, T1).result.description,
+    "",
+  );
 });
 
 test("unfolding a description leaves the item and its place in the list alone", () => {
@@ -64,11 +88,16 @@ test("unfolding a description leaves the item and its place in the list alone", 
 });
 
 test("an update with only an agent id is rejected as empty", () => {
-  assert.throws(() => updateItem(withItems("MR"), 1, { agentId: "x" }, T1), /Nothing to change/);
+  assert.throws(
+    () => updateItem(withItems("MR"), 1, { agentId: "x" }, T1),
+    /Nothing to change/,
+  );
 });
 
 test("unknown ids report not_found", () => {
-  assert.throws(() => updateItem(emptyData(), 7, { log: "x" }, T1), { code: "not_found" });
+  assert.throws(() => updateItem(emptyData(), 7, { log: "x" }, T1), {
+    code: "not_found",
+  });
   assert.throws(() => deleteItem(emptyData(), 7), { code: "not_found" });
 });
 

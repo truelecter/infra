@@ -1,6 +1,12 @@
 import type { PluginServerContext } from "@getpaseo/plugin/server";
 import { join } from "node:path";
-import { createItem, deleteItem, listItems, setDescriptionOpen, updateItem } from "./shared/backlog.ts";
+import {
+  createItem,
+  deleteItem,
+  listItems,
+  setDescriptionOpen,
+  updateItem,
+} from "./shared/backlog.ts";
 import { backlogDir, FileStore } from "./server/file-store.ts";
 import { createBacklogServer, listen } from "./server/http.ts";
 import * as store from "./server/store.ts";
@@ -31,7 +37,9 @@ export default function contribute(server: PluginServerContext) {
   const socketPath = join(dir, "backlog.sock");
   const started = listen(createBacklogServer(items), socketPath).then(
     (stop) => {
-      console.log(`[backlog] Listening on ${socketPath}, items in ${items.path}`);
+      console.log(
+        `[backlog] Listening on ${socketPath}, items in ${items.path}`,
+      );
       return stop;
     },
     (error: unknown) => {
@@ -41,6 +49,8 @@ export default function contribute(server: PluginServerContext) {
   );
 
   return async () => {
-    await (await started)?.();
+    await (
+      await started
+    )?.();
   };
 }

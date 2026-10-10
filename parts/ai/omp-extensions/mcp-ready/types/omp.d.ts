@@ -12,7 +12,10 @@ declare module "@oh-my-pi/pi-coding-agent" {
   }
 
   export interface ExtensionAPI {
-    on(event: "before_agent_start", handler: (event: unknown, ctx: ExtensionContext) => Promise<void>): void;
+    on(
+      event: "before_agent_start",
+      handler: (event: unknown, ctx: ExtensionContext) => Promise<void>,
+    ): void;
     /** Enabled tool names: top-level tools and xd:// mounts. */
     getActiveTools(): string[];
   }

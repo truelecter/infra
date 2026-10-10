@@ -31,7 +31,9 @@ export default function paseoTools(pi: ExtensionAPI): void {
     name: SET_TITLE_TOOL,
     label: "Set title",
     description: setTitleDescription(paseo.agentId),
-    parameters: z.object({ title: z.string().describe(TITLE_PARAMETER_DESCRIPTION) }),
+    parameters: z.object({
+      title: z.string().describe(TITLE_PARAMETER_DESCRIPTION),
+    }),
     // Declared from the first request: adding a tool mid-session invalidates earlier thinking blocks.
     loadMode: "essential",
     approval: "write",
@@ -42,7 +44,10 @@ export default function paseoTools(pi: ExtensionAPI): void {
         runCli: (args) => runPaseoCli(paseo.cli, args, signal),
         setSessionName: (title) => pi.setSessionName(title),
       });
-      return { content: [{ type: "text", text: result.text }], isError: result.isError };
+      return {
+        content: [{ type: "text", text: result.text }],
+        isError: result.isError,
+      };
     },
   });
 
@@ -56,7 +61,11 @@ export default function paseoTools(pi: ExtensionAPI): void {
   async function applyBrowserState(ctx: ExtensionContext): Promise<void> {
     if (ctx.agent.kind !== "main") return;
     const registered = pi.getAllTools().map((tool) => tool.name);
-    const next = reconcileBrowserTools(pi.getActiveTools(), registered, browserEnabled);
+    const next = reconcileBrowserTools(
+      pi.getActiveTools(),
+      registered,
+      browserEnabled,
+    );
     if (!next) return;
     if (!browserEnabled && next.includes(ENABLE_BROWSER_TOOL)) {
       // OMP announces xd:// unmounts as a notice and keeps the system prompt,
@@ -65,12 +74,17 @@ export default function paseoTools(pi: ExtensionAPI): void {
       // own tool for one apply makes that change. OMP still skips the rebuild
       // (and sends the notice) mid-conversation when the model binds thinking
       // to the prompt prefix.
-      await pi.setActiveTools(next.filter((name) => name !== ENABLE_BROWSER_TOOL));
+      await pi.setActiveTools(
+        next.filter((name) => name !== ENABLE_BROWSER_TOOL),
+      );
     }
     await pi.setActiveTools(next);
   }
 
-  async function setBrowserEnabled(enabled: boolean, ctx: ExtensionContext): Promise<string> {
+  async function setBrowserEnabled(
+    enabled: boolean,
+    ctx: ExtensionContext,
+  ): Promise<string> {
     if (enabled !== browserEnabled) {
       browserEnabled = enabled;
       pi.appendEntry(BROWSER_STATE_ENTRY, { enabled });
@@ -79,7 +93,10 @@ export default function paseoTools(pi: ExtensionAPI): void {
     return browserStateMessage(browserEnabled, pi.getActiveTools());
   }
 
-  async function restoreBrowser(_event: unknown, ctx: ExtensionContext): Promise<void> {
+  async function restoreBrowser(
+    _event: unknown,
+    ctx: ExtensionContext,
+  ): Promise<void> {
     browserEnabled = restoreBrowserState(ctx.sessionManager.getBranch());
     await applyBrowserState(ctx);
   }
@@ -88,22 +105,38 @@ export default function paseoTools(pi: ExtensionAPI): void {
     name: ENABLE_BROWSER_TOOL,
     label: "Paseo browser tools",
     description: ENABLE_BROWSER_DESCRIPTION,
-    parameters: z.object({ enabled: z.boolean().describe(ENABLED_PARAMETER_DESCRIPTION) }),
+    parameters: z.object({
+      enabled: z.boolean().describe(ENABLED_PARAMETER_DESCRIPTION),
+    }),
     // Essential: a tool added mid-session would invalidate earlier thinking blocks.
     loadMode: "essential",
     approval: "read",
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       if (ctx.agent.kind !== "main") {
-        return { content: [{ type: "text", text: "Subagents have no Paseo browser tools." }], isError: true };
+        return {
+          content: [
+            { type: "text", text: "Subagents have no Paseo browser tools." },
+          ],
+          isError: true,
+        };
       }
-      return { content: [{ type: "text", text: await setBrowserEnabled(params.enabled === true, ctx) }] };
+      return {
+        content: [
+          {
+            type: "text",
+            text: await setBrowserEnabled(params.enabled === true, ctx),
+          },
+        ],
+      };
     },
   });
 
   pi.registerCommand(BROWSER_COMMAND, {
     description: BROWSER_COMMAND_DESCRIPTION,
     getArgumentCompletions: (prefix) =>
-      ["on", "off"].filter((value) => value.startsWith(prefix.trim())).map((value) => ({ value, label: value })),
+      ["on", "off"]
+        .filter((value) => value.startsWith(prefix.trim()))
+        .map((value) => ({ value, label: value })),
     async handler(args, ctx) {
       const parsed = parseBrowserCommand(args, browserEnabled);
       if (!parsed.ok) {
@@ -117,7 +150,10 @@ export default function paseoTools(pi: ExtensionAPI): void {
   // Subagent sessions run this factory too; they don't get the main-only tools.
   // session_start fires before their first request, so the tool list changes only once.
   pi.on("session_start", async (event, ctx) => {
-    const tools = toolsForAgent(ctx.agent.kind, pi.getActiveTools(), [SET_TITLE_TOOL, ENABLE_BROWSER_TOOL]);
+    const tools = toolsForAgent(ctx.agent.kind, pi.getActiveTools(), [
+      SET_TITLE_TOOL,
+      ENABLE_BROWSER_TOOL,
+    ]);
     if (tools) await pi.setActiveTools(tools);
     await restoreBrowser(event, ctx);
   });

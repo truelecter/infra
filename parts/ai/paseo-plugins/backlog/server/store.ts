@@ -48,9 +48,14 @@ export function createItem(
     ...(input.cwd ? { cwd: input.cwd } : {}),
     createdAt: now,
     updatedAt: now,
-    log: [{ at: now, status, ...(input.agentId ? { agentId: input.agentId } : {}) }],
+    log: [
+      { at: now, status, ...(input.agentId ? { agentId: input.agentId } : {}) },
+    ],
   };
-  return { data: { ...data, nextId: data.nextId + 1, items: [...data.items, item] }, result: item };
+  return {
+    data: { ...data, nextId: data.nextId + 1, items: [...data.items, item] },
+    result: item,
+  };
 }
 
 export function findItem(data: BacklogData, id: number): Item {
@@ -71,7 +76,8 @@ export function updateItem(
     throw new BacklogError("Nothing to change", "invalid");
   }
 
-  const statusChanged = changes.status !== undefined && changes.status !== current.status;
+  const statusChanged =
+    changes.status !== undefined && changes.status !== current.status;
   const log: LogEntry[] =
     statusChanged || changes.log
       ? [
@@ -94,12 +100,18 @@ export function updateItem(
     updatedAt: now,
   };
   return {
-    data: { ...data, items: data.items.map((entry) => (entry.id === id ? item : entry)) },
+    data: {
+      ...data,
+      items: data.items.map((entry) => (entry.id === id ? item : entry)),
+    },
     result: item,
   };
 }
 
-export function deleteItem(data: BacklogData, id: number): { data: BacklogData; result: Item } {
+export function deleteItem(
+  data: BacklogData,
+  id: number,
+): { data: BacklogData; result: Item } {
   const item = findItem(data, id);
   return {
     data: {
@@ -119,11 +131,17 @@ export function setDescriptionOpen(
 ): { data: BacklogData; result: null } {
   findItem(data, id);
   const others = data.openIds.filter((entry) => entry !== id);
-  return { data: { ...data, openIds: open ? [...others, id] : others }, result: null };
+  return {
+    data: { ...data, openIds: open ? [...others, id] : others },
+    result: null,
+  };
 }
 
 /** Items in status order (open, waiting, done), most recently updated first within a status. */
-export function listItems(data: BacklogData, statuses?: readonly Status[]): Item[] {
+export function listItems(
+  data: BacklogData,
+  statuses?: readonly Status[],
+): Item[] {
   const wanted = new Set(statuses?.length ? statuses : STATUSES);
   return data.items
     .filter((item) => wanted.has(item.status))

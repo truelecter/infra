@@ -8,14 +8,21 @@ export default function contribute(server: PluginServerContext) {
   const inFlight = new Map<string, Promise<ProjectResult>>();
 
   server.handle(getProject, ({ directory }) => {
-    if (!isAbsolute(directory)) throw new Error(`Not an absolute path: ${directory}`);
+    if (!isAbsolute(directory))
+      throw new Error(`Not an absolute path: ${directory}`);
     const planningDirectory = join(directory, ".planning");
     let read = inFlight.get(planningDirectory);
     if (!read) {
       read = (async (): Promise<ProjectResult> =>
         (await isDirectory(planningDirectory))
-          ? { found: true, planningDirectory, project: await readProject(directory) }
-          : { found: false, planningDirectory })().finally(() => inFlight.delete(planningDirectory));
+          ? {
+              found: true,
+              planningDirectory,
+              project: await readProject(directory),
+            }
+          : { found: false, planningDirectory })().finally(() =>
+        inFlight.delete(planningDirectory),
+      );
       inFlight.set(planningDirectory, read);
     }
     return read;

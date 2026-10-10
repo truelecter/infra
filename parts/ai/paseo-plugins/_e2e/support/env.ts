@@ -4,7 +4,10 @@ import path from "node:path";
 // Set by the harness (run.sh) for the isolated daemon it started.
 function required(name: string): string {
   const value = process.env[name];
-  if (!value) throw new Error(`${name} is not set: run the suite through \`nix run .#paseo-plugins-e2e\``);
+  if (!value)
+    throw new Error(
+      `${name} is not set: run the suite through \`nix run .#paseo-plugins-e2e\``,
+    );
   return value;
 }
 
@@ -23,10 +26,13 @@ export const env = {
 
 /** The folder the daemon loads a plugin from, per the generated config.json. */
 export function pluginPath(id: string): string {
-  const config = JSON.parse(readFileSync(path.join(env.home, "config.json"), "utf8")) as {
+  const config = JSON.parse(
+    readFileSync(path.join(env.home, "config.json"), "utf8"),
+  ) as {
     plugins?: Record<string, { path?: string }>;
   };
   const folder = config.plugins?.[id]?.path;
-  if (!folder) throw new Error(`plugin ${id} is not in ${env.home}/config.json`);
+  if (!folder)
+    throw new Error(`plugin ${id} is not in ${env.home}/config.json`);
   return folder;
 }

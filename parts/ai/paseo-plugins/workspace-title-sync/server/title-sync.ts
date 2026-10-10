@@ -21,14 +21,21 @@ export const PARENT_AGENT_ID_LABEL = "paseo.parent-agent-id";
  * The workspace whose only top-level agent is `agentId`, or null. Subagents and
  * archived agents don't count; terminals are not agents, so they never do.
  */
-export function soleAgentWorkspace(agents: readonly AgentInfo[], agentId: string): string | null {
+export function soleAgentWorkspace(
+  agents: readonly AgentInfo[],
+  agentId: string,
+): string | null {
   const workspaceId = agents.find((agent) => agent.id === agentId)?.workspaceId;
   if (!workspaceId) return null;
   const topLevel = agents.filter(
     (agent) =>
-      agent.workspaceId === workspaceId && !agent.archivedAt && !agent.labels[PARENT_AGENT_ID_LABEL],
+      agent.workspaceId === workspaceId &&
+      !agent.archivedAt &&
+      !agent.labels[PARENT_AGENT_ID_LABEL],
   );
-  return topLevel.length > 0 && topLevel.every((agent) => agent.id === agentId) ? workspaceId : null;
+  return topLevel.length > 0 && topLevel.every((agent) => agent.id === agentId)
+    ? workspaceId
+    : null;
 }
 
 /**

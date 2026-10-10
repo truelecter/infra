@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { completedTodos, latestTodos, readTodos, todoProgress, type Todo } from "./todos.ts";
+import {
+  completedTodos,
+  latestTodos,
+  readTodos,
+  todoProgress,
+  type Todo,
+} from "./todos.ts";
 
 const todos = [
   { content: "Plan", status: "completed", priority: "high" },
@@ -17,7 +23,13 @@ const list: Todo[] = [
 ];
 
 function call(status: string, input: unknown, name = "todowrite2") {
-  return { type: "tool_call", callId: "c", name, status, detail: { type: "unknown", input, output: null } };
+  return {
+    type: "tool_call",
+    callId: "c",
+    name,
+    status,
+    detail: { type: "unknown", input, output: null },
+  };
 }
 
 test("reads a list from an object or from streamed JSON text", () => {
@@ -25,7 +37,10 @@ test("reads a list from an object or from streamed JSON text", () => {
   assert.deepEqual(readTodos(JSON.stringify({ todos })), list);
   assert.equal(readTodos(""), null);
   assert.equal(readTodos('{"todos": [{"content": "Pl'), null);
-  assert.equal(readTodos({ todos: [{ content: "x", status: "blocked" }] }), null);
+  assert.equal(
+    readTodos({ todos: [{ content: "x", status: "blocked" }] }),
+    null,
+  );
 });
 
 test("only a completed todowrite2 call counts as the saved list", () => {
@@ -40,7 +55,11 @@ test("picks the newest completed list", () => {
   const older = { todos: [{ content: "Old", status: "pending" }] };
   const newer = { todos: [{ content: "New", status: "in_progress" }] };
   assert.deepEqual(
-    latestTodos([call("completed", older), call("completed", newer), call("running", older)]),
+    latestTodos([
+      call("completed", older),
+      call("completed", newer),
+      call("running", older),
+    ]),
     [{ content: "New", status: "in_progress" }],
   );
   assert.equal(latestTodos([call("running", newer)]), null);

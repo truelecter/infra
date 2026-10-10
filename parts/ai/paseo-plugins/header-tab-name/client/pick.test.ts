@@ -19,10 +19,16 @@ test("without a focused pane the first pane's tab is shown", () => {
 });
 
 test("a tab named like the workspace is not repeated", () => {
-  assert.equal(pickTabName([{ label: " Fix login ", focused: true }], "Fix login"), null);
+  assert.equal(
+    pickTabName([{ label: " Fix login ", focused: true }], "Fix login"),
+    null,
+  );
 });
 
 test("a tab whose title is still loading shows nothing", () => {
-  assert.equal(pickTabName([{ label: "  ", focused: true }], "Workspace"), null);
+  assert.equal(
+    pickTabName([{ label: "  ", focused: true }], "Workspace"),
+    null,
+  );
   assert.equal(pickTabName([], "Workspace"), null);
 });

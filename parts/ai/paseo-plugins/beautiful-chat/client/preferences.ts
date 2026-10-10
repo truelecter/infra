@@ -1,5 +1,9 @@
 import { useSyncExternalStore } from "react";
-import { DEFAULT_COLLAPSE_KINDS, parseCollapseKinds, type CollapseKinds } from "./collapse";
+import {
+  DEFAULT_COLLAPSE_KINDS,
+  parseCollapseKinds,
+  type CollapseKinds,
+} from "./collapse";
 
 export interface EnhancerPreferences {
   /** Which kinds of card stay closed while their call is still running. */
@@ -29,7 +33,8 @@ const DEFAULT_PREFERENCES: Readonly<EnhancerPreferences> = {
 
 /** A stored scale, clamped to the supported range; anything else is the default. */
 export function parseFontScale(value: unknown): number {
-  if (typeof value !== "number" || !Number.isFinite(value)) return DEFAULT_PREFERENCES.fontScale;
+  if (typeof value !== "number" || !Number.isFinite(value))
+    return DEFAULT_PREFERENCES.fontScale;
   return Math.min(FONT_SCALE_MAX, Math.max(FONT_SCALE_MIN, value));
 }
 
@@ -48,7 +53,9 @@ export function loadPreferences(): EnhancerPreferences {
   try {
     const stored = storage()?.getItem(STORAGE_KEY);
     if (!stored) return { ...DEFAULT_PREFERENCES };
-    const parsed = JSON.parse(stored) as Partial<Record<keyof EnhancerPreferences, unknown>>;
+    const parsed = JSON.parse(stored) as Partial<
+      Record<keyof EnhancerPreferences, unknown>
+    >;
     return {
       collapseRunning: parseCollapseKinds(parsed.collapseRunning),
       collapseFinished: parseCollapseKinds(parsed.collapseFinished),
@@ -77,11 +84,15 @@ export const preferences = {
   },
 };
 
-export function updateEnhancerPreferences(update: Partial<EnhancerPreferences>): void {
+export function updateEnhancerPreferences(
+  update: Partial<EnhancerPreferences>,
+): void {
   current = {
     ...current,
     ...update,
-    ...(update.fontScale !== undefined ? { fontScale: parseFontScale(update.fontScale) } : {}),
+    ...(update.fontScale !== undefined
+      ? { fontScale: parseFontScale(update.fontScale) }
+      : {}),
   };
   try {
     storage()?.setItem(STORAGE_KEY, JSON.stringify(current));
@@ -99,5 +110,9 @@ export function subscribeEnhancerPreferences(listener: () => void): () => void {
 }
 
 export function useEnhancerPreferences(): EnhancerPreferences {
-  return useSyncExternalStore(subscribeEnhancerPreferences, () => current, () => current);
+  return useSyncExternalStore(
+    subscribeEnhancerPreferences,
+    () => current,
+    () => current,
+  );
 }

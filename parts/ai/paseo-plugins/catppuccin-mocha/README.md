@@ -14,16 +14,16 @@ One `client.addTheme` call with a dark palette taken from the
 [Catppuccin Mocha](https://catppuccin.com/palette/) colors. Paseo expands those eight colors into
 its full token set, so panels, menus, diffs, status colors, and the terminal all follow it.
 
-| Paseo color | Mocha color | Hex |
-| --- | --- | --- |
-| `background` | base | `#1e1e2e` |
-| `foreground` | text | `#cdd6f4` |
-| `raised` | surface0 | `#313244` |
-| `control` | surface1 | `#45475a` |
-| `border` | surface1 | `#45475a` |
-| `accent` | mauve | `#cba6f7` |
-| `mutedForeground` | subtext0 | `#a6adc8` |
-| `ring` | overlay0 | `#6c7086` |
+| Paseo color       | Mocha color | Hex       |
+| ----------------- | ----------- | --------- |
+| `background`      | base        | `#1e1e2e` |
+| `foreground`      | text        | `#cdd6f4` |
+| `raised`          | surface0    | `#313244` |
+| `control`         | surface1    | `#45475a` |
+| `border`          | surface1    | `#45475a` |
+| `accent`          | mauve       | `#cba6f7` |
+| `mutedForeground` | subtext0    | `#a6adc8` |
+| `ring`            | overlay0    | `#6c7086` |
 
 There is no server entry, so no subprocess runs.
 

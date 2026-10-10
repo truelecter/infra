@@ -76,7 +76,10 @@ export function followTodos(
 
   const subscription = timeline.subscribe(({ event }) => {
     if (stopped) return;
-    if (event.type === "replacement" || event.type === "subscription_restored") {
+    if (
+      event.type === "replacement" ||
+      event.type === "subscription_restored"
+    ) {
       rescan();
       return;
     }

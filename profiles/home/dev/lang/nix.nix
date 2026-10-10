@@ -26,6 +26,9 @@ in {
       };
       "nix.enableLanguageServer" = true;
       "[nix]" = {"editor.formatOnSave" = true;};
+      "nix.hiddenLanguageServerErrors" = [
+        "textDocument/definition"
+      ];
     };
   };
 

@@ -53,7 +53,9 @@ export const changesSchema = z.strictObject({
 });
 export type Changes = z.infer<typeof changesSchema>;
 
-export const listInputSchema = z.object({ status: z.array(statusSchema).optional() });
+export const listInputSchema = z.object({
+  status: z.array(statusSchema).optional(),
+});
 
 export const itemListSchema = z.object({
   items: z.array(itemSchema),

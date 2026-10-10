@@ -6,7 +6,13 @@ import { enabledServers, missingServers, toolPrefix } from "./servers.ts";
 describe("enabledServers", () => {
   it("lists servers that are not disabled", () => {
     assert.deepEqual(
-      enabledServers({ mcpServers: { tracker: { command: "x" }, old: { command: "y", enabled: false }, web: { url: "u" } } }),
+      enabledServers({
+        mcpServers: {
+          tracker: { command: "x" },
+          old: { command: "y", enabled: false },
+          web: { url: "u" },
+        },
+      }),
       ["tracker", "web"],
     );
   });

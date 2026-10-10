@@ -42,7 +42,12 @@ export class ChallengeBroker {
    * `waitMs` or `signal` aborts (the script gave up). A newer challenge replaces an
    * older one that is still waiting.
    */
-  request(config: string, prompt: string, waitMs: number, signal?: AbortSignal): Promise<string | null> {
+  request(
+    config: string,
+    prompt: string,
+    waitMs: number,
+    signal?: AbortSignal,
+  ): Promise<string | null> {
     const queued = this.takeQueued();
     if (queued !== null) return Promise.resolve(queued);
     this.#finish(null);
@@ -59,7 +64,9 @@ export class ChallengeBroker {
       timer: setTimeout(() => this.#finish(null, waiter), waitMs),
     };
     this.#waiter = waiter;
-    signal?.addEventListener("abort", () => this.#finish(null, waiter), { once: true });
+    signal?.addEventListener("abort", () => this.#finish(null, waiter), {
+      once: true,
+    });
     return promise;
   }
 
@@ -78,7 +85,12 @@ export class ChallengeBroker {
     const queued = this.#liveQueued();
     return {
       challenge: waiter
-        ? { config: waiter.config, prompt: waiter.prompt, since: waiter.since, deadline: waiter.deadline }
+        ? {
+            config: waiter.config,
+            prompt: waiter.prompt,
+            since: waiter.since,
+            deadline: waiter.deadline,
+          }
         : null,
       queuedCode: queued ? { expiresAt: queued.expiresAt } : null,
     };
@@ -91,7 +103,8 @@ export class ChallengeBroker {
   }
 
   #liveQueued() {
-    if (this.#queued && this.#queued.expiresAt <= this.#now()) this.#queued = null;
+    if (this.#queued && this.#queued.expiresAt <= this.#now())
+      this.#queued = null;
     return this.#queued;
   }
 

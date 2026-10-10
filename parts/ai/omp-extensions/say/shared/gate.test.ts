@@ -11,22 +11,43 @@ import {
 } from "./gate.ts";
 
 const explanation = "x".repeat(MIN_TEXT_CHARS);
-const call = (id: string) => ({ type: "toolCall", id, name: "ask", arguments: {} });
+const call = (id: string) => ({
+  type: "toolCall",
+  id,
+  name: "ask",
+  arguments: {},
+});
 
 test("reply text counts only before the call, trimmed, and thinking never counts", () => {
   const padded = `\n\n${"y".repeat(MIN_TEXT_CHARS - 1)}   \n`;
   const message = {
     role: "assistant",
-    content: [{ type: "thinking", thinking: explanation }, { type: "text", text: padded }, call("a"), { type: "text", text: explanation }],
+    content: [
+      { type: "thinking", thinking: explanation },
+      { type: "text", text: padded },
+      call("a"),
+      { type: "text", text: explanation },
+    ],
   };
   assert.equal(textBefore(message, "a"), MIN_TEXT_CHARS - 1);
   assert.equal(textBefore(message, "b"), undefined, "call not in this message");
 });
 
 test("an explaining reply has enough text and no tool calls", () => {
-  assert.equal(isExplainingReply({ content: [{ type: "text", text: explanation }] }), true);
-  assert.equal(isExplainingReply({ content: [{ type: "text", text: "Next I'll ask." }] }), false);
-  assert.equal(isExplainingReply({ content: [{ type: "text", text: explanation }, call("a")] }), false);
+  assert.equal(
+    isExplainingReply({ content: [{ type: "text", text: explanation }] }),
+    true,
+  );
+  assert.equal(
+    isExplainingReply({ content: [{ type: "text", text: "Next I'll ask." }] }),
+    false,
+  );
+  assert.equal(
+    isExplainingReply({
+      content: [{ type: "text", text: explanation }, call("a")],
+    }),
+    false,
+  );
   assert.equal(isExplainingReply(undefined), false);
 });
 
@@ -94,7 +115,8 @@ test("a say that no ask used does not carry into the next run", () => {
 
 test("after the cap one bare ask goes through, then enforcement resumes", () => {
   const gate = new AskGate();
-  for (let i = 0; i < MAX_BLOCKS_IN_A_ROW; i++) assert.ok(gate.check(0), `block ${i + 1}`);
+  for (let i = 0; i < MAX_BLOCKS_IN_A_ROW; i++)
+    assert.ok(gate.check(0), `block ${i + 1}`);
   assert.equal(gate.check(0), undefined);
   assert.ok(gate.check(0));
 });
@@ -103,7 +125,11 @@ test("a passing ask and a new run both reset the block count", () => {
   const gate = new AskGate();
   for (let i = 0; i < MAX_BLOCKS_IN_A_ROW - 1; i++) gate.check(0);
   gate.check(MIN_TEXT_CHARS);
-  for (let i = 0; i < MAX_BLOCKS_IN_A_ROW; i++) assert.ok(gate.check(0), `after pass, block ${i + 1}`);
+  for (let i = 0; i < MAX_BLOCKS_IN_A_ROW; i++)
+    assert.ok(gate.check(0), `after pass, block ${i + 1}`);
   gate.runStarted();
-  assert.ok(gate.check(0), "new run blocks again instead of passing on the cap");
+  assert.ok(
+    gate.check(0),
+    "new run blocks again instead of passing on the cap",
+  );
 });

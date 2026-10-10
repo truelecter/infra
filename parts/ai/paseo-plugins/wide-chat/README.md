@@ -35,10 +35,10 @@ Android it does nothing; phones are narrower than 820 px anyway.
 **Settings → Plugins → wide-chat → Chat width**, or **Chat width settings** in the Command Center
 (⌘K):
 
-| Setting | Default | Choices |
-| --- | --- | --- |
-| Width | 90% of the pane | 70–100% |
-| Maximum width | No limit | 1000–2560 px |
+| Setting       | Default         | Choices      |
+| ------------- | --------------- | ------------ |
+| Width         | 90% of the pane | 70–100%      |
+| Maximum width | No limit        | 1000–2560 px |
 
 Settings are stored on the daemon (host scope), so every client of that daemon shares them.
 The window that changes a setting applies it at once. Other windows pick it up when they get

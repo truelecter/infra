@@ -22,10 +22,10 @@ A group appears where its first project would be in Paseo's order, and its other
 
 ## Where things are stored
 
-| What | Where | Shared |
-| --- | --- | --- |
-| Button assignments | Daemon plugin settings, `~/.paseo/plugin-settings/project-groups/groups.json` | All clients of that daemon |
-| Collapsed groups | Browser storage, `paseo-plugin:project-groups:collapsed` | This window only (like Paseo's own collapse state) |
+| What               | Where                                                                         | Shared                                             |
+| ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------- |
+| Button assignments | Daemon plugin settings, `~/.paseo/plugin-settings/project-groups/groups.json` | All clients of that daemon                         |
+| Collapsed groups   | Browser storage, `paseo-plugin:project-groups:collapsed`                      | This window only (like Paseo's own collapse state) |
 
 An assignment is keyed by the project's sidebar key and holds a group path. An empty path keeps a `/`-named project out of the group its name implies. Other windows pick up changes when they get focus.
 

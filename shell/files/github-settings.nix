@@ -1,0 +1,39 @@
+{
+  perSystem = {pkgs, ...}: {
+    files.file.".github/settings.yml".source = (pkgs.formats.yaml {}).generate "settings.yml" {
+      repository = {
+        name = "infra";
+        description = "My Nix-managed stuff configuration";
+        topics = "nix, nixos, nix-darwin, flake-parts, flake, flakes, nix-flake, nix-flakes, haumea, deploy-rs";
+        default_branch = "master";
+        allow_squash_merge = true;
+        allow_merge_commit = true;
+        allow_rebase_merge = false;
+        delete_branch_on_merge = true;
+        private = false;
+        has_issues = false;
+        has_projects = false;
+        has_wiki = false;
+        has_downloads = false;
+      };
+      branches = [
+        {
+          name = "master";
+          protection = {
+            required_pull_request_reviews = null;
+            required_status_checks = {
+              strict = true;
+              contexts = [
+                "shells_aggregated"
+                "hosts_aggregated"
+                "paseo_e2e_aggregated"
+              ];
+            };
+            enforce_admins = false;
+            restrictions = null;
+          };
+        }
+      ];
+    };
+  };
+}

@@ -37,13 +37,19 @@ export default function contribute(server: PluginServerContext) {
     try {
       await openvpnConnect.answer(queued);
     } catch (error) {
-      return { ...app, error: error instanceof Error ? error.message : String(error) };
+      return {
+        ...app,
+        error: error instanceof Error ? error.message : String(error),
+      };
     }
     return openvpnConnect.readStatus();
   }
 
   async function status(): Promise<VpnStatus> {
-    const [tunnelblickStatus, app] = await Promise.all([readTunnelblick(), readOpenvpnConnect()]);
+    const [tunnelblickStatus, app] = await Promise.all([
+      readTunnelblick(),
+      readOpenvpnConnect(),
+    ]);
     const { challenge, queuedCode } = broker.snapshot();
     return {
       ...tunnelblickStatus,
@@ -53,7 +59,9 @@ export default function contribute(server: PluginServerContext) {
         since: new Date(challenge.since).toISOString(),
         deadline: new Date(challenge.deadline).toISOString(),
       },
-      queuedCode: queuedCode && { expiresAt: new Date(queuedCode.expiresAt).toISOString() },
+      queuedCode: queuedCode && {
+        expiresAt: new Date(queuedCode.expiresAt).toISOString(),
+      },
       openvpnConnect: app,
     };
   }
@@ -70,7 +78,10 @@ export default function contribute(server: PluginServerContext) {
   });
   server.handle(sendCode, async ({ code }) => {
     // Tunnelblick's script waits in the broker; OpenVPN Connect waits in its own dialog.
-    if (!broker.snapshot().challenge && (await openvpnConnect.readStatus()).challenge) {
+    if (
+      !broker.snapshot().challenge &&
+      (await openvpnConnect.readStatus()).challenge
+    ) {
       await openvpnConnect.answer(code);
     } else {
       broker.answer(code);
@@ -98,7 +109,9 @@ export default function contribute(server: PluginServerContext) {
   const socketPath = join(vpnDir(), "vpn.sock");
   const started = listen(createChallengeServer(broker), socketPath).then(
     (stop) => {
-      console.log(`[vpn] Listening for Tunnelblick challenges on ${socketPath}`);
+      console.log(
+        `[vpn] Listening for Tunnelblick challenges on ${socketPath}`,
+      );
       return stop;
     },
     (error: unknown) => {
@@ -109,6 +122,8 @@ export default function contribute(server: PluginServerContext) {
 
   return async () => {
     broker.close();
-    await (await started)?.();
+    await (
+      await started
+    )?.();
   };
 }

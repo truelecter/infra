@@ -15,7 +15,10 @@ export default function hideDeniedTools(pi: ExtensionAPI): void {
   async function sync(): Promise<void> {
     const policy = approval?.get(pi.pi.settings);
     if (!policy || typeof policy !== "object") return;
-    const next = withoutDenied(pi.getActiveTools(), policy as Record<string, unknown>);
+    const next = withoutDenied(
+      pi.getActiveTools(),
+      policy as Record<string, unknown>,
+    );
     if (next) await pi.setActiveTools(next);
   }
 

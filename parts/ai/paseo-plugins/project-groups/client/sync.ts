@@ -15,7 +15,10 @@ export type SettingsWrite =
 
 export interface AssignmentSyncOptions {
   read(): Promise<SettingsRead>;
-  write(revision: string, values: { assignments: Record<string, string> }): Promise<SettingsWrite>;
+  write(
+    revision: string,
+    values: { assignments: Record<string, string> },
+  ): Promise<SettingsWrite>;
   parse(values: unknown): Assignments;
   onChange(assignments: Assignments): void;
   onError(error: unknown): void;
@@ -32,7 +35,9 @@ export interface AssignmentSync {
 
 const MAX_ATTEMPTS = 3;
 
-export function createAssignmentSync(options: AssignmentSyncOptions): AssignmentSync {
+export function createAssignmentSync(
+  options: AssignmentSyncOptions,
+): AssignmentSync {
   let revision: string | null = null;
   let stored: Assignments = {};
   let shown: Assignments = {};

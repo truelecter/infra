@@ -1,13 +1,28 @@
-import type { PluginHookContext, PluginServerContext } from "@getpaseo/plugin/server";
-import { soleAgentWorkspace, TitleTracker, type AgentInfo } from "./server/title-sync.ts";
+import type {
+  PluginHookContext,
+  PluginServerContext,
+} from "@getpaseo/plugin/server";
+import {
+  soleAgentWorkspace,
+  TitleTracker,
+  type AgentInfo,
+} from "./server/title-sync.ts";
 
-async function listAgents({ paseo, signal }: PluginHookContext): Promise<AgentInfo[]> {
+async function listAgents({
+  paseo,
+  signal,
+}: PluginHookContext): Promise<AgentInfo[]> {
   const agents: AgentInfo[] = [];
   let cursor: string | undefined;
   do {
-    const page = await paseo.agents.list({ page: { limit: 200, cursor }, signal });
+    const page = await paseo.agents.list({
+      page: { limit: 200, cursor },
+      signal,
+    });
     agents.push(...page.entries.map((entry) => entry.agent));
-    cursor = page.pageInfo.hasMore ? (page.pageInfo.nextCursor ?? undefined) : undefined;
+    cursor = page.pageInfo.hasMore
+      ? (page.pageInfo.nextCursor ?? undefined)
+      : undefined;
   } while (cursor);
   return agents;
 }
@@ -17,7 +32,9 @@ export default function contribute(server: PluginServerContext) {
 
   server.on("agent.turn_started", async ({ agent }, context) => {
     if (agent.parentAgentId || !agent.workspaceId) return;
-    const current = (await listAgents(context)).find((entry) => entry.id === agent.id);
+    const current = (await listAgents(context)).find(
+      (entry) => entry.id === agent.id,
+    );
     if (current) titles.started(agent.id, current.title);
   });
 
@@ -31,7 +48,9 @@ export default function contribute(server: PluginServerContext) {
     const workspaceId = soleAgentWorkspace(agents, agent.id);
     if (!workspaceId) return;
     await context.paseo.workspaces.ref(workspaceId).setTitle(title);
-    console.log(`Workspace ${workspaceId} renamed after agent ${agent.id}: ${title}`);
+    console.log(
+      `Workspace ${workspaceId} renamed after agent ${agent.id}: ${title}`,
+    );
   });
 
   server.on("agent.archived", ({ agent }) => titles.forget(agent.id));

@@ -3,7 +3,10 @@ export function enabledServers(config: unknown): string[] {
   const servers = (config as { mcpServers?: unknown } | null)?.mcpServers;
   if (!servers || typeof servers !== "object") return [];
   return Object.entries(servers as Record<string, unknown>)
-    .filter(([, server]) => (server as { enabled?: unknown } | null)?.enabled !== false)
+    .filter(
+      ([, server]) =>
+        (server as { enabled?: unknown } | null)?.enabled !== false,
+    )
     .map(([name]) => name);
 }
 
@@ -17,7 +20,10 @@ export function toolPrefix(server: string): string {
 }
 
 /** Servers none of whose tools are enabled yet. */
-export function missingServers(servers: readonly string[], enabledTools: readonly string[]): string[] {
+export function missingServers(
+  servers: readonly string[],
+  enabledTools: readonly string[],
+): string[] {
   return servers.filter((server) => {
     const prefix = toolPrefix(server);
     return !enabledTools.some((tool) => tool.toLowerCase().startsWith(prefix));

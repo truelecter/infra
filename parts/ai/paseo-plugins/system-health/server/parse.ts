@@ -1,6 +1,12 @@
 /** Parsers for the macOS tools the plugin samples: top, vm_stat, sysctl, ps, and lsof. */
 
-const UNITS: Record<string, number> = { B: 1, K: 1024, M: 1024 ** 2, G: 1024 ** 3, T: 1024 ** 4 };
+const UNITS: Record<string, number> = {
+  B: 1,
+  K: 1024,
+  M: 1024 ** 2,
+  G: 1024 ** 3,
+  T: 1024 ** 4,
+};
 
 /** A size as top prints it, such as `2929M`, `560K+`, or `0B`. */
 export function parseSize(text: string): number {
@@ -25,14 +31,19 @@ export interface TopSample {
  * sample has no CPU deltas yet.
  */
 export function parseTop(output: string): TopSample {
-  const samples = output.split(/^(?=Processes: )/m).filter((part) => part.startsWith("Processes: "));
+  const samples = output
+    .split(/^(?=Processes: )/m)
+    .filter((part) => part.startsWith("Processes: "));
   const last = samples.at(-1);
   if (!last) throw new Error("top printed no sample");
-  const cpuLine = /^CPU usage: ([\d.]+)% user, ([\d.]+)% sys, ([\d.]+)% idle/m.exec(last);
+  const cpuLine =
+    /^CPU usage: ([\d.]+)% user, ([\d.]+)% sys, ([\d.]+)% idle/m.exec(last);
   if (!cpuLine) throw new Error("top printed no CPU usage line");
   const processes = new Map<number, TopUsage>();
   const lines = last.split("\n");
-  const header = lines.findIndex((line) => /^PID\s+MEM\s+CMPRS\s+%CPU/.test(line));
+  const header = lines.findIndex((line) =>
+    /^PID\s+MEM\s+CMPRS\s+%CPU/.test(line),
+  );
   if (header < 0) throw new Error("top printed no process table");
   for (const line of lines.slice(header + 1)) {
     const fields = line.trim().split(/\s+/);
@@ -46,7 +57,11 @@ export function parseTop(output: string): TopSample {
     });
   }
   return {
-    cpu: { userPercent: Number(cpuLine[1]), sysPercent: Number(cpuLine[2]), idlePercent: Number(cpuLine[3]) },
+    cpu: {
+      userPercent: Number(cpuLine[1]),
+      sysPercent: Number(cpuLine[2]),
+      idlePercent: Number(cpuLine[3]),
+    },
     processes,
   };
 }
@@ -73,13 +88,17 @@ export function parseSysctl(output: string): Map<string, string> {
   const values = new Map<string, string>();
   for (const line of output.split("\n")) {
     const colon = line.indexOf(": ");
-    if (colon > 0) values.set(line.slice(0, colon), line.slice(colon + 2).trim());
+    if (colon > 0)
+      values.set(line.slice(0, colon), line.slice(colon + 2).trim());
   }
   return values;
 }
 
 /** `vm.swapusage`: `total = 9216.00M  used = 8670.62M  free = 545.38M  (encrypted)`. */
-export function parseSwap(value: string): { usedBytes: number; totalBytes: number } {
+export function parseSwap(value: string): {
+  usedBytes: number;
+  totalBytes: number;
+} {
   const total = /total = ([\d.]+[BKMGT])/.exec(value);
   const used = /used = ([\d.]+[BKMGT])/.exec(value);
   if (!total || !used) throw new Error(`Unexpected vm.swapusage: ${value}`);
@@ -89,7 +108,8 @@ export function parseSwap(value: string): { usedBytes: number; totalBytes: numbe
 /** `vm.loadavg`: `{ 9.41 14.95 14.96 }`. */
 export function parseLoad(value: string): [number, number, number] {
   const numbers = value.replace(/[{}]/g, " ").trim().split(/\s+/).map(Number);
-  if (numbers.length < 3 || numbers.some((n) => !Number.isFinite(n))) throw new Error(`Unexpected vm.loadavg: ${value}`);
+  if (numbers.length < 3 || numbers.some((n) => !Number.isFinite(n)))
+    throw new Error(`Unexpected vm.loadavg: ${value}`);
   return [numbers[0]!, numbers[1]!, numbers[2]!];
 }
 
@@ -98,7 +118,12 @@ export function parseEtime(text: string): number {
   const match = /^(?:(\d+)-)?(?:(\d+):)?(\d+):(\d+)$/.exec(text.trim());
   if (!match) throw new Error(`Unexpected elapsed time: ${text}`);
   const [, days, hours, minutes, seconds] = match;
-  return Number(days ?? 0) * 86400 + Number(hours ?? 0) * 3600 + Number(minutes) * 60 + Number(seconds);
+  return (
+    Number(days ?? 0) * 86400 +
+    Number(hours ?? 0) * 3600 +
+    Number(minutes) * 60 +
+    Number(seconds)
+  );
 }
 
 export interface PsEntry {

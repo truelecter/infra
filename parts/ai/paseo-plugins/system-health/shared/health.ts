@@ -12,7 +12,10 @@ export const screenSettings = defineSettings({
     refreshSeconds: z
       .number()
       .int()
-      .refine((value) => (REFRESH_CHOICES as readonly number[]).includes(value), "Unsupported interval")
+      .refine(
+        (value) => (REFRESH_CHOICES as readonly number[]).includes(value),
+        "Unsupported interval",
+      )
       .default(0),
   }),
 });

@@ -78,28 +78,54 @@ function timeoutSignal(ms: number): AbortSignal {
 }
 
 async function pageSocketUrl(): Promise<string | null> {
-  const targets = await fetch(`${DEVTOOLS}/json/list`, { signal: timeoutSignal(2_000) })
-    .then((response) => response.json() as Promise<{ type: string; webSocketDebuggerUrl: string }[]>)
+  const targets = await fetch(`${DEVTOOLS}/json/list`, {
+    signal: timeoutSignal(2_000),
+  })
+    .then(
+      (response) =>
+        response.json() as Promise<
+          { type: string; webSocketDebuggerUrl: string }[]
+        >,
+    )
     .catch(() => null);
-  return targets?.find((target) => target.type === "page")?.webSocketDebuggerUrl ?? null;
+  return (
+    targets?.find((target) => target.type === "page")?.webSocketDebuggerUrl ??
+    null
+  );
 }
 
 /** Evaluates `expression` in the app's window and returns its JSON value. */
-async function evaluate(socketUrl: string, expression: string): Promise<unknown> {
+async function evaluate(
+  socketUrl: string,
+  expression: string,
+): Promise<unknown> {
   const socket = new WebSocket(socketUrl);
   const { promise, resolve, reject } = Promise.withResolvers<unknown>();
-  const timer = setTimeout(() => reject(new Error("OpenVPN Connect did not answer")), TIMEOUT_MS);
+  const timer = setTimeout(
+    () => reject(new Error("OpenVPN Connect did not answer")),
+    TIMEOUT_MS,
+  );
   socket.addEventListener("open", () =>
-    socket.send(JSON.stringify({ id: 1, method: "Runtime.evaluate", params: { expression, returnByValue: true } })),
+    socket.send(
+      JSON.stringify({
+        id: 1,
+        method: "Runtime.evaluate",
+        params: { expression, returnByValue: true },
+      }),
+    ),
   );
   socket.addEventListener("message", (event) => {
     const message = JSON.parse(String(event.data));
     if (message.id !== 1) return;
-    const failure = message.error?.message ?? message.result?.exceptionDetails?.exception?.description;
+    const failure =
+      message.error?.message ??
+      message.result?.exceptionDetails?.exception?.description;
     if (failure) reject(new Error(String(failure).split("\n")[0]));
     else resolve(message.result?.result?.value);
   });
-  socket.addEventListener("error", () => reject(new Error("Could not talk to OpenVPN Connect")));
+  socket.addEventListener("error", () =>
+    reject(new Error("Could not talk to OpenVPN Connect")),
+  );
   try {
     return await promise;
   } finally {
@@ -109,18 +135,31 @@ async function evaluate(socketUrl: string, expression: string): Promise<unknown>
 }
 
 export async function readStatus(): Promise<AppStatus> {
-  const idle = { state: "", profiles: [], connectedProfileId: null, challenge: null };
+  const idle = {
+    state: "",
+    profiles: [],
+    connectedProfileId: null,
+    challenge: null,
+  };
   const installed = await access(BINARY).then(
     () => true,
     () => false,
   );
   if (!installed) return { app: "missing", ...idle };
   const socketUrl = await pageSocketUrl();
-  if (!socketUrl) return { app: (await isRunning()) ? "no-remote" : "stopped", ...idle };
+  if (!socketUrl)
+    return { app: (await isRunning()) ? "no-remote" : "stopped", ...idle };
   try {
-    return { app: "running", ...((await evaluate(socketUrl, STATUS_SCRIPT)) as Omit<AppStatus, "app">) };
+    return {
+      app: "running",
+      ...((await evaluate(socketUrl, STATUS_SCRIPT)) as Omit<AppStatus, "app">),
+    };
   } catch (error) {
-    return { app: "running", ...idle, error: error instanceof Error ? error.message : String(error) };
+    return {
+      app: "running",
+      ...idle,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 
@@ -134,14 +173,19 @@ export async function answer(code: string): Promise<void> {
 
 /** Starts connecting the profile; the app's code dialog follows if the server asks. */
 export async function connect(profileId: string): Promise<void> {
-  await run(BINARY, [`--connect-shortcut=${profileId}`], { timeout: TIMEOUT_MS });
+  await run(BINARY, [`--connect-shortcut=${profileId}`], {
+    timeout: TIMEOUT_MS,
+  });
 }
 
 export async function disconnect(): Promise<void> {
   await run(BINARY, ["--disconnect-shortcut"], { timeout: TIMEOUT_MS });
 }
 
-async function waitFor(check: () => Promise<boolean>, what: string): Promise<void> {
+async function waitFor(
+  check: () => Promise<boolean>,
+  what: string,
+): Promise<void> {
   for (let elapsed = 0; elapsed < TIMEOUT_MS; elapsed += 250) {
     if (await check()) return;
     const { promise, resolve } = Promise.withResolvers<void>();
@@ -159,10 +203,15 @@ async function waitFor(check: () => Promise<boolean>, what: string): Promise<voi
  */
 export async function restartWithRemoteControl(): Promise<void> {
   if (await isRunning()) {
-    await run("/usr/bin/osascript", ["-e", 'quit app "OpenVPN Connect"'], { timeout: TIMEOUT_MS });
+    await run("/usr/bin/osascript", ["-e", 'quit app "OpenVPN Connect"'], {
+      timeout: TIMEOUT_MS,
+    });
     await waitFor(async () => !(await isRunning()), "quit");
   }
-  spawn(BINARY, ["--relaunch", `--remote-debugging-port=${DEBUG_PORT}`], { detached: true, stdio: "ignore" }).unref();
+  spawn(BINARY, ["--relaunch", `--remote-debugging-port=${DEBUG_PORT}`], {
+    detached: true,
+    stdio: "ignore",
+  }).unref();
   const devtoolsUp = () =>
     fetch(`${DEVTOOLS}/json/version`, { signal: timeoutSignal(1_000) }).then(
       (response) => response.ok,

@@ -12,7 +12,9 @@ export interface PaseoEnv {
 }
 
 /** The Paseo environment, or null when this process does not run under Paseo. */
-export function readPaseoEnv(env: Record<string, string | undefined>): PaseoEnv | null {
+export function readPaseoEnv(
+  env: Record<string, string | undefined>,
+): PaseoEnv | null {
   const agentId = env.PASEO_AGENT_ID?.trim();
   const cli = env.PASEO_CLI?.trim();
   // The id goes into a tool description and a CLI argument; accept plain ids only.

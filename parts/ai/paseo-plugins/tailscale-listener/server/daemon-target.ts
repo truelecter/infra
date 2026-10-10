@@ -47,7 +47,9 @@ export function readDaemonSettings(
   } catch (error) {
     const code = (error as NodeJS.ErrnoException).code;
     if (code !== "ENOENT") {
-      console.warn(`Could not read ${configPath}; assuming defaults: ${String(error)}`);
+      console.warn(
+        `Could not read ${configPath}; assuming defaults: ${String(error)}`,
+      );
     }
   }
 
@@ -67,19 +69,25 @@ export function readDaemonSettings(
 
 export function parseListen(listen: string): DaemonTarget | null {
   const value = listen.trim();
-  if (value.startsWith("pipe://") || value.startsWith("\\\\.\\pipe\\")) return null;
-  if (value.startsWith("unix://")) return { kind: "socket", path: expandHome(value.slice(7)) };
+  if (value.startsWith("pipe://") || value.startsWith("\\\\.\\pipe\\"))
+    return null;
+  if (value.startsWith("unix://"))
+    return { kind: "socket", path: expandHome(value.slice(7)) };
   if (value.startsWith("/") || value.startsWith("~")) {
     return { kind: "socket", path: expandHome(value) };
   }
-  if (/^\d+$/.test(value)) return { kind: "tcp", host: "127.0.0.1", port: Number(value) };
+  if (/^\d+$/.test(value))
+    return { kind: "tcp", host: "127.0.0.1", port: Number(value) };
 
   const colon = value.lastIndexOf(":");
   if (colon === -1) return null;
   const rawHost = value.slice(0, colon);
   const port = Number(value.slice(colon + 1));
   if (!Number.isInteger(port) || port <= 0 || port > 65535) return null;
-  const host = rawHost.startsWith("[") && rawHost.endsWith("]") ? rawHost.slice(1, -1) : rawHost;
+  const host =
+    rawHost.startsWith("[") && rawHost.endsWith("]")
+      ? rawHost.slice(1, -1)
+      : rawHost;
   return { kind: "tcp", host: host || "127.0.0.1", port };
 }
 
@@ -96,7 +104,10 @@ export function isLoopbackHost(host: string): boolean {
 export function planForwarding(settings: DaemonSettings): ForwardingPlan {
   const upstream = parseListen(settings.listen);
   if (!upstream) {
-    return { kind: "skip", reason: `Unsupported daemon listen address "${settings.listen}".` };
+    return {
+      kind: "skip",
+      reason: `Unsupported daemon listen address "${settings.listen}".`,
+    };
   }
   if (upstream.kind === "tcp" && !isLoopbackHost(upstream.host)) {
     return {
@@ -109,5 +120,7 @@ export function planForwarding(settings: DaemonSettings): ForwardingPlan {
 }
 
 export function describeTarget(target: DaemonTarget): string {
-  return target.kind === "tcp" ? `${target.host}:${target.port}` : `unix://${target.path}`;
+  return target.kind === "tcp"
+    ? `${target.host}:${target.port}`
+    : `unix://${target.path}`;
 }

@@ -82,6 +82,8 @@ A development shell is available with useful utilities:
 nix develop
 ```
 
+Entering the shell writes the config files generated from Nix (`.editorconfig`, `.conform.yaml`, `.github/settings.yml`, see `shell/files/`) and installs the git hooks: treefmt on commit and conform on the commit message. `nix fmt` formats the whole repository, and `nix flake check` fails when a generated file or the formatting is out of date.
+
 ## Resources
 
 ### Core
@@ -96,7 +98,9 @@ nix develop
 ### Repo management
 
 - [numtide/devshell](https://github.com/numtide/devshell) - Shell environment for all the tools for this flake.
-- [nix-community/nixago](https://github.com/nix-community/nixago) - Repo config file management.
+- [mightyiam/files](https://github.com/mightyiam/files) - Repo config files generated from Nix.
+- [numtide/treefmt-nix](https://github.com/numtide/treefmt-nix) - Formatters for `nix fmt` and the pre-commit hook.
+- [cachix/git-hooks.nix](https://github.com/cachix/git-hooks.nix) - Git hooks, run with prek.
 - [berberman/nvfetcher](https://github.com/berberman/nvfetcher) - Source version management.
 
 ### Libraries
@@ -115,5 +119,6 @@ nix develop
 ## Previous configurations
 
 This is a third iteration of repository structure. You can find previous attempts here:
+
 - [divnix/digga](https://github.com/divnix/digga)-based - [truelecter/infra@old-digga-config](https://github.com/truelecter/infra/tree/old-digga-config)
 - [divnix/hive](https://github.com/divnix/hive)-based - [truelecter/infra@old-hive-config](https://github.com/truelecter/infra/tree/old-hive-config)

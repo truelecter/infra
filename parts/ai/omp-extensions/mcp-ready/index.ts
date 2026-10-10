@@ -28,7 +28,12 @@ export default function mcpReady(pi: ExtensionAPI): void {
     // The same user and project files OMP reads: mcp.json and .mcp.json in each.
     const dirs = [getAgentDir(), join(cwd, ".omp")];
     const servers = [
-      ...new Set(dirs.flatMap((dir) => [...readServers(join(dir, "mcp.json")), ...readServers(join(dir, ".mcp.json"))])),
+      ...new Set(
+        dirs.flatMap((dir) => [
+          ...readServers(join(dir, "mcp.json")),
+          ...readServers(join(dir, ".mcp.json")),
+        ]),
+      ),
     ];
     const deadline = Date.now() + TIMEOUT_MS;
     let missing = missingServers(servers, pi.getActiveTools());
@@ -37,7 +42,9 @@ export default function mcpReady(pi: ExtensionAPI): void {
       missing = missingServers(servers, pi.getActiveTools());
     }
     if (missing.length > 0) {
-      console.error(`[mcp-ready] no tools from ${missing.join(", ")} after ${TIMEOUT_MS} ms; continuing without`);
+      console.error(
+        `[mcp-ready] no tools from ${missing.join(", ")} after ${TIMEOUT_MS} ms; continuing without`,
+      );
     }
   }
 

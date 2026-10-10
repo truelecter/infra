@@ -2,7 +2,12 @@ import { z } from "zod";
 
 export const TODO_TOOL = "todowrite2";
 
-const todoStatusSchema = z.enum(["pending", "in_progress", "completed", "cancelled"]);
+const todoStatusSchema = z.enum([
+  "pending",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
 
 const todoSchema = z.object({
   content: z.string(),
@@ -28,14 +33,19 @@ export interface TodoToolCall {
 
 // While the call streams, OpenCode sends the input as raw JSON text.
 export function readTodos(input: unknown): Todo[] | null {
-  const parsed = todoListSchema.safeParse(typeof input === "string" ? parseJson(input) : input);
+  const parsed = todoListSchema.safeParse(
+    typeof input === "string" ? parseJson(input) : input,
+  );
   return parsed.success ? parsed.data.todos : null;
 }
 
 export function readTodoToolCall(item: unknown): TodoToolCall | null {
   const parsed = toolCallSchema.safeParse(item);
   if (!parsed.success) return null;
-  return { status: parsed.data.status, todos: readTodos(parsed.data.detail.input) };
+  return {
+    status: parsed.data.status,
+    todos: readTodos(parsed.data.detail.input),
+  };
 }
 
 // The list the agent last saved: only a completed call reached the tool.

@@ -7,7 +7,10 @@ declare module "@oh-my-pi/pi-coding-agent" {
   export interface ExtensionAPI {
     /** Package exports; `settings` is the scope that registry handles read from. */
     pi: { settings: unknown };
-    on(event: "session_start" | "before_agent_start" | "turn_start", handler: () => Promise<void> | void): void;
+    on(
+      event: "session_start" | "before_agent_start" | "turn_start",
+      handler: () => Promise<void> | void,
+    ): void;
     getActiveTools(): string[];
     setActiveTools(toolNames: string[]): Promise<void>;
   }

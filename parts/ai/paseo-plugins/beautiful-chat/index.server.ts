@@ -1,5 +1,9 @@
 import type { PluginServerContext } from "@getpaseo/plugin/server";
-import { type HighlightLine, type HighlightToken, highlightRpc } from "./shared/highlight-rpc";
+import {
+  type HighlightLine,
+  type HighlightToken,
+  highlightRpc,
+} from "./shared/highlight-rpc";
 
 const DARK_THEME = "github-dark-default";
 const LIGHT_THEME = "github-light-default";
@@ -192,7 +196,10 @@ function fromFileName(name: string): string | null {
  * fall through to the file name, and null when it names plain text, which is
  * an answer and must not fall through.
  */
-function fromHint(loaded: Set<string>, hint: string): string | null | undefined {
+function fromHint(
+  loaded: Set<string>,
+  hint: string,
+): string | null | undefined {
   const key = hint.trim().toLowerCase();
   if (!key) return undefined;
   if (Object.hasOwn(ALIASES, key)) {
@@ -244,17 +251,24 @@ function measure(code: string): { lines: number; longest: number } {
 
 /** One token per line, uncoloured, so the client still renders the text. */
 function plainLines(code: string): HighlightLine[] {
-  return splitLines(code).map((text) => (text === "" ? [] : [{ text, color: null }]));
+  return splitLines(code).map((text) =>
+    text === "" ? [] : [{ text, color: null }],
+  );
 }
 
-function toLines(tokenLines: readonly (readonly ShikiToken[])[]): HighlightLine[] {
+function toLines(
+  tokenLines: readonly (readonly ShikiToken[])[],
+): HighlightLine[] {
   return tokenLines.map((tokens) => {
     const line: HighlightLine = [];
     for (const token of tokens) {
       // An empty run carries no glyphs, and dropping it keeps the wire small.
       if (token.content === "") continue;
       const style = token.fontStyle ?? 0;
-      const out: HighlightToken = { text: token.content, color: token.color ?? null };
+      const out: HighlightToken = {
+        text: token.content,
+        color: token.color ?? null,
+      };
       if ((style & FONT_STYLE_BOLD) !== 0) out.bold = true;
       if ((style & FONT_STYLE_ITALIC) !== 0) out.italic = true;
       line.push(out);
@@ -317,7 +331,9 @@ function tokenize(
   if (cached !== undefined) return cached;
 
   try {
-    const lines = toLines(highlighter.codeToTokens(code, { lang, theme }).tokens);
+    const lines = toLines(
+      highlighter.codeToTokens(code, { lang, theme }).tokens,
+    );
     cachePut(key, lines);
     return lines;
   } catch {
@@ -331,12 +347,26 @@ export default function contribute(server: PluginServerContext) {
     try {
       const { highlighter, loaded } = await getEngine();
       const language = resolveLanguage(loaded, input.language, input.filename);
-      const lines = tokenize(highlighter, input.code, language, input.dark, theme);
+      const lines = tokenize(
+        highlighter,
+        input.code,
+        language,
+        input.dark,
+        theme,
+      );
 
       let diffLines: HighlightLine[] | undefined;
       if (input.diffBodyCode !== undefined) {
-        const diffLanguage = input.filename ? resolveLanguage(loaded, undefined, input.filename) : null;
-        diffLines = tokenize(highlighter, input.diffBodyCode, diffLanguage, input.dark, theme);
+        const diffLanguage = input.filename
+          ? resolveLanguage(loaded, undefined, input.filename)
+          : null;
+        diffLines = tokenize(
+          highlighter,
+          input.diffBodyCode,
+          diffLanguage,
+          input.dark,
+          theme,
+        );
       }
 
       return {
@@ -350,7 +380,9 @@ export default function contribute(server: PluginServerContext) {
       // its text, so any failure degrades to the unhighlighted rendering.
       return {
         lines: plainLines(input.code),
-        ...(input.diffBodyCode !== undefined ? { diffLines: plainLines(input.diffBodyCode) } : {}),
+        ...(input.diffBodyCode !== undefined
+          ? { diffLines: plainLines(input.diffBodyCode) }
+          : {}),
         language: null,
         theme,
       };

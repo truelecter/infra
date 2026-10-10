@@ -8,7 +8,14 @@ import {
 } from "./title-sync.ts";
 
 function agent(id: string, fields: Partial<AgentInfo> = {}): AgentInfo {
-  return { id, workspaceId: "wks_a", title: null, labels: {}, archivedAt: null, ...fields };
+  return {
+    id,
+    workspaceId: "wks_a",
+    title: null,
+    labels: {},
+    archivedAt: null,
+    ...fields,
+  };
 }
 
 test("sole top-level agent owns its workspace despite subagents and archived agents", () => {
@@ -22,7 +29,10 @@ test("sole top-level agent owns its workspace despite subagents and archived age
 });
 
 test("a second top-level agent keeps the workspace title", () => {
-  assert.equal(soleAgentWorkspace([agent("self"), agent("other")], "self"), null);
+  assert.equal(
+    soleAgentWorkspace([agent("self"), agent("other")], "self"),
+    null,
+  );
 });
 
 test("a subagent never owns the workspace", () => {
@@ -33,7 +43,10 @@ test("a subagent never owns the workspace", () => {
 
 test("no workspace for an unknown agent or one outside any workspace", () => {
   assert.equal(soleAgentWorkspace([agent("other")], "self"), null);
-  assert.equal(soleAgentWorkspace([agent("self", { workspaceId: undefined })], "self"), null);
+  assert.equal(
+    soleAgentWorkspace([agent("self", { workspaceId: undefined })], "self"),
+    null,
+  );
 });
 
 test("a retitle during a turn is reported once", () => {

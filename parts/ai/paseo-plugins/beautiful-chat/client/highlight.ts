@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRpc } from "@getpaseo/plugin/client";
-import { highlightRpc, type HighlightLine, type HighlightToken } from "../shared/highlight-rpc";
+import {
+  highlightRpc,
+  type HighlightLine,
+  type HighlightToken,
+} from "../shared/highlight-rpc";
 
 export type { HighlightLine, HighlightToken };
 
@@ -51,10 +55,17 @@ const inFlight = new Map<string, Promise<void>>();
  * text, so an unhighlighted answer to one of these is the right answer and the
  * component must not colour it with the tokeniser instead.
  */
-const PLAIN_HINTS: Record<string, true> = { plaintext: true, text: true, txt: true };
+const PLAIN_HINTS: Record<string, true> = {
+  plaintext: true,
+  text: true,
+  txt: true,
+};
 
 function isPlainHint(language: string | undefined): boolean {
-  return language !== undefined && PLAIN_HINTS[language.trim().toLowerCase()] === true;
+  return (
+    language !== undefined &&
+    PLAIN_HINTS[language.trim().toLowerCase()] === true
+  );
 }
 
 /**
@@ -110,7 +121,12 @@ function parseLines(rawLines: unknown): HighlightLine[] | null {
       if (typeof token !== "object" || token === null) return null;
       if (!("text" in token) || typeof token.text !== "string") return null;
       const rawColor: unknown = "color" in token ? token.color : null;
-      const color = typeof rawColor === "string" ? rawColor : rawColor === null ? null : undefined;
+      const color =
+        typeof rawColor === "string"
+          ? rawColor
+          : rawColor === null
+            ? null
+            : undefined;
       if (color === undefined) return null;
       line.push({
         text: token.text,
@@ -128,8 +144,12 @@ function parseLines(rawLines: unknown): HighlightLine[] | null {
  * A daemon without this handler, or one older than this contract, answers with
  * something else entirely. Reject that answer rather than render from it.
  */
-function readResponse(answer: unknown, allowPlain: boolean): HighlightResponse | null {
-  if (typeof answer !== "object" || answer === null || !("lines" in answer)) return null;
+function readResponse(
+  answer: unknown,
+  allowPlain: boolean,
+): HighlightResponse | null {
+  if (typeof answer !== "object" || answer === null || !("lines" in answer))
+    return null;
 
   // A null language means the daemon sent the text back unhighlighted: no
   // grammar matched, or a size guard tripped on a huge or minified block. The
@@ -144,7 +164,11 @@ function readResponse(answer: unknown, allowPlain: boolean): HighlightResponse |
   if (lines === null) return null;
 
   let diffLines: HighlightLine[] | null = null;
-  if ("diffLines" in answer && answer.diffLines !== undefined && answer.diffLines !== null) {
+  if (
+    "diffLines" in answer &&
+    answer.diffLines !== undefined &&
+    answer.diffLines !== null
+  ) {
     diffLines = parseLines(answer.diffLines);
   }
 
@@ -163,7 +187,11 @@ type HighlightCall = (input: {
  * One call per key. A second mount of the same block joins the promise already
  * in flight instead of asking the daemon to tokenise the same text again.
  */
-function fetchLines(key: string, call: HighlightCall, request: HighlightRequest): Promise<void> {
+function fetchLines(
+  key: string,
+  call: HighlightCall,
+  request: HighlightRequest,
+): Promise<void> {
   const pending = inFlight.get(key);
   if (pending) return pending;
 
@@ -193,7 +221,9 @@ function fetchLines(key: string, call: HighlightCall, request: HighlightRequest)
  * the caller's cue to keep drawing its own fallback: it covers the first paint,
  * a language the daemon cannot highlight, and a call that failed.
  */
-export function useHighlightedLines(request: HighlightRequest): HighlightResponse {
+export function useHighlightedLines(
+  request: HighlightRequest,
+): HighlightResponse {
   const call: HighlightCall = useRpc(highlightRpc);
   const { code, language, filename, dark, diffBodyCode } = request;
   const key = code.length > 0 ? cacheKey(request) : null;
@@ -205,7 +235,13 @@ export function useHighlightedLines(request: HighlightRequest): HighlightRespons
   useEffect(() => {
     if (key === null || cache.has(key)) return;
     let mounted = true;
-    void fetchLines(key, call, { code, language, filename, dark, diffBodyCode }).then(() => {
+    void fetchLines(key, call, {
+      code,
+      language,
+      filename,
+      dark,
+      diffBodyCode,
+    }).then(() => {
       if (mounted) bumpRevision((revision) => revision + 1);
     });
     return () => {

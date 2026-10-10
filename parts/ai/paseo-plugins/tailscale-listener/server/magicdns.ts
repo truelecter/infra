@@ -18,7 +18,10 @@ export function magicDnsNames(ptrRecords: readonly string[]): string[] {
   return [...names].sort();
 }
 
-export async function lookupMagicDnsNames(address: string, timeoutMs = 2_000): Promise<string[]> {
+export async function lookupMagicDnsNames(
+  address: string,
+  timeoutMs = 2_000,
+): Promise<string[]> {
   const resolver = new Resolver({ timeout: timeoutMs, tries: 1 });
   resolver.setServers([TAILSCALE_DNS]);
   try {
@@ -40,5 +43,7 @@ export function lookupHostnames(
   lookup: (address: string) => Promise<string[]> = lookupMagicDnsNames,
 ): Promise<string[]> {
   const names = env.PASEO_TAILSCALE_HOSTNAMES?.trim();
-  return names ? Promise.resolve(magicDnsNames(names.split(","))) : lookup(address);
+  return names
+    ? Promise.resolve(magicDnsNames(names.split(",")))
+    : lookup(address);
 }

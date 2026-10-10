@@ -9,7 +9,12 @@ import { createChallengeServer, listen } from "./http.ts";
 
 // Runs the real Tunnelblick challenge script against the socket server, with HOME
 // pointing at a temporary folder so the script finds the test socket.
-const SCRIPT = join(import.meta.dirname, "..", "tunnelblick", "challenge-response.user.sh");
+const SCRIPT = join(
+  import.meta.dirname,
+  "..",
+  "tunnelblick",
+  "challenge-response.user.sh",
+);
 
 let home: string;
 let broker: ChallengeBroker;
@@ -18,7 +23,10 @@ let stop: () => Promise<void>;
 before(async () => {
   home = await mkdtemp(join(tmpdir(), "vpn-"));
   broker = new ChallengeBroker();
-  stop = await listen(createChallengeServer(broker), join(home, ".local", "share", "paseo-vpn", "vpn.sock"));
+  stop = await listen(
+    createChallengeServer(broker),
+    join(home, ".local", "share", "paseo-vpn", "vpn.sock"),
+  );
 });
 
 after(async () => {
@@ -28,12 +36,17 @@ after(async () => {
 });
 
 function runScript(env: Record<string, string> = {}) {
-  const { promise, resolve } = Promise.withResolvers<{ status: number; stdout: string; stderr: string }>();
+  const { promise, resolve } = Promise.withResolvers<{
+    status: number;
+    stdout: string;
+    stderr: string;
+  }>();
   execFile(
     SCRIPT,
     ["Enter Authenticator Code: 6 digits", "vpn-london", "vpn-london", "echo"],
     { env: { PATH: "/usr/bin:/bin", HOME: home, ...env } },
-    (error, stdout, stderr) => resolve({ status: error ? Number(error.code) : 0, stdout, stderr }),
+    (error, stdout, stderr) =>
+      resolve({ status: error ? Number(error.code) : 0, stdout, stderr }),
   );
   return promise;
 }
@@ -62,7 +75,11 @@ test("the script prints the code typed in Paseo, without a newline", async () =>
 
 test("a code typed before the challenge is printed at once", async () => {
   broker.answer("654321");
-  assert.deepEqual(await runScript(), { status: 0, stdout: "654321", stderr: "" });
+  assert.deepEqual(await runScript(), {
+    status: 0,
+    stdout: "654321",
+    stderr: "",
+  });
 });
 
 // The script passes its wait in whole seconds to the server, so this takes 1 s of real time.

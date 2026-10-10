@@ -1,14 +1,29 @@
-import type { PluginHandlerContext, PluginServerContext } from "@getpaseo/plugin/server";
-import { archiveAgent, getSnapshot, killProcess, quitApp, screenSettings, type Snapshot } from "./shared/health.ts";
+import type {
+  PluginHandlerContext,
+  PluginServerContext,
+} from "@getpaseo/plugin/server";
+import {
+  archiveAgent,
+  getSnapshot,
+  killProcess,
+  quitApp,
+  screenSettings,
+  type Snapshot,
+} from "./shared/health.ts";
 import * as actions from "./server/actions.ts";
 import { collect } from "./server/collect.ts";
 import { buildSnapshot, type AgentInfo } from "./server/model.ts";
 
-async function listAgents({ paseo }: PluginHandlerContext): Promise<AgentInfo[]> {
+async function listAgents({
+  paseo,
+}: PluginHandlerContext): Promise<AgentInfo[]> {
   const agents: AgentInfo[] = [];
   let cursor: string | undefined;
   do {
-    const page = await paseo.agents.list({ filter: { includeArchived: true }, page: { limit: 200, cursor } });
+    const page = await paseo.agents.list({
+      filter: { includeArchived: true },
+      page: { limit: 200, cursor },
+    });
     for (const { agent } of page.entries) {
       agents.push({
         id: agent.id,
@@ -16,11 +31,14 @@ async function listAgents({ paseo }: PluginHandlerContext): Promise<AgentInfo[]>
         status: agent.status,
         archived: !!agent.archivedAt,
         cwd: agent.cwd,
-        sessionId: agent.runtimeInfo?.sessionId ?? agent.persistence?.sessionId ?? null,
+        sessionId:
+          agent.runtimeInfo?.sessionId ?? agent.persistence?.sessionId ?? null,
         lastActivityAt: agent.updatedAt,
       });
     }
-    cursor = page.pageInfo.hasMore ? (page.pageInfo.nextCursor ?? undefined) : undefined;
+    cursor = page.pageInfo.hasMore
+      ? (page.pageInfo.nextCursor ?? undefined)
+      : undefined;
   } while (cursor);
   return agents;
 }
@@ -39,7 +57,9 @@ export default function contribute(server: PluginServerContext) {
     return inFlight;
   });
 
-  server.handle(archiveAgent, ({ agentId }, { paseo }) => paseo.agents.ref(agentId).archive());
+  server.handle(archiveAgent, ({ agentId }, { paseo }) =>
+    paseo.agents.ref(agentId).archive(),
+  );
   server.handle(quitApp, async ({ bundlePath }) => {
     await actions.quitApp(bundlePath);
     return {};

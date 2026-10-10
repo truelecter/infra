@@ -84,22 +84,24 @@
       };
     };
 
-    nixago = {
-      url = "github:nix-community/nixago";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-        nixago-exts.follows = "nixago-exts";
       };
     };
 
-    nixago-exts = {
-      url = "github:nix-community/nixago-extensions";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
       inputs = {
-        flake-utils.follows = "flake-utils";
-        nixago.follows = "nixago";
         nixpkgs.follows = "nixpkgs";
       };
+    };
+
+    # Its flake is for development only; shell/files imports `flake-module.nix` directly.
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
     };
 
     terranix = {
@@ -175,10 +177,9 @@
     };
 
     nixos-vscode-server = {
-      url = "github:truelecter/nixos-vscode-server";
+      url = "github:nix-community/nixos-vscode-server";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
+        flake-parts.follows = "flake-parts";
       };
     };
 

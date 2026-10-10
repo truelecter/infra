@@ -45,7 +45,8 @@ export function isCardExpanded(
   settings: { collapseRunning: CollapseKinds; collapseFinished: CollapseKinds },
 ): boolean {
   if (state === "failed") return true;
-  const collapse = state === "running" ? settings.collapseRunning : settings.collapseFinished;
+  const collapse =
+    state === "running" ? settings.collapseRunning : settings.collapseFinished;
   return !collapse[group];
 }
 

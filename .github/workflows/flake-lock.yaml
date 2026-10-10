@@ -2,51 +2,51 @@ name: Update flake.lock
 on:
   workflow_dispatch:
   schedule:
-  - cron: "0 0 * * 6" # At 00:00 on Saturday
+    - cron: "0 0 * * 6" # At 00:00 on Saturday
 
 jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Prepare build environment
-      uses: ./.github/actions/prepare-build-environment
-      with:
-        attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build-environment
+        with:
+          attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Configure git
-      run: |
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
+      - name: Configure git
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
 
-    - name: Update nvfetcher packages
-      run: |
-        nix develop '.#ci' --command bash -c "update-sources ALL"
-        git commit -am "deps(sources): Updated cell sources" || true
+      - name: Update nvfetcher packages
+        run: |
+          nix develop '.#ci' --command bash -c "update-sources ALL"
+          git commit -am "deps(sources): Updated cell sources" || true
 
-    - name: Update deps hashes packages
-      run: |
-        nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
-        git commit -am "deps(sources): Updated deps hash" || true
+      - name: Update deps hashes packages
+        run: |
+          nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
+          git commit -am "deps(sources): Updated deps hash" || true
 
-    - name: Update flake.lock
-      uses: DeterminateSystems/update-flake-lock@v21
-      id: ufl
-      with:
-        token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
-        pr-title: "[Automated] Update 'flake.lock' and sources"
-        branch: "auto/upgrade-dependencies"
-        commit-msg: "deps(flake-lock): Updated flake.lock"
-        pr-labels: |
-          dependencies
-          automated
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v21
+        id: ufl
+        with:
+          token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
+          pr-title: "[Automated] Update 'flake.lock' and sources"
+          branch: "auto/upgrade-dependencies"
+          commit-msg: "deps(flake-lock): Updated flake.lock"
+          pr-labels: |
+            dependencies
+            automated
 
-    - name: Enable auto-merge
-      run: |
-        gh pr merge --squash --auto "$PR_NUMBER" --subject "deps(repo): update packages"
-      env:
-        GH_TOKEN: ${{ secrets.PR_WF_ENABLED_TOKEN }}
-        PR_NUMBER: ${{ steps.ufl.outputs.pull-request-number }}
+      - name: Enable auto-merge
+        run: |
+          gh pr merge --squash --auto "$PR_NUMBER" --subject "deps(repo): update packages"
+        env:
+          GH_TOKEN: ${{ secrets.PR_WF_ENABLED_TOKEN }}
+          PR_NUMBER: ${{ steps.ufl.outputs.pull-request-number }}

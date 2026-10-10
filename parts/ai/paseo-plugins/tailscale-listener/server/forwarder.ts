@@ -33,7 +33,10 @@ export class TailscaleForwarder {
   }
 
   async start(): Promise<void> {
-    this.timer = setInterval(() => void this.reconcile(), this.options.pollIntervalMs ?? DEFAULT_POLL_INTERVAL_MS);
+    this.timer = setInterval(
+      () => void this.reconcile(),
+      this.options.pollIntervalMs ?? DEFAULT_POLL_INTERVAL_MS,
+    );
     await this.reconcile();
   }
 
@@ -58,7 +61,12 @@ export class TailscaleForwarder {
 
   private async reconcileOnce(): Promise<void> {
     const address = this.options.detectAddress();
-    if (address !== null && address === this.boundAddress && this.server?.listening) return;
+    if (
+      address !== null &&
+      address === this.boundAddress &&
+      this.server?.listening
+    )
+      return;
 
     if (this.server) {
       this.log(
@@ -71,7 +79,9 @@ export class TailscaleForwarder {
     }
 
     if (!address) {
-      this.problem("No Tailscale IPv4 address found; waiting for Tailscale to connect.");
+      this.problem(
+        "No Tailscale IPv4 address found; waiting for Tailscale to connect.",
+      );
       return;
     }
     await this.listen(address);
@@ -79,12 +89,16 @@ export class TailscaleForwarder {
 
   private listen(address: string): Promise<void> {
     const { port, upstream } = this.options;
-    const server = net.createServer({ allowHalfOpen: true }, (client) => this.forward(client));
+    const server = net.createServer({ allowHalfOpen: true }, (client) =>
+      this.forward(client),
+    );
 
     return new Promise((resolve) => {
       const onStartupError = (error: NodeJS.ErrnoException) => {
         server.close();
-        this.problem(`Cannot listen on ${address}:${port}: ${error.code ?? error.message}.`);
+        this.problem(
+          `Cannot listen on ${address}:${port}: ${error.code ?? error.message}.`,
+        );
         resolve();
       };
       server.once("error", onStartupError);
@@ -95,11 +109,15 @@ export class TailscaleForwarder {
           resolve();
           return;
         }
-        server.on("error", (error) => this.log(`Listener error on ${address}:${port}: ${error.message}`));
+        server.on("error", (error) =>
+          this.log(`Listener error on ${address}:${port}: ${error.message}`),
+        );
         this.server = server;
         this.boundAddress = address;
         this.lastProblem = null;
-        this.log(`Forwarding ${address}:${port} -> ${describeTarget(upstream)}.`);
+        this.log(
+          `Forwarding ${address}:${port} -> ${describeTarget(upstream)}.`,
+        );
         this.options.onListening?.(address);
         resolve();
       });
@@ -110,7 +128,11 @@ export class TailscaleForwarder {
     const { upstream } = this.options;
     const target =
       upstream.kind === "tcp"
-        ? net.connect({ host: upstream.host, port: upstream.port, allowHalfOpen: true })
+        ? net.connect({
+            host: upstream.host,
+            port: upstream.port,
+            allowHalfOpen: true,
+          })
         : net.connect({ path: upstream.path, allowHalfOpen: true });
 
     this.sockets.add(client);

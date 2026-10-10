@@ -169,8 +169,9 @@
     };
   };
 in {
-  # Kernels used by two or more hosts of a system. CI builds this once before
-  # the host builds, so each host substitutes the kernel instead of rebuilding it.
+  # Kernels used by two or more hosts of a system, built by CI before the hosts
+  # (see parts/ci.nix), so each host substitutes the kernel instead of rebuilding
+  # it. Only systems with NixOS hosts get it, so CI starts no job for the others.
   perSystem = {
     pkgs,
     system,
@@ -178,7 +179,7 @@ in {
   }: let
     hosts =
       lib.filter
-      (host: host.pkgs.stdenv.hostPlatform.system == system)
+      (host: host.config.nixpkgs.hostPlatform.system == system)
       (lib.attrValues self.nixosConfigurations);
 
     kernelsByDrv =
@@ -188,11 +189,13 @@ in {
 
     sharedKernels = lib.filterAttrs (_: kernels: lib.length kernels > 1) kernelsByDrv;
   in {
-    ci.shared-kernels = pkgs.linkFarm "shared-kernels" (lib.mapAttrsToList (drv: kernels: {
-        name = lib.removeSuffix ".drv" (baseNameOf drv);
-        path = lib.head kernels;
-      })
-      sharedKernels);
+    ci = lib.optionalAttrs (hosts != []) {
+      shared-kernels = pkgs.linkFarm "shared-kernels" (lib.mapAttrsToList (drv: kernels: {
+          name = lib.removeSuffix ".drv" (baseNameOf drv);
+          path = lib.head kernels;
+        })
+        sharedKernels);
+    };
   };
 
   flake.nixosConfigurations = lib.pipe ./hosts [

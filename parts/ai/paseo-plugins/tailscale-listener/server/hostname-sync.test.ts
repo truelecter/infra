@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
-import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { after, describe, it } from "node:test";
@@ -21,7 +27,10 @@ describe("magicDnsNames", () => {
   });
 
   it("drops invalid records and duplicates", () => {
-    assert.deepEqual(magicDnsNames(["bad name.ts.net", "", "a.ts.net", "a.ts.net."]), ["a", "a.ts.net"]);
+    assert.deepEqual(
+      magicDnsNames(["bad name.ts.net", "", "a.ts.net", "a.ts.net."]),
+      ["a", "a.ts.net"],
+    );
   });
 });
 
@@ -29,18 +38,25 @@ describe("lookupHostnames", () => {
   const lookup = async (address: string) => [`looked-up-${address}`];
 
   it("uses PASEO_TAILSCALE_HOSTNAMES instead of the lookup when set", async () => {
-    assert.deepEqual(await lookupHostnames("::1", { PASEO_TAILSCALE_HOSTNAMES: "E2E.tailnet.ts.net, other.ts.net" }, lookup), [
-      "e2e",
-      "e2e.tailnet.ts.net",
-      "other",
-      "other.ts.net",
-    ]);
+    assert.deepEqual(
+      await lookupHostnames(
+        "::1",
+        { PASEO_TAILSCALE_HOSTNAMES: "E2E.tailnet.ts.net, other.ts.net" },
+        lookup,
+      ),
+      ["e2e", "e2e.tailnet.ts.net", "other", "other.ts.net"],
+    );
   });
 
   it("falls back to the lookup", async () => {
-    assert.deepEqual(await lookupHostnames("100.64.0.1", { PASEO_TAILSCALE_HOSTNAMES: " " }, lookup), [
-      "looked-up-100.64.0.1",
-    ]);
+    assert.deepEqual(
+      await lookupHostnames(
+        "100.64.0.1",
+        { PASEO_TAILSCALE_HOSTNAMES: " " },
+        lookup,
+      ),
+      ["looked-up-100.64.0.1"],
+    );
   });
 });
 
@@ -58,7 +74,9 @@ describe("mergeHostnames", () => {
   it("respects wildcard patterns and allow-all", () => {
     assert.equal(isCoveredBy("squadbook.saga-monitor.ts.net", ".ts.net"), true);
     assert.equal(isCoveredBy("squadbook", ".ts.net"), false);
-    assert.deepEqual(mergeHostnames([".saga-monitor.ts.net"], names)?.added, ["squadbook"]);
+    assert.deepEqual(mergeHostnames([".saga-monitor.ts.net"], names)?.added, [
+      "squadbook",
+    ]);
     assert.equal(mergeHostnames(true, names), null);
     assert.equal(mergeHostnames(["SQUADBOOK", ...names.slice(1)], names), null);
   });
@@ -66,7 +84,13 @@ describe("mergeHostnames", () => {
 
 function fakeConfig(initial: HostnamesValue) {
   // `ready` stands for the daemon: while false, a save is not applied (like a daemon still starting).
-  const state = { value: initial, gets: 0, sets: [] as string[][], failSet: false, ready: true };
+  const state = {
+    value: initial,
+    gets: 0,
+    sets: [] as string[][],
+    failSet: false,
+    ready: true,
+  };
   return {
     state,
     access: {
@@ -103,7 +127,13 @@ describe("HostnameSync", () => {
 
     names = ["b", "b.ts.net"];
     await sync.sync();
-    assert.deepEqual(state.sets.at(-1), ["localhost", "a", "a.ts.net", "b", "b.ts.net"]);
+    assert.deepEqual(state.sets.at(-1), [
+      "localhost",
+      "a",
+      "a.ts.net",
+      "b",
+      "b.ts.net",
+    ]);
     assert.ok(logs.includes("Added b, b.ts.net to daemon.hostnames."));
     await sync.stop();
   });
@@ -161,7 +191,8 @@ describe("HostnameSync", () => {
       retryMs: 0,
       log: (message) => {
         logs.push(message);
-        if (message === "Applied daemon.hostnames to the running daemon.") resolve();
+        if (message === "Applied daemon.hostnames to the running daemon.")
+          resolve();
       },
     });
 
@@ -182,7 +213,12 @@ describe("HostnameSync", () => {
   it("doesn't save names the daemon already had at start", async () => {
     const { state, access } = fakeConfig(["a"]);
     const logs: string[] = [];
-    const sync = new HostnameSync({ config: access, lookup: async () => ["a"], getAddress: () => "100.64.0.1", log: (message) => logs.push(message) });
+    const sync = new HostnameSync({
+      config: access,
+      lookup: async () => ["a"],
+      getAddress: () => "100.64.0.1",
+      log: (message) => logs.push(message),
+    });
     await sync.sync();
     assert.deepEqual(state.sets, []);
     assert.deepEqual(logs, ["daemon.hostnames already allows a."]);
@@ -210,12 +246,18 @@ describe("createCliHostnamesConfig", () => {
   }
 
   it("reads and writes daemon.hostnames through the CLI", async () => {
-    writeCli('{"set":true,"value":["squadbook"]}', '{"action":"saved","appliedPaths":["daemon.hostnames"]}');
+    writeCli(
+      '{"set":true,"value":["squadbook"]}',
+      '{"action":"saved","appliedPaths":["daemon.hostnames"]}',
+    );
     const config = createCliHostnamesConfig(cli, "/home/paseo");
     assert.deepEqual(await config.get(), ["squadbook"]);
     assert.equal(await config.set(["squadbook", "squadbook.ts.net"]), true);
     const lines = readFileSync(argsLog, "utf8").trim().split("\n");
-    assert.equal(lines[0], "daemon config get daemon.hostnames --home /home/paseo --json");
+    assert.equal(
+      lines[0],
+      "daemon config get daemon.hostnames --home /home/paseo --json",
+    );
     assert.equal(
       lines[1],
       'daemon config set daemon.hostnames ["squadbook","squadbook.ts.net"] --home /home/paseo --json',
@@ -227,13 +269,22 @@ describe("createCliHostnamesConfig", () => {
       '{"set":true,"value":[]}',
       '{"action":"saved","applied":false,"message":"Saved; not applied to a running daemon"}',
     );
-    assert.equal(await createCliHostnamesConfig(cli, "/home/paseo").set(["a"]), false);
+    assert.equal(
+      await createCliHostnamesConfig(cli, "/home/paseo").set(["a"]),
+      false,
+    );
   });
 
   it("treats an unset value as undefined and surfaces CLI errors", async () => {
-    writeCli('{"set":false}', '{"error":{"message":"saved; reload failed"}}', 1);
+    writeCli(
+      '{"set":false}',
+      '{"error":{"message":"saved; reload failed"}}',
+      1,
+    );
     const config = createCliHostnamesConfig(cli, "/home/paseo");
     assert.equal(await config.get(), undefined);
-    await assert.rejects(config.set(["a"]), { message: "saved; reload failed" });
+    await assert.rejects(config.set(["a"]), {
+      message: "saved; reload failed",
+    });
   });
 });

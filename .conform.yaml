@@ -1,0 +1,53 @@
+policies:
+- spec:
+    body:
+      required: false
+    conventional:
+      descriptionLength: 72
+      scopes:
+      - ci
+      - flake
+      - repo
+      - nixos
+      - darwin
+      - home
+      - common
+      - ai
+      - deploy-rs
+      - klipper
+      - minecraft-servers
+      - overrides
+      - raspberry-pi
+      - rockchip
+      - topology
+      - universal-vscode-setup
+      - wsl
+      - bblcam
+      - bttpitest
+      - depsos
+      - nas
+      - oracle
+      - sirius
+      - tiny-m
+      - tl-wsl
+      - voron
+      - vzbot235
+      - squadbook
+      - tl-mm4
+      types:
+      - fix
+      - feat
+      - build
+      - chore
+      - ci
+      - docs
+      - style
+      - refactor
+      - test
+    gpg:
+      required: true
+    header:
+      imperative: true
+      length: 89
+    maximumOfOneCommit: false
+  type: commit

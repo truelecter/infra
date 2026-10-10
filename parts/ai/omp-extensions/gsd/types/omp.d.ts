@@ -33,7 +33,9 @@ declare module "@oh-my-pi/pi-coding-agent" {
     logger: { warn(message: string, context?: Record<string, unknown>): void };
     registerCommand(
       name: string,
-      options: { handler: (args: string, ctx: ExtensionCommandContext) => Promise<void> },
+      options: {
+        handler: (args: string, ctx: ExtensionCommandContext) => Promise<void>;
+      },
     ): void;
     registerTool(tool: ToolDefinition): void;
   }

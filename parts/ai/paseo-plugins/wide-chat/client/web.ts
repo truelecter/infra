@@ -27,7 +27,10 @@ declare const window: {
 };
 declare class MutationObserver {
   constructor(callback: (records: MutationRecordLike[]) => void);
-  observe(target: unknown, options: { childList: boolean; subtree: boolean }): void;
+  observe(
+    target: unknown,
+    options: { childList: boolean; subtree: boolean },
+  ): void;
   disconnect(): void;
 }
 
@@ -78,7 +81,8 @@ export function startChatWidener(): ChatWidener | null {
     const sheets = paseoSheets();
     if (sheets.length !== seen.length) return true;
     return sheets.some(
-      (sheet, index) => sheet !== seen[index].sheet || ruleCount(sheet) !== seen[index].rules,
+      (sheet, index) =>
+        sheet !== seen[index].sheet || ruleCount(sheet) !== seen[index].rules,
     );
   }
 
@@ -101,7 +105,10 @@ export function startChatWidener(): ChatWidener | null {
     if (records.every((record) => record.target === style)) return;
     if (sheetsChanged()) scan();
   });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
   scan();
 
   return {

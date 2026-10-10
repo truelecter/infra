@@ -151,7 +151,10 @@ function isDarkSurface(color: string): boolean {
 // PluginTheme only carries six colours, so every other surface is derived from
 // the host foreground/accent with alpha. That keeps the plugin on-theme for any
 // Paseo theme instead of hard-coding a palette that matches only one of them.
-export function buildThemeTokens(colors: PluginSurfaceColors, fontScale = 1): ExtendedThemeTokens {
+export function buildThemeTokens(
+  colors: PluginSurfaceColors,
+  fontScale = 1,
+): ExtendedThemeTokens {
   const isDark = isDarkSurface(colors.surface0);
   const fg = colors.foreground;
   const accent = colors.accent;

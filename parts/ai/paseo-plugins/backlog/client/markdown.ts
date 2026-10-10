@@ -41,7 +41,13 @@ function indentOf(line: string): number {
 }
 
 function startsBlock(line: string): boolean {
-  return FENCE.test(line) || HEADING.test(line) || RULE.test(line) || QUOTE.test(line) || LIST_ITEM.test(line);
+  return (
+    FENCE.test(line) ||
+    HEADING.test(line) ||
+    RULE.test(line) ||
+    QUOTE.test(line) ||
+    LIST_ITEM.test(line)
+  );
 }
 
 export function parseMarkdown(source: string): Block[] {
@@ -63,15 +69,24 @@ function parseBlocks(lines: string[]): Block[] {
       const marker = fence[1];
       const body: string[] = [];
       i += 1;
-      while (i < lines.length && !lines[i].trimStart().startsWith(marker)) body.push(lines[i++]);
+      while (i < lines.length && !lines[i].trimStart().startsWith(marker))
+        body.push(lines[i++]);
       i += 1; // closing fence, or past the end when it is missing
-      blocks.push({ type: "code", text: body.join("\n"), ...(fence[2] ? { lang: fence[2] } : {}) });
+      blocks.push({
+        type: "code",
+        text: body.join("\n"),
+        ...(fence[2] ? { lang: fence[2] } : {}),
+      });
       continue;
     }
 
     const heading = HEADING.exec(line);
     if (heading) {
-      blocks.push({ type: "heading", level: heading[1].length, children: parseInline(heading[2]) });
+      blocks.push({
+        type: "heading",
+        level: heading[1].length,
+        children: parseInline(heading[2]),
+      });
       i += 1;
       continue;
     }
@@ -85,7 +100,8 @@ function parseBlocks(lines: string[]): Block[] {
 
     if (QUOTE.test(line)) {
       const body: string[] = [];
-      while (i < lines.length && QUOTE.test(lines[i])) body.push(lines[i++].replace(QUOTE, ""));
+      while (i < lines.length && QUOTE.test(lines[i]))
+        body.push(lines[i++].replace(QUOTE, ""));
       blocks.push({ type: "quote", children: parseBlocks(body) });
       continue;
     }
@@ -100,7 +116,8 @@ function parseBlocks(lines: string[]): Block[] {
 
     const body = [line.trim()];
     i += 1;
-    while (i < lines.length && lines[i].trim() && !startsBlock(lines[i])) body.push(lines[i++].trim());
+    while (i < lines.length && lines[i].trim() && !startsBlock(lines[i]))
+      body.push(lines[i++].trim());
     blocks.push({ type: "paragraph", children: parseInline(body.join("\n")) });
   }
   return blocks;
@@ -119,7 +136,8 @@ function parseList(
 
   while (i < lines.length) {
     const match = LIST_ITEM.exec(lines[i]);
-    if (!match || match[1].length !== indent || /\d/.test(match[2]) !== ordered) break;
+    if (!match || match[1].length !== indent || /\d/.test(match[2]) !== ordered)
+      break;
 
     // Continuation lines are the ones indented past the marker, plus blank lines between them.
     const contentIndent = indent + match[2].length + 1;
@@ -146,7 +164,12 @@ function parseList(
   }
 
   return {
-    block: { type: "list", ordered, start: ordered ? Number.parseInt(first[2], 10) : 1, items },
+    block: {
+      type: "list",
+      ordered,
+      start: ordered ? Number.parseInt(first[2], 10) : 1,
+      items,
+    },
     end: i,
   };
 }
@@ -180,17 +203,38 @@ export function parseInline(text: string): Inline[] {
   const pattern = new RegExp(INLINE.source, "g");
   let position = 0;
   for (let match = pattern.exec(text); match; match = pattern.exec(text)) {
-    const [whole, escaped, , code, label, href, url, strong, strong2, del, em, em2] = match;
+    const [
+      whole,
+      escaped,
+      ,
+      code,
+      label,
+      href,
+      url,
+      strong,
+      strong2,
+      del,
+      em,
+      em2,
+    ] = match;
     pushText(text.slice(position, match.index));
     position = match.index + whole.length;
 
     if (escaped !== undefined) pushText(escaped);
-    else if (code !== undefined) nodes.push({ type: "code", text: code.trim() || code });
-    else if (href !== undefined) nodes.push({ type: "link", href, children: parseInline(label) });
-    else if (url !== undefined) nodes.push({ type: "link", href: url, children: [{ type: "text", text: url }] });
+    else if (code !== undefined)
+      nodes.push({ type: "code", text: code.trim() || code });
+    else if (href !== undefined)
+      nodes.push({ type: "link", href, children: parseInline(label) });
+    else if (url !== undefined)
+      nodes.push({
+        type: "link",
+        href: url,
+        children: [{ type: "text", text: url }],
+      });
     else if (strong !== undefined || strong2 !== undefined) {
       nodes.push({ type: "strong", children: parseInline(strong ?? strong2) });
-    } else if (del !== undefined) nodes.push({ type: "del", children: parseInline(del) });
+    } else if (del !== undefined)
+      nodes.push({ type: "del", children: parseInline(del) });
     else if (em !== undefined || em2 !== undefined) {
       nodes.push({ type: "em", children: parseInline(em ?? em2) });
     } else pushText(whole);

@@ -2,7 +2,11 @@ import { lstatSync, readFileSync, readlinkSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { YAML } from "bun";
-import type { ExtensionAPI, ExtensionContext, SettingsScope } from "@oh-my-pi/pi-coding-agent";
+import type {
+  ExtensionAPI,
+  ExtensionContext,
+  SettingsScope,
+} from "@oh-my-pi/pi-coding-agent";
 import { all } from "@oh-my-pi/pi-coding-agent/config/registry";
 import { getAgentDir } from "@oh-my-pi/pi-utils";
 
@@ -23,7 +27,10 @@ export default function nixSettingsNotice(pi: ExtensionAPI): void {
 
   function readOnly(): boolean {
     try {
-      return lstatSync(configPath).isSymbolicLink() && readlinkSync(configPath).startsWith("/nix/store/");
+      return (
+        lstatSync(configPath).isSymbolicLink() &&
+        readlinkSync(configPath).startsWith("/nix/store/")
+      );
     } catch {
       return false;
     }

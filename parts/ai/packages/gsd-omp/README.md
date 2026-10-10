@@ -22,6 +22,7 @@ Remove a previous imperative install first (`gsd-omp uninstall`), or OMP loads t
 `local` is an upstream release tag plus our branches, each kept ready to merge upstream:
 
 - `feat/execute-phase-todo`: the `/gsd-execute-phase` prompt (`nativeExecutePrompt` in `src/extension.cjs`) asks the agent to `init` OMP's `todo` before the first wave, one item per wave plus the phase gates. Upstream says "Do not invent a separate progress UI", which most runs read as "no `todo`". Upstream PR: tchivs/gsd-omp#73.
+- `fix/execute-phase-skill-dispatch`: the executor dispatch contract (native `task` with `isolated: true`) moves from `nativeExecutePrompt` to `ompExecuteDispatchContract` in `src/projection.cjs`, and the projected `gsd-execute-phase` skill gets it as an `<omp_dispatch>` block. Without it, a run that reaches execute-phase without the command (`/gsd-plan-phase N --auto` advancing, `/gsd-autonomous`, a skill read) stops at the isolation gate: GSD Core has no OMP runtime, so `gsd-tools query dispatch-isolation` answers `none`. The block says that verdict doesn't apply on OMP. On `local` the `todo` line from the branch above sits in that function too. Upstream PR: tchivs/gsd-omp#74.
 
 Drop a branch from `local` once upstream releases it.
 

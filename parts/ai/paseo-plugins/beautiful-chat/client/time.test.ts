@@ -2,7 +2,8 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { formatCardTime } from "./time";
 
-const weekday = (date: Date) => date.toLocaleDateString(undefined, { weekday: "long" });
+const weekday = (date: Date) =>
+  date.toLocaleDateString(undefined, { weekday: "long" });
 
 describe("formatCardTime", () => {
   const now = new Date(2026, 9, 7, 9, 30);
@@ -16,7 +17,11 @@ describe("formatCardTime", () => {
 
   it("counts calendar days, not 24-hour spans: late yesterday gets its weekday", () => {
     const lateYesterday = new Date(2026, 9, 6, 23, 55);
-    assert.ok(formatCardTime(lateYesterday, now).startsWith(`${weekday(lateYesterday)} `));
+    assert.ok(
+      formatCardTime(lateYesterday, now).startsWith(
+        `${weekday(lateYesterday)} `,
+      ),
+    );
   });
 
   it("names the weekday up to six days back and the date from the seventh", () => {
