@@ -8,13 +8,32 @@
 #   --configure-cache workflows \
 #   --configure-cache-retention workflows
 
-# TODO: generate with nixago?
 name: Build machine configurations
 on:
   push:
   workflow_call:
 
 jobs:
+  # The host list comes from the flake: `ciMatrix.hosts` in parts/ci.nix maps
+  # every nixosConfigurations and darwinConfigurations entry to a runner.
+  host_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      hosts: ${{ steps.eval.outputs.hosts }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare build environment
+        uses: ./.github/actions/prepare-build-environment
+        with:
+          attic-push-token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Evaluate host matrix
+        id: eval
+        run: echo "hosts=$(nix eval --json .#ciMatrix.hosts)" >> "$GITHUB_OUTPUT"
+
   # Several aarch64 hosts (the Raspberry Pi ones) use the same kernel. Build
   # each kernel shared by two or more hosts once here and push it to Attic, so
   # the host jobs below substitute it instead of each building its own copy.
@@ -41,42 +60,20 @@ jobs:
         run: nix build --keep-going --no-link -L .#ci.aarch64-linux.shared-kernels
 
   build_system:
-    needs: [build_shared_kernels]
+    name: build_system (${{ matrix.hostname }})
+    needs: [host_matrix, build_shared_kernels]
     # A failed kernel build must not skip unrelated hosts.
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && needs.host_matrix.result == 'success' }}
     strategy:
       fail-fast: false
-      matrix:
-        host:
-          - os: ubuntu-22.04-arm
-            hostname: voron
-          - os: ubuntu-22.04-arm
-            hostname: vzbot235
-          - os: ubuntu-22.04-arm
-            hostname: tiny-m
-          - os: ubuntu-22.04-arm
-            hostname: oracle
+      matrix: ${{ fromJSON(needs.host_matrix.outputs.hosts) }}
 
-          - os: ubuntu-22.04
-            hostname: depsos
-          - os: ubuntu-22.04
-            hostname: sirius
-          - os: ubuntu-22.04
-            hostname: nas
-          - os: ubuntu-22.04
-            hostname: tl-wsl
-
-          - os: macos-14
-            hostname: squadbook
-          - os: macos-14
-            hostname: tl-mm4
-
-    runs-on: ${{ matrix.host.os }}
+    runs-on: ${{ matrix.os }}
     steps:
       # Filesystem on /mnt for some reason has more space on GitHub action
       # runner than /
       - name: Bind mount /nix
-        if: ${{ ! startsWith(matrix.host.os, 'macos') }}
+        if: ${{ ! startsWith(matrix.os, 'macos') }}
         run: |
           sudo mkdir /mnt/nix /nix
           sudo chmod 0755 /nix
@@ -92,7 +89,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tailscale
-        if: ${{ startsWith(matrix.host.os, 'macos') }}
+        if: ${{ startsWith(matrix.os, 'macos') }}
         uses: tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
@@ -101,7 +98,7 @@ jobs:
           ping: tl-mm4
 
       - name: Create aarch64-linux builder
-        if: ${{ startsWith(matrix.host.os, 'macos') }}
+        if: ${{ startsWith(matrix.os, 'macos') }}
         env:
           BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
           BUILDER_HOST: tl-mm4
@@ -135,14 +132,12 @@ jobs:
           sudo nix store info --store ssh://linux-builder
 
       - name: Build system configuration
-        run: |
-          [[ "${{ matrix.host.os }}" == macos* ]] && configuration=darwin || configuration=nixos
-          nix build --keep-going -L ".#${configuration}Configurations.${{ matrix.host.hostname }}.config.system.build.toplevel"
+        run: nix build --keep-going -L ".#${{ matrix.attr }}"
 
   hosts_aggregated:
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: [build_shared_kernels, build_system]
+    needs: [host_matrix, build_shared_kernels, build_system]
     steps:
       - run: exit 1
         # see https://stackoverflow.com/a/67532120/4907315
