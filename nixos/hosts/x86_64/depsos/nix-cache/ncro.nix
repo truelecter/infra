@@ -59,17 +59,18 @@ in {
           };
 
           # .narinfo: changes more often (re-sign, GC). Short TTL + revalidate.
+          # Only hits are cached, and an expired entry is fetched again before
+          # answering: CI looks paths up before it builds and pushes them, so a
+          # cached or stale 404 would hide the pushed path from the next run.
+          # ncro keeps its own short negative cache (cache.negative_ttl below).
           "~ \\.narinfo$" = {
             proxyPass = ncroUpstream;
             extraConfig = ''
               proxy_cache ncro-cache;
               proxy_cache_lock on;
               proxy_cache_revalidate on;
-              proxy_cache_use_stale error timeout updating
-                                    http_500 http_502 http_503 http_504;
-              proxy_cache_background_update on;
+              proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
               proxy_cache_valid 200 30m;
-              proxy_cache_valid 404 1m;
               add_header Cache-Control "public, max-age=1800, must-revalidate" always;
               add_header X-Cache-Status $upstream_cache_status always;
             '';
@@ -95,6 +96,10 @@ in {
           listen = "127.0.0.1:${ncroPort}";
           cache_priority = 25;
         };
+
+        # A path pushed to the workflows cache is found at most this long after
+        # a lookup missed it (default 10m).
+        cache.negative_ttl = "1m";
 
         upstreams = let
           caches = import ./external-caches.nix;
