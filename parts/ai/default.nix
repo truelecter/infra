@@ -52,9 +52,19 @@ in {
 
         paseo = mkPaseo system;
 
-        paseo-desktop = inputs.paseo.packages.${system}.desktop.override {
-          inherit (final) paseo;
-        };
+        # Metro transforms the generated validator `@getpaseo/protocol`
+        # `dist/generated/validation/ws-outbound.aot.js` (about 12 MB) in one
+        # worker, which needs more than 2 GB of heap. Node's default heap limit
+        # (V8's old generation) is half the machine's memory, at most 2 GB, or
+        # 4 GB with 15 GB of memory or more. So 4096 MB is V8's own ceiling: it
+        # changes nothing on bigger builders and lifts the 2 GB limit of a 7 GB
+        # GitHub macOS runner, where the worker ran out of memory.
+        paseo-desktop =
+          (inputs.paseo.packages.${system}.desktop.override {
+            inherit (final) paseo;
+          }).overrideAttrs (old: {
+            env = old.env // {NODE_OPTIONS = "--max-old-space-size=4096";};
+          });
 
         # The install check's `omp --smoke-test` fails in the Darwin sandbox
         # ("Port 0 is in use") when it starts the stats server.
