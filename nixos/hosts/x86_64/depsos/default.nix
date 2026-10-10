@@ -25,6 +25,7 @@
       ./nginx.nix
 
       ./nix-cache
+      ./nix-builder.nix
 
       ./sso.nix
     ];

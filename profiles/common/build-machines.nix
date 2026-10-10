@@ -10,15 +10,14 @@
     maxJobs,
     speedFactor ? maxJobs * 10,
     systems,
-  }: {
-    inherit hostName maxJobs speedFactor systems;
-
-    supportedFeatures = [
+    supportedFeatures ? [
       "nixos-test"
       "benchmark"
       "kvm"
       "big-parallel"
-    ];
+    ],
+  }: {
+    inherit hostName maxJobs speedFactor systems supportedFeatures;
 
     sshUser = builder-username;
     sshKey = config.sops.secrets.remote-builder-pk.path;
@@ -60,10 +59,17 @@ in {
       }
       {
         maxJobs = 4;
-        hostName = "depsos";
+        # Builds go to a separate store on the big /cache disk
+        hostName = "depsos?remote-store=/cache/nix-builder";
         systems = [
           "x86_64-linux"
           "i686-linux"
+        ];
+
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
         ];
       }
     ];
