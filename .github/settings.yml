@@ -1,15 +1,15 @@
 branches:
-  - name: master
-    protection:
-      enforce_admins: false
-      required_pull_request_reviews: null
-      required_status_checks:
-        contexts:
-          - shells_aggregated
-          - hosts_aggregated
-          - paseo_e2e_aggregated
-        strict: true
-      restrictions: null
+- name: master
+  protection:
+    enforce_admins: false
+    required_pull_request_reviews: null
+    required_status_checks:
+      contexts:
+      - shells_aggregated
+      - hosts_aggregated
+      - paseo_e2e_aggregated
+      strict: true
+    restrictions: null
 repository:
   allow_merge_commit: true
   allow_rebase_merge: false
@@ -23,4 +23,5 @@ repository:
   has_wiki: false
   name: infra
   private: false
-  topics: nix, nixos, nix-darwin, flake-parts, flake, flakes, nix-flake, nix-flakes, haumea, deploy-rs, nixago
+  topics: nix, nixos, nix-darwin, flake-parts, flake, flakes, nix-flake, nix-flakes,
+    haumea, deploy-rs

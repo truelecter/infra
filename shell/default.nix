@@ -2,8 +2,9 @@
   imports = [
     inputs.devshell.flakeModule
 
-    ./nixago
-    ./touchup.nix
+    ./files
+    ./git-hooks.nix
+    ./treefmt.nix
   ];
 
   perSystem = _: {

@@ -5,9 +5,6 @@ result
 .local
 .bin
 
-# nixago: ignore-linked-files
-/lefthook.yml
-/.editorconfig
-/.conform.yaml
-/treefmt.toml
+# git-hooks.nix: linked on shell entry
+/.pre-commit-config.yaml
 

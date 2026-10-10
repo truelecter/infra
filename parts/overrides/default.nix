@@ -78,7 +78,6 @@ in {
         prowlarr
         ffmpeg_5-full
         #shell
-        lefthook
         zsh-patina
         # ncps
         unifi
