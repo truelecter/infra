@@ -13,6 +13,7 @@ policies:
       - home
       - common
       - ai
+      - catppuccin
       - deploy-rs
       - klipper
       - minecraft-servers
