@@ -19,16 +19,11 @@ Remove a previous imperative install first (`gsd-omp uninstall`), or OMP loads t
 
 ## Fork
 
-`local` is an upstream release tag plus our branches, each kept ready to merge upstream:
-
-- `feat/execute-phase-todo`: the `/gsd-execute-phase` prompt (`nativeExecutePrompt` in `src/extension.cjs`) asks the agent to `init` OMP's `todo` before the first wave, one item per wave plus the phase gates. Upstream says "Do not invent a separate progress UI", which most runs read as "no `todo`". Upstream PR: tchivs/gsd-omp#73.
-- `fix/execute-phase-skill-dispatch`: the executor dispatch contract (native `task` with `isolated: true`) moves from `nativeExecutePrompt` to `ompExecuteDispatchContract` in `src/projection.cjs`, and the projected `gsd-execute-phase` skill gets it as an `<omp_dispatch>` block. Without it, a run that reaches execute-phase without the command (`/gsd-plan-phase N --auto` advancing, `/gsd-autonomous`, a skill read) stops at the isolation gate: GSD Core has no OMP runtime, so `gsd-tools query dispatch-isolation` answers `none`. The block says that verdict doesn't apply on OMP. On `local` the `todo` line from the branch above sits in that function too. Upstream PR: tchivs/gsd-omp#74.
-
-Drop a branch from `local` once upstream releases it.
+`local` is an upstream release tag plus our branches, each kept ready to merge upstream. The fork's `FORK.md` lists every commit on `local` with its upstream PR and when to drop it: today `feat/execute-phase-todo` (OMP's `todo` in `/gsd-execute-phase`, tchivs/gsd-omp#73) and `fix/execute-phase-skill-dispatch` (the executor dispatch contract in the projected `gsd-execute-phase` skill, tchivs/gsd-omp#74).
 
 ## Update
 
-1. In a checkout of the fork, rebase `local` onto the new upstream tag (`git rebase --onto v<new> v<old> local`) and force-push it.
+1. In a checkout of the fork, rebase `local` onto the new upstream tag (`git rebase --onto v<new> v<old> local`), update `FORK.md` (see "Move to a newer upstream" there), and force-push it.
 2. Set `version` to the new tag, `rev` to the new `local` commit, and `hash` and `npmDepsHash` to `lib.fakeHash`.
 3. `nix build .#gsd-omp`, copy the `got:` hash for the source, build again for the npm deps.
 4. Check the `@opengsd/gsd-core` version in the new tag's `package-lock.json`: OMP runs that GSD on `.planning/`, so other agents working in the same projects should run a compatible one.
