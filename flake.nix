@@ -251,9 +251,10 @@
       };
     };
 
-    # Fork of getpaseo/paseo: upstream `main` plus local-only OMP patches
-    # (custom messages as replies, discoverable host tools). Rebase the
-    # `local` branch onto newer upstream commits; see parts/ai/AGENTS.md.
+    # Fork of getpaseo/paseo: an upstream release tag plus local-only OMP
+    # patches (custom messages as replies, discoverable host tools) and open
+    # upstream PRs, listed in FORK.md on the `local` branch; see
+    # parts/ai/AGENTS.md.
     paseo = {
       url = "github:truelecter/paseo/local";
       inputs = {
