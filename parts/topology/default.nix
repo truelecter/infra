@@ -8,6 +8,7 @@
       ./routers.nix
       ./internet.nix
       ./networks.nix
+      ./darwin.nix
     ];
   };
 }

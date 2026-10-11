@@ -11,4 +11,7 @@
     enable = true;
     wait-online.timeout = 0;
   };
+
+  # Wired to the USW Flex, see parts/topology/routers.nix.
+  topology.self.interfaces.end0 = {};
 }

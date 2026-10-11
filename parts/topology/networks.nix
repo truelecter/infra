@@ -8,4 +8,9 @@
     name = "tailscale";
     cidrv4 = "100.64.0.0/10";
   };
+
+  networks.wireguard = {
+    name = "wireguard";
+    cidrv4 = "10.7.0.0/24";
+  };
 }

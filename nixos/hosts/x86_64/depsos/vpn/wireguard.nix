@@ -44,6 +44,13 @@
     };
   };
 
+  topology.self.interfaces.wg0 = {
+    addresses = ["10.7.0.1"];
+    network = "wireguard";
+    virtual = true;
+    type = "wireguard";
+  };
+
   sops.secrets.depsos-wg-pk = {
     key = "depsos-pk";
     sopsFile = "${inputs.self}/secrets/wireguard.yaml";

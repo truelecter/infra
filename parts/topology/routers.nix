@@ -2,52 +2,64 @@
   inherit (config.lib.topology) mkRouter mkConnection mkSwitch;
 in {
   nodes = {
-    x290-router = mkRouter "Mikrotik" {
+    x290-router = mkRouter "Mikrotik router" {
       info = "Mikrotik hAP ax3";
-      # image = ./images/fritzbox.png;
       interfaceGroups = [
         ["ether1"]
         [
-          "bridge1"
+          "bridge"
           "ether3"
-          # "ether3"
-          # "ether4"
-          # "ether5"
-          # "wifi1"
-          # "wifi2"
+          "wifi1"
+          "wifi2"
         ]
       ];
-      interfaces.ether1 = {};
 
-      interfaces.bridge1 = {
+      # WAN, DHCP from the ISP.
+      interfaces.ether1.addresses = ["DHCP"];
+
+      interfaces.bridge = {
         addresses = ["10.3.0.1"];
         network = "x290";
+        virtual = true;
+        type = "bridge";
       };
+
+      # 5 GHz, SSID Xata290.5.
+      interfaces.wifi1.type = "wifi";
+      # 2.4 GHz, SSID Xata290.
+      interfaces.wifi2.type = "wifi";
+
+      connections.wifi1 = mkConnection "squadbook" "en0";
     };
 
-    x290-switch = mkRouter "TP-Link" {
-      info = "TP-Link AX1500";
+    x290-ap = mkRouter "Mikrotik AP" {
+      info = "Mikrotik hAP ax3";
 
       interfaceGroups = [
         [
-          "wan"
-          "lan1"
-          # "lan2"
-          # "lan3"
-          "wifi"
+          "bridge"
+          "ether1"
+          "wifi1"
+          "wifi2"
         ]
       ];
 
-      interfaces.wan = {
-        addresses = ["10.3.0.20"];
+      interfaces.bridge = {
+        addresses = ["10.3.0.24"];
         network = "x290";
+        virtual = true;
+        type = "bridge";
       };
 
-      interfaces.lan1 = {};
+      # 5 GHz, SSID Xata290.5S: sirius' uplink (see sirius/wifi.nix).
+      interfaces.wifi1.type = "wifi";
+      # 2.4 GHz, SSID Xata290.2S.
+      interfaces.wifi2.type = "wifi";
 
-      connections.wan = mkConnection "x290-router" "ether3";
-
-      connections.wifi = mkConnection "sirius" "wifi-ext";
+      connections = {
+        ether1 = mkConnection "x290-router" "ether3";
+        wifi1 = mkConnection "sirius" "wifi-ext";
+      };
     };
 
     x290-unifi = mkSwitch "USW Flex 2.5G" {
@@ -56,7 +68,12 @@ in {
         ["eth1" "eth2" "eth3" "eth4" "eth5" "eth6" "eth7" "eth8" "eth9"]
       ];
 
-      connections.eth9 = mkConnection "sirius" "lan-eth";
+      connections = {
+        eth1 = mkConnection "tiny-m" "end0";
+        eth7 = mkConnection "tl-mm4" "en0";
+        eth8 = mkConnection "nas" "enp4s0";
+        eth9 = mkConnection "sirius" "lan-eth";
+      };
 
       interfaces.eth9 = {
         addresses = ["10.3.0.130"];

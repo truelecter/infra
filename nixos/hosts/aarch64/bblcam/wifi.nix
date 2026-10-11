@@ -6,6 +6,11 @@
 }: {
   users.groups.wifi.members = ["truelecter"];
 
+  topology.self.interfaces.wlan0 = {
+    type = "wifi";
+    physicalConnections = [(config.lib.topology.mkConnection "sirius" "wifi-ap")];
+  };
+
   networking.wireless = {
     enable = true;
     interfaces = ["wlan0"];
