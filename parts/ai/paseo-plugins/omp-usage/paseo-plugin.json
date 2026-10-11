@@ -1,0 +1,7 @@
+{
+  "id": "omp-usage",
+  "description": "Cost and token use of OMP's Bedrock sessions: a Bedrock (OMP) card in Paseo's Usage and an OMP usage screen, with AWS Cost Explorer cost next to OMP's API-equivalent estimate.",
+  "requirements": {
+    "paseo": ">=0.11.0"
+  }
+}

@@ -234,6 +234,7 @@ in {
       catppuccin-mocha = {};
       gsd-watch = {};
       header-tab-name = {};
+      omp-usage = {};
       project-groups = {};
       # macOS only: it samples top, vm_stat, and lsof (the package doesn't exist on Linux).
       system-health = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {};

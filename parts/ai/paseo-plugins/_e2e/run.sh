@@ -86,11 +86,13 @@ jq -n --arg listen "127.0.0.1:$port" --argjson plugins "$plugins" '{
 # start` can't find the server package in this build (`@getpaseo/server`'s main file is not in its
 # traced closure). HOME is a temp folder so nothing reaches ~/.paseo or ~/.local/share; the
 # backlog socket folder is set explicitly as well. tailscale-listener listens on IPv6 loopback
-# (the daemon is on 127.0.0.1) and adds made-up names, so nothing leaves the machine.
+# (the daemon is on 127.0.0.1) and adds made-up names, so nothing leaves the machine. omp-usage
+# gets no omp, aws, or Bedrock profile, so it never syncs the user's OMP stats or asks AWS.
 echo "paseo-plugins-e2e: starting daemon on 127.0.0.1:$port, home $home" >&2
 env HOME="$fake_home" PASEO_HOME="$home" PASEO_NODE_ENV=development PASEO_CLI="$cli" \
   PASEO_BACKLOG_DIR="$root/backlog" \
   PASEO_TAILSCALE_ADDRESS="::1" PASEO_TAILSCALE_HOSTNAMES="e2e-host.e2e-tailnet.ts.net" \
+  OMP_BIN="$root/no-omp" AWS_BIN="$root/no-aws" OMP_BEDROCK_AWS_PROFILE="" \
   "$PASEO_E2E_DAEMON_NODE" "$PASEO_E2E_PASEO/lib/paseo/packages/server/dist/scripts/supervisor-entrypoint.js" \
   </dev/null >"$root/daemon-supervisor.log" 2>&1 &
 daemon_pid=$!
