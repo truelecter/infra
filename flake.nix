@@ -331,6 +331,7 @@
           ./parts/wsl
           ./parts/topology
           ./parts/universal-vscode-setup.nix
+          ./parts/catppuccin.nix
 
           ./shell
 
