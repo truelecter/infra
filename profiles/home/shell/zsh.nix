@@ -70,7 +70,7 @@ in {
       initContent = lib.mkMerge [
         (
           lib.mkOrder 550 ''
-            export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST
+            export ZSH_COMPDUMP=$XDG_CACHE_HOME/oh-my-zsh/.zcompdump-$HOST-$ZSH_VERSION
 
             ${lib.optionalString config.programs.direnv.enable ''
               emulate zsh -c "$(${direnv} hook zsh)"
