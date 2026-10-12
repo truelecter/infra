@@ -75,14 +75,15 @@ in {
       };
     };
 
-    # Per user: the model Paseo generates agent titles and summaries with (Paseo takes the model id
-    # without a thinking level), and the Tunnelblick VPN plugin for this machine's work VPN. The rest
-    # of programs.paseo is in profiles/home/dev/ai.nix.
+    # Per user: the model Paseo generates agent titles, branch names, commit and PR text with (the
+    # thinking level goes in thinkingOptionId, not in the model id), and the Tunnelblick VPN plugin
+    # for this machine's work VPN. The rest of programs.paseo is in profiles/home/dev/ai.nix.
     programs.paseo = {
       settings.agents.metadataGeneration.providers = [
         {
           provider = "omp";
-          model = "amazon-bedrock/global.anthropic.claude-haiku-4-5-20251001-v1:0";
+          model = "amazon-bedrock/global.anthropic.claude-haiku-5-5";
+          thinkingOptionId = "low";
         }
       ];
       plugins.vpn = {};
