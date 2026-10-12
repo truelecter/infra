@@ -12,6 +12,8 @@ A fenced code block in the reasoning text (a line of three backticks with an opt
 
 Reasoning cards open on their own, both while running and once finished.
 
+On the phone, a Thinking card that is still streaming adds 16px above itself. Paseo's native chat list doesn't redraw the history row above the streaming item when the stream starts, so that row keeps a gap of 0 and the card would overlap it. Once the reasoning finishes, the card moves into history, gets Paseo's own gap, and the extra 16px goes away. Web and desktop lay the row out correctly and get no extra space.
+
 ## Checklist
 
 Each `todo` item becomes one folded line that says what the update changed, for example `Done Wave 4` and `Started Wave 5`, with the progress count. Pressing the line opens a progress bar and the full checklist on the same step rail.

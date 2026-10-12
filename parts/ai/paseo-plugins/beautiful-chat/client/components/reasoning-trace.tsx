@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
+import { View, Text, Pressable, StyleSheet, Animated, Platform } from "react-native";
 import { Glyph } from "./glyph";
 import { radius } from "./theme-tokens";
 import { selectableSurface } from "./selection";
@@ -7,6 +7,14 @@ import type { ExtendedThemeTokens } from "./theme-tokens";
 import type { ReasoningTraceData } from "../../shared/contracts";
 import { SyntaxHighlightBlock } from "./syntax-highlight";
 import { CardTime } from "./card-time";
+
+// Paseo's phone list (an inverted FlatList) redraws a history row only when its
+// item changes, so the newest history row keeps the gap it got while the live
+// head was empty: 0 instead of 16. A tool call or a prompt lands in history with
+// the head empty, and the thought that follows streams in the head, so on the
+// phone the streaming card adds the missing 16px itself. Web lays it out
+// correctly. A finished thought moves into history and gets the real gap.
+const STALE_LIVE_GAP = Platform.OS === "web" ? 0 : 16;
 
 interface ReasoningTraceProps {
   data: ReasoningTraceData;
@@ -73,7 +81,8 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
     () =>
       StyleSheet.create({
         wrapper: {
-          marginTop: -8,
+          // The -8 is the prose padding offset explained in activity-card.tsx.
+          marginTop: -8 + (isThinking ? STALE_LIVE_GAP : 0),
           marginBottom: 0,
           borderRadius: radius.card,
           backgroundColor: tokens.surface0,
