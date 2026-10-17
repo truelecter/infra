@@ -27,7 +27,7 @@
   nodeModules = fetchNodeModules {
     name = "paseo-plugins-e2e";
     dir = ./.;
-    hash = "sha256-9ZgvUUb/ladJEEDq1FZAz2o4Vk0lT6SVTlA1qi3g+dk=";
+    hash = "sha256-jdjwnoPuT5pS7dPH02jpGC1AEK0kigx3QWzKH8dzw4g=";
   };
 
   suite = lib.fileset.toSource {
