@@ -11,7 +11,7 @@ in {
       hmSuites.git
       ++ [
         profiles.home.shell.ghostty
-        profiles.home.darwin.smart-card-fix
+        profiles.home.darwin.gpg
         profiles.home.darwin.associations
       ];
 
