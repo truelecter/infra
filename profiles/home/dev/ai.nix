@@ -43,6 +43,8 @@ in {
         port = 8888;
       };
       search.formats = ["html" "json"];
+      # The 3 s default drops every engine at once on a slow network; OMP waits up to 60 s.
+      outgoing.request_timeout = 6.0;
     };
   };
 
@@ -63,13 +65,14 @@ in {
 
     settings = {
       # Local SearXNG first. Its default scraped engines (DuckDuckGo, Brave, Startpage) block
-      # bots, so queries go to engines that answer. Exa and Parallel work without an API key and
-      # take over when SearXNG is down or returns nothing.
+      # bots, and plain Google answers 403 (upstream disables it), so queries go to engines that
+      # answer. Exa and Parallel work without an API key and take over when SearXNG is down or
+      # returns nothing.
       modelRoles.web = "web/searxng";
       retry.fallbackChains.web = ["web/exa" "web/parallel"];
       searxng = {
         endpoint = "http://${searxngServer.bind_address}:${toString searxngServer.port}";
-        engines = "google, bing, mojeek, github, wikipedia";
+        engines = "google cse, bing, yahoo, github, wikipedia";
       };
 
       providers.cacheRetention = "long";
