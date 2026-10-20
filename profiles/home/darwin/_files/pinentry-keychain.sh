@@ -40,15 +40,28 @@ card_serial() {
 
 # Replay the session to the real pinentry, drop the replies gpg-agent already
 # got (greeting + one OK per replayed command), then proxy the rest.
+#
+# The fallback runs as the only process of a background job, and the script
+# quits as soon as it does, so gpg-agent sees EOF instead of waiting forever for
+# a reply from a pinentry that died. The feeder and the filter are process
+# substitutions: `wait` on a pipeline would also wait for the feeder, which only
+# ends when gpg-agent closes our stdin. `wait` also lets the INT/TERM trap run,
+# which is how gpg-agent cancels a pinentry (GETINFO pid reports this script).
+# Async commands get /dev/null as stdin, so the feeder reads a copy on fd 3.
 hand_off() {
-  local skip=$((${#seen[@]} + 1))
-  {
-    for c in "${seen[@]}"; do printf '%s\n' "$c"; done
-    printf '%s\n' "$1"
-    cat
-  } |
-    "$fallback" |
-    awk -v skip="$skip" 'NR > skip { print; fflush() }'
+  local skip=$((${#seen[@]} + 1)) fallback_pid=
+  trap '[[ -n $fallback_pid ]] && kill "$fallback_pid" 2>/dev/null; exit 1' INT TERM
+  exec 3<&0
+  "$fallback" \
+    < <(
+      for c in "${seen[@]}"; do printf '%s\n' "$c"; done
+      printf '%s\n' "$1"
+      exec cat <&3
+    ) \
+    > >(awk -v skip="$skip" 'NR > skip { print; fflush() }') \
+    3<&- &
+  fallback_pid=$!
+  wait "$fallback_pid"
   exit
 }
 
