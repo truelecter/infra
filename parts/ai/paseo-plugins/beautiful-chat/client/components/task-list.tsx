@@ -121,6 +121,7 @@ export function TaskList({ data, tokens, onToggleTask, summary, time }: TaskList
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: 8,
           marginBottom: 8,
         },
         headerLeft: {

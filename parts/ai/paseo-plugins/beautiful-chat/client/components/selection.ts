@@ -24,6 +24,14 @@ export const selectableSurface = (
 export const selectableTextStyle = { userSelect: "text" } as TextStyle;
 
 /**
+ * `selectable` for Text that also sets `numberOfLines`. Android drops the
+ * ellipsis of selectable Text (facebook/react-native#32075, #48921): the text
+ * wraps and its one-line frame clips the second line midway. Such text stays
+ * unselectable there; web still selects it through `selectableSurface`.
+ */
+export const selectableTruncated = Platform.OS !== "android";
+
+/**
  * Decorative glyphs are real characters (`✦`, `⛨`, `≡`), and control labels are
  * chrome. Both would land in the clipboard when a selection crosses them, so
  * they stay unselectable even inside a selectable surface.

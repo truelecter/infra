@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Glyph } from "./glyph";
+import { selectableTruncated } from "./selection";
 import type { ExtendedThemeTokens } from "./theme-tokens";
 import type { TodoChange, TodoChangeType, TodoTask } from "../todo-history";
 
@@ -63,7 +64,7 @@ export function TodoSummary({ changes, tasks, tokens }: TodoSummaryProps) {
           {running ? (
             <>
               <Glyph name="CircleDot" size={12} color={tokens.accent} />
-              <Text selectable numberOfLines={1} style={styles.text}>
+              <Text selectable={selectableTruncated} numberOfLines={1} style={styles.text}>
                 {running.text}
               </Text>
             </>
@@ -81,7 +82,7 @@ export function TodoSummary({ changes, tasks, tokens }: TodoSummaryProps) {
           <Text selectable style={styles.label}>
             {LABELS[change.type]}
           </Text>
-          <Text selectable numberOfLines={1} style={styles.text}>
+          <Text selectable={selectableTruncated} numberOfLines={1} style={styles.text}>
             {change.tasks.length > MAX_NAMED_TASKS
               ? `${change.tasks.length} tasks`
               : change.tasks.join(" · ")}
