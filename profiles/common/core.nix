@@ -73,7 +73,7 @@
       # Give root user and wheel group special Nix privileges.
       trusted-users = ["root"];
 
-      keep-outputs = lib.mkDefault true;
+      keep-outputs = lib.mkDefault false;
       keep-derivations = lib.mkDefault true;
       builders-use-substitutes = true;
       experimental-features = ["flakes" "nix-command"];
