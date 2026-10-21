@@ -27,6 +27,6 @@ Clones are shared between sessions. Only fetch and check out tags there; never c
 | Paseo          | `getpaseo/paseo`   | `paseo --version` -> `0.10.0-beta.1` | `v0.10.0-beta.1` |
 
 - **OMP:** `omp` comes from the Nix store. If it is not on `PATH`, use `/etc/profiles/per-user/$(id -un)/bin/omp`.
-- **Paseo:** the CLI is not on `PATH`; it is at `~/Applications/Home Manager Apps/Paseo.app/Contents/Resources/bin/paseo`. The desktop app and its bundled daemon have the same version.
+- **Paseo:** `paseo` is the CLI bundled in the desktop app. If it is not on `PATH`, use `/etc/profiles/per-user/$(id -un)/bin/paseo` or `~/Applications/Home Manager Apps/Paseo.app/Contents/Resources/bin/paseo`. The desktop app and its bundled daemon have the same version.
 
 Other tools follow the same pattern: `opencode --version` -> `anomalyco/opencode` at `v<version>`.

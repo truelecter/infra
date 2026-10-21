@@ -5,10 +5,6 @@
   ...
 }: let
   searxngServer = config.services.searxng.settings.server;
-  agents = [
-    pkgs.paseo-desktop
-  ];
-
   toolkits = with pkgs; [
     spec-kit
     openspec
@@ -30,8 +26,7 @@
   gsdAgents = role: names: lib.genAttrs (map (name: "gsd-${name}") names) (_: "@${role}");
 in {
   home.packages =
-    agents
-    ++ toolkits
+    toolkits
     ++ commonTools;
 
   # Local SearXNG backs OMP's web_search; JSON output is what OMP's provider queries.
@@ -184,6 +179,8 @@ in {
   # title generation (`agents.metadataGeneration`) is per user, next to the user's OMP models.
   programs.paseo = {
     enable = true;
+    desktop.enable = true;
+    pluginDev.enable = true;
 
     settings = {
       daemon = {
@@ -247,13 +244,4 @@ in {
       workspace-title-sync = {};
     };
   };
-
-  home.activation.signPaseo = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
-    lib.hm.dag.entryAfter ["copyApps"] ''
-      app="$HOME/Applications/Home Manager Apps/Paseo.app"
-      if [[ -d "$app" ]]; then
-        run /usr/bin/codesign --force --deep --sign - "$app"
-      fi
-    ''
-  );
 }

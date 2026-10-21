@@ -59,11 +59,29 @@ in {
         # 4 GB with 15 GB of memory or more. So 4096 MB is V8's own ceiling: it
         # changes nothing on bigger builders and lifts the 2 GB limit of a 7 GB
         # GitHub macOS runner, where the worker ran out of memory.
+        #
+        # `bin/paseo` is the CLI the app bundles: on macOS the app's own shim, which follows the
+        # link back into the bundle and runs the CLI through the app's Electron; on Linux the CLI
+        # bin the Electron launcher uses, whose shebang the install points at Nix's node.
         paseo-desktop =
           (inputs.paseo.packages.${system}.desktop.override {
             inherit (final) paseo;
           }).overrideAttrs (old: {
             env = old.env // {NODE_OPTIONS = "--max-old-space-size=4096";};
+            postInstall =
+              (old.postInstall or "")
+              + (
+                if final.stdenv.hostPlatform.isDarwin
+                then ''
+                  ln -s ../Applications/Paseo.app/Contents/Resources/bin/paseo "$out/bin/paseo"
+                ''
+                else ''
+                  ln -s ../share/paseo-desktop/packages/cli/bin/paseo "$out/bin/paseo"
+                ''
+              )
+              + ''
+                test -x "$out/bin/paseo"
+              '';
           });
 
         # The install check's `omp --smoke-test` fails in the Darwin sandbox
