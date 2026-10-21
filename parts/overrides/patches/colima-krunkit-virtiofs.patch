@@ -1,0 +1,17 @@
+Resolve virtiofs for krunkit like for vz: Colima 0.10.3 (and main) gives Lima 9p for any VM type
+other than vz, which Lima's krunkit driver rejects.
+https://github.com/abiosoft/colima/pull/1641
+
+diff --git a/environment/vm/lima/yaml.go b/environment/vm/lima/yaml.go
+--- a/environment/vm/lima/yaml.go
++++ b/environment/vm/lima/yaml.go
+@@ -349,7 +349,8 @@ func newConf(ctx context.Context, conf config.Config) (l limaconfig.Config, err
+ 	case "ssh", "sshfs", "reversessh", "reverse-ssh", "reversesshfs", limaconfig.REVSSHFS:
+ 		l.MountType = limaconfig.REVSSHFS
+ 	default:
+-		if l.VMType == limaconfig.VZ {
++		// vz and krunkit only support virtiofs and reverse-sshfs.
++		if l.VMType == limaconfig.VZ || l.VMType == limaconfig.Krunkit {
+ 			l.MountType = limaconfig.VIRTIOFS
+ 		} else { // qemu
+ 			l.MountType = limaconfig.NINEP

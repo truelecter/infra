@@ -83,6 +83,12 @@ in {
         unifi
         pnpm_10
         ;
+
+      # krunkit 1.3+ and libkrun-efi 1.19+ for profiles/home/darwin/colima.nix. Colima's own flake
+      # builds on nixpkgs 25.05 (Lima 1.0, no krunkit), so patch nixpkgs' package instead.
+      colima = latest.colima.overrideAttrs (old: {
+        patches = (old.patches or []) ++ [./patches/colima-krunkit-virtiofs.patch];
+      });
     };
 
     overlays.common-external = inputs.nixpkgs.lib.composeManyExtensions [
