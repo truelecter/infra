@@ -3,6 +3,7 @@ keys:
   - &truelecter-beta A162FFF2A19DFB46C74511E6EF7D709B9C146477
 
   - &squadbook age1zltjqzpr3du45xnsy85q80nafejrvhlat2ugs8pysf763fm6spxsjk29eg
+  - &squadbook-m5 age1xdv75tl97xwtxeaec9dpttq8twztkcm8mu5u4g7lcphh5ksvws3qrw8l43
   - &tl-wsl age1qmurstgayt65a8r7j9nnf9mpz7wffxht2j8uadxy9pupylrqscyqv5m7zk
   - &depsos age17k6xap8v8ys080dx5jen9pycnkzjrdgnxzyqyv0lz34auspg4g8qykuuev
   - &oracle age1yk5h5m3uqzsedlc433n0p2aph6cdvuxvvr9nrrr3mtzmj22k3vmqp7ndhy
@@ -99,6 +100,7 @@ creation_rules:
           - *truelecter-beta
         age:
           - *squadbook
+          - *squadbook-m5
           - *voron
           - *nas
           - *sirius
@@ -115,6 +117,7 @@ creation_rules:
           - *truelecter-beta
         age:
           - *squadbook
+          - *squadbook-m5
           - *tl-wsl
           - *tl-mm4
 
