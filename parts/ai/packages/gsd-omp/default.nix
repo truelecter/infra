@@ -8,13 +8,14 @@ buildNpmPackage (finalAttrs: {
   pname = "gsd-omp";
   version = "1.0.25";
 
-  # Our fork's `local` branch: the v1.0.25 tag plus feat/execute-phase-todo and
-  # fix/execute-phase-skill-dispatch (README.md).
+  # Our fork's `local` branch: the v1.0.25 tag plus feat/execute-phase-todo,
+  # fix/execute-phase-skill-dispatch, fix/skip-compact-agents, and fix/project-core-docs
+  # (README.md).
   src = fetchFromGitHub {
     owner = "truelecter";
     repo = "gsd-omp";
-    rev = "701d34574a3c9f2891f24992b840912e8744ec9c";
-    hash = "sha256-GUAAm6bYznhZmCpZgyzXe/tARt+aT/G2HtAgZrnsBB0=";
+    rev = "669028172e6f0d1fd6477d2ea8c6fc7173ce9c41";
+    hash = "sha256-fjA2EUw7qHl2XbbuUq9QDSDoUcUPkdKCZOsdmn+jn7w=";
   };
 
   # The extension runs GSD's hooks, graphify worker, and gsd-tools under Node. OMP is a

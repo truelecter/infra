@@ -13,13 +13,13 @@
 programs.oh-my-pi.extensions = [pkgs.omp-extensions.gsd];
 ```
 
-The skills tell GSD where its agents are (`<root>/agents`), which is the same store path. Model routing is not part of the plugin: `task.agentModelOverrides` in the OMP settings maps each `gsd-*` agent to a model role.
+The skills tell GSD where its agents are (`<root>/agents`), which is the same store path. They and the agents read GSD Core's workflows, references, and templates from the projected `<root>/gsd-core/` copies (command names in the `/gsd-<cmd>` spelling), while `gsd-tools.cjs` runs from the GSD Core package. Model routing is not part of the plugin: `task.agentModelOverrides` in the OMP settings maps each `gsd-*` agent to a model role.
 
 Remove a previous imperative install first (`gsd-omp uninstall`), or OMP loads the extension twice.
 
 ## Fork
 
-`local` is an upstream release tag plus our branches, each kept ready to merge upstream. The fork's `FORK.md` lists every commit on `local` with its upstream PR and when to drop it: today `feat/execute-phase-todo` (OMP's `todo` in `/gsd-execute-phase`, tchivs/gsd-omp#73) and `fix/execute-phase-skill-dispatch` (the executor dispatch contract in the projected `gsd-execute-phase` skill, tchivs/gsd-omp#74).
+`local` is an upstream release tag plus our branches, each kept ready to merge upstream. The fork's `FORK.md` lists every commit on `local` with its upstream PR and when to drop it: today `feat/execute-phase-todo` (OMP's `todo` in `/gsd-execute-phase`, tchivs/gsd-omp#73), `fix/execute-phase-skill-dispatch` (the executor dispatch contract in the projected `gsd-execute-phase` skill, tchivs/gsd-omp#74), `fix/skip-compact-agents` (no `.compact.md` agents shadowing the full ones, tchivs/gsd-omp#75 by another contributor), and `fix/project-core-docs` (GSD Core's `gsd-core/` documents projected with `/gsd-<cmd>` instead of the legacy `/gsd:<cmd>`, no upstream PR).
 
 ## Update
 
