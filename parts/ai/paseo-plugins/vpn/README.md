@@ -25,9 +25,9 @@ The OpenVPN Connect app has no way to take the code from outside its own window,
 - **Start/Restart with remote control** on the screen quits the app and starts it with the port. The app normally relaunches itself and drops extra flags, so the plugin starts the relaunched instance directly (`--relaunch --remote-debugging-port=9223`) and then runs the app once more without flags, which is how a second launch tells the first to open its window; without that, the instance quits after 5 seconds. An open connection in the app drops.
 - Status (connection state, profiles, the server's prompt) comes from the app's Redux store, found through React's internals.
 - Connect and Disconnect run the app with `--connect-shortcut=<profile id>` and `--disconnect-shortcut`, which OpenVPN [documents as a workaround](https://support.openvpn.com/hc/en-us/articles/41389237225499-OpenVPN-Connect-Workaround-for-CLI-Based-Connect-Disconnect-on-macOS-and-Windows).
-- When the app shows its "Multi-factor authentication" dialog, the screen shows **Code needed for OpenVPN Connect**. The code you send is typed into that dialog and its **Send** button pressed (test IDs `OK_btn` and `Cancel_btn`), the same as by hand. A code typed next to Connect beforehand is sent as soon as the dialog opens, while the screen is open.
+- When the app shows its "Multi-factor authentication" dialog, the screen shows **Code needed for OpenVPN Connect**. The code you send is typed into that dialog and its **Send** button pressed (test IDs `OK` and `Cancel`), the same as by hand. A code typed next to Connect beforehand is sent as soon as the dialog opens, while the screen is open.
 
-This depends on the app's internals as of OpenVPN Connect 3.6.0 and can break on an update. While the port is open, any program running as you can control the app, so use Tunnelblick normally. After a login or a normal app start the port is closed again. Don't connect both apps at the same time.
+This depends on the app's internals as of OpenVPN Connect 3.8.1 and can break on an update. While the port is open, any program running as you can control the app, so use Tunnelblick normally. After a login or a normal app start the port is closed again. Don't connect both apps at the same time.
 
 ## Setup
 

@@ -10,7 +10,7 @@ import type { AppStatus } from "../shared/vpn.ts";
  * Connect and disconnect use the app's own (undocumented) `--connect-shortcut` flags.
  *
  * Everything here depends on the app's internals (Redux store shape, dialog test IDs)
- * as of OpenVPN Connect 3.6; an update can break it.
+ * as of OpenVPN Connect 3.8.1; an update can break it.
  */
 
 const run = promisify(execFile);
@@ -41,7 +41,7 @@ const findStore = () => {
 const STATUS_SCRIPT = `(() => {
   ${FIND_STORE}
   const { status, connection } = findStore().getState();
-  const dialog = document.querySelector('[role="dialog"] [data-testid="OK_btn"]');
+  const dialog = document.querySelector('[role="dialog"] [data-testid="OK"]');
   return {
     state: connection.connStatus,
     connectedProfileId: connection.profileId || null,
@@ -53,13 +53,13 @@ const STATUS_SCRIPT = `(() => {
 // Types the code into the app's challenge dialog and presses its Send button, the
 // same path as typing it by hand.
 const answerScript = (code: string) => `(() => {
-  const dialog = [...document.querySelectorAll('[role="dialog"]')].find((d) => d.querySelector('[data-testid="OK_btn"]'));
+  const dialog = [...document.querySelectorAll('[role="dialog"]')].find((d) => d.querySelector('[data-testid="OK"]'));
   const input = dialog && dialog.querySelector('input[type="text"], input[type="password"], input:not([type])');
   if (!input) return false;
   const setValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
   setValue.call(input, ${JSON.stringify(code)});
   input.dispatchEvent(new Event("input", { bubbles: true }));
-  dialog.querySelector('[data-testid="OK_btn"]').click();
+  dialog.querySelector('[data-testid="OK"]').click();
   return true;
 })()`;
 
