@@ -109,6 +109,23 @@ jobs:
           tags: tag:ci
           ping: tl-mm4
 
+      # On macOS the Tailscale action points the system DNS at MagicDNS
+      # (100.100.100.100) and has no input to turn that off. That resolver
+      # doesn't forward public names (since Tailscale 1.104.2), so Nix can't
+      # reach any cache and the runner can't renew its job lease, which
+      # cancels the job. Pin the builder in /etc/hosts and restore the
+      # runner's own DNS. See tailscale/github-action#315.
+      - name: Restore runner DNS
+        if: ${{ startsWith(matrix.os, 'macos') }}
+        run: |
+          builder_ip=$(tailscale ip -4 tl-mm4)
+          echo "$builder_ip tl-mm4" | sudo tee -a /etc/hosts
+          sudo networksetup -setdnsservers Ethernet Empty
+          sudo networksetup -setsearchdomains Ethernet Empty
+          sudo dscacheutil -flushcache
+          sudo killall -HUP mDNSResponder
+          curl -fsS --retry 3 -o /dev/null https://cache.nixos.org/nix-cache-info
+
       - name: Create aarch64-linux builder
         if: ${{ startsWith(matrix.os, 'macos') }}
         env:
