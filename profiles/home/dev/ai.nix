@@ -83,8 +83,11 @@ in {
       # Auto QA reports (xd://report_issue) go nowhere without consent, and with it they would send
       # local paths and internal URLs out; either way agents spend turns writing them.
       dev.autoqa = false;
-      # The rules (caveman, writing style) set the tone, so OMP's personality block only adds tokens.
+      # The rules (ultracave, writing style) set the tone, so OMP's personality block only adds tokens.
       personality = "none";
+      # `ultracave` replaces the plain `caveman` rule; drop `caveman` from this list (and add
+      # `ultracave`) to switch back.
+      ttsr.disabledRules = ["caveman"];
 
       # GSD skills that can't work with the store install (update, surface), don't fit this setup,
       # or only list other commands. GSD hooks call code-review, validate-phase, secure-phase,
