@@ -17,6 +17,7 @@
       ./bluetooth.nix
       ./topology.nix
       ./unifi-os-server.nix
+      ./nas-wake.nix
     ];
 
   networking.firewall.enable = false;

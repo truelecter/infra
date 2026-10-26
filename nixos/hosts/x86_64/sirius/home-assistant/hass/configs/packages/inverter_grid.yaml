@@ -1,0 +1,19 @@
+# Grid state as an MQTT event stream, so sirius wakes the NAS when the grid
+# comes back (sirius/nas-wake.nix).
+automation:
+  - id: publish_inverter_grid
+    alias: Publish inverter grid state to MQTT
+    mode: queued
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.inverter_grid
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/5"
+    actions:
+      - action: mqtt.publish
+        data:
+          topic: inverter/grid
+          payload: "{{ states('binary_sensor.inverter_grid') }}"
+          retain: true

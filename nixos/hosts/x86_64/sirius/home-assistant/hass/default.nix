@@ -6,6 +6,8 @@ in {
       volumes = [
         "/srv/home-assistant/hass:/config"
         "${./configs/dashboards}:/config/dashboards/"
+        # configuration.yaml loads these with `homeassistant: packages: !include_dir_named packages`
+        "${./configs/packages}:/config/packages/"
       ];
       environment = {
         TZ = "Europe/Kyiv";
