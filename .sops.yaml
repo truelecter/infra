@@ -128,3 +128,11 @@ creation_rules:
           - *truelecter-beta
         age:
           - *nas
+
+  - path_regex: secrets/home-assistant.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+        age:
+          - *nas
