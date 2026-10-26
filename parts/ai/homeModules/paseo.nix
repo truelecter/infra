@@ -121,6 +121,14 @@ in {
       };
     };
 
+    pinWorkspace = {
+      enable = mkEnableOption "`paseo-pin-workspace`, which pins or unpins a workspace in the local daemon's sidebar (Paseo's CLI and MCP tools have no pin command)";
+
+      package = mkPackageOption pkgs "paseo-pin-workspace" {
+        extraDescription = "From `overlays.ai`.";
+      };
+    };
+
     settings = mkOption {
       inherit (jsonFormat) type;
       default = {};
@@ -180,11 +188,12 @@ in {
       })
       cfg.plugins;
 
-    # The desktop app, the CLI (the app itself when it is the CLI package), paseo-plugin-dev, plus
-    # the commands that ship with plugins (passthru.cli).
+    # The desktop app, the CLI (the app itself when it is the CLI package), paseo-plugin-dev,
+    # paseo-pin-workspace, plus the commands that ship with plugins (passthru.cli).
     home.packages =
       lib.unique (lib.optional cfg.desktop.enable cfg.desktop.package ++ lib.optional cfg.cli.enable cfg.cli.package)
       ++ lib.optional cfg.pluginDev.enable cfg.pluginDev.package
+      ++ lib.optional cfg.pinWorkspace.enable cfg.pinWorkspace.package
       ++ lib.concatMap (plugin: lib.optional (plugin.package ? cli) plugin.package.cli) (lib.attrValues cfg.plugins);
 
     # `force`: a link repointed by `paseo-plugin-dev link` is a symlink Home Manager doesn't own;

@@ -21,8 +21,10 @@ parts/ai/
     node-modules.nix          fixed-output `bun install` used for plugin dependencies and test deps
     _test-deps/               zod, react, and the plugin SDK, locked, for the plugins' tests
     _e2e/                     end-to-end suite: harness, Playwright specs per plugin (paseo-plugins-e2e)
+    _e2e/node-modules.nix     the suite's locked `@getpaseo/client` and `ws`, shared with paseo-pin-workspace
     <id>/                     one Paseo plugin per folder
   packages/gsd-omp/           the gsd-omp CLI (buildNpmPackage), see its README for updates
+  packages/paseo-pin-workspace/  `paseo-pin-workspace`: pins or unpins a workspace in the local Paseo daemon's sidebar
 profiles/home/dev/ai.nix      the shared profile: OMP extension list and provider-neutral settings, programs.paseo settings and plugins
 profiles/home/dev/_files/omp/ rules, skills, and subagents linked into ~/.omp/agent
 home/users/<os>/<user>.nix    per-user choices: OMP model roles and models.yml, Paseo's title-generation model, machine-bound Paseo plugins (vpn)
@@ -30,16 +32,17 @@ home/users/<os>/<user>.nix    per-user choices: OMP model roles and models.yml, 
 
 Outputs, all from `default.nix`:
 
-| Output                                   | What it is                                                                                                                |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `packages.<system>.omp-extension-<name>` | one per folder in `omp-extensions/`, plus `omp-extension-gsd`                                                             |
-| `packages.<system>.paseo-plugin-<id>`    | one per folder in `paseo-plugins/` (not `_`-prefixed ones)                                                                |
-| `packages.<system>.paseo-plugins-e2e`    | the plugins' end-to-end suite on every system, `nix run .#paseo-plugins-e2e` (see "End-to-end tests")                     |
-| `packages.<system>.gsd-omp`              | the gsd-omp CLI                                                                                                           |
-| `overlays.ai`                            | `pkgs.omp-extensions.<name>`, `pkgs.paseo-plugins.<id>`, and `pkgs.gsd-omp`; the darwin and NixOS configurations apply it |
-| `homeModules.oh-my-pi`                   | `programs.oh-my-pi`; also shared into every Home Manager user                                                             |
-| `homeModules.paseo`                      | `programs.paseo`; also shared into every Home Manager user                                                                |
-| `homeModules.searxng`                    | `services.searxng`; also shared into every Home Manager user                                                              |
+| Output                                   | What it is                                                                                                                                            |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages.<system>.omp-extension-<name>` | one per folder in `omp-extensions/`, plus `omp-extension-gsd`                                                                                         |
+| `packages.<system>.paseo-plugin-<id>`    | one per folder in `paseo-plugins/` (not `_`-prefixed ones)                                                                                            |
+| `packages.<system>.paseo-plugins-e2e`    | the plugins' end-to-end suite on every system, `nix run .#paseo-plugins-e2e` (see "End-to-end tests")                                                 |
+| `packages.<system>.gsd-omp`              | the gsd-omp CLI                                                                                                                                       |
+| `packages.<system>.paseo-pin-workspace`  | `paseo-pin-workspace`, `nix run .#paseo-pin-workspace -- <workspace-id>` (see "Pin a workspace")                                                      |
+| `overlays.ai`                            | `pkgs.omp-extensions.<name>`, `pkgs.paseo-plugins.<id>`, `pkgs.gsd-omp`, and `pkgs.paseo-pin-workspace`; the darwin and NixOS configurations apply it |
+| `homeModules.oh-my-pi`                   | `programs.oh-my-pi`; also shared into every Home Manager user                                                                                         |
+| `homeModules.paseo`                      | `programs.paseo`; also shared into every Home Manager user                                                                                            |
+| `homeModules.searxng`                    | `services.searxng`; also shared into every Home Manager user                                                                                          |
 
 Provider choices belong to the user, not the shared profile: `profiles/home/dev/ai.nix` routes agents to role names (`task.agentModelOverrides`, `@gsd-deep`, ...), and each user's file under `home/users/` maps those roles to models (`programs.oh-my-pi.settings.modelRoles`, `retry.fallbackChains`, `models`). Unset roles resolve to no model, and OMP falls back to the session model. This repository is public: keep secrets and internal endpoints (credentials, MCP servers on internal hosts) out of it. The module loads such settings from a later overlay through `extraConfigFiles` or an `OMP_CONFIG_FILES` line in `~/.omp/agent/.env`, kept outside this repository; secrets themselves go in `~/.omp/agent/.env`.
 
@@ -231,6 +234,16 @@ paseo-plugin-dev restore wide-chat           # back to the installed build, relo
 - The next switch puts every link back on its store build and reloads the plugin; the edits stay in the checkout, they just stop being loaded. Link again to continue.
 - The Paseo daemon's shell may not have `paseo-plugin-dev` or `paseo` on `PATH`; then use `/etc/profiles/per-user/$(id -un)/bin/paseo-plugin-dev` and `/etc/profiles/per-user/$(id -un)/bin/paseo`.
 
+### Pin a workspace
+
+`paseo-pin-workspace` (installed by the module with `programs.paseo.pinWorkspace.enable`, which `profiles/home/dev/ai.nix` sets) pins a workspace to the top of the local daemon's sidebar, or unpins it. Paseo's CLI and MCP tools have no pin command, and unattended schedule runs need one: a blocked run starts a handoff agent in its own workspace and pins that workspace so the user sees it. It connects to the daemon at `listen` from `<home>/paseo.pid` (home is `PASEO_HOME` or `~/.paseo`; TCP only) with the token from `<home>/local-credential`, sends `workspace.pin.set.request` through `DaemonClient.setWorkspacePinned`, and prints `{"workspaceId":"...","pinnedAt":"<iso>"|null}`; a stopped daemon, a missing credential, or a rejected request (an unknown id: `Workspace not found`) exits nonzero with the reason on stderr. The pin is persisted as `pinnedAt` in `~/.paseo/projects/workspaces.json`.
+
+```sh
+paseo-pin-workspace <workspace-id> [--unpin]    # before a switch: nix run .#paseo-pin-workspace -- <workspace-id>
+```
+
+`DaemonClient` is the internal client of `@getpaseo/client` (`@getpaseo/client/internal/daemon-client`), not its public SDK, and the command runs on the end-to-end suite's `node_modules` (`_e2e/node-modules.nix`), so it moves with that pin. When the `_e2e` `@getpaseo/client` pin moves, build `paseo-pin-workspace` and check it against a throwaway workspace: `paseo workspace create --isolation local --path <empty dir> --json`, pin, unpin, a bogus id, then `paseo workspace archive <id>`.
+
 ### Agents editing plugins
 
 An agent is the main editor of these plugins, and it usually runs inside the same Paseo it is changing. So:
@@ -267,7 +280,7 @@ nix run .#paseo-plugins-e2e -- --grep "Backlog"
 - `tailscale-listener` gets a stand-in for Tailscale: `PASEO_TAILSCALE_ADDRESS=::1` (the daemon listens on 127.0.0.1, so the port is free on IPv6 loopback, which macOS and Linux both have) and `PASEO_TAILSCALE_HOSTNAMES=e2e-host.e2e-tailnet.ts.net` in place of the MagicDNS lookup. Its spec loads the UI through `http://[::1]:<port>/`, checks that the names reached `daemon.hostnames` through `paseo daemon config set` (the CLI from `PASEO_CLI`, the package's `bin/paseo`), and that the running daemon then accepts the name as a Host header (the plugin saves during the daemon's start, before the daemon can apply it, and saves again until it does). Nothing is exposed beyond loopback.
 - CI: `.github/workflows/paseo-plugins-e2e.yaml` runs the suite on `ubuntu-latest` (x86_64) on every push that changes `flake.lock`, `flake.nix`, `parts/ai/**`, or the workflow, and on `workflow_dispatch`. A `changes` job (dorny/paths-filter) decides, and `paseo_e2e_aggregated`, a required check (in `shell/files/github-settings.nix`, which the dev shell writes to `.github/settings.yml`), passes when the suite passed or was not needed. On failure the run's temp root (`PASEO_E2E_ROOT` under `runner.temp`, with the report and daemon log) is uploaded as the `paseo-plugins-e2e` artifact. The weekly `flake-lock.yaml` PR is pushed with `PR_WF_ENABLED_TOKEN`, so the suite runs on it. It bumps Paseo only when the fork's `local` branch moved since the last lock, so mostly it catches nixpkgs-side breakage (node, Playwright, Chromium, plugin dependencies); a manual Paseo bump runs it too.
 - Writing a spec: `support/fixtures.ts` gives `test` (pages can't reach port 6767, a failed test gets the browser console attached, `client` is a `DaemonClient`, `seed(name)` creates a git repository project that is removed after the test), `openApp`, and `openAgent`. `support/paseo.ts` creates mock agents (`e2e-fast-stream` ends a turn in about 2 s before any tool call, `ten-second-stream` also makes read, grep, edit, and bash calls; see `packages/server/src/server/agent/providers/mock-load-test-agent.ts` in Paseo) and app routes. `support/env.ts` has the harness values, such as the daemon home and a plugin's loaded folder. Prefer Paseo's `data-testid`s and the plugin's own markers to text and CSS classes. Every spec must fail without its plugin; check that with an override.
-- `@getpaseo/client` in `_e2e/package.json` is pinned to the Paseo version. Bump it with Paseo: update `package.json`, run `bun install` in `_e2e/` to update `bun.lock` (then remove `node_modules`), and refresh the hash in `_e2e/default.nix` (`lib.fakeHash`, build, copy the hash from the error).
+- `@getpaseo/client` in `_e2e/package.json` is pinned to the Paseo version. Bump it with Paseo: update `package.json`, run `bun install` in `_e2e/` to update `bun.lock` (then remove `node_modules`), and refresh the hash in `_e2e/node-modules.nix` (`lib.fakeHash`, build, copy the hash from the error). `paseo-pin-workspace` uses the same `node_modules`; check it after the bump (see "Pin a workspace").
 
 ### Change the module
 

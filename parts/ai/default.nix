@@ -7,6 +7,8 @@
 
   mkPackages = pkgs: rec {
     gsd-omp = pkgs.callPackage ./packages/gsd-omp {};
+    # Pins a workspace in the local Paseo daemon's sidebar (no CLI or MCP command for it).
+    paseo-pin-workspace = pkgs.callPackage ./packages/paseo-pin-workspace {};
     omp-extensions = import ./omp-extensions {
       inherit (pkgs) lib stdenvNoCC runCommand bun;
       inherit gsd-omp;
@@ -24,7 +26,7 @@ in {
   in {
     packages =
       {
-        inherit (packages) gsd-omp;
+        inherit (packages) gsd-omp paseo-pin-workspace;
         # Paseo's daemon and headless Chromium against every plugin; runs on Linux and macOS.
         paseo-plugins-e2e = pkgs.callPackage ./paseo-plugins/_e2e {
           paseo = mkPaseo system;

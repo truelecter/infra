@@ -20,15 +20,8 @@
   paseo,
   plugins,
 }: let
-  fetchNodeModules = import ../node-modules.nix {inherit lib stdenvNoCC bun;};
-
-  # `@getpaseo/client` (pinned to the Paseo version) and `ws`. After changing package.json or
-  # bun.lock, set the hash to `lib.fakeHash`, build, and copy the hash from the error.
-  nodeModules = fetchNodeModules {
-    name = "paseo-plugins-e2e";
-    dir = ./.;
-    hash = "sha256-TMQ0x9DRLtRX7rZfvP8BBR8dLZ9FSz5mQ/rJZGvvF0I=";
-  };
+  # `@getpaseo/client` (pinned to the Paseo version) and `ws`, shared with paseo-pin-workspace.
+  nodeModules = import ./node-modules.nix {inherit lib stdenvNoCC bun;};
 
   suite = lib.fileset.toSource {
     root = ./.;

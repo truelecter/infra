@@ -184,6 +184,7 @@ in {
     enable = true;
     desktop.enable = true;
     pluginDev.enable = true;
+    pinWorkspace.enable = true;
 
     settings = {
       daemon = {
