@@ -14,7 +14,7 @@ in {
 
       hostConfig = {
         password._secret = secret "prowlarr-password";
-        authenticationRequired = "disabledForLocalAddresses";
+        authenticationRequired = "enabled";
       };
 
       indexers = [

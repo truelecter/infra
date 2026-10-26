@@ -14,7 +14,7 @@ in {
       apiKey._secret = secret "radarr-api-key";
       hostConfig = {
         password._secret = secret "radarr-password";
-        authenticationRequired = "disabledForLocalAddresses";
+        authenticationRequired = "enabled";
       };
     };
   };

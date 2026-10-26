@@ -31,7 +31,7 @@ in {
         apiKey._secret = secret "sonarr-generic-api-key";
         hostConfig = {
           password._secret = secret "sonarr-generic-password";
-          authenticationRequired = "disabledForLocalAddresses";
+          authenticationRequired = "enabled";
         };
       };
     };
@@ -43,7 +43,7 @@ in {
         apiKey._secret = secret "sonarr-anime-api-key";
         hostConfig = {
           password._secret = secret "sonarr-anime-password";
-          authenticationRequired = "disabledForLocalAddresses";
+          authenticationRequired = "enabled";
         };
       };
     };
