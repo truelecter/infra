@@ -24,7 +24,6 @@ in {
 
     encoding = {
       allowHevcEncoding = true;
-      allowAv1Encoding = true;
 
       enableDecodingColorDepth10Hevc = true;
       enableDecodingColorDepth10HevcRext = false;
@@ -32,8 +31,12 @@ in {
       enableDecodingColorDepth10Vp9 = true;
       enableHardwareEncoding = true;
 
+      # GTX 1660 Super (TU116): NVDEC has no AV1, NVENC has no AV1
       hardwareAccelerationType = "nvenc";
-      hardwareDecodingCodecs = ["h264" "vc1" "hevc" "av1" "mpeg2video"];
+      hardwareDecodingCodecs = ["h264" "vc1" "hevc" "vp9" "mpeg2video"];
+
+      # HDR -> SDR via tonemap_cuda; without it HDR transcodes are only relabeled bt709
+      enableTonemapping = true;
     };
 
     branding = {
