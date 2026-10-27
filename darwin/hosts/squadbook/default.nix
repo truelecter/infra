@@ -11,7 +11,6 @@
     ++ suites.games
     ++ [
       profiles.darwin.security.yubikey
-      profiles.darwin.three-d-print
 
       profiles.common.remote-builder
       profiles.common.build-machines
