@@ -60,10 +60,16 @@ in {
     pathConfig.PathChanged = "${triggerDir}/trigger";
   };
 
-  systemd.services.pandora-redeploy = {
+  systemd.services.pandora-redeploy = let
+    containers = config.virtualisation.oci-containers.containers;
+  in {
     description = "Restart pandora containers on the newest images";
     serviceConfig.Type = "oneshot";
+    # Pull first, one image after the other (they share the assets layer), so the
+    # old containers keep serving during the slow download; the restart is then quick
     script = ''
+      ${config.virtualisation.podman.package}/bin/podman pull ${containers.pandora-web-resources.image}
+      ${config.virtualisation.podman.package}/bin/podman pull ${containers.pandora.image}
       ${config.systemd.package}/bin/systemctl restart podman-pandora-web-resources.service podman-pandora.service
     '';
   };
