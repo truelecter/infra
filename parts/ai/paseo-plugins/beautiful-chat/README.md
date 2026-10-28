@@ -38,6 +38,12 @@ An answered `ask` call draws as a card with the question as the header and the a
 
 Every card shows when its item arrived at the right of its header line: the Thinking card when the reasoning started, the checklist when the list was set, the tool summary line and each compact tool row when the call started, and the question card when it was asked. The wording follows Paseo's own message times (`client/time.ts` mirrors its `formatMessageTimestamp`): only the time on the same day (`22:11` or `10:11 PM`, following the system's 12/24-hour setting), the weekday and time for the six days before (`Wednesday 22:11`), and the date and time before that. Paseo hands each renderer the row's time as `timestamp`. Rows listed inside an opened summary show no time, because the run keeps only the calls, not their rows' times.
 
+## Text selection
+
+Text the agent or the user wrote (reasoning steps, task titles, questions and answers, tool output, code) can be selected; card chrome (times, counts, badges, status labels) can't on the phone and tablet, and selects together with its card on web and desktop. On Android each selectable piece of text is its own native view: holding a finger on it for about half a second, or tapping it and dragging right after, starts a word selection instead of scrolling the chat, and each such view adds work to every frame while the list moves. So the cards keep that to content only.
+
+On the phone and tablet a code block is one piece of text, so a selection can run across its lines. Diff tints and line numbers are drawn beside it: first one line height apart (rounded to whole pixels as Android draws it), then from the text's reported line layout (`client/code-layout.ts`). A block without wrapped lines is drawn once; a block with wrapped lines moves the tints and numbers below the first wrapped line on the next frame. Web and desktop draw one row per line.
+
 ## Settings
 
 **Settings -> Plugins -> Beautiful Chat -> Chat presentation** has three settings. **Text size** (Small, Default, Large, or Larger) scales every font size and line height in the plugin's own cards and leaves paddings, icons, and corners alone. **Show times** (on by default) shows each card's time. **Combine tool calls** (on by default) folds a turn's tool calls into one summary line; off draws every call as its own row. Cards on screen follow every change at once. The settings are saved in the window's local storage. Paseo's Appearance font settings cover everything else; a plugin cannot read them.
@@ -71,6 +77,7 @@ beautiful-chat/
     tool-kind.ts               # Tool call to kind, icon, label, preview, and summary wording
     activity-store.ts          # Groups a turn's tool calls into runs, in transform order; what each call's item draws
     collapse.ts                # Which cards open on their own
+    code-layout.ts             # Which visual lines of a native code block belong to which source line
     time.ts                    # A card's time, worded like Paseo's message times
     preferences.ts             # Text size, Show times, Combine tool calls, and collapse settings, a small store saved to local storage
     settings-page.tsx          # Chat presentation settings screen (Text size, Show times, Combine tool calls)

@@ -1,9 +1,22 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Platform,
+  PixelRatio,
+  type NativeSyntheticEvent,
+  type StyleProp,
+  type TextLayoutEventData,
+  type TextStyle,
+  type ViewStyle,
+} from "react-native";
 import { Glyph } from "./glyph";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface, unselectable } from "./selection";
 import { useHighlightedLines } from "../highlight";
+import { logicalLineBoxes, sameLineBoxes, type LineBox } from "../code-layout";
 import type { HighlightLine, HighlightToken } from "../../shared/highlight-rpc";
 
 interface SyntaxHighlightProps {
@@ -502,6 +515,33 @@ export function SyntaxHighlightBlock({
   const shikiLines = highlightResult?.lines;
   const diffBodyLines = highlightResult?.diffLines;
 
+  const renderLine = (line: string, idx: number): React.ReactNode => {
+    // The patched file's tokens, and only for a line the file owns. A chrome
+    // line keeps the diff rendering it has today.
+    const bodyLine = isDiff && !isDiffChrome(line) ? diffBodyLines?.[idx] : undefined;
+    if (bodyLine) return renderDiffBodyLine(line, bodyLine, tokens);
+    const shikiLine = shikiLines?.[idx];
+    if (shikiLine) return renderShikiLine(shikiLine, tokens);
+    return renderSyntaxLine(line, isDiff, language, lineDialects[idx] ?? codeLanguage, tokens);
+  };
+
+  const rowTint = (idx: number): ViewStyle | null => {
+    const kind = diffTint(lines[idx], isDiff);
+    if (kind === null) return null;
+    // Adjacent added and removed rows form one hunk. Only the hunk's outer
+    // edges round, so a delete-to-add transition stays flush.
+    const opensRun = diffTint(lines[idx - 1], isDiff) === null;
+    const closesRun = diffTint(lines[idx + 1], isDiff) === null;
+    const corner = radius.chip;
+    return {
+      backgroundColor: kind === "add" ? tokens.syntax.diffAddBg : tokens.syntax.diffRemoveBg,
+      borderTopLeftRadius: opensRun ? corner : 0,
+      borderTopRightRadius: opensRun ? corner : 0,
+      borderBottomLeftRadius: closesRun ? corner : 0,
+      borderBottomRightRadius: closesRun ? corner : 0,
+    };
+  };
+
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -610,11 +650,7 @@ export function SyntaxHighlightBlock({
                 {filename}
               </Text>
             ) : null}
-            {language ? (
-              <Text selectable style={styles.langBadge}>
-                {language}
-              </Text>
-            ) : null}
+            {language ? <Text style={styles.langBadge}>{language}</Text> : null}
           </View>
           <Pressable onPress={handleCopy} style={styles.copyButton}>
             <Glyph
@@ -628,62 +664,124 @@ export function SyntaxHighlightBlock({
       )}
 
       <View style={styles.codeArea}>
-        {lines.map((line, idx) => {
-          const shikiLine = shikiLines?.[idx];
-          // The patched file's tokens, and only for a line the file owns. A
-          // chrome line keeps the diff rendering it has today.
-          const bodyLine = isDiff && !isDiffChrome(line) ? diffBodyLines?.[idx] : undefined;
-          const kind = diffTint(lines[idx], isDiff);
-          const lineBg =
-            kind === "add"
-              ? tokens.syntax.diffAddBg
-              : kind === "remove"
-                ? tokens.syntax.diffRemoveBg
-                : "transparent";
-
-          // Adjacent added and removed rows form one hunk. Only the hunk's
-          // outer edges round, so a delete-to-add transition stays flush.
-          const previousKind = diffTint(lines[idx - 1], isDiff);
-          const nextKind = diffTint(lines[idx + 1], isDiff);
-          const opensRun = kind !== null && previousKind === null;
-          const closesRun = kind !== null && nextKind === null;
-          const corner = radius.chip;
-
-          return (
-            <View
-              key={idx}
-              style={[
-                styles.lineRow,
-                {
-                  backgroundColor: lineBg,
-                  borderTopLeftRadius: opensRun ? corner : 0,
-                  borderTopRightRadius: opensRun ? corner : 0,
-                  borderBottomLeftRadius: closesRun ? corner : 0,
-                  borderBottomRightRadius: closesRun ? corner : 0,
-                },
-              ]}
-            >
+        {Platform.OS === "web" ? (
+          lines.map((line, idx) => (
+            <View key={idx} style={[styles.lineRow, rowTint(idx)]}>
               {showLineNumbers && <Text style={styles.lineNumber}>{idx + 1}</Text>}
               <Text selectable style={styles.lineContent}>
-                {bodyLine
-                  ? renderDiffBodyLine(line, bodyLine, tokens)
-                  : shikiLine
-                    ? renderShikiLine(shikiLine, tokens)
-                    : renderSyntaxLine(
-                        line,
-                        isDiff,
-                        language,
-                        lineDialects[idx] ?? codeLanguage,
-                        tokens,
-                      )}
+                {renderLine(line, idx)}
               </Text>
             </View>
-          );
-        })}
+          ))
+        ) : (
+          <NativeCodeLines
+            lines={lines}
+            renderLine={renderLine}
+            rowTint={rowTint}
+            showLineNumbers={showLineNumbers}
+            lineNumberStyle={styles.lineNumber}
+            lineContentStyle={styles.lineContent}
+            lineHeight={tokens.fs(18)}
+          />
+        )}
       </View>
     </View>
   );
 }
+
+/**
+ * The code area on native: the whole block is one selectable Text, so a
+ * selection can run across lines and the block costs one native text view
+ * instead of one per line. Android cannot select across views, and each
+ * selectable view adds its own long-press target and per-frame work while the
+ * chat scrolls. Diff tints and line numbers sit beside the Text: on the first
+ * frame one line height apart, then from its reported layout, which moves
+ * only the rows below a line that wrapped.
+ */
+function NativeCodeLines({
+  lines,
+  renderLine,
+  rowTint,
+  showLineNumbers,
+  lineNumberStyle,
+  lineContentStyle,
+  lineHeight,
+}: {
+  lines: string[];
+  renderLine: (line: string, idx: number) => React.ReactNode;
+  rowTint: (idx: number) => ViewStyle | null;
+  showLineNumbers: boolean;
+  lineNumberStyle: StyleProp<TextStyle>;
+  lineContentStyle: StyleProp<TextStyle>;
+  /** The `lineHeight` of `lineContentStyle`. */
+  lineHeight: number;
+}) {
+  // A line that doesn't wrap is one line height tall after the font scale;
+  // Android rounds that up to whole pixels (CustomLineHeightSpan).
+  const scaled = lineHeight * PixelRatio.getFontScale();
+  const step =
+    Platform.OS === "android" ? Math.ceil(scaled * PixelRatio.get()) / PixelRatio.get() : scaled;
+  const unwrapped = useMemo(
+    () => Array.from({ length: lines.length }, (_, i) => ({ top: i * step, height: step })),
+    [lines.length, step],
+  );
+  // Only a layout that differs from the unwrapped one is kept, so a block
+  // without wrapped lines never draws twice.
+  const [measured, setMeasured] = useState<LineBox[] | null>(null);
+  const handleTextLayout = useCallback(
+    (event: NativeSyntheticEvent<TextLayoutEventData>) => {
+      const next = logicalLineBoxes(lines, event.nativeEvent.lines);
+      setMeasured((previous) => {
+        const shown = previous?.length === next.length ? previous : unwrapped;
+        return sameLineBoxes(shown, next) ? previous : next;
+      });
+    },
+    [lines, unwrapped],
+  );
+  // A layout from before the code changed would land on the wrong rows.
+  const placed = measured?.length === lines.length ? measured : unwrapped;
+
+  return (
+    <View>
+      {placed.map((box, idx) => {
+        const tint = rowTint(idx);
+        return tint ? (
+          <View
+            key={idx}
+            pointerEvents="none"
+            style={[tint, nativeStyles.tint, { top: box.top, height: box.height }]}
+          />
+        ) : null;
+      })}
+      <View style={nativeStyles.row}>
+        {showLineNumbers ? (
+          <View style={nativeStyles.gutter}>
+            {placed.map((box, idx) => (
+              <Text key={idx} style={[lineNumberStyle, nativeStyles.lineNumber, { top: box.top }]}>
+                {idx + 1}
+              </Text>
+            ))}
+          </View>
+        ) : null}
+        <Text selectable style={lineContentStyle} onTextLayout={handleTextLayout}>
+          {lines.map((line, idx) => (
+            <React.Fragment key={idx}>
+              {idx > 0 ? "\n" : null}
+              {renderLine(line, idx)}
+            </React.Fragment>
+          ))}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+const nativeStyles = StyleSheet.create({
+  tint: { position: "absolute", left: 0, right: 0 },
+  row: { flexDirection: "row", alignItems: "flex-start" },
+  gutter: { width: 32, alignSelf: "stretch" },
+  lineNumber: { position: "absolute", left: 0 },
+});
 
 /**
  * One line as the daemon tokenised it. A token the theme gives no colour takes

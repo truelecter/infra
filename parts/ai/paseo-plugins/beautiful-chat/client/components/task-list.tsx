@@ -324,21 +324,15 @@ export function TaskList({ data, tokens, onToggleTask, summary, time }: TaskList
                   <Text selectable style={styles.headerTitle}>
                     {data.phaseName}
                   </Text>
-                  <Text selectable style={styles.phaseBadge}>
-                    OMP todo
-                  </Text>
+                  <Text style={styles.phaseBadge}>OMP todo</Text>
                 </View>
               )}
             </View>
           </View>
           <View style={styles.headerRight}>
-            {showWorking ? (
-              <Text selectable style={styles.statusText}>
-                Tasks
-              </Text>
-            ) : null}
+            {showWorking ? <Text style={styles.statusText}>Tasks</Text> : null}
             <CardTime time={time} tokens={tokens} />
-            <Text selectable style={styles.progressRatio}>
+            <Text style={styles.progressRatio}>
               {foldable
                 ? `${completedCount}/${totalCount}`
                 : `${completedCount}/${totalCount} (${progressPercent}%)`}
@@ -410,14 +404,12 @@ export function TaskList({ data, tokens, onToggleTask, summary, time }: TaskList
 
                   <View style={styles.taskFooterRow}>
                     {isActive && (
-                      <Text selectable style={[styles.statusLabel, { color: tokens.accent }]}>
+                      <Text style={[styles.statusLabel, { color: tokens.accent }]}>
                         In Progress
                       </Text>
                     )}
                     {isDone && (
-                      <Text selectable style={[styles.statusLabel, { color: tokens.success }]}>
-                        Done
-                      </Text>
+                      <Text style={[styles.statusLabel, { color: tokens.success }]}>Done</Text>
                     )}
                     {isBlocked && (
                       <Pressable
@@ -429,9 +421,7 @@ export function TaskList({ data, tokens, onToggleTask, summary, time }: TaskList
                       </Pressable>
                     )}
                     {task.duration ? (
-                      <Text selectable style={styles.durationBadge}>
-                        {task.duration}
-                      </Text>
+                      <Text style={styles.durationBadge}>{task.duration}</Text>
                     ) : null}
                   </View>
 

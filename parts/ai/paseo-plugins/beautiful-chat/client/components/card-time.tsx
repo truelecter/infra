@@ -19,7 +19,7 @@ export function CardTime({ time, tokens }: { time: string | undefined; tokens: E
   );
   if (!time) return null;
   return (
-    <Text selectable numberOfLines={1} style={styles.time}>
+    <Text numberOfLines={1} style={styles.time}>
       {time}
     </Text>
   );

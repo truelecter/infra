@@ -1,6 +1,6 @@
 {
   "name": "beautiful-chat",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "description": "Paseo plugin: Thinking, folded TODO, tool activity, and ask cards for the OMP chat stream",
   "license": "MIT",

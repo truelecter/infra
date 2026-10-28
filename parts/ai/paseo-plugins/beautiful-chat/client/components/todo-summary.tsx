@@ -58,9 +58,7 @@ export function TodoSummary({ changes, tasks, tokens }: TodoSummaryProps) {
     return (
       <View style={styles.lines}>
         <View style={styles.line}>
-          <Text selectable style={styles.label}>
-            {changes === null ? "Checklist" : "Checklist updated"}
-          </Text>
+          <Text style={styles.label}>{changes === null ? "Checklist" : "Checklist updated"}</Text>
           {running ? (
             <>
               <Glyph name="CircleDot" size={12} color={tokens.accent} />
@@ -79,9 +77,7 @@ export function TodoSummary({ changes, tasks, tokens }: TodoSummaryProps) {
       {changes.map((change) => (
         <View key={change.type} style={styles.line}>
           <Glyph name={glyphs[change.type].name} size={12} color={glyphs[change.type].color} />
-          <Text selectable style={styles.label}>
-            {LABELS[change.type]}
-          </Text>
+          <Text style={styles.label}>{LABELS[change.type]}</Text>
           <Text selectable={selectableTruncated} numberOfLines={1} style={styles.text}>
             {change.tasks.length > MAX_NAMED_TASKS
               ? `${change.tasks.length} tasks`

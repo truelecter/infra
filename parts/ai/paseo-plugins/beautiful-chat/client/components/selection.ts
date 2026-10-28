@@ -20,6 +20,12 @@ export const selectableSurface = (
  * `selectable` prop and ignores it on a View. Text that carries agent or user
  * data therefore also needs `selectable` — see the sibling helper below for the
  * text that must stay out of the clipboard.
+ *
+ * Card chrome (times, counts, badges, status labels) leaves `selectable` off.
+ * On web it still selects with the card through the surface above. On Android
+ * every selectable Text is a native text view that starts a word selection on
+ * a held or tap-then-drag touch instead of letting the chat scroll, and adds
+ * per-frame work while the list moves, so only content earns one.
  */
 export const selectableTextStyle = { userSelect: "text" } as TextStyle;
 

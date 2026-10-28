@@ -253,7 +253,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
           </View>
           <View style={styles.titleContainer}>
             <View style={styles.titleRow}>
-              <Text selectable style={styles.titleText}>
+              <Text style={styles.titleText}>
                 {isThinking
                   ? "Thinking in progress…"
                   : data.durationMs > 0
@@ -263,19 +263,13 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
             </View>
             <View style={styles.badgeRow}>
               {data.agentModel && data.agentModel !== "Reasoning Trace" ? (
-                <Text selectable style={styles.modelBadge}>
-                  {data.agentModel}
-                </Text>
+                <Text style={styles.modelBadge}>{data.agentModel}</Text>
               ) : null}
               {data.steps.length > 0 ? (
-                <Text selectable style={styles.badge}>
-                  {data.steps.length} steps
-                </Text>
+                <Text style={styles.badge}>{data.steps.length} steps</Text>
               ) : null}
               {data.totalTokens > 0 ? (
-                <Text selectable style={styles.badge}>
-                  {data.totalTokens.toLocaleString()} tokens
-                </Text>
+                <Text style={styles.badge}>{data.totalTokens.toLocaleString()} tokens</Text>
               ) : null}
             </View>
           </View>
@@ -285,11 +279,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
           {/* A badge is for an active or failed state. A finished trace already
               says so through its duration and token count, so a green
               "Completed" pill only adds colour. */}
-          {isThinking ? (
-            <Text selectable style={styles.statusText}>
-              Reasoning
-            </Text>
-          ) : null}
+          {isThinking ? <Text style={styles.statusText}>Reasoning</Text> : null}
           <CardTime time={time} tokens={tokens} />
           <Glyph
             name={isExpanded ? "ChevronDown" : "ChevronRight"}
@@ -336,7 +326,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
                       </Text>
                     </View>
                     {step.durationMs ? (
-                      <Text selectable style={styles.stepDuration}>
+                      <Text style={styles.stepDuration}>
                         {(step.durationMs / 1000).toFixed(1)}s
                       </Text>
                     ) : null}
@@ -363,9 +353,7 @@ export function ReasoningTrace({ data, tokens, defaultExpanded = false, time }: 
           </View>
 
           <View style={styles.footer}>
-            <Text selectable style={styles.footerText}>
-              Total Tokens: {data.totalTokens}
-            </Text>
+            <Text style={styles.footerText}>Total Tokens: {data.totalTokens}</Text>
           </View>
         </View>
       )}
