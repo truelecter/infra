@@ -7,6 +7,8 @@
   web-container-port = "8911";
   domainName = "data.fenrir.moe";
 in {
+  imports = [./redeploy.nix];
+
   services.nginx = {
     enable = true;
 
