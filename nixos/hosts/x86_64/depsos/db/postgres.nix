@@ -46,6 +46,9 @@
     authentication = pkgs.lib.mkOverride 10 ''
       local all all trust
       host all all 127.0.0.1/32 trust
+      # Containers on the default podman network: only the pandora bot, with a password
+      host cqdata pandora 10.88.0.0/16 scram-sha-256
+      host all all 10.88.0.0/16 reject
       host all all 100.0.0.0/8 trust
       host all all 10.0.0.0/8 trust
     '';
