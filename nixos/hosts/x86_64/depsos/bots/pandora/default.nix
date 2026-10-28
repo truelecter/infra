@@ -57,8 +57,6 @@ in {
         PANDORA_DB_PORT = "5432";
         PANDORA_DB_HOST = "host.containers.internal";
         PANDORA_DB_SCHEMA = "public";
-        # Overrides the user in pandora-envs: the bot gets its own role instead of the superuser
-        PANDORA_DB_USER = "pandora";
 
         PANDORA_URL_IMAGES_PREFIX = "https://data.fenrir.moe/";
         PANDORA_OVERRIDES_PATH = "/opt/pandora-overrides/";
