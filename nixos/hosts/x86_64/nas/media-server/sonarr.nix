@@ -8,41 +8,19 @@
   secret = key: config.sops.secrets.${key}.path;
 in {
   nixflix = {
-    seerr.sonarr = let
-      defaults = options.nixflix.seerr.sonarr.default;
-    in {
-      Sonarr =
-        defaults.Sonarr
-        // {
-          activeProfileName = "1080p Balanced";
-        };
-
-      "Sonarr Anime" =
-        defaults."Sonarr Anime"
-        // {
-          activeProfileName = "Anime 1080p";
-        };
-    };
+    seerr.sonarr.Sonarr =
+      options.nixflix.seerr.sonarr.default.Sonarr
+      // {
+        activeProfileName = "1080p Balanced";
+      };
 
     sonarr = {
       enable = true;
 
       config = {
-        apiKey._secret = secret "sonarr-generic-api-key";
+        apiKey._secret = secret "sonarr-api-key";
         hostConfig = {
-          password._secret = secret "sonarr-generic-password";
-          authenticationRequired = "enabled";
-        };
-      };
-    };
-
-    sonarr-anime = {
-      enable = true;
-
-      config = {
-        apiKey._secret = secret "sonarr-anime-api-key";
-        hostConfig = {
-          password._secret = secret "sonarr-anime-password";
+          password._secret = secret "sonarr-password";
           authenticationRequired = "enabled";
         };
       };
@@ -53,21 +31,15 @@ in {
     owner = config.users.users.sonarr.name;
     sopsFile = "${inputs.self}/secrets/arr.yaml";
 
-    mkSecret = {
-      instance,
-      key,
-    }: {
-      "sonarr-${instance}-${key}" = {
+    mkSecret = key: {
+      "sonarr-${key}" = {
         inherit sopsFile owner;
 
-        key = "sonarr/${instance}/${key}";
+        key = "sonarr/generic/${key}";
       };
     };
   in
     lib.mergeAttrsList (
-      lib.mapCartesianProduct mkSecret {
-        instance = ["generic" "anime"];
-        key = ["api-key" "password"];
-      }
+      map mkSecret ["api-key" "password"]
     );
 }

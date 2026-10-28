@@ -7,6 +7,7 @@
     ./profilarr.nix
     ./radarr.nix
     ./sonarr.nix
+    ./anime.nix
 
     ./nginx.nix
 

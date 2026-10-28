@@ -13,7 +13,6 @@ in {
     jellyfin.network.localNetworkAddresses = lib.mkForce [];
     radarr.config.hostConfig.bindAddress = "0.0.0.0";
     sonarr.config.hostConfig.bindAddress = "0.0.0.0";
-    sonarr-anime.config.hostConfig.bindAddress = "0.0.0.0";
     prowlarr.config.hostConfig.bindAddress = "0.0.0.0";
 
     nginx = {

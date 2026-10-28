@@ -42,7 +42,7 @@ in {
     nginx = {
       domain = "arr.${mediaBaseDomain}";
       virtualHosts = let
-        arrs = ["sonarr" "radarr" "sonarr-anime" "prowlarr" "qbittorrent"];
+        arrs = ["sonarr" "radarr" "prowlarr" "qbittorrent"];
       in
         lib.mkMerge (
           map (
@@ -78,8 +78,6 @@ in {
 
     sonarr.config.hostConfig.authenticationMethod = "external";
 
-    sonarr-anime.config.hostConfig.authenticationMethod = "external";
-
     prowlarr.config.hostConfig.authenticationMethod = "external";
 
     # radarr.settings = {
@@ -89,12 +87,6 @@ in {
     #   };
     # };
     # sonarr.settings = {
-    #   auth = {
-    #     required = lib.mkForce "Enabled";
-    #     method = lib.mkForce "External";
-    #   };
-    # };
-    # sonarr-anime.settings = {
     #   auth = {
     #     required = lib.mkForce "Enabled";
     #     method = lib.mkForce "External";

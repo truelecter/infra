@@ -14,8 +14,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "michaelhthomas";
       repo = "seerr";
-      rev = "2d1a2ed233d13ee216b147951afda8321d42f5d2";
-      sha256 = "sha256-eu3ITUhwQYzMPdMu0Adi/Hpu5e+ho18ye/pX/KsDaVw==";
+      rev = "2e523125e8e7262af44309c70db20fe2d7ca28a3";
+      sha256 = "sha256-k8qWhsSBnQXfGk/xEmb2+4tlw6xY8viwWzEQUBxtrNs=";
     };
 
     pname = "seerr";
