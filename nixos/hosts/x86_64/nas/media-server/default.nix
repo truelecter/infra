@@ -8,6 +8,7 @@
     ./radarr.nix
     ./sonarr.nix
     ./anime.nix
+    ./naming.nix
 
     ./nginx.nix
 
