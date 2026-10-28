@@ -39,6 +39,12 @@ in {
       enableTonemapping = true;
     };
 
+    # Metadata lives only in Jellyfin's database. The arr apps create media
+    # folders as 755, so writes next to the media fail anyway.
+    libraries = lib.genAttrs ["Shows" "Movies" "Anime" "Anime Movies"] (_: {
+      saveLocalMetadata = false;
+    });
+
     branding = {
       loginDisclaimer = ''
         <a href="https://jellyfin.xata.house/sso/OID/start/kanidm" class="raised cancel block emby-button authelia-sso button-submit">
@@ -151,6 +157,7 @@ in {
       };
     };
 
+    plugins.AniDB.enable = true;
     plugins.AniDB.package = fromRepo {
       version = "13.0.0.0";
       # nix store prefetch-file --json --unpack https://repo.jellyfin.org/files/plugin/anidb/anidb_13.0.0.0.zip | jq -r .hash
