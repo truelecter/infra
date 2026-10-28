@@ -39,15 +39,6 @@
     ]
   },
   {
-    "title": "Champions",
-    "entries": [
-      {
-        "title": "Vyrlokar",
-        "url": "https://s.fenrir.moe/vyrlokarhampionsuide"
-      }
-    ]
-  },
-  {
     "title": "How To Get",
     "entries": [
       {
@@ -98,14 +89,6 @@
     "title": "Hasla Guides",
     "entries": [
       {
-        "title": "Comics",
-        "url": "https://goo.gl/HPsANc"
-      },
-      {
-        "title": "Season 2",
-        "url": "https://goo.gl/UQdjhw"
-      },
-      {
         "title": "Berry system",
         "url": "https://goo.gl/jbgmLa"
       }
@@ -125,10 +108,6 @@
       {
         "title": "cq-assets",
         "url": "https://github.com/cq-pandora/assets/"
-      },
-      {
-        "title": "block-map",
-        "url": "http://bit.ly/CQBlockMap"
       }
     ]
   }
