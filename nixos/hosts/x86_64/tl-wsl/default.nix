@@ -40,7 +40,10 @@
 
   system.stateVersion = "22.11";
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [2222];
+  };
 
   users.users.truelecter = {
     uid = 1001;
