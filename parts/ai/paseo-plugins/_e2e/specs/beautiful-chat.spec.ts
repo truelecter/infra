@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { expect, openAgent, openApp, test } from "../support/fixtures";
 import { env } from "../support/env";
 import { createMockAgent, finishTurn } from "../support/paseo";
@@ -5,6 +6,12 @@ import { createMockAgent, finishTurn } from "../support/paseo";
 // Paseo tags each timeline row with `data-history-row-id`; rows a plugin's renderer draws are
 // prefixed with the plugin id.
 const PLUGIN_ROW = '[data-history-row-id^="beautiful-chat/"]';
+
+// Since 0.14 Paseo folds a finished turn into one summary line by default (Settings > Chat
+// display: collapse turns), so the plugin's rows mount only once the turn is opened.
+async function openTurn(chat: Locator): Promise<void> {
+  await chat.getByTestId("turn-summary").first().click();
+}
 
 // The `ten-second-stream` mock turn streams reasoning and read, grep, edit, and bash tool calls.
 // The plugin draws the reasoning as its Thinking card and the tools as its compact activity: a
@@ -25,6 +32,7 @@ test("a mock turn renders the plugin's compact tool activity, not Paseo's tool r
   await openAgent(page, workspace.workspaceId, agentId);
 
   const chat = page.getByTestId("agent-chat-scroll");
+  await openTurn(chat);
 
   // The plugin is drawing the turn.
   await expect(chat.locator(PLUGIN_ROW).first()).toBeVisible();
@@ -69,6 +77,7 @@ test("the Combine tool calls setting draws each call as its own row when off", a
 
   await openAgent(page, workspace.workspaceId, agentId);
   const chat = page.getByTestId("agent-chat-scroll");
+  await openTurn(chat);
   await expect(chat.locator(PLUGIN_ROW).first()).toBeVisible();
   await expect(
     chat.locator(PLUGIN_ROW).filter({ hasText: /Used \d+ tools?/ }),
@@ -97,6 +106,7 @@ test("cards show their time, and the Show times setting hides it", async ({
 
   await openAgent(page, workspace.workspaceId, agentId);
   const chat = page.getByTestId("agent-chat-scroll");
+  await openTurn(chat);
   // Row text runs together (`list.tsx12:39 AM`), so no word boundary before the hour.
   const timedCards = chat
     .locator(PLUGIN_ROW)
@@ -116,6 +126,7 @@ test("cards show their time, and the Show times setting hides it", async ({
   await expect(toggle).not.toBeChecked();
 
   await openAgent(page, workspace.workspaceId, agentId);
+  await openTurn(chat);
   await expect(chat.locator(PLUGIN_ROW).first()).toBeVisible();
   await expect(timedCards).toHaveCount(0);
 });

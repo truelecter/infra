@@ -10,5 +10,5 @@
 import ../node-modules.nix {inherit lib stdenvNoCC bun;} {
   name = "paseo-plugins-e2e";
   dir = ./.;
-  hash = "sha256-TMQ0x9DRLtRX7rZfvP8BBR8dLZ9FSz5mQ/rJZGvvF0I=";
+  hash = "sha256-aF07kSRlK4N+0DvyjILdf0tMGJRxrzEsqqbiLb38zNg=";
 }
