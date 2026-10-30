@@ -2,8 +2,11 @@
   suites,
   profiles,
   inputs,
+  catalog,
   ...
-}: {
+}: let
+  x290 = catalog.networks.x290;
+in {
   imports =
     suites.base
     ++ [
@@ -35,16 +38,17 @@
 
     # Static instead of DHCP: dhcpcd drops the routes when the link goes down
     # during suspend and needs ~10 s to rebind after resume (see autosuspend.nix).
-    # Same address as the reservation in sirius/network-switch.nix.
+    # Same address as the reservation sirius/network-switch.nix generates.
     useDHCP = false;
     interfaces.lan0.ipv4.addresses = [
       {
-        address = "10.3.0.132";
-        prefixLength = 24;
+        address = catalog.hosts.nas.net.x290.ip;
+        inherit (x290) prefixLength;
       }
     ];
-    defaultGateway = "10.3.0.129";
-    nameservers = ["10.3.0.1"];
+    # sirius bridges the NAS' half of x290.
+    defaultGateway = catalog.hosts.sirius.net.x290.ip;
+    inherit (x290) nameservers;
   };
 
   # The PCI path, and so the predictable name, shifts when cards come and go

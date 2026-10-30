@@ -1,16 +1,12 @@
 {
-  networks.x290 = {
-    name = "x290";
-    cidrv4 = "10.3.0.0/24";
-  };
-
-  networks.tailscale = {
-    name = "tailscale";
-    cidrv4 = "100.64.0.0/10";
-  };
-
-  networks.wireguard = {
-    name = "wireguard";
-    cidrv4 = "10.7.0.0/24";
-  };
+  lib,
+  catalog,
+  ...
+}: {
+  networks =
+    lib.mapAttrs (name: net: {
+      inherit name;
+      cidrv4 = net.cidr;
+    })
+    catalog.networks;
 }

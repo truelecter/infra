@@ -104,7 +104,7 @@
     inherit (inputs) nix-topology ncro mt7927;
     system = "${arch}-linux";
 
-    isLatest = hostname == "nas";
+    isLatest = self.catalog.hosts.${hostname}.nixpkgs == "latest";
 
     nixpkgsInput =
       if isLatest
@@ -121,8 +121,7 @@
     ${hostname} = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs profiles suites users;
-
-        inherit (self) overlays;
+        inherit (self) catalog overlays;
       };
       modules =
         # commonNixosModules

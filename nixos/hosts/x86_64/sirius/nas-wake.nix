@@ -5,11 +5,12 @@
 {
   lib,
   pkgs,
+  catalog,
   ...
 }: let
-  nasAddress = "10.3.0.132";
-  nasMac = "f4:b5:20:45:4d:2e";
-  listenAddress = "10.3.0.129";
+  nasAddress = catalog.hosts.nas.net.x290.ip;
+  nasMac = catalog.hosts.nas.net.x290.mac;
+  listenAddress = catalog.hosts.sirius.net.x290.ip;
   bridge = "br-switch";
   ports = [80 443];
 

@@ -1,5 +1,9 @@
-{lib, ...}: let
-  mediaBaseDomain = "xata.house";
+{
+  lib,
+  catalog,
+  ...
+}: let
+  mediaBaseDomain = catalog.domains.media;
   acmeMail = "andrew.panassiouk@gmail.com";
 in {
   security.acme.certs = {

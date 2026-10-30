@@ -4,15 +4,6 @@
   inputs,
   ...
 }: let
-  deploymentOverrides = {
-    depsos = {
-      sshOpts = [
-        "-p"
-        "2265"
-      ];
-    };
-  };
-
   # deploy-rs with its test suite disabled: the file-watcher tests in
   # `activate` time out inside the Darwin build sandbox.
   deployRsOverlay = lib.composeExtensions inputs.deploy-rs.overlays.default (_final: prev: {
@@ -25,6 +16,7 @@
 
   mkNode = name: cfg: let
     inherit (cfg.pkgs.stdenv.hostPlatform) system;
+    host = self.catalog.hosts.${name};
     deployLib =
       (import inputs.nixpkgs {
         inherit system;
@@ -36,9 +28,8 @@
       then "nixos"
       else "darwin";
   in
-    lib.recursiveUpdate
     {
-      hostname = "${name}";
+      inherit (host.deploy) hostname;
       # currently only a single profile system
       profilesOrder = ["system"];
       profiles.system = {
@@ -47,9 +38,9 @@
         path = deployLib.activate.${activator} cfg;
       };
     }
-    (
-      deploymentOverrides."${name}" or {}
-    );
+    // lib.optionalAttrs (host.ssh.port != 22) {
+      sshOpts = ["-p" (toString host.ssh.port)];
+    };
 
   # TODO: add darwin nodes
   nodes =

@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  catalog,
+  ...
+}: let
   inherit (config.lib.topology) mkRouter mkConnection mkSwitch;
 in {
   nodes = {
@@ -18,7 +22,7 @@ in {
       interfaces.ether1.addresses = ["DHCP"];
 
       interfaces.bridge = {
-        addresses = ["10.3.0.1"];
+        addresses = [catalog.devices.x290-router.net.x290.ip];
         network = "x290";
         virtual = true;
         type = "bridge";
@@ -45,7 +49,7 @@ in {
       ];
 
       interfaces.bridge = {
-        addresses = ["10.3.0.24"];
+        addresses = [catalog.devices.x290-ap.net.x290.ip];
         network = "x290";
         virtual = true;
         type = "bridge";
@@ -76,7 +80,7 @@ in {
       };
 
       interfaces.eth9 = {
-        addresses = ["10.3.0.130"];
+        addresses = [catalog.devices.x290-unifi.net.x290.ip];
         network = "x290";
       };
     };

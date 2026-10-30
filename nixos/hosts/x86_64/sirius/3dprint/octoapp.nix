@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  lib,
+  catalog,
+  ...
+}: let
   # FIXME: change to static version number when release is made
   # Or even better - package it as a nix package
   # https://github.com/crysxd/OctoApp-Plugin/pkgs/container/octoapp-plugin/versions
@@ -45,21 +49,21 @@ in
 
     (mkOptoappInstance "voron" {
       environment = {
-        PRINTER_IP = "10.3.0.150";
+        PRINTER_IP = catalog.hosts.voron.net.x290.ip;
         COMPANION_MODE = "klipper";
       };
     })
 
     (mkOptoappInstance "tiny-m" {
       environment = {
-        PRINTER_IP = "10.3.0.151";
+        PRINTER_IP = catalog.hosts.tiny-m.net.x290.ip;
         COMPANION_MODE = "klipper";
       };
     })
 
     (mkOptoappInstance "vzbot" {
       environment = {
-        PRINTER_IP = "10.3.0.153";
+        PRINTER_IP = catalog.hosts.vzbot235.net.x290.ip;
         COMPANION_MODE = "klipper";
       };
     })

@@ -3,10 +3,11 @@
 {
   config,
   inputs,
+  catalog,
   ...
 }: let
-  domain = "immich.xata.house";
-  kanidmDomain = "auth.tlctr.me";
+  domain = "immich.${catalog.domains.media}";
+  kanidmDomain = catalog.domains.sso;
   mediaLocation = "/mnt/photos";
 in {
   fileSystems.${mediaLocation} = {
@@ -76,7 +77,7 @@ in {
 
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
-    useACMEHost = "xata.house";
+    useACMEHost = catalog.domains.media;
 
     locations."/" = {
       proxyPass = "http://${config.services.immich.host}:${toString config.services.immich.port}";

@@ -6,7 +6,7 @@
 # - `ciMatrix.shared`: every `ci.<system>.<name>` derivation, built and pushed
 #   to Attic before the hosts, so the host builds substitute them. Add heavy
 #   packages that several hosts share here.
-# - `ciMatrix.hosts`: every NixOS and darwin host not in `ci.excludeHosts`.
+# - `ciMatrix.hosts`: every NixOS and darwin host with `catalog.hosts.<name>.ci.build`.
 {
   lib,
   config,
@@ -20,7 +20,7 @@
 
   hostEntries = kind: configurations:
     lib.pipe configurations [
-      (lib.filterAttrs (hostname: _: !(lib.elem hostname cfg.excludeHosts)))
+      (lib.filterAttrs (hostname: _: self.catalog.hosts.${hostname}.ci.build))
       (lib.mapAttrsToList (hostname: host: {
         inherit hostname;
         os = runnerFor hostname host.config.nixpkgs.hostPlatform.system;
@@ -55,12 +55,6 @@ in {
         };
         description = "GitHub Actions runner for each system.";
       };
-
-      excludeHosts = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [];
-        description = "Hosts CI does not build.";
-      };
     };
 
     flake.ciMatrix = lib.mkOption {
@@ -72,8 +66,6 @@ in {
 
   config = {
     transposition.ci = {};
-
-    ci.excludeHosts = ["bttpitest"];
 
     flake.ciMatrix = {
       shared.include = sharedEntries;

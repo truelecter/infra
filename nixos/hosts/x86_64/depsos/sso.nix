@@ -2,9 +2,11 @@
   pkgs,
   config,
   inputs,
+  catalog,
   ...
 }: let
-  kanidmDomain = "auth.tlctr.me";
+  kanidmDomain = catalog.domains.sso;
+  mediaDomain = catalog.domains.media;
   kanidmPort = 8300;
 in {
   services.nginx = {
@@ -86,10 +88,10 @@ in {
       systems.oauth2.jellyfin = {
         displayName = "Jellyfin";
         originUrl = [
-          "https://jellyfin.xata.house/sso/OID/redirect/kanidm"
-          "https://jellyfin.xata.house/sso/OID/r/kanidm"
+          "https://jellyfin.${mediaDomain}/sso/OID/redirect/kanidm"
+          "https://jellyfin.${mediaDomain}/sso/OID/r/kanidm"
         ];
-        originLanding = "https://jellyfin.xata.house/";
+        originLanding = "https://jellyfin.${mediaDomain}/";
         basicSecretFile = config.sops.secrets.kanidm-oauth2-jellyfin.path;
         preferShortUsername = true;
         scopeMaps."media.access" = [
@@ -110,10 +112,10 @@ in {
       systems.oauth2.seerr = {
         displayName = "Seerr";
         originUrl = [
-          "https://seerr.xata.house/login"
-          "https://seerr.xata.house/profile/settings/linked-accounts"
+          "https://seerr.${mediaDomain}/login"
+          "https://seerr.${mediaDomain}/profile/settings/linked-accounts"
         ];
-        originLanding = "https://seerr.xata.house/";
+        originLanding = "https://seerr.${mediaDomain}/";
         basicSecretFile = config.sops.secrets.kanidm-oauth2-seerr.path;
         preferShortUsername = true;
         scopeMaps."media.access" = [
@@ -134,9 +136,9 @@ in {
       systems.oauth2.arr = {
         displayName = "ARR";
         originUrl = [
-          "https://arr.xata.house/oauth2/callback"
+          "https://arr.${mediaDomain}/oauth2/callback"
         ];
-        originLanding = "https://arr.xata.house/";
+        originLanding = "https://arr.${mediaDomain}/";
         basicSecretFile = config.sops.secrets.kanidm-oauth2-arr.path;
         preferShortUsername = true;
 
@@ -154,11 +156,11 @@ in {
       systems.oauth2.immich = {
         displayName = "Immich";
         originUrl = [
-          "https://immich.xata.house/auth/login"
-          "https://immich.xata.house/user-settings"
-          "https://immich.xata.house/api/oauth/mobile-redirect"
+          "https://immich.${mediaDomain}/auth/login"
+          "https://immich.${mediaDomain}/user-settings"
+          "https://immich.${mediaDomain}/api/oauth/mobile-redirect"
         ];
-        originLanding = "https://immich.xata.house/";
+        originLanding = "https://immich.${mediaDomain}/";
         basicSecretFile = config.sops.secrets.kanidm-oauth2-immich.path;
         preferShortUsername = true;
         scopeMaps."media.access" = [

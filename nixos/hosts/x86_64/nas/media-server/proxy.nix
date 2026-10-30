@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  catalog,
   ...
 }: let
   inherit
@@ -170,7 +171,7 @@ in {
       virtualHosts.${cfg.portalDomain} = {
         forceSSL = true;
         # useACMEWildcardHost = true;
-        useACMEHost = "xata.house";
+        useACMEHost = catalog.domains.media;
         locations."/".proxyPass = "http://oauth2-proxy";
 
         locations."/oauth2/" = {

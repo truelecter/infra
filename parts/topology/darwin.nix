@@ -1,5 +1,9 @@
 # nix-darwin hosts have no topology module, so they are declared here.
-{config, ...}: let
+{
+  config,
+  catalog,
+  ...
+}: let
   inherit (config.lib.topology) mkConnection mkDevice;
 
   tailscale0 = {
@@ -16,7 +20,7 @@ in {
 
       interfaces = {
         # Wired to the USW Flex, see routers.nix.
-        en0.addresses = ["10.3.0.133"];
+        en0.addresses = [catalog.hosts.tl-mm4.net.x290.ip];
         inherit tailscale0;
       };
     };

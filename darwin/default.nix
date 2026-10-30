@@ -53,8 +53,7 @@
     ${hostname} = darwin.lib.darwinSystem {
       specialArgs = {
         inherit inputs profiles suites users;
-
-        inherit (self) overlays;
+        inherit (self) catalog overlays;
       };
       modules =
         [

@@ -2,10 +2,11 @@
   lib,
   inputs,
   config,
+  catalog,
   ...
 }: let
-  mediaBaseDomain = "xata.house";
-  kanidmDomain = "auth.tlctr.me";
+  mediaBaseDomain = catalog.domains.media;
+  kanidmDomain = catalog.domains.sso;
 in {
   services.nginx.virtualHosts."arr.${mediaBaseDomain}" = {
     forceSSL = true;

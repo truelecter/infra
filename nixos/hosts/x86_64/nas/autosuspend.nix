@@ -5,10 +5,13 @@
   inputs,
   lib,
   pkgs,
+  catalog,
   ...
 }: let
   qbt = config.nixflix.torrentClients.qbittorrent;
   immich = config.services.immich;
+  nasAddress = catalog.hosts.nas.net.x290.ip;
+  siriusAddress = catalog.hosts.sirius.net.x290.ip;
 
   # Each check exits 0 when it sees activity, which keeps the NAS awake.
   # Matches run on captured output: `cmd | grep -q` under pipefail can fail
@@ -47,16 +50,16 @@ in {
       GridOnline = mkCheck "grid-online" [pkgs.curl pkgs.jq] ''
         token=$(cat ${config.sops.secrets.home-assistant-token.path} || true)
         state=$(curl -fsS --max-time 5 -H "Authorization: Bearer $token" \
-          http://10.3.0.129:8123/api/states/binary_sensor.inverter_grid | jq -r .state || true)
+          http://${siriusAddress}:8123/api/states/binary_sensor.inverter_grid | jq -r .state || true)
         [ "$state" != "off" ]
       '';
 
       # Established connections to ssh, http(s) and smb from other hosts.
-      # Clients behind the sirius proxy show up as 10.3.0.129.
+      # Clients behind the sirius proxy show up as sirius' address.
       RemoteClients = mkCheck "remote-clients" [pkgs.iproute2 pkgs.gawk] ''
         peers=$(ss -Htn state established '( sport = :22 or sport = :80 or sport = :443 or sport = :139 or sport = :445 )' \
           | awk '{ peer = $4; sub(/^\[::ffff:/, "", peer); sub(/\]/, "", peer); print peer }')
-        grep -vqE '^(127\.|::1:|10\.3\.0\.132:|10\.88\.|$)' <<<"$peers"
+        grep -vqE '^(127\.|::1:|${lib.escapeRegex nasAddress}:|10\.88\.|$)' <<<"$peers"
       '';
 
       Smb = {};

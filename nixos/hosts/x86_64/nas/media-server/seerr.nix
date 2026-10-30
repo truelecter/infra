@@ -3,6 +3,7 @@
   inputs,
   pkgs,
   lib,
+  catalog,
   ...
 }: let
   secret = key: config.sops.secrets.${key}.path;
@@ -37,7 +38,7 @@
   providers = {
     slug = "kanidm";
     name = "Kanidm";
-    issuerUrl = "https://auth.tlctr.me/oauth2/openid/seerr/.well-known/openid-configuration";
+    issuerUrl = "https://${catalog.domains.sso}/oauth2/openid/seerr/.well-known/openid-configuration";
     clientId = "seerr";
     # clientSecret = secret "kanidm-oauth2-seerr";
     logo = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kanidm.png";

@@ -1,6 +1,8 @@
 {
   config,
+  lib,
   utils,
+  catalog,
   ...
 }: let
   wifiInterface = "wifi-ext";
@@ -8,7 +10,33 @@
   lanEth = "lan-eth";
   bridge = "br-switch";
 
-  switchAddress = "10.3.0.129";
+  x290 = catalog.networks.x290;
+  switchAddress = catalog.hosts.sirius.net.x290.ip;
+
+  dnsOption = servers: {
+    code = 6;
+    name = "domain-name-servers";
+    data = lib.concatStringsSep ", " servers;
+  };
+
+  # Every catalog host and device with an x290 address and MAC, by address.
+  reservations = lib.pipe (catalog.hosts // catalog.devices) [
+    lib.attrValues
+    (lib.concatMap (node: lib.optional (node.net ? x290) node.net.x290))
+    (lib.filter (a: a.ip != null && a.mac != null))
+    (lib.sort (a: b: let
+      octets = ip: map lib.toInt (lib.splitString "." ip);
+    in
+      lib.compareLists lib.compare (octets a.ip) (octets b.ip) < 0))
+    (map (a:
+      {
+        hw-address = a.mac;
+        ip-address = a.ip;
+      }
+      // lib.optionalAttrs (a.dhcp.nameservers != []) {
+        option-data = [(dnsOption a.dhcp.nameservers)];
+      }))
+  ];
 in {
   networking.useDHCP = false;
 
@@ -94,7 +122,7 @@ in {
         "10-br-switch" = {
           matchConfig.Name = bridge;
           address = [
-            "${switchAddress}/24"
+            "${switchAddress}/${toString x290.prefixLength}"
           ];
           networkConfig = {
             ConfigureWithoutCarrier = true;
@@ -188,72 +216,9 @@ in {
           reservations-global = true;
           reservations-in-subnet = true;
 
-          option-data = [
-            {
-              code = 6;
-              data = "10.3.0.1";
-              name = "domain-name-servers";
-            }
-          ];
+          option-data = [(dnsOption x290.nameservers)];
 
-          reservations = [
-            # USW Flex 2.5G 8
-            {
-              hw-address = "94:2a:6f:4e:e0:20";
-              ip-address = "10.3.0.130";
-            }
-
-            # NAS
-            {
-              hw-address = "f4:b5:20:45:4d:2e";
-              ip-address = "10.3.0.132";
-            }
-
-            # tl-mm4
-            {
-              hw-address = "d0:11:e5:83:d8:9e";
-              ip-address = "10.3.0.133";
-            }
-
-            # Voron
-            {
-              hw-address = "e4:5f:01:67:cc:6f";
-              ip-address = "10.3.0.150";
-            }
-
-            # Tiny-M
-            {
-              hw-address = "dc:a6:32:ff:8c:18";
-              ip-address = "10.3.0.151";
-            }
-
-            # BBL
-            {
-              hw-address = "64:e8:33:77:71:b0";
-              ip-address = "10.3.0.152";
-            }
-
-            # VZBot
-            {
-              hw-address = "d8:3a:dd:43:45:dc";
-              ip-address = "10.3.0.153";
-            }
-
-            # IoT
-            # Oukitel BP2000
-            {
-              hw-address = "74:07:7e:67:6c:30";
-              ip-address = "10.3.0.180";
-
-              option-data = [
-                {
-                  code = 6;
-                  name = "domain-name-servers";
-                  data = switchAddress;
-                }
-              ];
-            }
-          ];
+          inherit reservations;
 
           subnet4 = [
             {
@@ -275,7 +240,7 @@ in {
                 }
               ];
 
-              subnet = "${switchAddress}/24";
+              subnet = "${switchAddress}/${toString x290.prefixLength}";
             }
           ];
           valid-lifetime = 4000;

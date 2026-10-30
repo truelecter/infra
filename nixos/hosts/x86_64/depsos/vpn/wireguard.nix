@@ -2,8 +2,13 @@
   pkgs,
   config,
   inputs,
+  catalog,
   ...
-}: {
+}: let
+  inherit (catalog.networks) wireguard x290;
+  address = catalog.hosts.depsos.net.wireguard.ip;
+  router = catalog.devices.x290-router;
+in {
   networking = {
     nat = {
       enable = true;
@@ -17,27 +22,26 @@
 
   networking.wireguard.interfaces = {
     wg0 = {
-      ips = ["10.7.0.1/24"];
+      ips = ["${address}/${toString wireguard.prefixLength}"];
       listenPort = 25563;
 
       postSetup = ''
-        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.7.0.0/24 -o eth0 -j MASQUERADE
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s ${wireguard.cidr} -o eth0 -j MASQUERADE
       '';
       postShutdown = ''
-        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.7.0.0/24 -o eth0 -j MASQUERADE
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${wireguard.cidr} -o eth0 -j MASQUERADE
       '';
 
-      # public: BTc6Jjt1kcfPmI+0YH+XwiOFXifEz6LN4NqLxQJK/Qs=
       privateKeyFile = config.sops.secrets.depsos-wg-pk.path;
 
       peers = [
         {
-          publicKey = "RkWLn9HW/dIm1mJuXNWJgPzDwrE88qBJ10cgCVBosQU=";
+          publicKey = router.wireguard.publicKey;
           allowedIPs = [
             # Router
-            "10.7.0.3/32"
+            "${router.net.wireguard.ip}/32"
             # Lan
-            "10.3.0.0/24"
+            x290.cidr
           ];
         }
       ];
@@ -45,7 +49,7 @@
   };
 
   topology.self.interfaces.wg0 = {
-    addresses = ["10.7.0.1"];
+    addresses = [address];
     network = "wireguard";
     virtual = true;
     type = "wireguard";
