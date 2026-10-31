@@ -8,7 +8,22 @@
   coreutils,
   ...
 }: let
-  pythonEnv = python3.withPackages (p:
+  # TODO: drop the override once nixos-26.05 includes NixOS/nixpkgs#580682
+  # (imageio PNG tests fail with the new pillow).
+  python = python3.override {
+    packageOverrides = _: super: {
+      imageio = super.imageio.overridePythonAttrs (old: {
+        disabledTestPaths =
+          (old.disabledTestPaths or [])
+          ++ [
+            "tests/test_pillow.py::test_png_16bit"
+            "tests/test_pillow_legacy.py::test_png"
+          ];
+      });
+    };
+  };
+
+  pythonEnv = python.withPackages (p:
     with p; [
       plotly
       tqdm
