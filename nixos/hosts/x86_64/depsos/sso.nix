@@ -150,6 +150,28 @@ in {
           valuesByGroup."media.admins" = ["access_arr" "access_radarr"];
         };
       };
+
+      systems.oauth2.immich = {
+        displayName = "Immich";
+        originUrl = [
+          "https://immich.xata.house/auth/login"
+          "https://immich.xata.house/user-settings"
+          "https://immich.xata.house/api/oauth/mobile-redirect"
+        ];
+        originLanding = "https://immich.xata.house/";
+        basicSecretFile = config.sops.secrets.kanidm-oauth2-immich.path;
+        preferShortUsername = true;
+        scopeMaps."media.access" = [
+          "openid"
+          "email"
+          "profile"
+        ];
+
+        claimMaps.immich_role = {
+          joinType = "ssv";
+          valuesByGroup."media.admins" = ["admin"];
+        };
+      };
     };
   };
 
@@ -170,5 +192,6 @@ in {
     kanidm-oauth2-jellyfin = secret "oauth2/basic/jellyfin";
     kanidm-oauth2-seerr = secret "oauth2/basic/seerr";
     kanidm-oauth2-arr = secret "oauth2/basic/arr";
+    kanidm-oauth2-immich = secret "oauth2/basic/immich";
   };
 }
