@@ -8,6 +8,7 @@
   ...
 }: let
   qbt = config.nixflix.torrentClients.qbittorrent;
+  immich = config.services.immich;
 
   # Each check exits 0 when it sees activity, which keeps the NAS awake.
   # Matches run on captured output: `cmd | grep -q` under pipefail can fail
@@ -69,6 +70,13 @@ in {
           --data-urlencode "password=$password" "$api/auth/login" >/dev/null
         curl -fsS -b "$jar" "$api/torrents/info" \
           | jq -e 'any(.[]; .state == "downloading" or .state == "forcedDL" or .state == "metaDL")' >/dev/null
+      '';
+
+      # Immich jobs (thumbnails, transcoding, ML) queued or running in
+      # BullMQ. Redis drops empty lists, so any such key means pending work.
+      ImmichJobs = mkCheck "immich-jobs" [config.services.redis.package] ''
+        keys=$(redis-cli -s ${immich.redis.host} --scan --pattern 'immich_bull:*' || true)
+        grep -qE ':(wait|active|prioritized)$' <<<"$keys"
       '';
 
       NixBuilds = mkCheck "nix-builds" [pkgs.procps] ''

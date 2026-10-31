@@ -24,6 +24,7 @@
       ./external.nix
       ./postgres.nix
       ./autosuspend.nix
+      ./immich.nix
     ];
 
   networking = {
