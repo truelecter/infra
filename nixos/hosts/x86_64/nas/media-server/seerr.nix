@@ -19,7 +19,9 @@
     };
 
     pname = "seerr";
-    version = "preview-oidc-new";
+    # Fork is based on upstream right before v3.5.0 and has its library API;
+    # nixflix asserts `versionAtLeast version "3.5.0"`.
+    version = "3.5.0-preview-oidc-new";
   in {
     inherit src version;
 
