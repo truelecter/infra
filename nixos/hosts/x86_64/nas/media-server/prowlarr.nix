@@ -24,6 +24,7 @@ in {
           username._secret = secret "prowlarr-0day-username";
           password._secret = secret "prowlarr-0day-password";
           stripcyrillic = true;
+          "torrentBaseSettings.appMinimumSeeders" = 2;
           priority = 10;
         }
         {
@@ -32,6 +33,7 @@ in {
           username._secret = secret "prowlarr-toloka-username";
           password._secret = secret "prowlarr-toloka-password";
           stripCyrillicLetters = true;
+          "torrentBaseSettings.appMinimumSeeders" = 2;
           priority = 10;
         }
         {
@@ -39,16 +41,21 @@ in {
           name = "Mazepa";
           username._secret = secret "prowlarr-mazepa-username";
           password._secret = secret "prowlarr-mazepa-password";
+          # Mazepa reports 0 seeders for almost every release, and the default
+          # floor of 1 hides all of them.
+          "torrentBaseSettings.appMinimumSeeders" = 0;
           stripcyrillic = true;
           priority = 10;
         }
         {
           # name = "nyaa si";
           name = "Nyaa.si";
+          "torrentBaseSettings.appMinimumSeeders" = 5;
         }
         {
           # name = "pirate bay";
           name = "The Pirate Bay";
+          "torrentBaseSettings.appMinimumSeeders" = 5;
           priority = 50;
         }
         {
@@ -57,6 +64,9 @@ in {
           username._secret = secret "prowlarr-rutracker-username";
           password._secret = secret "prowlarr-rutracker-password";
           russianLetters = true;
+          # Russian MVO/dub releases otherwise parse as English in the arrs.
+          addRussianToTitle = true;
+          "torrentBaseSettings.appMinimumSeeders" = 2;
           baseUrl = "https://rutracker.org/";
           priority = 49;
         }
