@@ -15,7 +15,6 @@
 
     ./jellyfin.nix
     ./seerr.nix
-    ./patches/seerr-libraries.nix
 
     ./users.nix
 
