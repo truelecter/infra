@@ -8,6 +8,7 @@
     suites.base
     ++ [
       inputs.nixflix.nixosModules.default
+      inputs.self.modules.nixos.nixflix-cleanuparr
 
       profiles.common.remote-builder
       profiles.nixos.fs.zfs

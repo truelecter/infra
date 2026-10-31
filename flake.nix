@@ -325,6 +325,7 @@
           ./parts/nixpkgs.nix
           ./parts/klipper
           ./parts/minecraft-servers
+          ./parts/nixflix
           ./parts/overrides
           ./parts/raspberry-pi
           ./parts/rockchip

@@ -5,6 +5,7 @@
     ./torrent.nix
     ./prowlarr.nix
     ./profilarr.nix
+    ./cleanuparr.nix
     ./radarr.nix
     ./sonarr.nix
     ./anime.nix
