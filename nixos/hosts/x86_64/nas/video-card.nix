@@ -8,6 +8,10 @@
       nvidiaSettings = false;
       open = true;
 
+      # Saves VRAM to /var/tmp through nvidia-suspend.service. Without it the
+      # driver copies VRAM into kernel memory and suspend can hang.
+      powerManagement.enable = true;
+
       # Pin to 595.84 to avoid breaking runtive driver version
       # https://github.com/NixOS/nixpkgs/blob/nixpkgs-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
