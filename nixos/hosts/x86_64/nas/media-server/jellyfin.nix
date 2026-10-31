@@ -41,8 +41,12 @@ in {
 
     # Metadata lives only in Jellyfin's database. The arr apps create media
     # folders as 755, so writes next to the media fail anyway.
-    libraries = lib.genAttrs ["Shows" "Movies" "Anime" "Anime Movies"] (_: {
+    libraries = lib.genAttrs ["Shows" "Movies" "Anime" "Anime Movies"] (name: {
       saveLocalMetadata = false;
+
+      # Movie libraries group films into their TMDb collections (Harry Potter,
+      # Twilight). TMDb has no TV collections; Auto Collections below covers shows.
+      automaticallyAddToCollection = lib.elem name ["Movies" "Anime Movies"];
     });
 
     branding = {
@@ -107,6 +111,13 @@ in {
         # nix store prefetch-file --json "https://raw.githubusercontent.com/Buco7854/jellyfin-plugin-sso/4ac0ec4c8afeb43918a31060e263c92c4bd5c2ec/manifest.json" | jq -r .hash
         hash = "sha256-aucud5ZCB/Gk6sMpkDbMlr3yF9yOCmj3aBzDO5x2dhs=";
       };
+
+      "Auto Collections" = {
+        enabled = true;
+        url = "https://raw.githubusercontent.com/KeksBombe/jellyfin-plugin-auto-collections/4630c2c9107bcc60de7d320e051bf2b5be13a21c/manifest.json";
+        # nix store prefetch-file --json "https://raw.githubusercontent.com/KeksBombe/jellyfin-plugin-auto-collections/4630c2c9107bcc60de7d320e051bf2b5be13a21c/manifest.json" | jq -r .hash
+        hash = "sha256-COTY7wkssUqT2/i61cjmlzK3c3fdBseuLwJPhCYDQDY=";
+      };
     };
 
     plugins."SSO-Auth" = {
@@ -162,6 +173,38 @@ in {
       version = "13.0.0.0";
       # nix store prefetch-file --json --unpack https://repo.jellyfin.org/files/plugin/anidb/anidb_13.0.0.0.zip | jq -r .hash
       hash = "sha256-TiMl1kloW43CpKrLGaU9uZxrHi/oZHTA8Eu7MsRDneM=";
+    };
+
+    # Collections for show franchises, one rule each. Rules removed here
+    # delete their collection on the next sync.
+    plugins."Auto Collections" = {
+      enable = true;
+      # nixflix's bundled hash comes from libarchive unpacking. fetchzip unzips
+      # this FAT-attribute archive to different bytes on Linux, so pin the hash
+      # the builder actually produces.
+      package = fromRepo {
+        version = "0.0.9.0";
+        hash = "sha256-kDievxhfko7q+uWsRnz8V4yzqPaeDf+Go1kMWyWtg1M=";
+        repository = "Auto Collections";
+      };
+      config = let
+        collection = name: expression: {
+          CollectionName = name;
+          Expression = expression;
+          CaseSensitive = false;
+          SortBy = "ReleaseYear";
+          SortOrder = "Ascending";
+        };
+      in {
+        # Skips the example collections the plugin seeds on first start.
+        IsInitialized = true;
+        DeleteOrphanedCollections = true;
+        TitleMatchPairs = [];
+        ExpressionCollections = [
+          (collection "Planet Earth" ''SHOW AND TITLE "Planet Earth" AND STUDIO "BBC"'')
+          (collection "Breaking Bad" ''TITLE "Breaking Bad" OR TITLE "Better Call Saul"'')
+        ];
+      };
     };
   };
 
