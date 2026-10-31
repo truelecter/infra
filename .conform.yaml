@@ -17,6 +17,7 @@ policies:
       - deploy-rs
       - klipper
       - minecraft-servers
+      - nixflix
       - overrides
       - raspberry-pi
       - rockchip
