@@ -1,12 +1,15 @@
 {
   "alignThumbnails": 1,
+  "appearanceSize": "1",
+  "appearanceStyle": "0",
+  "appearanceTheme": "2",
   "appsToShow": 0,
   "crashPolicy": 2,
   "cursorFollowFocusEnabled": false,
   "hideStatusIcons": false,
   "hideThumbnails": false,
   "hideWindowlessApps": true,
-  "menubarIcon": 0,
+  "menubarIcon": "3",
   "rowsCount": 4,
   "screensToShow": 0,
   "shortcutStyle": 0,
@@ -16,5 +19,8 @@
   "showOnScreen": 0,
   "showTabsAsWindows": true,
   "spacesToShow": 0,
-  "shortcutCount": 1
+  "shortcutCount": 1,
+  "updatePolicy": "1",
+  "windowMaxWidthInRow": "30",
+  "windowOrder": "0"
 }
