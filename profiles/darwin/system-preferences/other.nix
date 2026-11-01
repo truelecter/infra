@@ -1,5 +1,6 @@
 {
-  system.activationScripts.postActivation.text = ''
-    defaults write kCFPreferencesAnyApplication TSMLanguageIndicatorEnabled 0
-  '';
+  system.defaults.CustomUserPreferences.NSGlobalDomain = {
+    # No input source bubble next to the text cursor.
+    TSMLanguageIndicatorEnabled = false;
+  };
 }
