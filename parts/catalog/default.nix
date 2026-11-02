@@ -38,6 +38,12 @@
         default = [];
         description = "DNS servers for hosts on this network.";
       };
+
+      domain = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "DNS suffix of host names on this network, such as the MagicDNS tailnet name.";
+      };
     };
   });
 
@@ -107,6 +113,12 @@
           type = types.bool;
           default = true;
           description = "Whether CI builds this host.";
+        };
+
+        tailscale.tags = mkOption {
+          type = types.listOf (types.strMatching "tag:[a-z0-9-]+");
+          default = [];
+          description = "Tailscale ACL tags of the host's device, applied by terranix.";
         };
       };
   });

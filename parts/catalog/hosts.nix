@@ -28,7 +28,11 @@
 
     # aarch64-linux
 
-    oracle.description = "Game servers and remote builder";
+    oracle = {
+      description = "Game servers and remote builder";
+      # GitHub Actions runners (tag:ci) reach it over SSH, see terranix/tailscale.nix.
+      tailscale.tags = ["tag:gha-target"];
+    };
 
     voron = {
       description = "Voron 2.4 300mm";
@@ -71,6 +75,7 @@
         ip = "10.3.0.133";
         mac = "d0:11:e5:83:d8:9e";
       };
+      tailscale.tags = ["tag:gha-target"];
     };
   };
 }

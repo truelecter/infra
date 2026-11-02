@@ -83,6 +83,13 @@ creation_rules:
           - *depsos
           - *nas
 
+  # OpenTofu (terranix/): state passphrase and public IPs. No host reads it.
+  - path_regex: secrets/terraform.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+
   - path_regex: secrets/nix-caches.yaml
     key_groups:
       - pgp:

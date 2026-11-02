@@ -7,7 +7,10 @@
       nameservers = [config.catalog.devices.x290-router.net.x290.ip];
     };
 
-    tailscale.cidr = "100.64.0.0/10";
+    tailscale = {
+      cidr = "100.64.0.0/10";
+      domain = "saga-monitor.ts.net";
+    };
 
     # depsos hub, see depsos/vpn/wireguard.nix.
     wireguard.cidr = "10.7.0.0/24";

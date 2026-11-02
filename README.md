@@ -43,6 +43,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/lib` - Helper functions and utilities
 - `/secrets` - Encrypted secrets (using sops-nix)
 - `/shell` - Development shell configurations
+- `/terranix` - Cloudflare DNS and Tailscale (policy file, MagicDNS, device tags) through OpenTofu, partly derived from the host catalog
 
 AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`. Klipper and the rest of the 3D printer stack (packages, plugins, `services.klipper`, KlipperScreen, camera-streamer) come from the [`klipper.nix`](https://github.com/truelecter/klipper.nix) flake input; each printer's configuration lives in its host folder. The Minecraft server module (`services.yanms`), the modpacks and mod jars come from the [`yanms.nix`](https://github.com/truelecter/yanms.nix) flake input; the servers are configured in `nixos/hosts/x86_64/depsos/minecraft-servers`.
 
@@ -70,6 +71,15 @@ darwin-rebuild switch --flake .#<hostname>
 
 # Switch configuration (remote)
 deploy --skip-checks '.#<hostname>'
+```
+
+### Cloudflare and Tailscale
+
+Run from the repository root. The Cloudflare token comes from `secrets/cloudflare.env`; the Tailscale API key, the state passphrase and the public IPs from `secrets/terraform.yaml`. The state is committed, encrypted, in `terranix/state/terraform.tfstate`.
+
+```bash
+nix run .#infra.plan
+nix run .#infra
 ```
 
 ## Development
