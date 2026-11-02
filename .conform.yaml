@@ -12,6 +12,8 @@ policies:
       - darwin
       - home
       - common
+      - terranix
+      - catalog
       - catppuccin
       - deploy-rs
       - nixflix

@@ -60,6 +60,7 @@ in {
                   "darwin"
                   "home"
                   "common"
+                  "terranix"
                 ]
                 ++ partNames
                 ++ nixosConfigurationsNames
