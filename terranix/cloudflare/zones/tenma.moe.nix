@@ -9,14 +9,6 @@
       proxied = true;
       id = "9eeda5aeb7b4914db011573c47e06b55";
     };
-    a_argocd = {
-      type = "A";
-      name = "argocd.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "a4683a86748a929c4a8fe7ac2459ec80";
-    };
     a_asf = {
       type = "A";
       name = "asf.tenma.moe";
@@ -25,14 +17,6 @@
       proxied = true;
       id = "96596082504bc60577feb5e8bf160584";
     };
-    a_auth = {
-      type = "A";
-      name = "auth.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "e1b3b3f00aaa30fec657a094518b5591";
-    };
     a_cae = {
       type = "A";
       name = "cae.tenma.moe";
@@ -40,35 +24,12 @@
       ttl = 1;
       id = "73250be98371ea8d0bcafb0162e89b9e";
     };
-    a_cq_data = {
-      type = "A";
-      name = "cq-data.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "2ed2986cfe63dfb513970ff3a6947d72";
-    };
-    a_d = {
-      type = "A";
-      name = "d.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      id = "4663ba8b045aa88126b36bf5d4c8baf2";
-    };
     a_e9e = {
       type = "A";
       name = "e9e.tenma.moe";
       content = publicIp "oracle";
       ttl = 1;
       id = "9950676ef552bf4506cd08bdbd7b14e8";
-    };
-    a_esxi = {
-      type = "A";
-      name = "esxi.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "77ef05ab6ae29f1b2c51aaeda4255215";
     };
     a_litv3 = {
       type = "A";
@@ -85,28 +46,12 @@
       proxied = true;
       id = "38be435cc5a6cce1e5301250c773d6e9";
     };
-    a_ns = {
-      type = "A";
-      name = "ns.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "6e8f70bb05d987b40c73fa1dbd7cc726";
-    };
     a_oracle = {
       type = "A";
       name = "oracle.tenma.moe";
       content = publicIp "oracle";
       ttl = 1;
       id = "32379939183aff51a11346800380b4f1";
-    };
-    a_paste = {
-      type = "A";
-      name = "paste.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      proxied = true;
-      id = "a87153d0d03f8356184d99d3ac9cac07";
     };
     a_vh3 = {
       type = "A";
@@ -285,26 +230,12 @@
       ttl = 1;
       id = "08a8ed994de7a4c1da7ac965696054af";
     };
-    txt_a_auth = {
-      type = "TXT";
-      name = "a-auth.tenma.moe";
-      content = "\"heritage=external-dns,external-dns/owner=default,external-dns/resource=ingress/authentik/authentik\"";
-      ttl = 1;
-      id = "c86f357257405e2606851a24ce5ecbe7";
-    };
     txt_apex = {
       type = "TXT";
       name = "tenma.moe";
       content = "v=spf1 include:zoho.eu ~all";
       ttl = 1;
       id = "224a112419dadf763144e6d1bd30ac6a";
-    };
-    txt_auth = {
-      type = "TXT";
-      name = "auth.tenma.moe";
-      content = "\"heritage=external-dns,external-dns/owner=default,external-dns/resource=ingress/authentik/authentik\"";
-      ttl = 1;
-      id = "ad19b2bd9a808b3ba52a3715792e1751";
     };
     txt_zoho_domainkey = {
       type = "TXT";
