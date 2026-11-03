@@ -1,0 +1,13 @@
+# Inverter entities that change every poll or timer: keep them out of the
+# logbook, and the clock out of history too.
+logbook:
+  exclude:
+    entities:
+      # Solarman inverter clock, changes on every poll
+      - datetime.inverter_date_time
+      # Runs every 5 minutes, see inverter_grid.yaml
+      - automation.publish_inverter_grid_state_to_mqtt
+recorder:
+  exclude:
+    entities:
+      - datetime.inverter_date_time
