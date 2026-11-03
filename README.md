@@ -35,7 +35,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
     - **tl-mm4** - aarch64-darwin and aarch64-linux builder
 - `/home` - Home-manager configurations
 - `/parts` - flake-parts modules
-  - `/parts/catalog` - Host catalog: networks, hosts, external devices and domains shared by host configs, deploy-rs, CI and topology (`nix eval --json .#catalog`)
+  - `/parts/catalog` - Host catalog: networks, hosts, external devices, services and domains shared by host configs, deploy-rs, CI, topology and terranix (`nix eval --json .#catalog`)
   - `/parts/raspberry-pi` - Raspberry Pi specific configurations
   - `/parts/rockchip` - Rockchip SoC configurations
   - `/parts/k8s` - K3S wrappers and version pinning

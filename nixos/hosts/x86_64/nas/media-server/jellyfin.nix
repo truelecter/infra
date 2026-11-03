@@ -52,7 +52,7 @@ in {
 
     branding = {
       loginDisclaimer = ''
-        <a href="https://jellyfin.${catalog.domains.media}/sso/OID/start/kanidm" class="raised cancel block emby-button authelia-sso button-submit">
+        <a href="https://${catalog.services.jellyfin.fqdn}/sso/OID/start/kanidm" class="raised cancel block emby-button authelia-sso button-submit">
           <img src="https://kanidm.com/images/logo.svg" alt="Kanidm" class="sso-icon">
           Signin with Kanidm
         </a>

@@ -6,7 +6,7 @@
   catalog,
   ...
 }: let
-  domain = "immich.${catalog.domains.media}";
+  domain = catalog.services.immich.fqdn;
   kanidmDomain = catalog.domains.sso;
   mediaLocation = "/mnt/photos";
 in {

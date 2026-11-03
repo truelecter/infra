@@ -1,5 +1,5 @@
-# Host catalog: facts about hosts, external devices and networks that more
-# than one module needs (addresses, MACs, SSH ports, domains). It is data
+# Host catalog: facts about hosts, external devices, networks and services
+# that more than one module needs (addresses, MACs, SSH ports, domains). It is data
 # only and never reads nixosConfigurations or darwinConfigurations, so
 # terranix, scripts and `nix eval --json .#catalog` use it without evaluating
 # a host.
@@ -125,6 +125,42 @@
 
   device = types.submodule {options = nodeOptions;};
 
+  service = types.submodule ({
+    name,
+    config,
+    ...
+  }: {
+    options = {
+      host = mkOption {
+        type = types.str;
+        description = "Catalog host that runs the service.";
+      };
+
+      via = mkOption {
+        type = types.str;
+        default = config.host;
+        defaultText = "host";
+        description = "Host or device the service's DNS record points at, such as a proxy in front of `host`.";
+      };
+
+      domain = mkOption {
+        type = types.str;
+        description = "Base domain, usually one of `catalog.domains`.";
+      };
+
+      subdomain = mkOption {
+        type = types.str;
+        default = name;
+      };
+
+      fqdn = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = "${config.subdomain}.${config.domain}";
+      };
+    };
+  });
+
   # Checks across entries, which the option types can't express.
 
   ipToInt = ip: lib.foldl' (acc: part: acc * 256 + lib.toInt part) 0 (lib.splitString "." ip);
@@ -160,13 +196,18 @@
       else lib.optional (a.ip != null && !inNetwork cfg.networks.${a.netName} a.ip) "${a.node}: ${a.ip} is outside ${a.netName} (${cfg.networks.${a.netName}.cidr})")
     addresses
     ++ duplicates "ip" "address"
-    ++ duplicates "mac" "MAC";
+    ++ duplicates "mac" "MAC"
+    ++ lib.concatLists (lib.mapAttrsToList (name: s:
+      lib.optional (!(cfg.hosts ? ${s.host})) "service ${name}: unknown host ${s.host}"
+      ++ lib.optional (!(nodes ? ${s.via})) "service ${name}: unknown host or device ${s.via}")
+    cfg.services);
 in {
   imports = [
     ./networks.nix
     ./hosts.nix
     ./devices.nix
     ./domains.nix
+    ./services.nix
   ];
 
   options.catalog = {
@@ -191,6 +232,12 @@ in {
       type = types.attrsOf types.str;
       default = {};
       description = "Domains, by purpose.";
+    };
+
+    services = mkOption {
+      type = types.attrsOf service;
+      default = {};
+      description = "Services reached by name, for vhosts, DNS records and SSO clients.";
     };
   };
 

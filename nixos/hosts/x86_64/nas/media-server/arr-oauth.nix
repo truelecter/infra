@@ -6,9 +6,10 @@
   ...
 }: let
   mediaBaseDomain = catalog.domains.media;
+  portal = catalog.services.arr.fqdn;
   kanidmDomain = catalog.domains.sso;
 in {
-  services.nginx.virtualHosts."arr.${mediaBaseDomain}" = {
+  services.nginx.virtualHosts.${portal} = {
     forceSSL = true;
     useACMEHost = mediaBaseDomain;
   };
@@ -24,7 +25,7 @@ in {
     loginURL = "https://${kanidmDomain}/ui/oauth2";
     redeemURL = "https://${kanidmDomain}/oauth2/token";
     validateURL = "https://${kanidmDomain}/oauth2/openid/${clientId}/userinfo";
-    redirectURL = "https://arr.${mediaBaseDomain}/oauth2/callback";
+    redirectURL = "https://${portal}/oauth2/callback";
 
     clientID = clientId;
     clientSecretFile = config.sops.secrets.kanidm-oauth2-arr.path;
@@ -41,22 +42,11 @@ in {
 
     reverseProxy = true;
     nginx = {
-      domain = "arr.${mediaBaseDomain}";
-      virtualHosts = let
-        arrs = ["sonarr" "radarr" "prowlarr" "qbittorrent"];
-      in
-        lib.mkMerge (
-          map (
-            arr: {
-              "${arr}.${mediaBaseDomain}" = {
-                allowed_groups = [
-                  "access_arr"
-                ];
-              };
-            }
-          )
-          arrs
-        );
+      domain = portal;
+      virtualHosts = lib.listToAttrs (map (arr:
+        lib.nameValuePair catalog.services.${arr}.fqdn {
+          allowed_groups = ["access_arr"];
+        }) ["sonarr" "radarr" "prowlarr" "qbittorrent"]);
     };
 
     setXauthrequest = true;
