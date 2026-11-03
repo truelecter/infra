@@ -1,7 +1,6 @@
 # Cloudflare DNS records, one file per zone in ./zones, plus an A record for
-# each catalog service in the zone. Records keep their Cloudflare id for the
-# import block that adopted them into state; new records have none. Records
-# not listed are left alone: this isn't authoritative for the zones.
+# each catalog service in the zone. Records not listed are left alone: this
+# isn't authoritative for the zones.
 {
   lib,
   catalog,
@@ -13,22 +12,21 @@
   nodes = catalog.hosts // catalog.devices;
 
   # At the home LAN address of the host or device the service is reached through.
-  serviceRecords = zone: ids:
-    lib.mapAttrs' (name: s:
-      lib.nameValuePair "a_${lib.replaceStrings ["-"] ["_"] s.subdomain}" ({
-          type = "A";
-          name = s.fqdn;
-          content = nodes.${s.via}.net.x290.ip;
-          ttl = 1;
-        }
-        // lib.optionalAttrs (ids ? ${name}) {id = ids.${name};}))
+  serviceRecords = zone:
+    lib.mapAttrs' (_: s:
+      lib.nameValuePair "a_${lib.replaceStrings ["-"] ["_"] s.subdomain}" {
+        type = "A";
+        name = s.fqdn;
+        content = nodes.${s.via}.net.x290.ip;
+        ttl = 1;
+      })
     (lib.filterAttrs (_: s: s.domain == zone) catalog.services);
 
   zones = lib.mapAttrs' (file: _: let
     zone = lib.removeSuffix ".nix" file;
     z = import ./zones/${file} {inherit catalog publicIp;};
   in
-    lib.nameValuePair zone (z // {records = serviceRecords zone (z.serviceRecordIds or {}) // z.records;}))
+    lib.nameValuePair zone (z // {records = serviceRecords zone // z.records;}))
   (builtins.readDir ./zones);
 
   records = lib.concatLists (lib.mapAttrsToList (zone: z:
@@ -49,13 +47,6 @@ in {
   };
 
   resource.cloudflare_dns_record = lib.listToAttrs (map (r:
-    lib.nameValuePair r.resource (removeAttrs r.record ["id"] // {zone_id = r.zoneId;}))
+    lib.nameValuePair r.resource (r.record // {zone_id = r.zoneId;}))
   records);
-
-  import =
-    map (r: {
-      to = "cloudflare_dns_record.${r.resource}";
-      id = "${r.zoneId}/${r.record.id}";
-    })
-    (lib.filter (r: r.record ? id) records);
 }
