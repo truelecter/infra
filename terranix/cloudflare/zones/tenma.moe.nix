@@ -60,13 +60,6 @@
       ttl = 1;
       id = "14142d82db4ca64a733f54685ecb6a22";
     };
-    a_vpn = {
-      type = "A";
-      name = "vpn.tenma.moe";
-      content = publicIp "home";
-      ttl = 1;
-      id = "8e231d8df85aca4ac95219bd881cb83f";
-    };
     a_vpn2 = {
       type = "A";
       name = "vpn2.tenma.moe";

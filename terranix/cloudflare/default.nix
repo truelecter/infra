@@ -1,6 +1,7 @@
-# Cloudflare DNS records, one file per zone in ./zones. Each record keeps its
-# Cloudflare id for the import block that adopts it into state. Records not
-# listed are left alone: this isn't authoritative for the zones.
+# Cloudflare DNS records, one file per zone in ./zones, plus an A record for
+# each catalog service in the zone. Records keep their Cloudflare id for the
+# import block that adopted them into state; new records have none. Records
+# not listed are left alone: this isn't authoritative for the zones.
 {
   lib,
   catalog,
@@ -9,9 +10,25 @@
   # Public addresses stay out of the repository, see `variable.public_ips`.
   publicIp = name: "\${var.public_ips.${name}}";
 
-  zones = lib.mapAttrs' (file: _:
-    lib.nameValuePair (lib.removeSuffix ".nix" file)
-    (import ./zones/${file} {inherit catalog publicIp;}))
+  nodes = catalog.hosts // catalog.devices;
+
+  # At the home LAN address of the host or device the service is reached through.
+  serviceRecords = zone: ids:
+    lib.mapAttrs' (name: s:
+      lib.nameValuePair "a_${lib.replaceStrings ["-"] ["_"] s.subdomain}" ({
+          type = "A";
+          name = s.fqdn;
+          content = nodes.${s.via}.net.x290.ip;
+          ttl = 1;
+        }
+        // lib.optionalAttrs (ids ? ${name}) {id = ids.${name};}))
+    (lib.filterAttrs (_: s: s.domain == zone) catalog.services);
+
+  zones = lib.mapAttrs' (file: _: let
+    zone = lib.removeSuffix ".nix" file;
+    z = import ./zones/${file} {inherit catalog publicIp;};
+  in
+    lib.nameValuePair zone (z // {records = serviceRecords zone (z.serviceRecordIds or {}) // z.records;}))
   (builtins.readDir ./zones);
 
   records = lib.concatLists (lib.mapAttrsToList (zone: z:
@@ -40,5 +57,5 @@ in {
       to = "cloudflare_dns_record.${r.resource}";
       id = "${r.zoneId}/${r.record.id}";
     })
-    records;
+    (lib.filter (r: r.record ? id) records);
 }
