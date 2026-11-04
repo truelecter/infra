@@ -220,11 +220,17 @@ in {
     '';
 
     # copyApps copies the app out of the store; sign the copy again so macOS accepts the bundle.
+    # Ad-hoc signing makes the designated requirement the cdhash, which changes with every build,
+    # so macOS forgets folder grants (Documents, Downloads, ...) on each update. The outer bundle
+    # gets a requirement on its identifier instead, which survives rebuilds. Trade-off: any ad-hoc
+    # signed program claiming the identifier sh.paseo.desktop matches Paseo's grants.
     home.activation.signPaseo = mkIf (cfg.desktop.enable && pkgs.stdenv.hostPlatform.isDarwin) (
       lib.hm.dag.entryAfter ["copyApps"] ''
         app="$HOME/Applications/Home Manager Apps/Paseo.app"
         if [[ -d "$app" ]]; then
           run /usr/bin/codesign --force --deep --sign - "$app"
+          run /usr/bin/codesign --force --sign - \
+            -r='designated => identifier "sh.paseo.desktop"' "$app"
         fi
       ''
     );
