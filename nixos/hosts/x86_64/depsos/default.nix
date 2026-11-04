@@ -17,7 +17,6 @@
       ./db/postgres.nix
       ./db/mongo.nix
 
-      ./vpn/wireguard.nix
       ./vpn/tailscale-exit-node.nix
 
       ./zabbix.nix

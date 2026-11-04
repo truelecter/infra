@@ -5,8 +5,6 @@
     depsos = {
       description = "Server for publicly hosted services";
       ssh.port = 2265;
-      net.wireguard.ip = "10.7.0.1";
-      wireguard.publicKey = "BTc6Jjt1kcfPmI+0YH+XwiOFXifEz6LN4NqLxQJK/Qs=";
     };
 
     nas = {

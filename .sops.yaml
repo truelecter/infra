@@ -66,14 +66,6 @@ creation_rules:
         age:
           - *depsos
 
-  - path_regex: secrets/wireguard.yaml
-    key_groups:
-      - pgp:
-          - *truelecter-alpha
-          - *truelecter-beta
-        age:
-          - *depsos
-
   - path_regex: secrets/cloudflare.env
     key_groups:
       - pgp:

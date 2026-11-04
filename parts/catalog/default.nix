@@ -80,11 +80,6 @@
       default = {};
       description = "Address on each network, by `catalog.networks` name.";
     };
-
-    wireguard.publicKey = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-    };
   };
 
   host = types.submodule ({name, ...}: {

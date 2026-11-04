@@ -3,8 +3,6 @@
     x290-router = {
       description = "Mikrotik hAP ax3, root router";
       net.x290.ip = "10.3.0.1";
-      net.wireguard.ip = "10.7.0.3";
-      wireguard.publicKey = "RkWLn9HW/dIm1mJuXNWJgPzDwrE88qBJ10cgCVBosQU=";
     };
 
     x290-ap = {
