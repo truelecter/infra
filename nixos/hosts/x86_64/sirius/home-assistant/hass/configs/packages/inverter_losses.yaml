@@ -1,0 +1,60 @@
+# Inverter losses from AC-side readings.
+#
+# Solarman's "Today Losses", "Total Losses" and "Power losses" add up the
+# inverter's battery DC readings, which over-read charging (about -70 W while
+# the battery sits full on grid, against about -40 W on the AC side). The
+# balance goes negative, `uint: enforce` clamps it to 0, and the 0.0/0.1 flaps
+# make the recorder start a new cycle each time and inflate the statistics.
+# Keep them out of the recorder and compute losses only where the readings hold:
+#   - grid on, battery full (idle): grid + PV - load
+#   - grid off: battery + PV - load (battery DC matches the SOC drop here)
+# While the battery charges on grid the sensor is unavailable and the energy
+# sensors skip that time.
+recorder:
+  exclude:
+    entities:
+      - sensor.inverter_today_losses
+      - sensor.inverter_total_losses
+      - sensor.inverter_power_losses
+
+template:
+  - sensor:
+      - name: Inverter AC losses
+        unique_id: inverter_ac_losses
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        availability: >
+          {% set grid_off = is_state('binary_sensor.inverter_grid', 'off') %}
+          {{ is_state('binary_sensor.inverter_grid', ['on', 'off'])
+             and states('sensor.inverter_load_power') | is_number
+             and (states('sensor.inverter_battery_power') | is_number if grid_off
+                  else states('sensor.inverter_grid_power') | is_number
+                       and states('sensor.inverter_battery') | float(0) >= 100) }}
+        state: >
+          {% set pv = states('sensor.inverter_pv_power') | float(0) %}
+          {% set load = states('sensor.inverter_load_power') | float %}
+          {% if is_state('binary_sensor.inverter_grid', 'off') %}
+            {{ (states('sensor.inverter_battery_power') | float + pv - load) | round(0) }}
+          {% else %}
+            {{ (states('sensor.inverter_grid_power') | float + pv - load) | round(0) }}
+          {% endif %}
+
+sensor:
+  - platform: integration
+    name: Inverter AC losses energy
+    unique_id: inverter_ac_losses_energy
+    source: sensor.inverter_ac_losses
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 3
+    max_sub_interval:
+      minutes: 5
+
+utility_meter:
+  inverter_ac_losses_today:
+    name: Inverter AC losses today
+    unique_id: inverter_ac_losses_today
+    source: sensor.inverter_ac_losses_energy
+    cycle: daily
