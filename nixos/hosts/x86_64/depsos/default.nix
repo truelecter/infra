@@ -9,6 +9,7 @@
     ++ [
       profiles.common.remote-builder
       profiles.nixos.https-certificate-issuer
+      profiles.nixos.catalog-vhosts
 
       ./hardware-configuration.nix
       ./traffic-limit.nix

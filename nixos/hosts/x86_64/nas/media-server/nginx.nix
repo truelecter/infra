@@ -1,25 +1,11 @@
 {
   lib,
-  config,
   catalog,
   ...
 }: let
   mediaBaseDomain = catalog.domains.media;
   acmeMail = "andrew.panassiouk@gmail.com";
-
-  # Every vhost under the media domain needs a catalog.services entry: that's
-  # where its DNS record and SSO URLs come from.
-  served = lib.filter (lib.hasSuffix ".${mediaBaseDomain}") (lib.attrNames config.services.nginx.virtualHosts);
-  catalogued = lib.mapAttrsToList (_: s: s.fqdn) (lib.filterAttrs (_: s: s.host == "nas") catalog.services);
-  missing = lib.subtractLists catalogued served;
 in {
-  assertions = [
-    {
-      assertion = missing == [];
-      message = "nginx serves ${lib.concatStringsSep ", " missing} without a catalog.services entry (parts/catalog/services.nix)";
-    }
-  ];
-
   security.acme.certs = {
     "${mediaBaseDomain}" = {
       email = acmeMail;

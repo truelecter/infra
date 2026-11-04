@@ -16,6 +16,7 @@ in {
       profiles.common.remote-builder
       profiles.nixos.fs.zfs
       profiles.nixos.https-certificate-issuer
+      profiles.nixos.catalog-vhosts
 
       profiles.nixos.containers.docker
 
