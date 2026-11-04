@@ -11,7 +11,7 @@ in {
     a_apex = {
       type = "A";
       name = domain;
-      content = publicIp "home";
+      content = publicIp "depsos";
       ttl = 1;
       proxied = true;
     };
