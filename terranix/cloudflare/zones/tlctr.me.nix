@@ -33,12 +33,6 @@
       ttl = 1;
       proxied = true;
     };
-    a_oracle_vps = {
-      type = "A";
-      name = "oracle.vps.tlctr.me";
-      content = publicIp "oracle";
-      ttl = 60;
-    };
     mx_apex_10 = {
       type = "MX";
       name = "tlctr.me";
