@@ -43,4 +43,4 @@ nix run .#paseo-plugins-e2e -- specs/omp-usage.spec.ts
 
 Run `bun install` with the public registry (`--registry https://registry.npmjs.org/`) when a user-level `.npmrc` points elsewhere, so `bun.lock` keeps empty registry fields like the other plugins.
 
-Requires Paseo 0.11 (`server.registerUsageSource`, `addScreen`, `addSidebarFooterItem`) and `pluginsEnabled: true` in the daemon's `config.json`.
+Requires Paseo 0.13 (`server.registerUsageSource`, `addScreen`, `addSidebarFooterItem`, and `ScrollView` from `@getpaseo/plugin/client/ui`) and `pluginsEnabled: true` in the daemon's `config.json`.

@@ -11,7 +11,7 @@
         "@shikijs/themes": "^4.0.2",
       },
       "devDependencies": {
-        "@getpaseo/plugin": "0.10.2",
+        "@getpaseo/plugin": "0.15.0",
         "@types/node": "^22.15.3",
         "@types/react": "~19.2.0",
         "react": "19.1.0",
@@ -92,7 +92,7 @@
 
     "@getpaseo/client": ["@getpaseo/client@0.10.2", "", { "dependencies": { "@getpaseo/protocol": "0.10.2", "@getpaseo/relay": "0.10.2", "zod": "^4.4.3" } }, "sha512-dc9qnxG1U3Q2KeVUiQeIPcqC8t7SQuTcLcTPLi0h+U6hU80KQGQ8E8GhTVLU5kkaV5vtu1BHEHE149p5bc11qQ=="],
 
-    "@getpaseo/plugin": ["@getpaseo/plugin@0.10.2", "", { "dependencies": { "@agentclientprotocol/sdk": "^1.4.0", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "@getpaseo/client": "0.10.2", "@getpaseo/protocol": "0.10.2", "react": "~19.1.0", "react-native": ">=0.81.5", "zod": "^4.4.3" }, "optionalPeers": ["react-native"] }, "sha512-1+1gKJduVtfrsEX3BeX+kUiwfMCPoRDOJf/YKe+0cCb3gZc28/VfXAB9EmsqnP06tKQ2lceEs5qPE+NesH1J4A=="],
+    "@getpaseo/plugin": ["@getpaseo/plugin@0.15.0", "", { "dependencies": { "@agentclientprotocol/sdk": "^1.4.0", "i18next": "^26.3.0", "use-sync-external-store": "^1.6.0" }, "peerDependencies": { "@getpaseo/client": "0.15.0", "@getpaseo/protocol": "0.15.0", "react": ">=19.1.0 <20", "react-native": ">=0.81.5", "zod": "^4.4.3" }, "optionalPeers": ["react-native"] }, "sha512-GI3kqLUuoPS46PycPUrCPQ7VeHz0I5Ozl62RYiEL0gPLVBbG5YPe0j4PA4tZzF+vKuPf4Gs4pURZHlnYP4ETEg=="],
 
     "@getpaseo/protocol": ["@getpaseo/protocol@0.10.2", "", { "dependencies": { "semver": "^7.8.5", "zod": "^4.4.3" } }, "sha512-NCm1VkBdgNZ/+hSImXhTB0V2kCJ7+NonNjvNuTKXAJXjLzJhY5ULPgvFNKtxdu7gub136kBKp3yNZaKZFRFgkg=="],
 
@@ -365,6 +365,8 @@
     "http-errors": ["http-errors@2.0.1", "", { "dependencies": { "depd": "~2.0.0", "inherits": "~2.0.4", "setprototypeof": "~1.2.0", "statuses": "~2.0.2", "toidentifier": "~1.0.1" } }, "sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ=="],
 
     "https-proxy-agent": ["https-proxy-agent@7.0.6", "", { "dependencies": { "agent-base": "^7.1.2", "debug": "4" } }, "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw=="],
+
+    "i18next": ["i18next@26.7.1", "", { "peerDependencies": { "typescript": "^5 || ^6 || ^7" }, "optionalPeers": ["typescript"] }, "sha512-cX+3RRVczel/V2kCMTACckSGSpqgtWYEA6beXNYVms7dOQiHojdPYHD26lT4IKimNeoGWrLvtPgjftbRvmZJVw=="],
 
     "imurmurhash": ["imurmurhash@0.1.4", "", {}, "sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA=="],
 

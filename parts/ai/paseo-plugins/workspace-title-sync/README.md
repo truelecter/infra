@@ -3,10 +3,10 @@
 Server-only Paseo plugin that gives a workspace the title of its agent, as long as that agent is the workspace's only top-level agent. A one-agent workspace then reads like its conversation, and follows it when the agent retitles itself after a topic change (see the `paseo-tools` OMP extension) or is renamed in the UI.
 
 - Counts agents only: subagents (the `paseo.parent-agent-id` label) and archived agents are skipped, terminals are not agents. With a second top-level agent in the workspace, its title stays as it is. A subagent never renames its workspace.
-- Syncs on a change of the agent's title, not on every turn: a workspace title you set by hand survives until the agent's title changes again.
-- Paseo has no "agent renamed" event, so the plugin compares titles at turn boundaries: `agent.turn_started` records the agent's title as a baseline, `agent.turn_ended` compares against the last title seen and renames the workspace when it changed. A retitle during a turn shows up when the turn ends; a rename between turns shows up at the end of the next one.
-- Titles come from `paseo.agents.list`, not the hook event: the event's `agent.title` is the title the agent was created with (Paseo 0.10.1 updates only the stored record on rename).
-- Baselines live in memory. After a plugin reload or daemon restart, an agent's first turn sets the baseline without renaming anything.
+- Syncs on a change of the agent's title, not on every update: a workspace title you set by hand survives until the agent's title changes again.
+- Follows renames live: the plugin subscribes to Paseo's agent directory (`paseo.agents.list({ subscribe: {} })`), and each `agent_update` carries the agent with its current title, so the workspace is renamed as soon as the agent is, mid-turn or between turns.
+- The directory lives in memory. Its first snapshot after a plugin start or reload is only a baseline and renames nothing; a new agent's first title is a baseline too. After a reconnect, the new snapshot is compared with the directory before it, so a rename missed meanwhile still applies.
+- Server setup gets no Paseo client in Paseo 0.15, only hooks do, so the subscription starts at the first agent hook (`agent.create.after`, `agent.turn.before`, `agent.turn.after`) after a start or reload. A rename before then, with no agent created and no turn run, is missed: it becomes the baseline.
 
 ## Develop
 
@@ -23,5 +23,5 @@ Requires `pluginsEnabled: true` in the daemon's `config.json`. Each rename is lo
 
 ## Layout
 
-- `index.server.ts`: registers the lifecycle hooks, lists agents through the plugin's Paseo SDK connection, sets the workspace title.
-- `server/title-sync.ts`: pure logic, tested: the only-top-level-agent rule and the per-agent title baseline.
+- `index.server.ts`: starts the agent directory subscription from the first agent hook, reads the rest of a multi-page snapshot, sets the workspace title, releases the subscription on stop.
+- `server/title-sync.ts`: pure logic, tested: the only-top-level-agent rule and the directory with its title baseline (`TitleSync`).

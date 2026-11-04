@@ -63,7 +63,7 @@ The log shows `[vpn] Listening for Tunnelblick challenges on <socket>` after eac
 ## Layout
 
 - `index.server.ts`: RPC handlers for the screen, and the socket server for the challenge script.
-- `index.client.tsx`: registers the screen and the sidebar item.
+- `index.client.tsx`: registers the screen (`addScreen`) and its sidebar header row (`addSidebarHeaderItem` with `SidebarRow`).
 - `shared/vpn.ts`: Zod schemas and RPC contracts.
 - `server/challenge.ts`: hands a code typed in Paseo to the waiting script, or keeps it for the next challenge.
 - `server/http.ts`: the `POST /challenge` socket endpoint the script calls.

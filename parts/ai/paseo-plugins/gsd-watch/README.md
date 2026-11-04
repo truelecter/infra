@@ -15,7 +15,7 @@ A workspace without `.planning/` shows a note instead.
 ## What the panel shows
 
 - **Header**: the project name (PROJECT.md's first heading, or the folder name), the milestone, STATE.md's `status` and `stopped_at`, the model profile from `config.json`, a progress bar of completed plans, and the next step GSD suggests in `state.json` with a **Copy** button for its command.
-- **Phases**, in number order (decimal phases such as `2.1` after `2`): every folder under `phases/`, plus ROADMAP.md phases that have no folder yet. The current phase has an accent border and starts expanded; tap a phase to expand or collapse it, or use **Expand all** and **Collapse all**.
+- **Phases**, in number order (decimal phases such as `2.1` after `2`): every folder under `phases/`, plus ROADMAP.md phases that have no folder yet. The current phase has an accent border and starts expanded; tap a phase to expand or collapse it, or use **Expand all** and **Collapse all**. Each tab keeps what is expanded across app reloads.
 - **Plans** of an expanded phase: id, title, wave, and status. The current plan (STATE.md's `Plan: N of M` in the current phase) is marked.
 - **Badges** per phase, from the files in its folder: Discussed (`NN-CONTEXT.md`), Researched (`NN-RESEARCH.md`), UI spec (`NN-UI-SPEC.md`), Planned (any `NN-MM-PLAN.md`), Executed (any `NN-MM-SUMMARY.md`), Verified (`NN-VERIFICATION.md`), UAT (`NN-UAT.md` or `NN-HUMAN-UAT.md`).
 - **Quick tasks** under `quick/`, newest first, and **archived milestones** under `milestones/vX.Y-phases/` with their shipped date from MILESTONES.md; both collapsed until tapped.

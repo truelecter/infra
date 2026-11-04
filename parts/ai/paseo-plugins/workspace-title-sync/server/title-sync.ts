@@ -1,9 +1,10 @@
 // A workspace takes its agent's title when the agent is the workspace's only
 // top-level agent, so a single-agent workspace reads like its conversation.
 //
-// Paseo has no "agent renamed" event, and the title in lifecycle hook events is
-// the one the agent was created with (setTitle only updates the stored record).
-// So titles come from the agent directory, compared across turn boundaries.
+// The plugin follows Paseo's agent directory (a subscribed `agents.list`): a
+// snapshot, then an `agent_update` upsert with the full agent for every change.
+// `TitleSync` keeps that directory and reports which title changes rename a
+// workspace.
 
 /** The fields of a Paseo agent snapshot used here. */
 export interface AgentInfo {
@@ -17,17 +18,24 @@ export interface AgentInfo {
 /** Paseo marks subagents with this label (`@getpaseo/protocol/agent-labels`). */
 export const PARENT_AGENT_ID_LABEL = "paseo.parent-agent-id";
 
+export interface Rename {
+  agentId: string;
+  workspaceId: string;
+  title: string;
+}
+
 /**
  * The workspace whose only top-level agent is `agentId`, or null. Subagents and
  * archived agents don't count; terminals are not agents, so they never do.
  */
 export function soleAgentWorkspace(
-  agents: readonly AgentInfo[],
+  agents: Iterable<AgentInfo>,
   agentId: string,
 ): string | null {
-  const workspaceId = agents.find((agent) => agent.id === agentId)?.workspaceId;
+  const all = [...agents];
+  const workspaceId = all.find((agent) => agent.id === agentId)?.workspaceId;
   if (!workspaceId) return null;
-  const topLevel = agents.filter(
+  const topLevel = all.filter(
     (agent) =>
       agent.workspaceId === workspaceId &&
       !agent.archivedAt &&
@@ -38,28 +46,74 @@ export function soleAgentWorkspace(
     : null;
 }
 
+/** A title change: against a title seen earlier, to a non-empty one. */
+function retitled(before: AgentInfo | undefined, after: AgentInfo): boolean {
+  return before !== undefined && !!after.title && after.title !== before.title;
+}
+
 /**
- * Last seen title per agent. A change counts only against a title seen earlier,
- * so the plugin never overwrites a workspace title the user set, unless the
- * agent's own title changed afterwards.
+ * The agent directory as last seen. A change counts only against a title seen
+ * earlier, so the first snapshot (plugin start or reload) renames nothing and a
+ * workspace title the user set survives until the agent's own title changes.
+ * A later snapshot (after a reconnect) is compared with the directory before
+ * it, so a rename missed while disconnected still applies.
+ *
+ * A snapshot can span several pages: `beginSnapshot`, `addSnapshot` per page,
+ * then `endSnapshot`. Renames found meanwhile wait for the whole directory, so
+ * a sibling on a later page still blocks them.
  */
-export class TitleTracker {
-  #titles = new Map<string, string | null>();
+export class TitleSync {
+  #agents = new Map<string, AgentInfo>();
+  #previous: Map<string, AgentInfo> | null = null;
+  #seeded = false;
+  #loading = false;
+  #pending = new Set<string>();
 
-  /** Turn start: remembers the title as a baseline if none is known yet. */
-  started(agentId: string, title: string | null): void {
-    if (!this.#titles.has(agentId)) this.#titles.set(agentId, title);
+  beginSnapshot(): void {
+    this.#previous = this.#seeded ? this.#agents : null;
+    this.#agents = new Map();
+    this.#loading = true;
+    this.#pending.clear();
   }
 
-  /** Turn end: the new title if it differs from the last one seen, else null. */
-  ended(agentId: string, title: string | null): string | null {
-    const known = this.#titles.has(agentId);
-    const previous = this.#titles.get(agentId);
-    this.#titles.set(agentId, title);
-    return known && title && title !== previous ? title : null;
+  addSnapshot(agents: readonly AgentInfo[]): void {
+    for (const agent of agents) {
+      // An update that arrived while later pages loaded is newer than the page.
+      if (this.#agents.has(agent.id)) continue;
+      this.#agents.set(agent.id, agent);
+      if (retitled(this.#previous?.get(agent.id), agent))
+        this.#pending.add(agent.id);
+    }
   }
 
-  forget(agentId: string): void {
-    this.#titles.delete(agentId);
+  endSnapshot(): Rename[] {
+    this.#loading = false;
+    this.#seeded = true;
+    this.#previous = null;
+    const renames = [...this.#pending].flatMap((id) => this.#rename(id) ?? []);
+    this.#pending.clear();
+    return renames;
+  }
+
+  upsert(agent: AgentInfo): Rename | null {
+    const before = this.#agents.get(agent.id) ?? this.#previous?.get(agent.id);
+    this.#agents.set(agent.id, agent);
+    if (!retitled(before, agent)) return null;
+    if (this.#loading) {
+      this.#pending.add(agent.id);
+      return null;
+    }
+    return this.#rename(agent.id);
+  }
+
+  remove(agentId: string): void {
+    this.#agents.delete(agentId);
+    this.#pending.delete(agentId);
+  }
+
+  #rename(agentId: string): Rename | null {
+    const title = this.#agents.get(agentId)?.title;
+    const workspaceId = soleAgentWorkspace(this.#agents.values(), agentId);
+    return title && workspaceId ? { agentId, workspaceId, title } : null;
   }
 }

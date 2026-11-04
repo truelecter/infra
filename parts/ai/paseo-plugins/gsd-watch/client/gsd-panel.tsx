@@ -1,9 +1,10 @@
 import type { PluginWorkspacePanelProps } from "@getpaseo/plugin/client";
-import { useRpc, useWorkspace } from "@getpaseo/plugin/client";
-import { copyText, Icon, ScrollView, useToast } from "@getpaseo/plugin/client/react-native";
+import { useRpc, useTabState, useWorkspace } from "@getpaseo/plugin/client";
+import { copyText, Icon, ScrollView, useToast } from "@getpaseo/plugin/client/ui";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
+import { z } from "zod";
 import { getProject, type Badge, type Status } from "../shared/gsd.ts";
 
 /** GSD writes `.planning/` while an agent works; the panel re-reads it this often while visible. */
@@ -19,6 +20,11 @@ const BADGE_LABELS: Record<Badge, { icon: string; label: string }> = {
   uat: { icon: "FlaskConical", label: "UAT" },
 };
 
+/** What the user expanded, saved per tab so it survives reloads: phases by number, and the two lower sections. */
+const viewSchema = z.object({ phases: z.record(z.string(), z.boolean()), quick: z.boolean(), milestones: z.boolean() });
+type ViewState = z.infer<typeof viewSchema>;
+const DEFAULT_VIEW: ViewState = { phases: {}, quick: false, milestones: false };
+
 const STATUS_ICONS: Record<Status, string> = { complete: "CircleCheck", in_progress: "CircleDot", pending: "Circle" };
 const STATUS_LABELS: Record<Status, string> = { complete: "Complete", in_progress: "In progress", pending: "Pending" };
 
@@ -30,12 +36,11 @@ function statusColor(status: Status, colors: Colors): string {
   return colors.foregroundMuted;
 }
 
-export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
+export function GsdPanel({ theme, workspaceId, tab }: PluginWorkspacePanelProps) {
   const directory = useWorkspace(workspaceId, (workspace) => workspace.directory);
   const readProject = useRpc(getProject);
   const toast = useToast();
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-  const [sections, setSections] = useState({ quick: false, milestones: false });
+  const [view, setView] = useTabState(tab, viewSchema, DEFAULT_VIEW);
 
   const query = useQuery({
     queryKey: ["gsd-watch", directory],
@@ -98,7 +103,7 @@ export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
   const plans = project.phases.flatMap((phase) => phase.plans);
   const plansDone = plans.filter((plan) => plan.status === "complete").length;
   const phasesDone = project.phases.filter((phase) => phase.status === "complete").length;
-  const setAll = (value: boolean) => setExpanded(Object.fromEntries(project.phases.map((phase) => [phase.number, value])));
+  const setAll = (value: boolean) => setView({ ...view, phases: Object.fromEntries(project.phases.map((phase) => [phase.number, value])) });
 
   const button = (label: string, onPress: () => void, icon?: string) => (
     <Pressable key={label} accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={[styles.button, styles.row, { gap: 4 }]}>
@@ -107,14 +112,14 @@ export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
     </Pressable>
   );
 
-  const sectionToggle = (key: keyof typeof sections, label: string) => (
+  const sectionToggle = (key: "quick" | "milestones", label: string) => (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${sections[key] ? "Collapse" : "Expand"} ${label}`}
-      onPress={() => setSections((current) => ({ ...current, [key]: !current[key] }))}
+      accessibilityLabel={`${view[key] ? "Collapse" : "Expand"} ${label}`}
+      onPress={() => setView({ ...view, [key]: !view[key] })}
       style={styles.sectionHeader}
     >
-      <Icon name={sections[key] ? "ChevronDown" : "ChevronRight"} size={14} color={c.foregroundMuted} />
+      <Icon name={view[key] ? "ChevronDown" : "ChevronRight"} size={14} color={c.foregroundMuted} />
       <Text style={[styles.text, { fontWeight: "600" }]}>{label}</Text>
     </Pressable>
   );
@@ -163,14 +168,14 @@ export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
       <View style={{ gap: 4 }} testID="gsd-watch-phases">
         {project.phases.map((phase) => {
           const done = phase.plans.filter((plan) => plan.status === "complete").length;
-          const showPlans = expanded[phase.number] ?? phase.number === open;
+          const showPlans = view.phases[phase.number] ?? phase.number === open;
           return (
             <View key={phase.number} style={[styles.card, phase.active ? { borderColor: c.accent } : null]}>
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`Phase ${phase.number}: ${phase.name}, ${STATUS_LABELS[phase.status]}`}
                 accessibilityState={{ expanded: showPlans }}
-                onPress={() => setExpanded((current) => ({ ...current, [phase.number]: !showPlans }))}
+                onPress={() => setView({ ...view, phases: { ...view.phases, [phase.number]: !showPlans } })}
                 style={[styles.row, { alignItems: "flex-start" }]}
               >
                 <Icon name={STATUS_ICONS[phase.status]} size={16} color={statusColor(phase.status, c)} />
@@ -215,7 +220,7 @@ export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
       {project.quickTasks.length > 0 ? (
         <View testID="gsd-watch-quick">
           {sectionToggle("quick", `Quick tasks (${project.quickTasks.length})`)}
-          {sections.quick
+          {view.quick
             ? project.quickTasks.map((task) => (
                 <View key={task.id} style={[styles.row, { alignItems: "flex-start", paddingLeft: 8, paddingVertical: 2 }]}>
                   <Icon name={STATUS_ICONS[task.status]} size={13} color={statusColor(task.status, c)} />
@@ -232,7 +237,7 @@ export function GsdPanel({ theme, workspaceId }: PluginWorkspacePanelProps) {
       {project.milestones.length > 0 ? (
         <View testID="gsd-watch-milestones">
           {sectionToggle("milestones", `Archived milestones (${project.milestones.length})`)}
-          {sections.milestones
+          {view.milestones
             ? project.milestones.map((milestone) => (
                 <View key={milestone.version} style={[styles.row, { paddingLeft: 8, paddingVertical: 2 }]}>
                   <Icon name="Archive" size={13} color={c.foregroundMuted} />

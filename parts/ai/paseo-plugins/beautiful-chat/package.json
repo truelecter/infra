@@ -1,6 +1,6 @@
 {
   "name": "beautiful-chat",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "private": true,
   "description": "Paseo plugin: Thinking, folded TODO, tool activity, and ask cards for the OMP chat stream",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "@shikijs/themes": "^4.0.2"
   },
   "devDependencies": {
-    "@getpaseo/plugin": "0.10.2",
+    "@getpaseo/plugin": "0.15.0",
     "@types/node": "^22.15.3",
     "@types/react": "~19.2.0",
     "react": "19.1.0",

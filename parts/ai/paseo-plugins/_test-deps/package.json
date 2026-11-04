@@ -3,7 +3,7 @@
   "private": true,
   "description": "Packages Paseo provides to plugins at runtime, installed only for the plugins' tests in the Nix build.",
   "dependencies": {
-    "@getpaseo/plugin": "0.10.2",
+    "@getpaseo/plugin": "0.15.0",
     "react": "19.1.0",
     "zod": "4.6.5"
   }

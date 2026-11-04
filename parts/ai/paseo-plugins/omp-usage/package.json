@@ -1,7 +1,7 @@
 {
   "name": "omp-usage",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "files": [
     "paseo-plugin.json",
@@ -16,7 +16,7 @@
     "test": "bun test server/*.test.ts shared/*.test.ts"
   },
   "devDependencies": {
-    "@getpaseo/plugin": "0.11.1",
+    "@getpaseo/plugin": "0.15.0",
     "@types/node": "^24.0.0",
     "typescript": "^5.9.3",
     "zod": "^4.4.3",

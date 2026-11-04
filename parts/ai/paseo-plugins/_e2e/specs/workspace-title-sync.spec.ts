@@ -11,9 +11,9 @@ async function workspaceName(
   return entries.find((entry) => entry.id === workspaceId)?.name;
 }
 
-// The plugin compares the agent's title at turn boundaries: a rename between turns renames the
-// workspace when the next turn ends, if the agent is the workspace's only top-level agent.
-test("a workspace follows its only agent's new title after the agent's next turn", async ({
+// The plugin follows the agent directory: a rename renames the workspace right away, without
+// another turn, if the agent is the workspace's only top-level agent.
+test("a workspace follows its only agent's new title without another turn", async ({
   page,
   seed,
   client,
@@ -23,11 +23,10 @@ test("a workspace follows its only agent's new title after the agent's next turn
     title: "Original agent title",
     initialPrompt: "first turn",
   });
+  // The agent's hooks start the plugin's directory subscription; once the turn is over it is live.
   await finishTurn(client, agentId);
 
   await client.updateAgent(agentId, { name: "Renamed by the e2e suite" });
-  await client.sendAgentMessage(agentId, "second turn");
-  await finishTurn(client, agentId);
   await expect
     .poll(() => workspaceName(client, workspace.workspaceId))
     .toBe("Renamed by the e2e suite");
@@ -58,9 +57,7 @@ test("a workspace with a second top-level agent keeps its title", async ({
   const before = await workspaceName(client, workspace.workspaceId);
 
   await client.updateAgent(agentId, { name: "Renamed with a sibling" });
-  await client.sendAgentMessage(agentId, "second turn");
-  await finishTurn(client, agentId);
-  // The rename happens in the turn_ended hook, within a second in the test above. Give it longer.
+  // The rename follows within a second in the test above. Give it longer.
   await sleep(3_000);
   expect(await workspaceName(client, workspace.workspaceId)).toBe(before);
 });

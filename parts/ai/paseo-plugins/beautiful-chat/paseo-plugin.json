@@ -1,7 +1,7 @@
 {
   "id": "beautiful-chat",
   "requirements": {
-    "paseo": ">=0.10.0"
+    "paseo": ">=0.13.0"
   },
   "description": "Draws OMP reasoning as a Thinking card, todo updates as folded checklists, a turn's tool calls as one folded activity line, and answered questions as cards. Everything else stays with Paseo."
 }

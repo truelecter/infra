@@ -1,32 +1,35 @@
 # backlog
 
-Paseo plugin with a **Backlog** screen in the sidebar: a list of things to follow up on, such as an MR that should fix an issue you hit, a bug to look at later, or an idea. Agents add items and check on them through its `backlog` CLI (`cli/backlog`), so a finding doesn't get lost with the chat it came up in, and a later agent can go through the list and report what changed.
+Paseo plugin with a **Backlog** screen in the sidebar: a list of things to follow up on, such as an MR that should fix an issue you hit, a bug to look at later, or an idea. Agents add items and check on them through its agent tools (`backlog_add` and friends) or its `backlog` CLI (`cli/backlog`), so a finding doesn't get lost with the chat it came up in, and a later agent can go through the list and report what changed.
 
 ## What an item holds
 
 - A numeric id (`#12`) that is never reused, a title, and a Markdown description. Links to MRs, issues, and docs go in the description; the screen renders it and opens links in the browser.
 - A status: `open`, `waiting` (on someone else, such as an MR in review), or `done`.
-- The Paseo agent whose chat it came from. The CLI fills this in from `$PASEO_AGENT_ID`; the screen shows that agent's current title and opens the chat on press, archived agents included.
-- A history: each status change and each `--log` line from a status check, with time and agent.
+- The Paseo agent whose chat it came from. The agent tools fill this in from the calling agent, the CLI from `$PASEO_AGENT_ID`; the screen shows that agent's current title and opens the chat on press, archived agents included.
+- A history: each status change and each log line from a status check, with time and agent.
 
 ## The screen
 
 - **Active** (open and waiting), **Done**, and **All** filters, grouped by status, most recently updated first.
 - Descriptions start folded behind **Show description**, so long ones don't push other items off screen. Which ones you opened is saved in the backlog file (`openIds`), so they stay open after a reload and on every client of the daemon. Opening or folding one is not an edit: it adds no history and doesn't move the item up the list.
 - Add an item with a title and an optional Markdown description; change status with the chips; edit title and description (as Markdown source) with the pencil; delete with the bin (asks first).
-- Agents write through the CLI, which the app isn't told about, so the screen polls every 5 seconds.
+- Agents write through the tools and the CLI, which the app isn't told about, so the screen polls every 5 seconds.
 
-Paseo adds plugin sidebar items after the built-in ones, so Backlog starts below **Schedules**. To put it above, use **Settings → Sidebar** and move it up once; the order is saved per app (desktop, browser, phone).
+The sidebar row is a header item (`addSidebarHeaderItem`), which Paseo lists after the built-in rows. To put it higher, use **Settings → Sidebar** and move it up once; the order is saved per app (desktop, browser, phone).
 
-Paseo gives plugin UI no Markdown component, and HTML-based renderers don't work in React Native, so `client/markdown.ts` parses the subset agents write (paragraphs with their line breaks, headings, bullet, numbered, and nested task lists, block quotes, fenced code, inline code, bold, italic, strikethrough, `[text](url)`, bare URLs, backslash escapes) and `client/markdown-view.tsx` draws it with `Text` and `View`. Tables, images, and HTML show as plain text.
+Descriptions render with Paseo's own `Markdown` component (`@getpaseo/plugin/client/ui`), the renderer chats use: GitHub-flavoured Markdown with tables, task lists, strikethrough, bare URLs, code blocks, and diagrams, in Paseo's chat text style and with its link handling (web links open in the browser).
 
 ## How agents reach it
 
-The server side keeps the items in `~/.local/share/paseo-backlog/items.json` (`PASEO_BACKLOG_DIR` overrides the folder) and serves a small JSON API on the Unix socket `backlog.sock` next to it, readable only by your user. The `backlog` CLI talks to that socket with `curl`, so any agent that can run a shell command can use it, in any harness and without a restart. The plugin process is the only writer and runs changes one at a time, so concurrent agents can't lose each other's updates. A file that fails to parse is reported and left alone.
+The server side keeps the items in `~/.local/share/paseo-backlog/items.json` (`PASEO_BACKLOG_DIR` overrides the folder). The plugin process is the only writer and runs changes one at a time, so concurrent agents can't lose each other's updates. A file that fails to parse is reported and left alone. Agents reach it two ways:
 
-The `backlog` skill (`profiles/home/dev/_files/omp/skills/backlog/` for OMP) tells agents when and how to use the CLI. Keep it, the CLI, and `server/http.ts` in step.
+- Agent tools: `backlog_add`, `backlog_list`, `backlog_show`, `backlog_update`, and `backlog_remove` (`server/agent-tools.ts`), attached to every agent through `server.addHook("agent.open.before")`. They call the store directly, with the socket API's validation, and record the calling agent and its working directory the way the CLI does; `agentId` names another chat instead. Paseo delivers them over its agent tool transport (MCP or native, per provider) under the same gates as Paseo's own tools, and open chats get them when their session reopens: after the plugin starts or reloads, each open session reopens before its next idle prompt.
+- The `backlog` CLI, for agents without the tools (a disabled Paseo tool injection, a provider policy that withholds them, a shell outside Paseo). It talks to a small JSON API on the Unix socket `backlog.sock` in the same folder, readable only by your user, with `curl`, so anything that can run a shell command can use it.
 
-Plugin RPC and an injected MCP server were the other options. Paseo has no CLI for plugin RPC, and an MCP server added through `server.before("agent.create")` reaches only agents created after the plugin, not the chats already open.
+The `backlog` skill (`profiles/home/dev/_files/omp/skills/backlog/` for OMP) tells agents when and how to use them, preferring the tools. Keep it, the tools, the CLI, and `server/http.ts` in step.
+
+The socket API:
 
 | Method and path                  | Body                                                | Result                                             |
 | -------------------------------- | --------------------------------------------------- | -------------------------------------------------- |
@@ -40,7 +43,7 @@ Errors come back as `{ error }` with `400` (invalid input, unknown fields includ
 
 ## The CLI
 
-`cli/backlog` is the command line agents use; the package exposes it as `pkgs.paseo-plugins.backlog.cli` (a `writeShellApplication` with `curl` and `jq`), and `programs.paseo` puts it on `PATH` whenever the plugin is configured. It needs the plugin running.
+`cli/backlog` is the command line fallback for agents without the tools; the package exposes it as `pkgs.paseo-plugins.backlog.cli` (a `writeShellApplication` with `curl` and `jq`), and `programs.paseo` puts it on `PATH` whenever the plugin is configured. It needs the plugin running.
 
 ```sh
 backlog add "MR !123 fixes the login loop" --status waiting \
@@ -80,12 +83,12 @@ The log shows `[backlog] Listening on <socket>, items in <file>` after each star
 
 ## Layout
 
-- `index.server.ts`: RPC handlers for the screen, and the socket server for the CLI.
-- `index.client.tsx`: registers the screen and the sidebar item.
+- `index.server.ts`: RPC handlers for the screen, the agent tools hook, and the socket server for the CLI.
+- `index.client.tsx`: registers the screen and its sidebar header item.
 - `shared/backlog.ts`: Zod schemas for items and changes, and the RPC contracts.
 - `server/store.ts`: pure, tested item logic: ids, status history, ordering.
 - `server/file-store.ts`: reads and atomically writes the JSON file, one change at a time.
 - `server/http.ts`: the socket API, tested over a real socket.
+- `server/agent-tools.ts`: the agent tools, tested against a real file store.
 - `client/backlog-screen.tsx`, `client/item-card.tsx`: the screen.
-- `client/markdown.ts` (tested), `client/markdown-view.tsx`: description parsing and rendering.
 - `cli/backlog`: the CLI over the socket API.

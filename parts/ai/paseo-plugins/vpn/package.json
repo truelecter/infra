@@ -1,7 +1,7 @@
 {
   "name": "vpn",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "files": [
     "paseo-plugin.json",
@@ -17,7 +17,7 @@
     "test": "bun test server/*.test.ts"
   },
   "devDependencies": {
-    "@getpaseo/plugin": "0.10.0",
+    "@getpaseo/plugin": "0.15.0",
     "@tanstack/react-query": "^5.90.11",
     "@types/node": "^22.10.0",
     "@types/react": "~19.2.0",

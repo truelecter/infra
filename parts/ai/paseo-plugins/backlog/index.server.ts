@@ -7,6 +7,7 @@ import {
   setDescriptionOpen,
   updateItem,
 } from "./shared/backlog.ts";
+import { backlogTools } from "./server/agent-tools.ts";
 import { backlogDir, FileStore } from "./server/file-store.ts";
 import { createBacklogServer, listen } from "./server/http.ts";
 import * as store from "./server/store.ts";
@@ -33,6 +34,13 @@ export default function contribute(server: PluginServerContext) {
     await items.mutate((data) => store.setDescriptionOpen(data, id, open));
     return {};
   });
+
+  // Every agent gets the tools; agents can also use the CLI, which reaches the socket below.
+  const tools = backlogTools(items);
+  server.addHook("agent.open.before", async ({ request }) => ({
+    ...request,
+    tools: [...request.tools, ...tools],
+  }));
 
   const socketPath = join(dir, "backlog.sock");
   const started = listen(createBacklogServer(items), socketPath).then(

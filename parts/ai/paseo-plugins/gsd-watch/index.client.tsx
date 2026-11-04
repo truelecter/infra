@@ -17,7 +17,6 @@ export default function contribute(client: PluginClientContext) {
       id: "gsd",
       title: "GSD",
       icon: "ListTree",
-      context: "workspace",
       locations: ["workspace", "explorer"],
       Component: GsdPanel,
     }),

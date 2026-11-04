@@ -1,6 +1,6 @@
-import type { PluginSurfaceProps } from "@getpaseo/plugin/client";
+import type { PluginScreenProps } from "@getpaseo/plugin/client";
 import { useRpc, useSettings } from "@getpaseo/plugin/client";
-import { Icon, Modal, ScrollView, useToast } from "@getpaseo/plugin/client/react-native";
+import { Icon, Modal, ScrollView, useToast } from "@getpaseo/plugin/client/ui";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState, type ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -27,7 +27,7 @@ interface Confirmation {
   run: () => Promise<unknown>;
 }
 
-export function HealthScreen({ theme, layout }: PluginSurfaceProps) {
+export function HealthScreen({ theme, layout }: PluginScreenProps) {
   const toast = useToast();
   const readSnapshot = useRpc(getSnapshot);
   const archiveRpc = useRpc(archiveAgent);

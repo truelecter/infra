@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Icon as HostIcon } from "@getpaseo/plugin/client/react-native";
+import { Icon as HostIcon } from "@getpaseo/plugin/client/ui";
 import { Glyph } from "./glyph";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface } from "./selection";

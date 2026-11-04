@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Icon as HostIcon } from "@getpaseo/plugin/client/react-native";
+import { Icon as HostIcon } from "@getpaseo/plugin/client/ui";
 import { radius, type ExtendedThemeTokens } from "./theme-tokens";
 import { selectableSurface } from "./selection";
 import { CardTime } from "./card-time";

@@ -1,5 +1,13 @@
 import type { PluginTheme } from "@getpaseo/plugin";
+import { Platform } from "react-native";
 import type { Status } from "../shared/backlog.ts";
+
+/** For Markdown source in the description inputs. */
+export const MONOSPACE = Platform.select({
+  ios: "Menlo",
+  android: "monospace",
+  default: "ui-monospace, SFMono-Regular, Menlo, monospace",
+});
 
 export const STATUS_LABEL: Record<Status, string> = {
   open: "Open",

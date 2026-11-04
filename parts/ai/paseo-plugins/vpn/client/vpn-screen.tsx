@@ -1,6 +1,6 @@
-import type { PluginSurfaceProps } from "@getpaseo/plugin/client";
+import type { PluginScreenProps } from "@getpaseo/plugin/client";
 import { useRpc } from "@getpaseo/plugin/client";
-import { ScrollView, TextInput, useToast } from "@getpaseo/plugin/client/react-native";
+import { ScrollView, TextInput, useToast } from "@getpaseo/plugin/client/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -31,7 +31,7 @@ function useSecondsLeft(iso: string | undefined): number {
   return iso ? Math.max(0, Math.round((Date.parse(iso) - now) / 1000)) : 0;
 }
 
-export function VpnScreen({ theme, layout }: PluginSurfaceProps) {
+export function VpnScreen({ theme, layout }: PluginScreenProps) {
   const toast = useToast();
   const queryClient = useQueryClient();
   const readStatus = useRpc(getStatus);

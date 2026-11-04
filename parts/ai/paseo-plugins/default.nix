@@ -29,7 +29,7 @@
   # plugin that has any. After changing a package.json or bun.lock, set the entry to `lib.fakeHash`,
   # build, and copy the hash from the error.
   nodeModulesHashes = {
-    _test-deps = "sha256-7FL5SJXDutMw52cooUjxTRSF8p/bYmTW8C23vihSGDA=";
+    _test-deps = "sha256-8yqzA4Kh808nBjwtX+vU3HmnZntzsFFpA/OZl/rR6Lg=";
     beautiful-chat = "sha256-3SeL5sqPpd/aabrdeU5GjYaqDYdy7vCE2fs4ddKXci4=";
   };
 

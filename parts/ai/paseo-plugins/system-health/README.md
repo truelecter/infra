@@ -47,7 +47,7 @@ The tests cover the parsers with real tool output and the grouping, session matc
 ## Layout
 
 - `index.server.ts`: RPC handlers for the screen; reads Paseo's agents.
-- `index.client.tsx`: registers the screen and the sidebar item.
+- `index.client.tsx`: registers the screen (`addScreen`) and its sidebar header row (`addSidebarHeaderItem` with `SidebarRow`).
 - `shared/health.ts`: Zod schemas, RPC contracts, and the refresh setting.
 - `server/collect.ts`: runs the tools for one sample.
 - `server/parse.ts`: parses their output.

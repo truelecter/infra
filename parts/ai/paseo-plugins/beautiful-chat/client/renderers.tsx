@@ -119,6 +119,8 @@ export function ReasoningRenderer({
   const streaming = data.phase === "streaming";
   // The host owns the reveal cadence, so streamed reasoning animates the same
   // way it does in the native timeline instead of appearing in whole blocks.
+  // StreamedText would pace it too, but it renders the text itself, and the
+  // card needs the revealed string to split it into steps and code blocks.
   const revealed = useRevealedText(data.text || "", streaming ? "streaming" : "complete");
 
   const reasoningData: ReasoningTraceData = useMemo(() => {

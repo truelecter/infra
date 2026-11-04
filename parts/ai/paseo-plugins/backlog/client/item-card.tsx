@@ -1,14 +1,13 @@
-import type { PluginSurfaceProps } from "@getpaseo/plugin/client";
+import type { PluginScreenProps } from "@getpaseo/plugin/client";
 import { usePaseo } from "@getpaseo/plugin/client";
-import { Icon, TextInput } from "@getpaseo/plugin/client/react-native";
+import { Icon, Markdown, TextInput } from "@getpaseo/plugin/client/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { STATUSES, type Changes, type Item } from "../shared/backlog.ts";
-import { formatWhen, STATUS_LABEL, statusColor } from "./format.ts";
-import { Markdown, MONOSPACE } from "./markdown-view.tsx";
+import { formatWhen, MONOSPACE, STATUS_LABEL, statusColor } from "./format.ts";
 
-type HostProps = Pick<PluginSurfaceProps, "theme" | "layout" | "navigation">;
+type HostProps = Pick<PluginScreenProps, "theme" | "layout" | "navigation">;
 
 function useStyles({ theme, layout }: HostProps) {
   return useMemo(
@@ -211,7 +210,7 @@ export function ItemCard(
               {open ? "Hide description" : "Show description"}
             </Text>
           </Pressable>
-          {open ? <Markdown source={item.description} theme={theme} /> : null}
+          {open ? <Markdown>{item.description}</Markdown> : null}
         </View>
       ) : null}
 

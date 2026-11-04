@@ -1,6 +1,6 @@
-import type { PluginSurfaceProps } from "@getpaseo/plugin/client";
+import type { PluginScreenProps } from "@getpaseo/plugin/client";
 import { useRpc } from "@getpaseo/plugin/client";
-import { ScrollView, TextInput, useToast } from "@getpaseo/plugin/client/react-native";
+import { ScrollView, TextInput, useToast } from "@getpaseo/plugin/client/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -15,9 +15,8 @@ import {
   type Changes,
   type Status,
 } from "../shared/backlog.ts";
-import { STATUS_LABEL } from "./format.ts";
+import { MONOSPACE, STATUS_LABEL } from "./format.ts";
 import { ItemCard } from "./item-card.tsx";
-import { MONOSPACE } from "./markdown-view.tsx";
 
 const FILTERS = {
   active: { label: "Active", statuses: ["open", "waiting"] },
@@ -28,7 +27,7 @@ type Filter = keyof typeof FILTERS;
 
 const ITEMS_KEY = ["items"];
 
-export function BacklogScreen(props: PluginSurfaceProps) {
+export function BacklogScreen(props: PluginScreenProps) {
   const { theme, layout } = props;
   const toast = useToast();
   const queryClient = useQueryClient();
