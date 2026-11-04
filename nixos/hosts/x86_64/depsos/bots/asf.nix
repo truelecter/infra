@@ -4,7 +4,7 @@
   ...
 }: let
   asfPort = "1242";
-  domainName = "asf.tenma.moe";
+  domainName = "asf.tlctr.me";
 in {
   services.nginx = {
     enable = true;
