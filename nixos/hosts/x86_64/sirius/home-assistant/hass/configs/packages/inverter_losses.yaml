@@ -1,15 +1,18 @@
-# Inverter losses from AC-side readings.
+# Inverter losses (self-consumption plus conversion) from the energy balance.
 #
 # Solarman's "Today Losses", "Total Losses" and "Power losses" add up the
 # inverter's battery DC readings, which over-read charging (about -70 W while
 # the battery sits full on grid, against about -40 W on the AC side). The
 # balance goes negative, `uint: enforce` clamps it to 0, and the 0.0/0.1 flaps
 # make the recorder start a new cycle each time and inflate the statistics.
-# Keep them out of the recorder and compute losses only where the readings hold:
-#   - grid on, battery full (idle): grid + PV - load
-#   - grid off: battery + PV - load (battery DC matches the SOC drop here)
-# While the battery charges on grid the sensor is unavailable and the energy
-# sensors skip that time.
+# Keep them out of the recorder and compute losses here instead:
+#   - grid on, battery full and idle (|battery| < 150 W): grid + PV - load,
+#     the battery reading is taken as 0
+#   - grid on otherwise: grid + PV + battery - load
+#   - grid off: battery + PV - load
+# The battery DC reading drifts by tens of watts, so on battery the result can
+# go negative; it is clamped to 0 and the total is a lower bound. Samples taken
+# while the grid drops (grid state off, grid power not yet 0) are skipped.
 recorder:
   exclude:
     entities:
@@ -25,20 +28,23 @@ template:
         device_class: power
         state_class: measurement
         availability: >
-          {% set grid_off = is_state('binary_sensor.inverter_grid', 'off') %}
           {{ is_state('binary_sensor.inverter_grid', ['on', 'off'])
              and states('sensor.inverter_load_power') | is_number
-             and (states('sensor.inverter_battery_power') | is_number if grid_off
-                  else states('sensor.inverter_grid_power') | is_number
-                       and states('sensor.inverter_battery') | float(0) >= 100) }}
+             and states('sensor.inverter_battery_power') | is_number
+             and states('sensor.inverter_grid_power') | is_number
+             and (is_state('binary_sensor.inverter_grid', 'on')
+                  or states('sensor.inverter_grid_power') | float == 0) }}
         state: >
           {% set pv = states('sensor.inverter_pv_power') | float(0) %}
           {% set load = states('sensor.inverter_load_power') | float %}
-          {% if is_state('binary_sensor.inverter_grid', 'off') %}
-            {{ (states('sensor.inverter_battery_power') | float + pv - load) | round(0) }}
-          {% else %}
-            {{ (states('sensor.inverter_grid_power') | float + pv - load) | round(0) }}
+          {% set battery = states('sensor.inverter_battery_power') | float %}
+          {% set grid = states('sensor.inverter_grid_power') | float %}
+          {% if is_state('binary_sensor.inverter_grid', 'on')
+                and states('sensor.inverter_battery') | float(0) >= 100
+                and battery | abs < 150 %}
+            {% set battery = 0 %}
           {% endif %}
+          {{ [grid + pv + battery - load, 0] | max | round(0) }}
 
 sensor:
   - platform: integration
