@@ -12,13 +12,21 @@ export const test = base.extend<
   { client: Client }
 >({
   // Every page is kept off the user's own daemon (the default port 6767), as Paseo's suite does,
-  // and a failing test gets the browser console attached.
+  // starts past Paseo's first-run setup (it opens over the app while the daemon has no projects;
+  // Paseo's suite marks it done the same way), and a failing test gets the browser console attached.
   guard: [
     async ({ page }, provide, testInfo) => {
       await page.route(/:6767\b/, (route) => route.abort());
       await page.routeWebSocket(/:6767\b/, (ws) =>
         ws.close({ code: 1008, reason: "blocked in e2e" }),
       );
+      await page.addInitScript(() => {
+        if (!localStorage.getItem("@paseo:onboarding"))
+          localStorage.setItem(
+            "@paseo:onboarding",
+            JSON.stringify({ completedAt: new Date(0).toISOString() }),
+          );
+      });
       const lines: string[] = [];
       page.on("console", (message) =>
         lines.push(`[${message.type()}] ${message.text()}`),

@@ -11,11 +11,14 @@ test("Catppuccin Mocha is offered under Settings > Appearance and paints the app
   await openApp(page, "/settings/appearance");
   await expect(page.getByTestId("settings-sidebar")).toBeVisible();
 
-  await page.getByLabel(/^Theme: /).click();
-  await page.getByText("Catppuccin Mocha", { exact: true }).click();
-  await expect(
-    page.getByLabel("Theme: Catppuccin Mocha", { exact: true }),
-  ).toBeVisible();
+  // Paseo lists themes as a radio group, plugin themes once the plugin has loaded.
+  const mocha = page.getByRole("radio", {
+    name: "Catppuccin Mocha",
+    exact: true,
+  });
+  await expect(mocha).toBeVisible({ timeout: 30_000 });
+  await mocha.click();
+  await expect(mocha).toBeChecked();
   await expect(page.getByText("Theme", { exact: true }).first()).toHaveCSS(
     "color",
     MOCHA_SUBTEXT0,
