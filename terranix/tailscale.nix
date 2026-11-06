@@ -10,7 +10,7 @@
 
   tagged = lib.filterAttrs (_: h: h.tailscale.tags != []) catalog.hosts;
 
-  # The node ID, also the import ID of tailscale_device_tags.
+  # The node ID of a host's device.
   nodeId = name: "\${data.tailscale_device.${name}.node_id}";
 
   policy = {
@@ -88,21 +88,4 @@ in {
       })
       tagged;
   };
-
-  import =
-    [
-      {
-        to = "tailscale_acl.policy";
-        id = "acl";
-      }
-      {
-        to = "tailscale_dns_preferences.tailnet";
-        id = "dns_preferences";
-      }
-    ]
-    ++ lib.mapAttrsToList (name: _: {
-      to = "tailscale_device_tags.${name}";
-      id = nodeId name;
-    })
-    tagged;
 }
