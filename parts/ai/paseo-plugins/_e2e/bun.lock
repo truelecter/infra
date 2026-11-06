@@ -5,17 +5,17 @@
     "": {
       "name": "paseo-plugins-e2e",
       "dependencies": {
-        "@getpaseo/client": "0.15.0",
+        "@getpaseo/client": "0.15.2",
         "ws": "8.22.0",
       },
     },
   },
   "packages": {
-    "@getpaseo/client": ["@getpaseo/client@0.15.0", "", { "dependencies": { "@getpaseo/protocol": "0.15.0", "@getpaseo/relay": "0.15.0", "ws": "^8.20.0", "zod": "^4.4.3" } }, "sha512-DlX/ByuoSZ8xZIsn0DU4c2WinYEni07+5/Qr3F7XhSTU3KSCLedUGy9wSHm841P+MdyC0Jqtn91FdhdOnSQhFw=="],
+    "@getpaseo/client": ["@getpaseo/client@0.15.2", "", { "dependencies": { "@getpaseo/protocol": "0.15.2", "@getpaseo/relay": "0.15.2", "ws": "^8.20.0", "zod": "^4.4.3" } }, "sha512-TBH5neBygpl7x5YQPSDlDed29No4qojWcIG+upI/J8IQfzeuhjfzaGYJ8W6zmjflor9cQd2veexlUy21/r7PEw=="],
 
-    "@getpaseo/protocol": ["@getpaseo/protocol@0.15.0", "", { "dependencies": { "semver": "^7.8.5", "zod": "^4.4.3" } }, "sha512-UqB9eB6h1X5AXeeTdTQsS0CmfG31KgTdxbw5Wrp9nYc7kk0uBqRbVgGx7uqVAzJYjdcDGUiYpQv+649T2POA5w=="],
+    "@getpaseo/protocol": ["@getpaseo/protocol@0.15.2", "", { "dependencies": { "semver": "^7.8.5", "zod": "^4.4.3" } }, "sha512-+OaRl9s8SMVIYPhHnck11jUM0pXnvuyCNvtd6g2p2uD/hieB5PtUq3BX7gmPFSZakvmUupUvtmtpGN+N7WhaRw=="],
 
-    "@getpaseo/relay": ["@getpaseo/relay@0.15.0", "", { "dependencies": { "@noble/ciphers": "^2.4.0", "@noble/curves": "^2.4.0", "@noble/hashes": "^2.4.0", "base64-js": "^1.5.1", "tweetnacl": "^1.0.3", "ws": "^8.14.2" } }, "sha512-VJJ6au8Jjw+U5/PHGEFlr+oj4yBxhCnTXh6zIFaz1MJnYW0gO/II0EaP3A8r5eM+iHRaiEuPRotKDht5sFXeBw=="],
+    "@getpaseo/relay": ["@getpaseo/relay@0.15.2", "", { "dependencies": { "@noble/ciphers": "^2.4.0", "@noble/curves": "^2.4.0", "@noble/hashes": "^2.4.0", "base64-js": "^1.5.1", "tweetnacl": "^1.0.3", "ws": "^8.14.2" } }, "sha512-IJVMrhlc5Tnt08XOwdr1NRCdngQT7MswnCUMLF865ofu9KU5mseeINayYextZcA+NCwDC1M5kOaFZbTwDD+3hw=="],
 
     "@noble/ciphers": ["@noble/ciphers@2.4.0", "", {}, "sha512-AnjFn0Jv92laAkvMrghlFZq4qQCIN/4DxFV/eooqtC2YTjB7kBeLMS2T9KJX4Dn+ZVXLOwK0lSgqDtx9gvxtiw=="],
 
