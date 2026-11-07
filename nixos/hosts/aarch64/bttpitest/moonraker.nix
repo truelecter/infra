@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  catalog,
+  ...
+}: let
   klipperCfg = config.services.klipper;
 in {
   services.moonraker = {
@@ -32,7 +36,7 @@ in {
         ];
 
         trusted_clients = [
-          "100.0.0.0/8"
+          catalog.networks.tailscale.cidr
           "10.0.0.0/8"
           "127.0.0.0/8"
           "169.254.0.0/16"

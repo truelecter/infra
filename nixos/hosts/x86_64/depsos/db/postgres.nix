@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  catalog,
+  ...
+}: {
   i18n.supportedLocales = [
     "uk_UA.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
@@ -49,7 +53,7 @@
       # Containers on the default podman network: only the pandora bot, with a password
       host cqdata pandora 10.88.0.0/16 scram-sha-256
       host all all 10.88.0.0/16 reject
-      host all all 100.0.0.0/8 trust
+      host all all ${catalog.networks.tailscale.cidr} trust
       host all all 10.0.0.0/8 trust
     '';
   };

@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  catalog,
+  ...
+}: {
   i18n.supportedLocales = [
     "uk_UA.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
@@ -34,7 +38,7 @@
     authentication = pkgs.lib.mkOverride 10 ''
       local all all trust
       host all all 127.0.0.1/32 trust
-      host all all 100.0.0.0/8 trust
+      host all all ${catalog.networks.tailscale.cidr} trust
       host all all 10.0.0.0/8 trust
     '';
   };
