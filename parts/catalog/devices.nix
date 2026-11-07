@@ -35,5 +35,10 @@
         dhcp.nameservers = [config.catalog.hosts.sirius.net.x290.ip];
       };
     };
+
+    pikvm = {
+      description = "PiKVM";
+      net.tailscale.ip = "100.125.87.118";
+    };
   };
 }

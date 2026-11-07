@@ -1,6 +1,6 @@
 # Tailscale policy file, MagicDNS and device tags. tailscale_acl replaces the
-# whole policy file, rendered to JSON, so comments live here. Tailscale IPs
-# aren't committed: they come from the tailscale_device data source.
+# whole policy file, rendered to JSON, so comments live here. Addresses come
+# from the catalog; the tailscale_device data source only gives node IDs.
 {
   lib,
   catalog,
@@ -19,7 +19,7 @@
       (lib.unique (["tag:ci"] ++ lib.concatMap (h: h.tailscale.tags) (lib.attrValues catalog.hosts)))
       (_: []);
 
-    hosts.squadbook = "\${data.tailscale_device.squadbook.addresses[0]}";
+    hosts.squadbook = catalog.hosts.squadbook.net.tailscale.ip;
 
     grants = [
       # Members: full access, MagicDNS host names work.
@@ -73,8 +73,7 @@ in {
   terraform.required_providers.tailscale.source = "tailscale/tailscale";
 
   data.tailscale_device =
-    lib.genAttrs (["squadbook"] ++ lib.attrNames tagged)
-    (name: {name = "${name}.${domain}";});
+    lib.mapAttrs (name: _: {name = "${name}.${domain}";}) tagged;
 
   resource = {
     tailscale_acl.policy.acl = builtins.toJSON policy;
