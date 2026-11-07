@@ -2,10 +2,11 @@
   lib,
   config,
   inputs,
+  catalog,
   ...
 }: let
   web-container-port = "8911";
-  domainName = "data.fenrir.moe";
+  domainName = catalog.services.pandora.fqdn;
 in {
   imports = [./redeploy.nix];
 
@@ -60,7 +61,7 @@ in {
         PANDORA_DB_HOST = "host.containers.internal";
         PANDORA_DB_SCHEMA = "public";
 
-        PANDORA_URL_IMAGES_PREFIX = "https://data.fenrir.moe/";
+        PANDORA_URL_IMAGES_PREFIX = "https://${domainName}/";
         PANDORA_OVERRIDES_PATH = "/opt/pandora-overrides/";
         PANDORA_LOCAL_IMAGES_PREFIX = "/cq-data/";
         PANDORA_CQ_NORMALIZED_DATA_PATH = "/cq-data/information";

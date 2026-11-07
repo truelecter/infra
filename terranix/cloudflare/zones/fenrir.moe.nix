@@ -8,13 +8,6 @@
       ttl = 1;
       proxied = true;
     };
-    a_data = {
-      type = "A";
-      name = "data.fenrir.moe";
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
     a_webhooks = {
       type = "A";
       name = "webhooks.fenrir.moe";

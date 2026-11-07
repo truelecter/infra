@@ -3,6 +3,7 @@
   profiles,
   config,
   nixpkgs,
+  catalog,
   ...
 }: let
   linuxSystem = "aarch64-linux";
@@ -22,7 +23,7 @@
 
           darwin-builder = {
             workingDirectory = "/var/lib/darwin-builder";
-            hostPort = 3022;
+            hostPort = catalog.hosts.tl-mm4.linuxBuilder.sshPort;
             diskSize = 100 * 1024;
             memorySize = 12 * 1024;
           };

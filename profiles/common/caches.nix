@@ -1,7 +1,7 @@
-{
+{catalog, ...}: {
   nix.settings = {
     substituters = [
-      "https://nix-proxy.tlctr.me"
+      "https://${catalog.services.nix-proxy.fqdn}"
       # "https://cache.nixos.org/" # already included in nix module
     ];
     trusted-public-keys = [

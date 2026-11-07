@@ -2,10 +2,11 @@
   config,
   inputs,
   pkgs,
+  catalog,
   ...
 }: let
   atticPort = "8502";
-  domainName = "nix-cache.tlctr.me";
+  domainName = catalog.services.nix-cache.fqdn;
   storagePath = "/cache/attic";
 in {
   services = {

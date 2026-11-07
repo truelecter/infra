@@ -5,7 +5,7 @@
   catalog,
   ...
 }: let
-  kanidmDomain = catalog.domains.sso;
+  kanidmDomain = catalog.services.kanidm.fqdn;
   # Base URL of a catalog service.
   url = service: "https://${catalog.services.${service}.fqdn}";
   kanidmPort = 8300;

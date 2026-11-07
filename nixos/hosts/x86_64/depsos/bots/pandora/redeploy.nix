@@ -6,6 +6,7 @@
   pkgs,
   config,
   inputs,
+  catalog,
   ...
 }: let
   hookId = "pandora-redeploy";
@@ -74,7 +75,7 @@ in {
     '';
   };
 
-  services.nginx.virtualHosts."data.fenrir.moe".locations."= /_hooks/${hookId}" = {
+  services.nginx.virtualHosts.${catalog.services.pandora.fqdn}.locations."= /_hooks/${hookId}" = {
     proxyPass = "http://127.0.0.1:${toString port}/hooks/${hookId}";
     extraConfig = ''
       limit_except POST { deny all; }

@@ -7,7 +7,7 @@
 }: let
   mediaBaseDomain = catalog.domains.media;
   portal = catalog.services.arr.fqdn;
-  kanidmDomain = catalog.domains.sso;
+  kanidmDomain = catalog.services.kanidm.fqdn;
 in {
   services.nginx.virtualHosts.${portal} = {
     forceSSL = true;

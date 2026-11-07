@@ -2,10 +2,12 @@
   config,
   lib,
   ...
-}: {
-  # Media services on the NAS. Their DNS records point at sirius, whose wake
-  # proxy forwards to the NAS (see sirius/nas-wake.nix).
+}: let
+  inherit (config.catalog) domains;
+in {
   catalog.services =
+    # Media services on the NAS. Their DNS records point at sirius, whose wake
+    # proxy forwards to the NAS (see sirius/nas-wake.nix).
     lib.genAttrs [
       # oauth2-proxy portal for the *arr services, see nas/media-server/arr-oauth.nix.
       "arr"
@@ -19,6 +21,24 @@
     ] (_: {
       host = "nas";
       via = "sirius";
-      domain = config.catalog.domains.media;
-    });
+      domain = domains.media;
+    })
+    # Public services on depsos.
+    // lib.mapAttrs (_: s:
+      {
+        host = "depsos";
+        public = true;
+        domain = domains.main;
+      }
+      // s) {
+      asf = {};
+      kanidm.subdomain = "auth";
+      nix-cache = {};
+      # ncro, a caching proxy in front of cache.nixos.org and others.
+      nix-proxy = {};
+      pandora = {
+        domain = domains.pandora;
+        subdomain = "data";
+      };
+    };
 }

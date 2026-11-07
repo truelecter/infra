@@ -11,22 +11,37 @@
 
   nodes = catalog.hosts // catalog.devices;
 
-  # At the home LAN address of the host or device the service is reached through.
+  # At the public IP of the host or device the service is reached through, or
+  # at its home LAN address.
   serviceRecords = zone:
     lib.mapAttrs' (_: s:
-      lib.nameValuePair "a_${lib.replaceStrings ["-"] ["_"] s.subdomain}" {
-        type = "A";
-        name = s.fqdn;
-        content = nodes.${s.via}.net.x290.ip;
-        ttl = 1;
-      })
+      lib.nameValuePair "a_${lib.replaceStrings ["-"] ["_"] s.subdomain}" ({
+          type = "A";
+          name = s.fqdn;
+          ttl = 1;
+        }
+        // (
+          if s.public
+          then {
+            content = publicIp s.via;
+            proxied = true;
+          }
+          else {content = nodes.${s.via}.net.x290.ip;}
+        )))
     (lib.filterAttrs (_: s: s.domain == zone) catalog.services);
 
   zones = lib.mapAttrs' (file: _: let
     zone = lib.removeSuffix ".nix" file;
     z = import ./zones/${file} {inherit catalog publicIp;};
+    services = serviceRecords zone;
+    clashes = lib.attrNames (lib.intersectAttrs services z.records);
   in
-    lib.nameValuePair zone (z // {records = serviceRecords zone // z.records;}))
+    lib.nameValuePair zone (z
+      // {
+        records =
+          lib.throwIf (clashes != []) "${file}: ${lib.concatStringsSep ", " clashes} also come from catalog.services"
+          (services // z.records);
+      }))
   (builtins.readDir ./zones);
 
   records = lib.concatLists (lib.mapAttrsToList (zone: z:

@@ -1,10 +1,11 @@
 {
   config,
   inputs,
+  catalog,
   ...
 }: let
   ncroPort = "8501";
-  domainName = "nix-proxy.tlctr.me";
+  domainName = catalog.services.nix-proxy.fqdn;
   storagePath = "/cache/ncro";
   cacheValidityDays = "60";
   ncroUpstream = "http://${config.services.ncro.settings.server.listen}";

@@ -4,14 +4,9 @@
   ...
 }: let
   mediaBaseDomain = catalog.domains.media;
-  acmeMail = "andrew.panassiouk@gmail.com";
 in {
-  security.acme.certs = {
-    "${mediaBaseDomain}" = {
-      email = acmeMail;
-      domain = "*.${mediaBaseDomain}";
-    };
-  };
+  # Email from https-certificate-issuer.
+  security.acme.certs.${mediaBaseDomain}.domain = "*.${mediaBaseDomain}";
 
   nixflix = {
     jellyfin.network.localNetworkAddresses = lib.mkForce [];

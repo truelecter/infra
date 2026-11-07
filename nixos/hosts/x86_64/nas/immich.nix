@@ -7,7 +7,7 @@
   ...
 }: let
   domain = catalog.services.immich.fqdn;
-  kanidmDomain = catalog.domains.sso;
+  kanidmDomain = catalog.services.kanidm.fqdn;
   mediaLocation = "/mnt/photos";
 in {
   fileSystems.${mediaLocation} = {

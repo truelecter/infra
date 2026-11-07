@@ -38,7 +38,7 @@
   providers = {
     slug = "kanidm";
     name = "Kanidm";
-    issuerUrl = "https://${catalog.domains.sso}/oauth2/openid/seerr/.well-known/openid-configuration";
+    issuerUrl = "https://${catalog.services.kanidm.fqdn}/oauth2/openid/seerr/.well-known/openid-configuration";
     clientId = "seerr";
     # clientSecret = secret "kanidm-oauth2-seerr";
     logo = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kanidm.png";

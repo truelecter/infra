@@ -34,11 +34,11 @@
         dst = ["*"];
         ip = ["*"];
       }
-      # GitHub Actions: SSH to the builders only (3022 is mm4-builder).
+      # GitHub Actions: SSH to the builders and their Linux builder VMs only.
       {
         src = ["tag:ci"];
         dst = ["tag:gha-target"];
-        ip = ["22" "3022"];
+        ip = ["22"] ++ lib.unique (lib.concatMap (h: lib.optional (h.linuxBuilder.sshPort != null) (toString h.linuxBuilder.sshPort)) (lib.attrValues tagged));
       }
       # Shared with waallinger@gmail.com: LiteLLM only.
       {

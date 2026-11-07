@@ -1,38 +1,6 @@
-{
-  catalog,
-  publicIp,
-  ...
-}: {
+{...}: {
   id = "d54af5a47c5bbe46b2dadab37391501d";
   records = {
-    a_asf = {
-      type = "A";
-      name = "asf.tlctr.me";
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
-    a_auth = {
-      type = "A";
-      name = catalog.domains.sso;
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
-    a_nix_cache = {
-      type = "A";
-      name = "nix-cache.tlctr.me";
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
-    a_nix_proxy = {
-      type = "A";
-      name = "nix-proxy.tlctr.me";
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
     mx_apex_10 = {
       type = "MX";
       name = "tlctr.me";

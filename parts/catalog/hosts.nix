@@ -74,6 +74,8 @@
         mac = "d0:11:e5:83:d8:9e";
       };
       tailscale.tags = ["tag:gha-target"];
+      # mm4-builder, see tl-mm4/aarch-builder.nix.
+      linuxBuilder.sshPort = 3022;
     };
   };
 }

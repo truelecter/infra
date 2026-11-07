@@ -138,7 +138,7 @@ in {
 
       config = {
         OidConfigs = let
-          kanidmDomain = catalog.domains.sso;
+          kanidmDomain = catalog.services.kanidm.fqdn;
         in {
           kanidm = {
             SchemeOverride = "https";

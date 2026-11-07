@@ -115,6 +115,12 @@
           default = [];
           description = "Tailscale ACL tags of the host's device, applied by terranix.";
         };
+
+        linuxBuilder.sshPort = mkOption {
+          type = types.nullOr types.port;
+          default = null;
+          description = "Port on this host forwarded to the SSH of its Linux builder VM.";
+        };
       };
   });
 
@@ -136,6 +142,12 @@
         default = config.host;
         defaultText = "host";
         description = "Host or device the service's DNS record points at, such as a proxy in front of `host`.";
+      };
+
+      public = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Reached from the internet: the DNS record points at the public IP of `via` (secrets/terraform.yaml) through the Cloudflare proxy, not at its x290 address.";
       };
 
       domain = mkOption {

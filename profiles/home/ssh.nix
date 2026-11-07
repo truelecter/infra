@@ -11,7 +11,7 @@ in {
           ForwardAgent yes
 
         Host depsos
-          Port 2265
+          Port ${toString flake.catalog.hosts.depsos.ssh.port}
       '';
     };
   };

@@ -1,10 +1,11 @@
 {
   config,
   inputs,
+  catalog,
   ...
 }: let
   asfPort = "1242";
-  domainName = "asf.tlctr.me";
+  domainName = catalog.services.asf.fqdn;
 in {
   services.nginx = {
     enable = true;

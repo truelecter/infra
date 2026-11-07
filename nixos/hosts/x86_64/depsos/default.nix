@@ -1,6 +1,7 @@
 {
   suites,
   profiles,
+  catalog,
   ...
 }: {
   imports =
@@ -59,7 +60,7 @@
   '';
 
   systemd.services.NetworkManager-wait-online.enable = false;
-  services.openssh.ports = [22 2265];
+  services.openssh.ports = [22 catalog.hosts.depsos.ssh.port];
 
   system.stateVersion = "22.05";
 }

@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  catalog,
   ...
 }: let
   builder-username = "remote-builder";
@@ -28,7 +29,7 @@ in {
       User ${builder-username}
       Hostname tl-mm4
       HostKeyAlias mm4-builder
-      Port 3022
+      Port ${toString catalog.hosts.tl-mm4.linuxBuilder.sshPort}
       IdentityFile ${config.sops.secrets.remote-builder-pk.path}
   '';
 
