@@ -1,18 +1,19 @@
 # Inverter losses (self-consumption plus conversion) from the energy balance.
 #
 # Solarman's "Today Losses", "Total Losses" and "Power losses" add up the
-# inverter's battery DC readings, which over-read charging (about -70 W while
-# the battery sits full on grid, against about -40 W on the AC side). The
-# balance goes negative, `uint: enforce` clamps it to 0, and the 0.0/0.1 flaps
-# make the recorder start a new cycle each time and inflate the statistics.
-# Keep them out of the recorder and compute losses here instead:
-#   - grid on, battery full and idle (|battery| < 150 W): grid + PV - load,
-#     the battery reading is taken as 0
-#   - grid on otherwise: grid + PV + battery - load
-#   - grid off: battery + PV - load
-# The battery DC reading drifts by tens of watts, so on battery the result can
-# go negative; it is clamped to 0 and the total is a lower bound. Samples taken
-# while the grid drops (grid state off, grid power not yet 0) are skipped.
+# inverter's battery DC readings, which sit a few tens of watts towards
+# charging: about -55 W while the battery is full and idle on grid, where the
+# AC side shows only about 40 W going into the inverter. The balance goes
+# negative, `uint: enforce` clamps it to 0, and the 0.0/0.1 flaps make the
+# recorder start a new cycle each time and inflate the statistics. Keep them
+# out of the recorder and compute losses here instead:
+#   grid + PV + (battery + offset) - load
+# `offset` cancels that battery reading bias. Re-measure it after changing
+# the battery bank: the mean battery power while full and idle on grid,
+# negated (55 W with three packs, 2026-11; about 75 W with two). With it,
+# idle, discharging and charging all give 40-60 W at low power.
+# The result is clamped to 0, and samples taken while the grid drops (grid
+# state off, grid power not yet 0) are skipped.
 recorder:
   exclude:
     entities:
@@ -35,15 +36,11 @@ template:
              and (is_state('binary_sensor.inverter_grid', 'on')
                   or states('sensor.inverter_grid_power') | float == 0) }}
         state: >
+          {% set offset = 55 %}
           {% set pv = states('sensor.inverter_pv_power') | float(0) %}
           {% set load = states('sensor.inverter_load_power') | float %}
-          {% set battery = states('sensor.inverter_battery_power') | float %}
+          {% set battery = states('sensor.inverter_battery_power') | float + offset %}
           {% set grid = states('sensor.inverter_grid_power') | float %}
-          {% if is_state('binary_sensor.inverter_grid', 'on')
-                and states('sensor.inverter_battery') | float(0) >= 100
-                and battery | abs < 150 %}
-            {% set battery = 0 %}
-          {% endif %}
           {{ [grid + pv + battery - load, 0] | max | round(0) }}
 
 sensor:
