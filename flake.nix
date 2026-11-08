@@ -251,14 +251,15 @@
       };
     };
 
-    # Fork of getpaseo/paseo: an upstream release tag plus local-only OMP
-    # patches (custom messages as replies, discoverable host tools) and open
-    # upstream PRs, listed in FORK.md on the `local` branch; see
-    # parts/ai/AGENTS.md.
-    paseo = {
-      url = "github:truelecter/paseo/local";
+    # OMP, its extensions and GSD, Paseo and its plugins, SearXNG: overlay and
+    # Home Manager modules. Its own lock pins Paseo; the rest follows ours.
+    ai = {
+      url = "github:truelecter/ai.nix";
       inputs = {
-        nixpkgs.follows = "latest";
+        nixpkgs.follows = "nixpkgs";
+        latest.follows = "latest";
+        flake-parts.follows = "flake-parts";
+        llm-agents.follows = "llm-agents";
       };
     };
 
@@ -321,7 +322,6 @@
         imports = [
           inputs.flake-parts.flakeModules.modules
 
-          ./parts/ai
           ./parts/ci.nix
           ./parts/nixpkgs.nix
           ./parts/klipper

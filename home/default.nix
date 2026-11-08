@@ -50,7 +50,7 @@
     server-dev = suites.develop ++ [inputs.nixos-vscode-server.homeModules.default];
   });
 
-  modules = self.homeModules;
+  modules = self.homeModules // inputs.ai.homeModules;
   modulesImportables = lib.attrValues modules;
 
   mkUser = system: username: userModule: let

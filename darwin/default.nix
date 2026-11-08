@@ -76,7 +76,7 @@
                 overlays = [
                   self.overlays.latest-packages
                   self.overlays.common-external
-                  self.overlays.ai
+                  inputs.ai.overlays.default
                 ];
 
                 config.allowUnfree = true;

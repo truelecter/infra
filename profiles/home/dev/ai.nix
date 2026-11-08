@@ -180,7 +180,7 @@ in {
     agents = ./_files/omp/agents;
   };
 
-  # Paseo daemon settings merged into ~/.paseo/config.json, and its plugins (parts/ai/paseo-plugins).
+  # Paseo daemon settings merged into ~/.paseo/config.json, and its plugins (from the ai input).
   # `daemon.hostnames` is left to the tailscale-listener plugin, which writes it. The model for
   # title generation (`agents.metadataGeneration`) is per user, next to the user's OMP models.
   programs.paseo = {

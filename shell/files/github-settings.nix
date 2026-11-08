@@ -26,7 +26,6 @@
               contexts = [
                 "shells_aggregated"
                 "hosts_aggregated"
-                "paseo_e2e_aggregated"
               ];
             };
             enforce_admins = false;

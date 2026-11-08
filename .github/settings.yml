@@ -7,7 +7,6 @@ branches:
       contexts:
       - shells_aggregated
       - hosts_aggregated
-      - paseo_e2e_aggregated
       strict: true
     restrictions: null
 repository:

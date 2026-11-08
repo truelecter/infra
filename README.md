@@ -37,7 +37,6 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
     - **tl-mm4** - aarch64-darwin and aarch64-linux builder
 - `/home` - Home-manager configurations
 - `/parts` - flake-parts modules
-  - `/parts/ai` - AI agent tooling for Home-Manager
   - `/parts/klipper` - Klipper 3D printer related configurations
   - `/parts/raspberry-pi` - Raspberry Pi specific configurations
   - `/parts/rockchip` - Rockchip SoC configurations
@@ -47,6 +46,8 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/lib` - Helper functions and utilities
 - `/secrets` - Encrypted secrets (using sops-nix)
 - `/shell` - Development shell configurations
+
+AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`.
 
 ## Apply Configurations
 

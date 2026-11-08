@@ -1,5 +1,35 @@
 {
   "nodes": {
+    "ai": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "latest": [
+          "latest"
+        ],
+        "llm-agents": [
+          "llm-agents"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "paseo": "paseo"
+      },
+      "locked": {
+        "lastModified": 1794161002,
+        "narHash": "sha256-IOpiKdUbKB5/yDpPvf+n5GwqJVtKT1vpS9LzjrHWVGs=",
+        "owner": "truelecter",
+        "repo": "ai.nix",
+        "rev": "c6e23d524932518a2c980afcb20f1ed8496e3bcc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "truelecter",
+        "repo": "ai.nix",
+        "type": "github"
+      }
+    },
     "argononed": {
       "flake": false,
       "locked": {
@@ -848,6 +878,7 @@
     "paseo": {
       "inputs": {
         "nixpkgs": [
+          "ai",
           "latest"
         ]
       },
@@ -914,6 +945,7 @@
     },
     "root": {
       "inputs": {
+        "ai": "ai",
         "catppuccin": "catppuccin",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
@@ -948,7 +980,6 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nvfetcher": "nvfetcher",
-        "paseo": "paseo",
         "pyproject-build-systems": "pyproject-build-systems",
         "pyproject-nix": "pyproject-nix",
         "sops-nix": "sops-nix",

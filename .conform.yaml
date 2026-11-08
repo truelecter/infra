@@ -12,7 +12,6 @@ policies:
       - darwin
       - home
       - common
-      - ai
       - catppuccin
       - deploy-rs
       - klipper
