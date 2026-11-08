@@ -1,0 +1,283 @@
+# Entities for one Ritar pack, filled by ritar_pylon.h. Include with
+# vars: {n: <pack ADD switch number>}. Names are what ritar_pylon.h binds to.
+# Current sign follows the BMS: positive charging, negative discharging. The
+# BMS reports anything below 1.0 A per pack as 0.
+# Temperatures 1-4 look like cell sensors, 5 the MOSFETs (warmest) and 6 the
+# ambient sensor, going by the readings; Ritar does not document the order.
+sensor:
+  - {
+      platform: template,
+      name: "Pack ${n} current",
+      unit_of_measurement: A,
+      device_class: current,
+      state_class: measurement,
+      accuracy_decimals: 2,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} voltage",
+      unit_of_measurement: V,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 2,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} power",
+      unit_of_measurement: W,
+      device_class: power,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} remaining capacity",
+      unit_of_measurement: Ah,
+      state_class: measurement,
+      accuracy_decimals: 2,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} state of charge",
+      unit_of_measurement: "%",
+      device_class: battery,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cycles",
+      state_class: total_increasing,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell min",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell max",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell delta",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 01",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 02",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 03",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 04",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 05",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 06",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 07",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 08",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 09",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 10",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 11",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 12",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 13",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 14",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 15",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} cell 16",
+      unit_of_measurement: mV,
+      device_class: voltage,
+      state_class: measurement,
+      accuracy_decimals: 0,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 1",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 2",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 3",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 4",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 5",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
+  - {
+      platform: template,
+      name: "Pack ${n} temperature 6",
+      unit_of_measurement: "°C",
+      device_class: temperature,
+      state_class: measurement,
+      accuracy_decimals: 1,
+      update_interval: never,
+    }
