@@ -8,6 +8,7 @@
 // frames, it never writes to the bus.
 //
 // Entities are bound by name: "Pack <n> <field>", see ritar-pack.yaml.
+// Protocol notes and measurements: RITAR.md.
 #pragma once
 
 #include <cmath>

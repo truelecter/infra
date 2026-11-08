@@ -2,8 +2,8 @@
 # vars: {n: <pack ADD switch number>}. Names are what ritar_pylon.h binds to.
 # Current sign follows the BMS: positive charging, negative discharging. The
 # BMS reports anything below 1.0 A per pack as 0.
-# Temperatures 1-4 look like cell sensors, 5 the MOSFETs (warmest) and 6 the
-# ambient sensor, going by the readings; Ritar does not document the order.
+# Temperatures 1-4 are the cell sensors, 5 environment and 6 MOSFET in the
+# order Ritar's BMSTool decodes them (RITAR.md); in measured data 5 read warmest.
 sensor:
   - {
       platform: template,
