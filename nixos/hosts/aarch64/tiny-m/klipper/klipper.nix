@@ -7,27 +7,6 @@
   klipperCfg = config.services.klipper;
   moonrakerCfg = config.services.moonraker;
   gcodePath = "${moonrakerCfg.stateDir}/gcodes";
-  rpiFirmware =
-    (pkgs.klipper-firmware.override {
-      mcu = "rpi";
-      firmwareConfig = ./firmwares/klipper-rpi-4;
-    })
-    .overrideAttrs (_: {
-      patches = [
-        ./firmwares/rpi-fw.patch
-      ];
-
-      preBuild = ''
-        NIX_CFLAGS_COMPILE="-DNIXOS_GPIO_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/gpio.h\" $NIX_CFLAGS_COMPILE"
-        NIX_CFLAGS_COMPILE="-DNIXOS_SCHED_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/sched.h\" $NIX_CFLAGS_COMPILE"
-        NIX_CFLAGS_COMPILE="-DNIXOS_SCHED_TYPES_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/sched/types.h\" $NIX_CFLAGS_COMPILE"
-      '';
-
-      installPhase = ''
-        mkdir -p $out
-        cp -r out/klipper.elf $out
-      '';
-    });
 in {
   boot.kernelModules = ["gpiod"];
 
@@ -70,16 +49,14 @@ in {
       };
     };
 
-    host-mcu = {
-      enable = false;
-      firmware-package = rpiFirmware;
-    };
+    host-mcu.enable = false;
 
     firmwares = {
       ebb36 = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
+        katapultConfigFile = ./firmwares/katapult-ebb36;
         canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
@@ -87,19 +64,8 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-m5p;
+        katapultConfigFile = ./firmwares/katapult-m5p;
         canbusUuid = klipperCfg.settings.mcu.canbus_uuid;
-      };
-    };
-
-    katapult = {
-      ebb36 = {
-        enable = true;
-        configFile = ./firmwares/katapult-ebb36;
-      };
-
-      m5p = {
-        enable = true;
-        configFile = ./firmwares/katapult-m5p;
       };
     };
   };

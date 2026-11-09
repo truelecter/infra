@@ -7,27 +7,6 @@
   klipperCfg = config.services.klipper;
   moonrakerCfg = config.services.moonraker;
   gcodePath = "${moonrakerCfg.stateDir}/gcodes";
-  rpiFirmware =
-    (pkgs.klipper-firmware.override {
-      mcu = "rpi";
-      firmwareConfig = ./firmwares/klipper-rpi-4;
-    })
-    .overrideAttrs (_: {
-      patches = [
-        ./firmwares/rpi-fw.patch
-      ];
-
-      preBuild = ''
-        NIX_CFLAGS_COMPILE="-DNIXOS_GPIO_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/gpio.h\" $NIX_CFLAGS_COMPILE"
-        NIX_CFLAGS_COMPILE="-DNIXOS_SCHED_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/sched.h\" $NIX_CFLAGS_COMPILE"
-        NIX_CFLAGS_COMPILE="-DNIXOS_SCHED_TYPES_H_INCLUDE_PATH=\"${pkgs.linuxHeaders}/include/linux/sched/types.h\" $NIX_CFLAGS_COMPILE"
-      '';
-
-      installPhase = ''
-        mkdir -p $out
-        cp -r out/klipper.elf $out
-      '';
-    });
 in {
   boot.kernelModules = ["gpiod"];
 
@@ -80,16 +59,14 @@ in {
       };
     };
 
-    host-mcu = {
-      enable = false;
-      firmware-package = rpiFirmware;
-    };
+    host-mcu.enable = false;
 
     firmwares = {
       ebb36 = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
+        katapultConfigFile = ./firmwares/katapult-ebb36;
         canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
@@ -97,18 +74,21 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-manta-v2;
+        katapultConfigFile = ./firmwares/katapult-manta-v2;
         canbusUuid = klipperCfg.settings."mcu back".canbus_uuid;
       };
 
       buttons = {
         enable = true;
         configFile = ./firmwares/klipper-buttons;
+        katapultConfigFile = ./firmwares/katapult-buttons;
       };
 
       stealthmax = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-stealthmax;
+        katapultConfigFile = ./firmwares/katapult-stealthmax;
         canbusUuid = klipperCfg.settings."mcu SM".canbus_uuid;
       };
 
@@ -116,34 +96,8 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-octopus-pro;
+        katapultConfigFile = ./firmwares/katapult-octopus-pro;
         inherit (klipperCfg.settings.mcu) serial;
-      };
-    };
-
-    katapult = {
-      manta-v2 = {
-        enable = true;
-        configFile = ./firmwares/katapult-manta-v2;
-      };
-
-      ebb36 = {
-        enable = true;
-        configFile = ./firmwares/katapult-ebb36;
-      };
-
-      buttons = {
-        enable = true;
-        configFile = ./firmwares/katapult-buttons;
-      };
-
-      stealthmax = {
-        enable = true;
-        configFile = ./firmwares/katapult-stealthmax;
-      };
-
-      octopus = {
-        enable = true;
-        configFile = ./firmwares/katapult-octopus-pro;
       };
     };
   };
