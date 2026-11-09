@@ -74,13 +74,22 @@ in {
     firmwares = {
       ebb36 = {
         enable = true;
+        enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
+        section = "mcu toolhead";
+        mcu.canbus_uuid = "eb213ad58522";
       };
 
       m5p = {
         enable = true;
+        enableKlipperFlash = true;
         configFile = ./firmwares/klipper-m5p;
+        section = "mcu";
+        mcu.canbus_uuid = "4efea7048de3";
       };
+
+      # Runs Cartographer's own firmware.
+      cartographer.mcu.canbus_uuid = "1b2077216a55";
     };
 
     katapult = {

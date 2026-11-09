@@ -74,13 +74,23 @@ in {
     firmwares = {
       ebb36 = {
         enable = true;
+        enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
+        section = "mcu toolhead";
+        mcu.canbus_uuid = "13ddde1f7caf";
       };
 
       fly-super8-pro = {
         enable = true;
+        enableKlipperFlash = true;
         configFile = ./firmwares/klipper-fly-super8;
+        section = "mcu";
+        # mcu.canbus_uuid = "66ac0bbb51d2";
+        mcu.serial = "/dev/serial/by-id/usb-Klipper_stm32h723xx_07002E000F51323137343334-if00";
       };
+
+      # Runs Cartographer's own firmware.
+      cartographer.mcu.canbus_uuid = "4c28e68efedd";
     };
 
     katapult = {
