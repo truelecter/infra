@@ -5,11 +5,19 @@
     ++ suites.cm4
     ++ [
       ./hardware-configuration.nix
-      ./camera.nix
       ./klipper
       ./network.nix
-      # ./wifi.nix
     ];
+
+  printer = {
+    name = "Tiny-M";
+    wifi.cm4ExternalAntenna = true;
+  };
+
+  networking.wireless.networks."Xata290.5S" = {
+    pskRaw = "ext:WIFI_PASSWORD";
+    priority = 100;
+  };
 
   system.stateVersion = "24.11";
 

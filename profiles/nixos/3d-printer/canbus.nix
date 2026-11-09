@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   # services.udev.extraRules = ''
   #   SUBSYSTEM=="net", ACTION=="add|change", KERNEL=="can0", ATTR{tx_queue_len}="1024"
   # '';
@@ -27,7 +27,7 @@
         OriginalName = "can0";
       };
       linkConfig = {
-        TransmitQueueLength = 1024;
+        TransmitQueueLength = config.printer.canbus.txQueueLength;
       };
     };
   };

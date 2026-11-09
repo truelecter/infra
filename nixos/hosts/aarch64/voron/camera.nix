@@ -1,16 +1,4 @@
-{pkgs, ...}: {
-  environment.systemPackages = [
-    (
-      pkgs.v4l-utils.override
-      {
-        withGUI = false;
-      }
-    )
-    pkgs.camera-streamer
-  ];
-
-  users.groups.dma-heap = {};
-
+{
   services.camera-streamer.instances = {
     nozzle = {
       enable = false;
@@ -75,47 +63,6 @@
       nginx.enable = true;
     };
   };
-
-  services = {
-    udev.extraRules = ''
-      SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
-    '';
-
-    go2rtc = {
-      enable = false;
-      settings = {
-        streams = {
-          printer = "ffmpeg:device?video=/dev/v4l/by-id/usb-3DO_3DO_USB_CAMERA_V2_3DO-video-index0&input_format=mjpeg&video_size=1280x720#video=h264#hardware";
-        };
-      };
-    };
-
-    nginx = {
-      enable = true;
-      # upstreams = {
-      #   go2rtc-webrtc = {
-      #     servers."localhost:8555" = {};
-      #   };
-      # };
-      # virtualHosts = {
-      #   "localhost".locations."/camera/printer/" = {
-      #     proxyPass = "http://go2rtc-webrtc/printer";
-      #     proxyWebsockets = true;
-      #     extraConfig = ''
-      #       postpone_output 0;
-      #       proxy_buffering off;
-      #       proxy_ignore_headers X-Accel-Buffering;
-      #     '';
-      #   };
-      # };
-    };
-  };
-
-  # boot.kernelParams = [
-  #   "cma=256M"
-  # ];
-
-  boot.blacklistedKernelModules = ["snd-usb-audio"]; # Disable mic on cameras for some USB bandwidth
 
   hardware.raspberry-pi.configtxt.deviceTreeOverlays.pi4 = [
     {dwc2.dr_mode = "host";}

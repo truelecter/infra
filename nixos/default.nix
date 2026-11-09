@@ -25,6 +25,7 @@
       nixos.faster-linux
       nixos.minimize
       nixos.secrets.wifi
+      nixos."3d-printer"
       {imports = [inputs.klipper.nixosModules.default];}
     ];
 
