@@ -32,16 +32,31 @@
 // the rail; the bottom block and a bridge just above the hook stop it moving
 // into the box; the bar and arm hang on the deep flexure beams.
 //
+// 12 V -> 5 V buck converter (optional, `buck`): sits on a shelf that spans
+// the card guide tops above the HW-0519, between the ESP top-end block and
+// the HW-0519 top end, long axis along the rail. The PCB lies on foam tape in
+// a pocket with low locating rims (below the PCB top, clear of the pads), its
+// top side (trimmer) faces the front and stays reachable until the cover goes
+// on. The 12 V supply cable enters through a third U-slot in the top wall,
+// between the LINK-IN and VE.Direct slots, and is tied to its own anchor one
+// row above the other two (H grows by 5 mm for that row). Wiring: the supply
+// pair runs from its anchor between the LINK-IN and VE.Direct anchors, over
+// the HW-0519 top end, to the IN pads; the OUT pads (buck_out_side end) feed
+// two wires over the ESP top-end block, along the ESP long edge, to its 5V
+// and GND pins at the USB-C end.
+//
 // Print the base with its back face (clip side) on the bed and the cover with
 // its front face on the bed. No supports. PETG or ABS for the base (flexures).
 
 part = "assembly"; // "base" | "cover" | "assembly"
+buck = "dsn";      // "dsn" (DSN-mini-360) | "matek" (Matek Micro BEC 6-30V) | "none"
 
 $fn = 64;
 
 /* [Outer size] */
 W        = 27.0;  // outer width, along the rail
-H        = 68.0;  // outer height, vertical when mounted
+H        = buck == "none" ? 68.0 : 73.0;  // outer height, vertical when mounted
+                                          // (+5 with a converter: supply cable anchor row)
 wall     = 2.0;   // cover wall thickness
 front_t  = 2.0;   // cover front plate thickness
 plate_t  = 2.5;   // base plate thickness
@@ -76,6 +91,7 @@ ant_edge   = 4.7;   // gap from the antenna's right end to the PCB's right edge
                     // (component side facing you, USB-C end down)
 ant_d      = 3.0;   // keep-out depth from the far end edge
 ant_h      = 1.0;   // keep-out height above the PCB top
+ant_clr    = 2.3;   // notch clearance on each side of the antenna (x)
 
 /* [ESP far-end spring] */
 esp_spring_t    = 1.0;  // spring beam thickness: the groove floor, bridging the groove
@@ -102,6 +118,31 @@ zt_t       = 1.6;   // zip-tie thickness
 zt_room    = 2.0;   // zip-tie groove length beside each cable
 anchor_bar_h = 1.2; // cable rest bar height above the plate (HW-0519 slides over it)
 anchor_gap = 3.0;   // HW-0519 top edge to the cable anchor centre
+sup_d      = 4.0;   // 12 V supply cable diameter (round cable or a two-wire pair), measure
+sup_x      = 14.2;  // 12 V supply cable centre x, between LINK-IN and VE.Direct
+zt_rib     = 0.8;   // plate rib between the anchor row and the supply anchor groove
+
+/* [Buck converter 12 V -> 5 V, PCB long axis along x] */
+dsn_l      = 17.5;  // DSN-mini-360 (MP2307) PCB length
+dsn_w      = 11.2;  // DSN-mini-360 PCB width
+dsn_t      = 1.0;   // DSN-mini-360 PCB thickness
+dsn_h      = 4.0;   // tallest DSN-mini-360 component above its PCB (shielded inductor)
+dsn_pad    = 2.2;   // corner pad zone from each short end, kept free of rims (1.8 mm pads)
+matek_l    = 14.0;  // Matek Micro BEC 6-30V PCB length
+matek_w    = 10.0;  // Matek PCB width (the castellated pad edge)
+matek_t    = 1.0;   // Matek PCB thickness
+matek_h    = 3.0;   // tallest Matek component above its PCB
+matek_pad  = 1.5;   // castellated pad zone at the pad end, kept free of rims
+buck_out_side = -1; // -1: OUT pads at the left end (x-, ESP 5V/GND side), +1: right
+buck_clr   = 0.3;   // clearance around the PCB in the pocket
+buck_rim   = 1.2;   // locating rim width
+buck_rim_up = 0.8;  // rim height above the PCB underside (< PCB thickness, pads stay free)
+buck_tab_w = 2.0;   // DSN end stop tab width, between the two corner pads
+buck_tape  = 1.0;   // double-sided foam tape under the PCB
+buck_shelf_t = 1.5; // shelf thickness
+buck_hw_gap = 0.5;  // shelf underside above the HW-0519 components
+buck_esp_gap = 0.8; // ESP top-end block to the shelf (y)
+buck_wire  = 1.5;   // wire room above the converter, under the cover
 
 /* [Fasteners: M3 bolts into heat-set inserts] */
 bolt_d     = 3.4;   // M3 clearance hole
@@ -178,8 +219,8 @@ usb_z    = esp_z + esp_t + usb_cz;
 esp_px0  = cx - esp_w / 2 - clr;
 esp_px1  = cx + esp_w / 2 + clr;
 ant_off  = esp_w / 2 - ant_edge - ant_w / 2;  // antenna centre from the board centreline (+ = right)
-ant_x0   = cx + ant_off - ant_w / 2 - clr;  // antenna notch in the top-end jaws
-ant_x1   = cx + ant_off + ant_w / 2 + clr;
+ant_x0   = cx + ant_off - ant_w / 2 - ant_clr;  // antenna notch in the top-end jaws
+ant_x1   = cx + ant_off + ant_w / 2 + ant_clr;
 hw_gx    = cx - hw_w / 2 - clr;           // left card guide groove bottom (x)
 
 // boards, y
@@ -210,13 +251,17 @@ bump_y1  = etb_y0 + 2 * bump_h + esp_bump_top;
 // card guides, z
 hw_gz1   = hw_z + hw_t + hw_slot_clr; // groove top
 hw_gt    = hw_gz1 + 1.2;              // guide top
+hw_gi    = cx - hw_w / 2 + hw_grip;   // left card guide inner face (x)
 
 // cable anchors and the top screw beam
 ay       = hw_y1 + anchor_gap;
+bk       = buck != "none";
+ay2      = ay + zt_w + 0.4 + zt_rib;  // 12 V supply cable anchor, one row above
+sup_room = zt_t + 0.2;               // supply anchor groove beside the cable (tight between cables)
 cable_z  = plate_t + anchor_bar_h;    // cable underside
 tb_y1    = iy1 - fit;
 tb_y0    = tb_y1 - top_blk_d;
-tb_z0    = cable_z + max(link_d, ve_d) + 0.4;
+tb_z0    = cable_z + max(link_d, ve_d, bk ? sup_d : 0) + 0.4;
 tb_z1    = tb_z0 + ins_d + 2 * ins_wall;
 tb_bz    = (tb_z0 + tb_z1) / 2;       // top bolt axis
 
@@ -224,6 +269,29 @@ tb_bz    = (tb_z0 + tb_z1) / 2;       // top bolt axis
 z_ci     = max(esp_z + esp_t + esp_usb_h + 1.0, usb_z + usb_h / 2 + 0.3, tb_z1 + fit,
                esp_z + esp_clr + esp_t + ant_h + 0.5);
 z_co     = z_ci + front_t;
+
+// buck converter: shelf over the HW-0519 on posts standing on the card
+// guide tops; PCB centred on the shelf, long axis along x
+bk_m     = buck == "matek";
+bk_l     = bk_m ? matek_l : dsn_l;
+bk_w     = bk_m ? matek_w : dsn_w;
+bk_t     = bk_m ? matek_t : dsn_t;
+bk_h     = bk_m ? matek_h : dsn_h;
+bk_pad   = bk_m ? matek_pad : dsn_pad;
+bs_x0    = rx0 + top_ch;              // shelf and posts, x (post foot on the flat guide top)
+bs_x1    = W - bs_x0;
+bs_y0    = etb_y1 + buck_esp_gap;
+bs_y1    = bs_y0 + bk_w + 2 * (buck_clr + buck_rim);
+bs_z0    = hw_top_z + buck_hw_gap;
+bs_z1    = bs_z0 + buck_shelf_t;
+bk_x0    = cx - bk_l / 2;             // PCB outline
+bk_x1    = cx + bk_l / 2;
+bk_y0    = (bs_y0 + bs_y1 - bk_w) / 2;
+bk_y1    = bk_y0 + bk_w;
+bk_cy    = (bk_y0 + bk_y1) / 2;
+bk_z     = bs_z1 + buck_tape;         // PCB underside
+bk_rz    = bk_z + buck_rim_up;        // rim top
+bk_top   = bk_z + bk_t + bk_h;
 
 // bottom bolt
 bb_x     = fx1 - ins_d / 2 - ins_wall;
@@ -307,6 +375,26 @@ assert(cable_z < hw_z - 0.2, "HW-0519 cannot slide over the cable anchors");
 assert(corner_r > wall, "corner_r must exceed the cover wall");
 assert(in_ch < 2 * fit, "in_ch would touch the base features at the cover front");
 assert(usb_bridge < usb_w - 2 * usb_r, "usb_bridge wider than the USB-C opening");
+
+// buck converter and its supply cable entry
+assert(buck == "none" || buck == "dsn" || buck == "matek", "buck must be \"dsn\", \"matek\" or \"none\"");
+assert(!bk || bk_x0 - buck_clr - buck_rim >= bs_x0, "converter pocket wider than the shelf, increase W");
+assert(!bk || bs_y1 <= hw_y1 - 4.0, "converter shelf covers the HW-0519 top-end pads");
+assert(!bk || bs_y1 < ay - zt_w / 2 - 1.0, "converter shelf runs into the cable anchors");
+assert(!bk || bs_y0 >= etb_y1 + 0.5, "converter shelf runs into the ESP top-end block");
+assert(!bk || bs_z0 >= hw_top_z + 0.3, "converter shelf too close to the HW-0519 components");
+assert(!bk || bk_top + buck_wire <= z_ci, "no wire room between the converter and the cover");
+assert(!bk || (buck_rim_up < bk_t && buck_rim_up >= 0.3), "rims must stay below the converter PCB top");
+assert(!bk || bk_l - (bk_m ? 1 : 2) * bk_pad >= 3.0, "pad zones leave no room for the long-edge rims");
+assert(!bk || buck_tab_w <= bk_w - 5.0, "DSN end tabs too wide for the gap between the corner pads");
+assert(!bk || (sup_x - (sup_d + cable_clr) / 2) - (link_x + (link_d + cable_clr) / 2) >= 1.0,
+       "supply U-slot too close to the LINK-IN slot");
+assert(!bk || (ve_x - (ve_d + cable_clr) / 2) - (sup_x + (sup_d + cable_clr) / 2) >= 1.0,
+       "supply U-slot too close to the VE.Direct slot");
+assert(!bk || (sup_x - sup_d / 2 - zt_t >= link_x + link_d / 2 && sup_x + sup_d / 2 + zt_t <= ve_x - ve_d / 2),
+       "supply zip tie does not fit between the LINK-IN and VE.Direct cables");
+assert(!bk || ay2 + zt_w / 2 + 0.2 < tb_y0 - 0.2, "supply anchor groove runs into the top beam, increase H");
+assert(!bk || cable_z + sup_d + cable_clr / 2 < tb_bz - bolt_d / 2 - 1.0, "supply U-slot runs into the top bolt hole");
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -477,7 +565,7 @@ module hw_guides() {
     gz0 = hw_z;
     o   = rx0;                          // left guide; the right one is mirrored
     g   = hw_gx;
-    i   = cx - hw_w / 2 + hw_grip;
+    i   = hw_gi;
     y0  = hw_y0 - 1.0;
     for (side = [-1, 1]) mirror_cx(side) {
         difference() {
@@ -585,17 +673,17 @@ module esp_top_block() {
 
 // zip-tie anchor: groove in the plate under the cable, bridged by a bar the
 // cable rests on
-module anchor_groove(x, d) {
-    box([max(fx0, x - d / 2 - zt_room), ay - zt_w / 2 - 0.2, plate_t - zt_t - 0.2],
-        [min(fx1, x + d / 2 + zt_room), ay + zt_w / 2 + 0.2, plate_t + 1]);
+module anchor_groove(x, d, y = ay, room = zt_room) {
+    box([max(fx0, x - d / 2 - room), y - zt_w / 2 - 0.2, plate_t - zt_t - 0.2],
+        [min(fx1, x + d / 2 + room), y + zt_w / 2 + 0.2, plate_t + 1]);
 }
 
-module anchor_bar(x, d) {
+module anchor_bar(x, d, y = ay) {
     x0 = x - (d - 1) / 2;
     x1 = x + (d - 1) / 2;
     t  = plate_t + anchor_bar_h;
     c  = min(top_ch, anchor_bar_h / 2);  // rounded-off edges for the cable and zip tie
-    xz_profile(ay - zt_w / 2 - 1.2, ay + zt_w / 2 + 1.2, [
+    xz_profile(y - zt_w / 2 - 1.2, y + zt_w / 2 + 1.2, [
         [x0, plate_t - 0.01], [x1, plate_t - 0.01], [x1, t - c], [x1 - c, t], [x0 + c, t], [x0, t - c]]);
 }
 
@@ -619,6 +707,30 @@ module top_beam() {
     }
 }
 
+// Buck converter shelf: a plate bridging over the HW-0519 on two posts that
+// stand on the card guide tops (the HW-0519 still slides in underneath).
+// Pocket for the PCB on foam tape: rims along the long edges outside the pad
+// zones and end stops (DSN: a centre tab at each end, between the corner
+// pads; Matek: a full rim at the end without pads), all lower than the PCB
+// top, so the pads and the trimmer stay free.
+module buck_shelf() {
+    c  = buck_clr;
+    z1 = bs_z1 - 0.01;
+    for (side = [-1, 1]) mirror_cx(side) box([bs_x0, bs_y0, hw_gt - 0.01], [hw_gi, bs_y1, bs_z0 + 0.01]);
+    box([bs_x0, bs_y0, bs_z0], [bs_x1, bs_y1, bs_z1]);
+    pl = !bk_m || buck_out_side < 0 ? bk_pad : 0;   // pad zones at the left and right ends
+    pr = !bk_m || buck_out_side > 0 ? bk_pad : 0;
+    for (yr = [[bs_y0, bk_y0 - c], [bk_y1 + c, bs_y1]])
+        box([bk_x0 + pl, yr[0], z1], [bk_x1 - pr, yr[1], bk_rz]);
+    for (s = [-1, 1]) {
+        xr = s < 0 ? [bk_x0 - c - buck_rim, bk_x0 - c] : [bk_x1 + c, bk_x1 + c + buck_rim];
+        if (!bk_m)
+            box([xr[0], bk_cy - buck_tab_w / 2, z1], [xr[1], bk_cy + buck_tab_w / 2, bk_rz]);
+        else if (s != buck_out_side)
+            box([xr[0], bs_y0, z1], [xr[1], bs_y1, bk_rz]);
+    }
+}
+
 module base() {
     difference() {
         union() {
@@ -629,6 +741,7 @@ module base() {
         latch_cuts();
         anchor_groove(link_x, link_d);
         anchor_groove(ve_x, ve_d);
+        if (bk) anchor_groove(sup_x, sup_d, ay2, sup_room);
     }
     difference() {
         union() {
@@ -639,6 +752,10 @@ module base() {
             anchor_bar(ve_x, ve_d);
             top_beam();
             stem_bridge();
+            if (bk) {
+                anchor_bar(sup_x, sup_d, ay2);
+                buck_shelf();
+            }
         }
         band_relief();
         snap_grooves();
@@ -715,6 +832,7 @@ module cover() {
         // cable U-slots, open towards the base
         u_slot(link_x, link_d);
         u_slot(ve_x, ve_d);
+        if (bk) u_slot(sup_x, sup_d);
         // rim relief over the latch stem
         box([stem_x0 - slot - 0.5, -1, plate_t - 1], [stem_x1 + slot + 0.5, wall + 1, plate_t + 0.6]);
     }
@@ -746,6 +864,46 @@ module boards() {
     color("white") translate([cx + ant_off - ant_w / 2, esp_y1 - ant_d, ez + esp_t]) cube([ant_w, ant_d, ant_h]);
     color("blue") translate([cx - hw_w / 2, hw_y0, hw_z]) cube([hw_w, hw_l, hw_t]);
     color("navy") translate([cx - hw_w / 2 + 1.5, hw_y0 + 4, hw_z + hw_t]) cube([hw_w - 3, hw_l - 8, hw_comp_h]);
+    buck_board();
+}
+
+// Converter PCB and parts. Pad and trimmer layout are assumptions, check
+// the actual board: DSN pads at the four corners (OUT at the buck_out_side
+// end), trimmer next to the OUT end; Matek pads along the buck_out_side end.
+bk_out_x = buck_out_side < 0 ? bk_x0 : bk_x1;   // OUT end edge
+bk_in_x  = buck_out_side < 0 ? bk_x1 : bk_x0;
+bk_trim  = [bk_out_x - buck_out_side * 2.5, bk_cy];  // DSN trimmer centre
+
+module buck_board() if (bk) {
+    zt = bk_z + bk_t;
+    color("purple") translate([bk_x0, bk_y0, bk_z]) cube([bk_l, bk_w, bk_t]);
+    if (!bk_m) {
+        color("dimgray") translate([cx - 3, bk_cy - 3, zt]) cube([6, 6, bk_h]);           // inductor
+        color("white") translate([bk_trim[0] - 1.5, bk_trim[1] - 1.5, zt]) cube([3, 3, 2]); // trimmer
+    } else {
+        x0 = buck_out_side < 0 ? bk_x0 + bk_pad + 0.5 : bk_x0 + 0.5;
+        color("dimgray") translate([x0, bk_y0 + 0.5, zt]) cube([bk_l - bk_pad - 1, bk_w - 1, bk_h]);
+    }
+}
+
+// Soldering access over the pads, from the PCB underside (castellations) to
+// the cover; must stay clear of the base.
+module buck_pad_keepout() if (bk) {
+    zr = [bk_z, z_ci];
+    if (!bk_m) {
+        for (xe = [bk_x0, bk_x1], ye = [bk_y0, bk_y1 - 2.5]) {
+            xa = xe == bk_x0 ? xe - 0.2 : xe - 2.5;
+            box([xa, ye, zr[0]], [xa + 2.7, ye + 2.5, zr[1]]);
+        }
+    } else {
+        xa = buck_out_side < 0 ? bk_x0 - 1.0 : bk_x1 - bk_pad;
+        box([xa, bk_y0, zr[0]], [xa + bk_pad + 1.0, bk_y1, zr[1]]);
+    }
+}
+
+// Screwdriver access to the DSN trimmer with the cover off.
+module buck_trim_keepout() if (bk && !bk_m) {
+    translate([bk_trim[0], bk_trim[1], bk_z + bk_t + 2]) cylinder(d = 4, h = 30);
 }
 
 if (part == "base") {
