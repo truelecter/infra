@@ -10,6 +10,7 @@
       profiles.nixos.https-certificate-issuer
 
       ./hardware-configuration.nix
+      ./traffic-limit.nix
 
       ./db/postgres.nix
       ./db/mongo.nix
