@@ -34,6 +34,14 @@
     enable = false;
   };
 
+  # Cloudflare pulls NARs from nix-proxy over links with ~6% loss, where cubic
+  # caps each connection at a few hundred KB/s. BBR doesn't back off on loss.
+  boot.kernelModules = ["tcp_bbr"];
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
+
   # we are in tight free space situation
   nix.settings = let
     MB = 1024 * 1024;
