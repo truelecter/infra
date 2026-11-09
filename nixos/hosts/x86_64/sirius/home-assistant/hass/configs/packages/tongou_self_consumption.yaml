@@ -1,0 +1,42 @@
+# Assumed self-consumption of the Tongou TO-Q-SY2-163JZT breakers.
+#
+# The breakers report only the power of their load, not their own draw, so
+# the sum of the breakers stays below the inverter's load power. Over three
+# days in 2026-11 the gap averaged 14.5 W for six breakers, about 2.5 W each,
+# which matches the 2.2-2.8 W the Wi-Fi version reports for itself. Count a
+# breaker while its power sensor is online.
+#
+# Add "Tongou breakers self-consumption energy" to the Energy dashboard as an
+# individual device so it is not shown as untracked consumption.
+template:
+  - sensor:
+      - name: Tongou breakers self-consumption
+        unique_id: tongou_breakers_self_consumption
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set per_breaker = 2.5 %}
+          {% set breakers = [
+               'sensor.inverterextensioncord_power',
+               'sensor.kitchenappliance_power',
+               'sensor.kitchenlightandoutlets_power',
+               'sensor.bathtoiletlightoutlets_power',
+               'sensor.halllight_power',
+               'sensor.balconyoutletsworkshoplights_power'
+             ] %}
+          {% set online = breakers
+             | reject('is_state', ['unavailable', 'unknown']) | list | count %}
+          {{ online * per_breaker }}
+
+sensor:
+  - platform: integration
+    name: Tongou breakers self-consumption energy
+    unique_id: tongou_breakers_self_consumption_energy
+    source: sensor.tongou_breakers_self_consumption
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 3
+    max_sub_interval:
+      minutes: 5
