@@ -1,10 +1,10 @@
-# The VPS provider allows at most 200 Mbit/s, while the port is 10 Gbit/s and
+# The VPS provider allows at most 100 Mbit/s, while the port is 10 Gbit/s and
 # nix-proxy can saturate it. CAKE shapes egress on eth0 and ingress through an
 # IFB device. BBR keeps working: TCP paces itself without the fq qdisc.
 {pkgs, ...}: let
   dev = "eth0";
   ifb = "ifb4${dev}";
-  bandwidth = "200mbit";
+  bandwidth = "100mbit";
 in {
   systemd.services."traffic-limit-${dev}" = {
     description = "Limit ${dev} traffic to ${bandwidth} in each direction";
