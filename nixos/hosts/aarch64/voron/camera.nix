@@ -11,7 +11,7 @@
 
   users.groups.dma-heap = {};
 
-  tl.services.camera-streamer.instances = {
+  services.camera-streamer.instances = {
     nozzle = {
       enable = false;
       settings = {

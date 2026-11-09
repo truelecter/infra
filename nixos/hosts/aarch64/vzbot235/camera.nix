@@ -15,7 +15,7 @@
     SUBSYSTEM=="dma_heap", GROUP="dma-heap", MODE="0660"
   '';
 
-  tl.services.camera-streamer.instances = {
+  services.camera-streamer.instances = {
     printer = {
       enable = true;
       settings = {

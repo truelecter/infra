@@ -41,7 +41,7 @@
   #   };
   # };
 
-  tl.services.camera-streamer.instances = {
+  services.camera-streamer.instances = {
     bbl = {
       enable = true;
       settings = {

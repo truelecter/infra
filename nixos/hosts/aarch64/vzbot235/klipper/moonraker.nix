@@ -58,5 +58,5 @@ in {
 
   security.polkit.enable = true;
 
-  tl.services.mobileraker-companion.enable = true;
+  services.mobileraker-companion.enable = true;
 }

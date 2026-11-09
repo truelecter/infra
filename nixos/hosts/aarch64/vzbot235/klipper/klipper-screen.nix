@@ -1,5 +1,5 @@
 {
-  tl.services.klipper-screen = {
+  services.klipper-screen = {
     enable = true;
     # package = pkgs.klipperscreen;
     settings = {
