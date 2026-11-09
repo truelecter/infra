@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  klipperCfg = config.tl.services.klipper;
+  klipperCfg = config.services.klipper;
   moonrakerCfg = config.services.moonraker;
   gcodePath = "${moonrakerCfg.stateDir}/gcodes";
   rpiFirmware =
@@ -45,11 +45,10 @@ in {
     (lib.filesystem.listFilesRecursive ./configs/klipper.d)
   );
 
-  tl.services.klipper = {
+  services.klipper = {
     enable = true;
 
     package = pkgs.kalico-full-plugins;
-    firmware-package = pkgs.kalico-firmware;
 
     extraConfigurationPackages = [
       # pkgs.kamp
@@ -59,7 +58,7 @@ in {
       "include /etc/klipper/main.cfg" = {};
 
       "shaketune" = {
-        result_folder = "${klipperCfg.stateDirectory}/klippain-results";
+        result_folder = "${klipperCfg.configDir}/klippain-results";
       };
 
       virtual_sdcard = {

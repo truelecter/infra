@@ -15,7 +15,6 @@
 
   nixpkgs.overlays = [
     overlays.btt-pi-v2
-    overlays.klipper
   ];
 
   systemd.services.NetworkManager-wait-online.enable = false;

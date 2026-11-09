@@ -37,7 +37,6 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
     - **tl-mm4** - aarch64-darwin and aarch64-linux builder
 - `/home` - Home-manager configurations
 - `/parts` - flake-parts modules
-  - `/parts/klipper` - Klipper 3D printer related configurations
   - `/parts/raspberry-pi` - Raspberry Pi specific configurations
   - `/parts/rockchip` - Rockchip SoC configurations
   - `/parts/k8s` - K3S wrappers and version pinning
@@ -47,7 +46,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/secrets` - Encrypted secrets (using sops-nix)
 - `/shell` - Development shell configurations
 
-AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`.
+AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`. Klipper and the rest of the 3D printer stack (packages, plugins, `services.klipper`, KlipperScreen, camera-streamer) come from the [`klipper.nix`](https://github.com/truelecter/klipper.nix) flake input; each printer's configuration lives in its host folder.
 
 ## Apply Configurations
 

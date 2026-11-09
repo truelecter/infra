@@ -27,11 +27,6 @@ jobs:
           nix develop '.#ci' --command bash -c "update-sources ALL"
           git commit -am "deps(sources): Updated cell sources" || true
 
-      - name: Update deps hashes packages
-        run: |
-          nix run '.#mainsail.npmDepsHash' > parts/klipper/packages/_deps-hash/mainsail-npm.nix
-          git commit -am "deps(sources): Updated deps hash" || true
-
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v21
         id: ufl

@@ -205,27 +205,13 @@
       };
     };
 
-    pyproject-nix = {
-      url = "github:nix-community/pyproject.nix";
+    # Klipper and Kalico with plugins, firmware, Moonraker, Mainsail, KlipperScreen,
+    # camera-streamer: overlay and NixOS modules (services.klipper replaces nixpkgs').
+    klipper = {
+      url = "github:truelecter/klipper.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    uv2nix = {
-      url = "github:pyproject-nix/uv2nix";
-      inputs = {
-        pyproject-nix.follows = "pyproject-nix";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    pyproject-build-systems = {
-      url = "github:pyproject-nix/build-system-pkgs";
-      inputs = {
-        pyproject-nix.follows = "pyproject-nix";
-        uv2nix.follows = "uv2nix";
-        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
       };
     };
 
@@ -324,7 +310,6 @@
 
           ./parts/ci.nix
           ./parts/nixpkgs.nix
-          ./parts/klipper
           ./parts/minecraft-servers
           ./parts/nixflix
           ./parts/overrides

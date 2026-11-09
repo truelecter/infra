@@ -25,7 +25,7 @@
       nixos.faster-linux
       nixos.minimize
       nixos.secrets.wifi
-      {imports = [self.modules.nixos.klipper-with-overlay];}
+      {imports = [inputs.klipper.nixosModules.default];}
     ];
 
     rockchip = [

@@ -478,6 +478,32 @@
         "type": "github"
       }
     },
+    "klipper": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pyproject-build-systems": "pyproject-build-systems",
+        "pyproject-nix": "pyproject-nix",
+        "uv2nix": "uv2nix"
+      },
+      "locked": {
+        "lastModified": 1794186015,
+        "narHash": "sha256-0DOMFfJpo5trnUZJv6IoWL+YnBwdf77Q3rWjsxVsCKk=",
+        "owner": "truelecter",
+        "repo": "klipper.nix",
+        "rev": "398dd04ca1c423a1a1251c9b81c0db6bea20f8fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "truelecter",
+        "repo": "klipper.nix",
+        "type": "github"
+      }
+    },
     "latest": {
       "locked": {
         "lastModified": 1793345420,
@@ -900,12 +926,15 @@
     "pyproject-build-systems": {
       "inputs": {
         "nixpkgs": [
+          "klipper",
           "nixpkgs"
         ],
         "pyproject-nix": [
+          "klipper",
           "pyproject-nix"
         ],
         "uv2nix": [
+          "klipper",
           "uv2nix"
         ]
       },
@@ -926,19 +955,20 @@
     "pyproject-nix": {
       "inputs": {
         "nixpkgs": [
+          "klipper",
           "nixpkgs"
         ]
       },
       "locked": {
         "lastModified": 1793240426,
         "narHash": "sha256-NPWgb6H4arnWyTKvYIys5U0xqd5QY74Z+lyTJA+7XGY=",
-        "owner": "nix-community",
+        "owner": "pyproject-nix",
         "repo": "pyproject.nix",
         "rev": "bf7d4b1d6de61db02fd4e748395634f03006e5de",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "pyproject-nix",
         "repo": "pyproject.nix",
         "type": "github"
       }
@@ -961,6 +991,7 @@
         "homebrew-core": "homebrew-core",
         "homebrew-omlahore-tap": "homebrew-omlahore-tap",
         "homebrew-otsge-keg": "homebrew-otsge-keg",
+        "klipper": "klipper",
         "latest": "latest",
         "llm-agents": "llm-agents",
         "mt7927": "mt7927",
@@ -980,12 +1011,9 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nvfetcher": "nvfetcher",
-        "pyproject-build-systems": "pyproject-build-systems",
-        "pyproject-nix": "pyproject-nix",
         "sops-nix": "sops-nix",
         "terranix": "terranix",
-        "treefmt-nix": "treefmt-nix_3",
-        "uv2nix": "uv2nix"
+        "treefmt-nix": "treefmt-nix_3"
       }
     },
     "sops-nix": {
@@ -1159,9 +1187,11 @@
     "uv2nix": {
       "inputs": {
         "nixpkgs": [
+          "klipper",
           "nixpkgs"
         ],
         "pyproject-nix": [
+          "klipper",
           "pyproject-nix"
         ]
       },
