@@ -83,7 +83,7 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
-        canbus_uuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
+        canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       fly-super8-pro = {

@@ -80,14 +80,14 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
-        canbus_uuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
+        canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       m5p = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-m5p;
-        canbus_uuid = klipperCfg.settings.mcu.canbus_uuid;
+        canbusUuid = klipperCfg.settings.mcu.canbus_uuid;
       };
     };
 

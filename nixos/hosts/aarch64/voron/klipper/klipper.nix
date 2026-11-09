@@ -90,14 +90,14 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
-        canbus_uuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
+        canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       manta-v2 = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-manta-v2;
-        canbus_uuid = klipperCfg.settings."mcu back".canbus_uuid;
+        canbusUuid = klipperCfg.settings."mcu back".canbus_uuid;
       };
 
       buttons = {
@@ -109,7 +109,7 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-stealthmax;
-        canbus_uuid = klipperCfg.settings."mcu SM".canbus_uuid;
+        canbusUuid = klipperCfg.settings."mcu SM".canbus_uuid;
       };
 
       octopus = {
