@@ -57,6 +57,10 @@ in {
     settings = {
       "include /etc/klipper/main.cfg" = {};
 
+      mcu.canbus_uuid = "4efea7048de3";
+      "mcu toolhead".canbus_uuid = "eb213ad58522";
+      "mcu cartographer".canbus_uuid = "1b2077216a55";
+
       "shaketune" = {
         result_folder = "${klipperCfg.configDir}/klippain-results";
       };
@@ -76,20 +80,15 @@ in {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-ebb36;
-        section = "mcu toolhead";
-        mcu.canbus_uuid = "eb213ad58522";
+        canbus_uuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       m5p = {
         enable = true;
         enableKlipperFlash = true;
         configFile = ./firmwares/klipper-m5p;
-        section = "mcu";
-        mcu.canbus_uuid = "4efea7048de3";
+        canbus_uuid = klipperCfg.settings.mcu.canbus_uuid;
       };
-
-      # Runs Cartographer's own firmware.
-      cartographer.mcu.canbus_uuid = "1b2077216a55";
     };
 
     katapult = {
