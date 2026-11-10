@@ -52,6 +52,9 @@
     })
     z.records)
   zones);
+
+  # Zones with `tieredCache = true`: Tiered Cache with the Smart topology.
+  tiered = lib.mapAttrs' (zone: z: lib.nameValuePair (lib.replaceStrings ["."] ["_"] zone) {zone_id = z.id;}) (lib.filterAttrs (_: z: z.tieredCache or false) zones);
 in {
   terraform.required_providers.cloudflare.source = "cloudflare/cloudflare";
 
@@ -61,7 +64,12 @@ in {
     description = "Public IPv4 addresses by name, from secrets/terraform.yaml.";
   };
 
-  resource.cloudflare_dns_record = lib.listToAttrs (map (r:
-    lib.nameValuePair r.resource (r.record // {zone_id = r.zoneId;}))
-  records);
+  resource = {
+    cloudflare_dns_record = lib.listToAttrs (map (r:
+      lib.nameValuePair r.resource (r.record // {zone_id = r.zoneId;}))
+    records);
+
+    cloudflare_argo_tiered_caching = lib.mapAttrs (_: z: z // {value = "on";}) tiered;
+    cloudflare_tiered_cache = lib.mapAttrs (_: z: z // {value = "on";}) tiered;
+  };
 }

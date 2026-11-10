@@ -1,5 +1,6 @@
 {...}: {
   id = "d54af5a47c5bbe46b2dadab37391501d";
+  tieredCache = true;
   records = {
     mx_apex_10 = {
       type = "MX";
