@@ -6,7 +6,6 @@ keys:
   - &squadbook-m5 age1xdv75tl97xwtxeaec9dpttq8twztkcm8mu5u4g7lcphh5ksvws3qrw8l43
   - &tl-wsl age1qmurstgayt65a8r7j9nnf9mpz7wffxht2j8uadxy9pupylrqscyqv5m7zk
   - &depsos age17k6xap8v8ys080dx5jen9pycnkzjrdgnxzyqyv0lz34auspg4g8qykuuev
-  - &oracle age1yk5h5m3uqzsedlc433n0p2aph6cdvuxvvr9nrrr3mtzmj22k3vmqp7ndhy
   - &voron age1q56y2fganxr7af2tel0pcpzueps4ttlyja3ysxxrtq5cs9cmr57q5e3fwf
   - &nas age12d0vn4m8dygjjjgx8s5zdm0lkk6qfcyk35u9lgj6d6cw7753gs0s049uz9
   - &sirius age1vpflrapt4lz5akw8jcft6lhhq0h26ptjq6ce8da27gzuvfdmtqvs8rk8h6
@@ -23,7 +22,7 @@ creation_rules:
           - *truelecter-alpha
           - *truelecter-beta
         age:
-          - *oracle
+          - *depsos
 
   - path_regex: secrets/nixos-common.yaml
     key_groups:
@@ -33,7 +32,6 @@ creation_rules:
         age:
           - *nas
           - *depsos
-          - *oracle
           - *tl-wsl
           - *voron
           - *sirius

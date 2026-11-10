@@ -215,6 +215,14 @@
       };
     };
 
+    yanms = {
+      url = "github:truelecter/yanms.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
       inputs = {
@@ -310,7 +318,6 @@
 
           ./parts/ci.nix
           ./parts/nixpkgs.nix
-          ./parts/minecraft-servers
           ./parts/nixflix
           ./parts/overrides
           ./parts/raspberry-pi

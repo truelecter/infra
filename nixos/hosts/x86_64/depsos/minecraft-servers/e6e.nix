@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -9,17 +8,9 @@
     serverPackage = pkgs.mcs-enigmatica-6-expert;
     backup.restic = {
       enable = true;
-      repository = "rclone:mega:/mc-backups/e6e";
-      passwordFile = config.sops.secrets.minecraft-restic-pw-file.path;
-      environmentFile = config.sops.secrets.minecraft-restic-env-file.path;
-      initialize = true;
       exclude = [
         "dumps"
         "logs"
-      ];
-      pruneOpts = [
-        "--keep-daily 3"
-        "--keep-weekly 1"
       ];
     };
     jvmPackage = pkgs.temurin-bin-8;
@@ -50,6 +41,7 @@
       "-Dgraal.CompilerConfiguration=community"
     ];
     serverProperties = {
+      server-port = 25567;
       motd = "\\u00A7d\\u00A7oRealMineCocks: Enigmatica 6 Expert\\u00A7r - \\u00A741.8.0";
     };
   };

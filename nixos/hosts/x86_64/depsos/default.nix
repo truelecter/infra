@@ -5,6 +5,7 @@
 }: {
   imports =
     suites.base
+    ++ suites.minecraft-server
     ++ [
       profiles.common.remote-builder
       profiles.nixos.https-certificate-issuer
@@ -29,6 +30,8 @@
       ./nix-builder.nix
 
       ./sso.nix
+
+      ./minecraft-servers
     ];
 
   networking.networkmanager = {

@@ -1013,7 +1013,8 @@
         "nvfetcher": "nvfetcher",
         "sops-nix": "sops-nix",
         "terranix": "terranix",
-        "treefmt-nix": "treefmt-nix_3"
+        "treefmt-nix": "treefmt-nix_3",
+        "yanms": "yanms"
       }
     },
     "sops-nix": {
@@ -1221,6 +1222,29 @@
       "original": {
         "owner": "Maroka-chan",
         "repo": "VPN-Confinement",
+        "type": "github"
+      }
+    },
+    "yanms": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794320056,
+        "narHash": "sha256-7jgDTyBlZiwFb0WEye1bjUWzqWojGOT9xWBVS+0yHjk=",
+        "owner": "truelecter",
+        "repo": "yanms.nix",
+        "rev": "2b1e4745aceaaa1ee7b1137f01fc3441464cdf56",
+        "type": "github"
+      },
+      "original": {
+        "owner": "truelecter",
+        "repo": "yanms.nix",
         "type": "github"
       }
     }

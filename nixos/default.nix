@@ -71,9 +71,8 @@
     ];
 
     minecraft-server = with profiles; [
-      {imports = [self.modules.nixos.minecraft-servers-with-overlay];}
+      {imports = [inputs.yanms.nixosModules.default];}
       nixos.secrets.minecraft-servers
-      nixos.faster-linux
     ];
 
     wsl = with profiles;

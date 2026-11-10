@@ -21,7 +21,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/nixos` - NixOS configurations
   - `/nixos/hosts/x86_64` - x86_64 NixOS hosts
     - **tl-wsl** - WSL system
-    - **depsos** - Server for publically hosted services
+    - **depsos** - Server for publically hosted services and Minecraft servers
     - **nas** - NAS with some multimedia stuff
     - **sirius** - Home Assistant and 3D printer coordination
   - `/nixos/hosts/aarch64` - aarch64 NixOS hosts
@@ -29,8 +29,6 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
       - **voron** - Voron 2.4 300mm
       - **vzbot235** - VzBot 235
       - **tiny-m** - Tiny-M 150mm
-    - Misc:
-      - **oracle** - Game servers and remote builder
 - `/darwin` - Darwin configurations
   - `/darwin/hosts` - aarch64-darwin hosts
     - **suadbook** - Main workstation
@@ -40,13 +38,12 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
   - `/parts/raspberry-pi` - Raspberry Pi specific configurations
   - `/parts/rockchip` - Rockchip SoC configurations
   - `/parts/k8s` - K3S wrappers and version pinning
-  - `/parts/minecraft-servers` - Minecraft server configurations
 - `/profiles` - Shared system profiles
 - `/lib` - Helper functions and utilities
 - `/secrets` - Encrypted secrets (using sops-nix)
 - `/shell` - Development shell configurations
 
-AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`. Klipper and the rest of the 3D printer stack (packages, plugins, `services.klipper`, KlipperScreen, camera-streamer) come from the [`klipper.nix`](https://github.com/truelecter/klipper.nix) flake input; each printer's configuration lives in its host folder.
+AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`. Klipper and the rest of the 3D printer stack (packages, plugins, `services.klipper`, KlipperScreen, camera-streamer) come from the [`klipper.nix`](https://github.com/truelecter/klipper.nix) flake input; each printer's configuration lives in its host folder. The Minecraft server module (`services.yanms`), the modpacks and mod jars come from the [`yanms.nix`](https://github.com/truelecter/yanms.nix) flake input; the servers are configured in `nixos/hosts/x86_64/depsos/minecraft-servers`.
 
 ## Apply Configurations
 
