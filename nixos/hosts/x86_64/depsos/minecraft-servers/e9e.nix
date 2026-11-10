@@ -4,7 +4,7 @@
   ...
 }: {
   services.yanms.instances.e9e = {
-    enable = true;
+    enable = false;
     serverPackage = pkgs.mcs-enigmatica-9-expert;
     bluemap = {
       enable = true;
@@ -23,9 +23,9 @@
     jvmPackage = pkgs.temurin-bin-17;
     # depsos has 7 GB. Enigmatica's minimum is 6 GB, for the client with rendering;
     # https://wiki.enigmatica.net/main/help-desk/guides/allocating-memory
-    jvmMaxAllocation = "5G";
+    jvmMaxAllocation = "4G";
     jvmInitialAllocation = "2G";
-    memoryMax = "6G";
+    memoryMax = "5G";
     jvmOpts = inputs.yanms.lib.jvmFlags.zgc;
     serverProperties = {
       server-port = 25568;
