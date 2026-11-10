@@ -12,16 +12,7 @@
   printer = {
     name = "VzBot 235";
     canbus.txQueueLength = 256;
-    klipperScreen = {
-      enable = true;
-      ledProfiles = {
-        Dark = {
-          icon = "avatar-default";
-          script = "LED_NONE";
-        };
-        Full.script = "LED_FULL";
-      };
-    };
+    klipperScreen.enable = true;
   };
 
   system.stateVersion = "24.11";

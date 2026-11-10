@@ -1,17 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{config, ...}: let
   klipperCfg = config.services.klipper;
+  boards = config.printer.firmwareConfigs;
 in {
   printer.klipperConfigDir = ./configs/klipper.d;
 
   services.klipper = {
-    extraConfigurationPackages = [
-      pkgs.kamp
-    ];
-
     settings = {
       mcu = {
         serial = "/dev/serial/by-id/usb-Klipper_stm32h723xx_20003A000951313339373836-if00";
@@ -32,38 +25,33 @@ in {
       ebb36 = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-ebb36;
-        katapultConfigFile = ./firmwares/katapult-ebb36;
+        inherit (boards.ebb36) configFile katapultConfigFile;
         canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       manta-v2 = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-manta-v2;
-        katapultConfigFile = ./firmwares/katapult-manta-v2;
+        inherit (boards.manta-v2) configFile katapultConfigFile;
         canbusUuid = klipperCfg.settings."mcu back".canbus_uuid;
       };
 
       buttons = {
         enable = true;
-        configFile = ./firmwares/klipper-buttons;
-        katapultConfigFile = ./firmwares/katapult-buttons;
+        inherit (boards.rp2040) configFile katapultConfigFile;
       };
 
       stealthmax = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-stealthmax;
-        katapultConfigFile = ./firmwares/katapult-stealthmax;
+        inherit (boards.ebb36) configFile katapultConfigFile;
         canbusUuid = klipperCfg.settings."mcu SM".canbus_uuid;
       };
 
       octopus = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-octopus-pro;
-        katapultConfigFile = ./firmwares/katapult-octopus-pro;
+        inherit (boards.octopus-pro) configFile katapultConfigFile;
         inherit (klipperCfg.settings.mcu) serial;
       };
     };

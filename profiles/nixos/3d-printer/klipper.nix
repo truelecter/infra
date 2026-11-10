@@ -7,20 +7,24 @@
   cfg = config.printer;
   klipperCfg = config.services.klipper;
   gcodePath = "${config.services.moonraker.stateDir}/gcodes";
-in {
-  environment.etc = builtins.listToAttrs (
-    map (
-      p: {
-        name = "klipper/${lib.path.removePrefix cfg.klipperConfigDir p}";
-        value = {
-          inherit (klipperCfg) user group;
 
-          source = p;
-        };
-      }
-    )
-    (lib.filesystem.listFilesRecursive cfg.klipperConfigDir)
-  );
+  linkDir = dir:
+    builtins.listToAttrs (
+      map (
+        p: {
+          name = "klipper/${lib.path.removePrefix dir p}";
+          value = {
+            inherit (klipperCfg) user group;
+
+            source = p;
+          };
+        }
+      )
+      (lib.filesystem.listFilesRecursive dir)
+    );
+in {
+  # The host's files replace shared ones with the same path.
+  environment.etc = linkDir ./klipper.d // linkDir cfg.klipperConfigDir;
 
   services.klipper = {
     enable = true;

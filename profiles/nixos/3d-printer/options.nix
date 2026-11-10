@@ -11,7 +11,20 @@ in {
     klipperConfigDir = mkOption {
       type = types.path;
       example = lib.literalExpression "./configs/klipper.d";
-      description = "Directory whose files are linked into `/etc/klipper`.";
+      description = ''
+        Directory whose files are linked into `/etc/klipper`, on top of the shared `klipper.d` of this profile; a file with the same path replaces the shared one.
+        It must contain `printer.cfg`, included by the shared `main.cfg`.
+      '';
+    };
+
+    firmwareConfigs = mkOption {
+      type = types.attrsOf (types.attrsOf types.path);
+      readOnly = true;
+      default = lib.mapAttrs (board: _: {
+        configFile = ./firmwares/${board}/klipper;
+        katapultConfigFile = ./firmwares/${board}/katapult;
+      }) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./firmwares));
+      description = "Klipper and Katapult configs per board, from `firmwares/<board>/{klipper,katapult}` of this profile.";
     };
 
     canbus.txQueueLength = mkOption {
@@ -37,8 +50,14 @@ in {
             };
           };
         });
-        default = {};
-        description = "Entries of the KlipperScreen LED menu; empty means no menu.";
+        default = {
+          Dark = {
+            icon = "avatar-default";
+            script = "LED_NONE";
+          };
+          Full.script = "LED_FULL";
+        };
+        description = "Entries of the KlipperScreen LED menu; empty means no menu. The defaults call the `LED_NONE` and `LED_FULL` macros every printer defines.";
       };
     };
 

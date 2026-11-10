@@ -1,17 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{config, ...}: let
   klipperCfg = config.services.klipper;
+  boards = config.printer.firmwareConfigs;
 in {
   printer.klipperConfigDir = ./configs/klipper.d;
 
   services.klipper = {
-    extraConfigurationPackages = [
-      pkgs.kamp
-    ];
-
     settings = {
       mcu = {
         # canbus_uuid = "66ac0bbb51d2";
@@ -25,16 +18,14 @@ in {
       ebb36 = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-ebb36;
-        katapultConfigFile = ./firmwares/katapult-ebb36;
+        inherit (boards.ebb36) configFile katapultConfigFile;
         canbusUuid = klipperCfg.settings."mcu toolhead".canbus_uuid;
       };
 
       fly-super8-pro = {
         enable = true;
         enableKlipperFlash = true;
-        configFile = ./firmwares/klipper-fly-super8;
-        katapultConfigFile = ./firmwares/katapult-fly-super8;
+        inherit (boards.fly-super8) configFile katapultConfigFile;
         inherit (klipperCfg.settings.mcu) serial;
       };
     };
