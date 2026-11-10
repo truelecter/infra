@@ -1,7 +1,7 @@
 {suites, ...}: {
   imports =
     suites.base
-    ++ suites._3d-printing
+    ++ suites.klipper-printer
     ++ suites.rpi4
     ++ [
       ./camera.nix

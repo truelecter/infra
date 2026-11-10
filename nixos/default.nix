@@ -6,7 +6,7 @@
 }: let
   inherit (self) profiles users;
 
-  suites = self.lib.buildSuites profiles (profiles: _suites: {
+  suites = self.lib.buildSuites profiles (profiles: suites: {
     base =
       (with profiles; [
         common.core
@@ -25,8 +25,12 @@
       nixos.faster-linux
       nixos.minimize
       nixos.secrets.wifi
-      nixos."3d-printer"
       {imports = [inputs.klipper.nixosModules.default];}
+    ];
+
+    klipper-printer = [
+      suites._3d-printing
+      profiles.nixos."3d-printer"
     ];
 
     rockchip = [

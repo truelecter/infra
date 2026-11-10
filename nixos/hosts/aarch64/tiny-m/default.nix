@@ -1,7 +1,7 @@
 {suites, ...}: {
   imports =
     suites.base
-    ++ suites._3d-printing
+    ++ suites.klipper-printer
     ++ suites.cm4
     ++ [
       ./hardware-configuration.nix
