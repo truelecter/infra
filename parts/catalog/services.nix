@@ -41,12 +41,13 @@ in {
         subdomain = "data";
       };
     }
-    # BlueMap web maps of the Minecraft servers, see oracle/minecraft-servers.
+    # BlueMap web maps of the running Minecraft servers, see
+    # depsos/minecraft-servers.
     // lib.listToAttrs (map (instance:
       lib.nameValuePair "bluemap-${instance}" {
-        host = "oracle";
+        host = "depsos";
         public = true;
         domain = domains.main;
         subdomain = instance;
-      }) ["cae" "e9e" "litv3" "vh3"]);
+      }) ["cae" "litv3" "vh3"]);
 }

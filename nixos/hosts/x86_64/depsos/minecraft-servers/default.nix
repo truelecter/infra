@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  catalog,
   ...
 }: {
   imports = [
@@ -37,11 +38,12 @@
 
     minecraft-server.serverProperties.server-port = 25580;
 
-    # BlueMap of every running instance with BlueMap, as <instance>.tlctr.me.
+    # BlueMap of every running instance with BlueMap, at its catalog service
+    # bluemap-<instance> (parts/catalog/services.nix).
     nginx = {
       enable = true;
       virtualHosts = lib.mapAttrs' (name: instance:
-        lib.nameValuePair "${name}.tlctr.me" {
+        lib.nameValuePair catalog.services."bluemap-${name}".fqdn {
           enableACME = true;
           forceSSL = true;
           locations."/".proxyPass = "http://127.0.0.1:${toString instance.bluemap.port}";
