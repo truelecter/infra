@@ -14,7 +14,6 @@ policies:
       - common
       - catppuccin
       - deploy-rs
-      - minecraft-servers
       - nixflix
       - overrides
       - raspberry-pi
@@ -22,11 +21,11 @@ policies:
       - topology
       - universal-vscode-setup
       - wsl
+      - zen-browser
       - bblcam
       - bttpitest
       - depsos
       - nas
-      - oracle
       - sirius
       - tiny-m
       - tl-wsl
