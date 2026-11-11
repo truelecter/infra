@@ -3,25 +3,11 @@
 {
   config,
   inputs,
-  pkgs,
   ...
 }: let
   domain = "immich.xata.house";
   kanidmDomain = "auth.tlctr.me";
   mediaLocation = "/mnt/photos";
-
-  # ML on the GPU through onnxruntime's CUDA provider. Only onnxruntime comes
-  # from the CUDA package set (prebuilt on cache.nixos-cuda.org); a global
-  # cudaSupport would rebuild opencv and the rest from source.
-  immich = pkgs.immich.override {
-    immich-machine-learning = pkgs.immich-machine-learning.override {
-      python3 = pkgs.python3.override {
-        packageOverrides = _: _: {
-          inherit (pkgs.pkgsCuda.python3Packages) onnxruntime;
-        };
-      };
-    };
-  };
 in {
   fileSystems.${mediaLocation} = {
     device = "tank/photos";
@@ -34,13 +20,12 @@ in {
 
   services.immich = {
     enable = true;
-    package = immich;
     inherit mediaLocation;
     # The default `localhost` makes the server listen on [::1] only.
     host = "127.0.0.1";
 
-    # NVENC for video transcoding and CUDA for ML. `null` lifts PrivateDevices
-    # so both services see /dev/nvidia*.
+    # QuickSync for transcoding, OpenVINO on the iGPU for ML. `null` lifts
+    # PrivateDevices so both services see /dev/dri.
     accelerationDevices = null;
 
     # Settings are read-only in the web UI while this is set.
@@ -53,8 +38,8 @@ in {
       };
 
       ffmpeg = {
-        # GTX 1660 Super (TU116), same as Jellyfin
-        accel = "nvenc";
+        # UHD 730 QuickSync, same as Jellyfin
+        accel = "qsv";
         accelDecode = true;
       };
 

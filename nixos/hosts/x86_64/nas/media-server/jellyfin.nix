@@ -31,11 +31,11 @@ in {
       enableDecodingColorDepth10Vp9 = true;
       enableHardwareEncoding = true;
 
-      # GTX 1660 Super (TU116): NVDEC has no AV1, NVENC has no AV1
-      hardwareAccelerationType = "nvenc";
-      hardwareDecodingCodecs = ["h264" "vc1" "hevc" "vp9" "mpeg2video"];
+      # UHD 730 (Gen12 Xe-LP): decodes AV1 too, encodes H.264/HEVC only
+      hardwareAccelerationType = "qsv";
+      hardwareDecodingCodecs = ["h264" "vc1" "hevc" "vp9" "av1" "mpeg2video"];
 
-      # HDR -> SDR via tonemap_cuda; without it HDR transcodes are only relabeled bt709
+      # HDR -> SDR; without it HDR transcodes are only relabeled bt709
       enableTonemapping = true;
     };
 
