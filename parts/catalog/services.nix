@@ -13,6 +13,8 @@ in {
       "arr"
       "immich"
       "jellyfin"
+      # immich-pet-tagger, see nas/immich-pet-tagger.nix.
+      "pets"
       "prowlarr"
       "qbittorrent"
       "radarr"

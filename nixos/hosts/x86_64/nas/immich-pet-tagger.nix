@@ -4,10 +4,11 @@
 {
   config,
   inputs,
+  catalog,
   ...
 }: let
-  domain = "pets.xata.house";
-  immichDomain = "immich.xata.house";
+  domain = catalog.services.pets.fqdn;
+  immichDomain = catalog.services.immich.fqdn;
   stateDir = "/var/lib/immich-pet-tagger";
   port = 2287;
 in {
@@ -54,7 +55,7 @@ in {
 
   services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
-    useACMEHost = "xata.house";
+    useACMEHost = catalog.domains.media;
 
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString port}";
