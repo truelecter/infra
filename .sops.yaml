@@ -134,3 +134,11 @@ creation_rules:
           - *truelecter-beta
         age:
           - *nas
+
+  - path_regex: secrets/immich.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+        age:
+          - *nas

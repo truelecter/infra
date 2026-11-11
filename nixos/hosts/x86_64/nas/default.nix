@@ -25,6 +25,7 @@
       ./postgres.nix
       ./autosuspend.nix
       ./immich.nix
+      ./immich-pet-tagger.nix
     ];
 
   networking = {
