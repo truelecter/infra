@@ -4,6 +4,8 @@
   lib,
   ...
 }: {
+  imports = [./acme.nix];
+
   # Prefer DNS-01 challenges over HTTP-01
   # See https://github.com/NixOS/nixpkgs/issues/210807 for this hack explanation
   options.services.nginx.virtualHosts = lib.mkOption {
@@ -13,13 +15,9 @@
   };
 
   config = {
-    security.acme = {
-      acceptTerms = true;
-      defaults = {
-        email = "andrew.panassiouk@gmail.com";
-        environmentFile = config.sops.secrets.cloudflare.path;
-        dnsProvider = "cloudflare";
-      };
+    security.acme.defaults = {
+      environmentFile = config.sops.secrets.cloudflare.path;
+      dnsProvider = "cloudflare";
     };
 
     services.nginx = {

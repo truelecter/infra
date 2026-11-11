@@ -40,5 +40,13 @@ in {
         domain = domains.pandora;
         subdomain = "data";
       };
-    };
+    }
+    # BlueMap web maps of the Minecraft servers, see oracle/minecraft-servers.
+    // lib.listToAttrs (map (instance:
+      lib.nameValuePair "bluemap-${instance}" {
+        host = "oracle";
+        public = true;
+        domain = domains.main;
+        subdomain = instance;
+      }) ["cae" "e9e" "litv3" "vh3"]);
 }
