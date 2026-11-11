@@ -14,16 +14,6 @@
   sonnet55 = bedrock "anthropic.claude-sonnet-5-5";
   fable51 = bedrock "anthropic.claude-fable-5-1";
   gpt6 = name: bedrock "openai.gpt-6-${name}";
-
-  # Every thinking level for models the omp catalog lists only up to `high` (Opus/Sonnet 5.5
-  # before omp 18.4.1, can1357/oh-my-pi#13274) or without `xhigh` (Opus 4.8).
-  adaptiveThinking = {
-    thinking = {
-      mode = "anthropic-adaptive";
-      efforts = ["low" "medium" "high" "xhigh" "max"];
-      supportsDisplay = true;
-    };
-  };
 in {
   imports = [
     (import ./__common-gui.nix {inherit username;})
@@ -58,20 +48,15 @@ in {
 
         retry.fallbackChains = {
           default = [(opus48 "high")];
-          slow = [(opus48 "xhigh")];
-          plan = [(opus48 "xhigh")];
+          # Opus 4.8 on Bedrock has no `xhigh` in the omp catalog.
+          slow = [(opus48 "max")];
+          plan = [(opus48 "max")];
           task = [(opus48 "medium")];
           deep-research = [(opus55 "max") (opus48 "max")];
-          gsd-deep = [(opus48 "xhigh")];
+          gsd-deep = [(opus48 "max")];
           gsd-heavy = [(opus48 "high")];
           gsd-exec = [(opus48 "medium")];
         };
-      };
-
-      models.providers.amazon-bedrock.modelOverrides = {
-        "global.anthropic.claude-opus-5-5" = adaptiveThinking;
-        "global.anthropic.claude-sonnet-5-5" = adaptiveThinking;
-        "global.anthropic.claude-opus-4-8" = adaptiveThinking;
       };
     };
 
