@@ -3,7 +3,7 @@
     enable = false;
     eula = true;
     package =
-      pkgs.mcs-vanilla-1-20.overrideAttrs
+      pkgs.minecraftServers.vanilla-1-20.overrideAttrs
       (_: {
         version = "1.20.3";
         # 1.20.3

@@ -1235,11 +1235,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794322703,
-        "narHash": "sha256-XZXGAu3QkBZlG8FeoJpM5uCgRNQIpZm2BnlfxjbCCas=",
+        "lastModified": 1794356567,
+        "narHash": "sha256-9lNHR9MrkgfNvM1ZDJNWKPwZGy4oDNqBz+7o0V74Io4=",
         "owner": "truelecter",
         "repo": "yanms.nix",
-        "rev": "9f2da1de5509e5c767536e9f73edafc775c38859",
+        "rev": "a8807ddb3a496c077ada60ff04247b85371000ef",
         "type": "github"
       },
       "original": {
