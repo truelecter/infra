@@ -76,7 +76,7 @@ in {
   };
 
   system.defaults.dock.persistent-apps = [
-    "/Applications/Zen.app"
+    "${home}/Applications/Home Manager Apps/Zen.app"
     "${home}/Applications/Home Manager Apps/Ghostty.app"
     "${home}/Applications/Home Manager Apps/Cursor.app"
     "${home}/Applications/Home Manager Apps/Paseo.app"

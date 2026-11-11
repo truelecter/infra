@@ -1,5 +1,4 @@
 {
-  pkgs,
   hmSuites,
   sshKeys,
   config,
@@ -22,7 +21,7 @@ in {
   };
 
   system.defaults.dock.persistent-apps = [
-    "/Applications/Zen.app"
+    "${home}/Applications/Home Manager Apps/Zen.app"
     "${home}/Applications/Home Manager Apps/Ghostty.app"
   ];
 }

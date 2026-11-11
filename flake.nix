@@ -230,6 +230,16 @@
       };
     };
 
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        # Its Home Manager module builds on home-manager master's mkFirefoxModule: the release
+        # one cannot install the signed (unwrapped) macOS app.
+        home-manager.follows = "home-unstable";
+      };
+    };
+
     ncro = {
       url = "github:manic-systems/ncro";
       inputs = {
@@ -327,6 +337,7 @@
           ./parts/topology
           ./parts/universal-vscode-setup.nix
           ./parts/catppuccin.nix
+          ./parts/zen-browser.nix
 
           ./shell
 

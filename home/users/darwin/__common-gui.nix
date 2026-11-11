@@ -13,18 +13,11 @@ in {
         profiles.home.shell.ghostty
         profiles.home.darwin.gpg
         profiles.home.darwin.associations
+        profiles.home.zen
       ];
-
-    # home.packages = [
-    #   pkgs.zen
-    #   pkgs.code-cursor
-    # ];
 
     home.stateVersion = "25.11";
   };
-
-  # TODO: find a way to work with 1password and home manager packages linking
-  homebrew.casks = ["zen"];
 
   system.defaults.dock.persistent-others = [];
 
