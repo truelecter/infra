@@ -38,8 +38,8 @@
 
     minecraft-server.serverProperties.server-port = 25580;
 
-    # BlueMap of every running instance with BlueMap, at its catalog service
-    # bluemap-<instance> (parts/catalog/services.nix).
+    # BlueMap of every instance with BlueMap, also while it's stopped, at its
+    # catalog service bluemap-<instance> (parts/catalog/services.nix).
     nginx = {
       enable = true;
       virtualHosts = lib.mapAttrs' (name: instance:
@@ -47,7 +47,7 @@
           enableACME = true;
           forceSSL = true;
           locations."/".proxyPass = "http://127.0.0.1:${toString instance.bluemap.port}";
-        }) (lib.filterAttrs (_: i: i.enable && i.bluemap.enable) config.services.yanms.instances);
+        }) (lib.filterAttrs (_: i: i.bluemap.enable) config.services.yanms.instances);
     };
   };
 

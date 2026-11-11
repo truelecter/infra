@@ -6,7 +6,7 @@
     # x86_64-linux
 
     depsos = {
-      description = "Server for publicly hosted services";
+      description = "Server for publicly hosted services and Minecraft servers";
       ssh.port = 2265;
       net.tailscale.ip = "100.122.27.87";
     };
@@ -34,13 +34,6 @@
     };
 
     # aarch64-linux
-
-    oracle = {
-      description = "Game servers and remote builder";
-      # GitHub Actions runners (tag:ci) reach it over SSH, see terranix/tailscale.nix.
-      tailscale.tags = ["tag:gha-target"];
-      net.tailscale.ip = "100.69.234.73";
-    };
 
     voron = {
       description = "Voron 2.4 300mm";
