@@ -37,7 +37,7 @@
     # during suspend and needs ~10 s to rebind after resume (see autosuspend.nix).
     # Same address as the reservation in sirius/network-switch.nix.
     useDHCP = false;
-    interfaces.enp4s0.ipv4.addresses = [
+    interfaces.lan0.ipv4.addresses = [
       {
         address = "10.3.0.132";
         prefixLength = 24;
@@ -45,6 +45,18 @@
     ];
     defaultGateway = "10.3.0.129";
     nameservers = ["10.3.0.1"];
+  };
+
+  # The PCI path, and so the predictable name, shifts when cards come and go
+  # (enp4s0 with the GTX 1660 in, enp3s0 without), so name the NIC by MAC.
+  # udev applies only the first matching .link file, so Wake-on-LAN lives here
+  # too instead of in networking.interfaces.<name>.wakeOnLan.
+  systemd.network.links."10-lan0" = {
+    matchConfig.PermanentMACAddress = "f4:b5:20:45:4d:2e";
+    linkConfig = {
+      Name = "lan0";
+      WakeOnLan = "magic";
+    };
   };
 
   virtualisation.podman = {

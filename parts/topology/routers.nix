@@ -71,7 +71,7 @@ in {
       connections = {
         eth1 = mkConnection "tiny-m" "end0";
         eth7 = mkConnection "tl-mm4" "en0";
-        eth8 = mkConnection "nas" "enp4s0";
+        eth8 = mkConnection "nas" "lan0";
         eth9 = mkConnection "sirius" "lan-eth";
       };
 
