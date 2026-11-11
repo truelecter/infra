@@ -43,6 +43,15 @@ in {
         accelDecode = true;
       };
 
+      # Largest models in Immich's list. Changing one needs a rerun of its job
+      # on all assets; for faces that re-detects everything and drops person
+      # names and merges.
+      machineLearning = {
+        clip.modelName = "ViT-SO400M-16-SigLIP2-384__webli";
+        facialRecognition.modelName = "antelopev2";
+        ocr.modelName = "PP-OCRv6_medium";
+      };
+
       oauth = {
         enabled = true;
         issuerUrl = "https://${kanidmDomain}/oauth2/openid/immich";
