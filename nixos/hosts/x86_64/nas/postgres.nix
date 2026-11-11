@@ -38,4 +38,14 @@
       host all all 10.0.0.0/8 trust
     '';
   };
+
+  # Nightly dump onto the pool; the live cluster sits on the system SSD.
+  services.postgresqlBackup = {
+    enable = true;
+    backupAll = true;
+    location = "/mnt/backup/db/dumps";
+    startAt = "*-*-* 04:00:00";
+    compression = "zstd";
+  };
+  systemd.services.postgresqlBackup.unitConfig.RequiresMountsFor = ["/mnt/backup/db"];
 }
