@@ -37,7 +37,7 @@
             TF_VAR_state_passphrase=$(jq -r .state_passphrase <<<"$secrets")
             TF_VAR_public_ips=$(jq -c .public_ips <<<"$secrets")
             TAILSCALE_API_KEY=$(jq -r .tailscale_key <<<"$secrets")
-            CLOUDFLARE_API_TOKEN=$(sops -d --extract '["CLOUDFLARE_DNS_API_TOKEN"]' ../../secrets/cloudflare.env)
+            CLOUDFLARE_API_TOKEN=$(jq -r .cloudflare_token <<<"$secrets")
             export TF_VAR_state_passphrase TF_VAR_public_ips TAILSCALE_API_KEY CLOUDFLARE_API_TOKEN
           '';
         };
