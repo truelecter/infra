@@ -8,7 +8,7 @@
 }: let
   secret = key: config.sops.secrets.${key}.path;
 
-  seerr = pkgs.seerr.overrideAttrs (old: let
+  seerr = pkgs.seerr.overrideAttrs (_: let
     nodejs-slim = pkgs.nodejs-slim_22;
     pnpm = pkgs.pnpm_10.override {inherit nodejs-slim;};
 
