@@ -29,7 +29,6 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
       - **voron** - Voron 2.4 300mm
       - **vzbot235** - VzBot 235
       - **tiny-m** - Tiny-M 150mm
-      - **bttpitest** - BTT Pi 2 KlipperScreen test
     - **bblcam** - Camera for the Bambu printer
 - `/darwin` - Darwin configurations
   - `/darwin/hosts` - aarch64-darwin hosts
@@ -77,7 +76,7 @@ deploy --skip-checks '.#<hostname>'
 
 ### Cloudflare and Tailscale
 
-Run from the repository root. The Cloudflare token comes from `secrets/cloudflare.env`; the Tailscale API key, the state passphrase and the public IPs from `secrets/terraform.yaml`. The state is committed, encrypted, in `terranix/state/terraform.tfstate`.
+Run from the repository root. The Cloudflare token, the Tailscale API key, the state passphrase and the public IPs come from `secrets/terraform.yaml`. The state is committed, encrypted, in `terranix/state/terraform.tfstate`.
 
 ```bash
 nix run .#infra.plan
