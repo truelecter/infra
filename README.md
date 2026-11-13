@@ -21,7 +21,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/nixos` - NixOS configurations
   - `/nixos/hosts/x86_64` - x86_64 NixOS hosts
     - **tl-wsl** - WSL system
-    - **depsos** - Server for publically hosted services and Minecraft servers
+    - **depsos** - Server for publicly hosted services and Minecraft servers
     - **nas** - NAS with some multimedia stuff
     - **sirius** - Home Assistant and 3D printer coordination
   - `/nixos/hosts/aarch64` - aarch64 NixOS hosts
@@ -29,9 +29,11 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
       - **voron** - Voron 2.4 300mm
       - **vzbot235** - VzBot 235
       - **tiny-m** - Tiny-M 150mm
+      - **bttpitest** - BTT Pi 2 KlipperScreen test
+    - **bblcam** - Camera for the Bambu printer
 - `/darwin` - Darwin configurations
   - `/darwin/hosts` - aarch64-darwin hosts
-    - **suadbook** - Main workstation
+    - **squadbook** - Main workstation
     - **tl-mm4** - aarch64-darwin and aarch64-linux builder
 - `/home` - Home-manager configurations
 - `/parts` - flake-parts modules
