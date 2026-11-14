@@ -46,7 +46,11 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/shell` - Development shell configurations
 - `/terranix` - Cloudflare DNS and Tailscale (policy file, MagicDNS, device tags) through OpenTofu, partly derived from the host catalog
 
-AI agent tooling (oh-my-pi and Paseo, their extensions and plugins, and their Home Manager modules) comes from the [`ai.nix`](https://github.com/truelecter/ai.nix) flake input; its settings live in `profiles/home/dev/ai.nix`. Klipper and the rest of the 3D printer stack (packages, plugins, `services.klipper`, KlipperScreen, camera-streamer) come from the [`klipper.nix`](https://github.com/truelecter/klipper.nix) flake input; each printer's configuration lives in its host folder. The Minecraft server module (`services.yanms`), the modpacks and mod jars come from the [`yanms.nix`](https://github.com/truelecter/yanms.nix) flake input; the servers are configured in `nixos/hosts/x86_64/depsos/minecraft-servers`.
+Some modules and packages come from separate flake inputs; this repository only configures them:
+
+- [`ai.nix`](https://github.com/truelecter/ai.nix) - AI agent tooling: oh-my-pi and Paseo, their extensions, plugins and Home Manager modules. Settings are in `profiles/home/dev/ai.nix`.
+- [`klipper.nix`](https://github.com/truelecter/klipper.nix) - 3D printer stack: Klipper packages and plugins, `services.klipper`, KlipperScreen, camera-streamer. Each printer is configured in its host folder.
+- [`yanms.nix`](https://github.com/truelecter/yanms.nix) - Minecraft servers: the `services.yanms` module, modpacks and mod jars. The servers are configured in `nixos/hosts/x86_64/depsos/minecraft-servers`.
 
 ## Apply Configurations
 
