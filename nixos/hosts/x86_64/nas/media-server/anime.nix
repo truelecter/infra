@@ -21,12 +21,8 @@
   # https://www.themoviedb.org/keyword/210024-anime
   animeKeywordId = "210024";
 
-  seerrAuth = import "${inputs.nixflix}/modules/seerr/authUtil.nix" {
-    inherit lib pkgs;
-    cfg = seerCfg;
-  };
+  mkSecureCurl = import "${inputs.nixflix}/lib/mk-secure-curl.nix" {inherit lib pkgs;};
 
-  curl = lib.getExe pkgs.curl;
   jq = lib.getExe pkgs.jq;
 
   libraryDir = path: {
@@ -137,10 +133,13 @@ in {
 
       BASE_URL="http://${seerCfg.connectionAddress}:${toString seerCfg.port}/api/v1"
 
-      source ${seerrAuth.authScript}
-
+      # api URL [curl args...]
       api() {
-        ${curl} -sSf ${seerrAuth.curlAuthArgs} -H "Content-Type: application/json" "$@"
+        ${mkSecureCurl seerCfg.apiKey {
+        url = "$1";
+        headers."Content-Type" = "application/json";
+        extraArgs = ''-Sf "''${@:2}"'';
+      }}
       }
 
       RADARR_ID=$(api "$BASE_URL/settings/radarr" | ${jq} -er '.[] | select(.isDefault and (.is4k | not)) | .id')
@@ -160,15 +159,15 @@ in {
 
       if [ -z "$EXISTING_IDS" ]; then
         echo "Creating anime movies override rule"
-        api -X POST -d "$RULE" "$BASE_URL/overrideRule" >/dev/null
+        api "$BASE_URL/overrideRule" -X POST -d "$RULE" >/dev/null
       else
         FIRST_ID=$(echo "$EXISTING_IDS" | head -n1)
         echo "Updating anime movies override rule $FIRST_ID"
-        api -X PUT -d "$RULE" "$BASE_URL/overrideRule/$FIRST_ID" >/dev/null
+        api "$BASE_URL/overrideRule/$FIRST_ID" -X PUT -d "$RULE" >/dev/null
 
         echo "$EXISTING_IDS" | tail -n +2 | while IFS= read -r id; do
           echo "Deleting duplicate override rule $id"
-          api -X DELETE "$BASE_URL/overrideRule/$id" >/dev/null
+          api "$BASE_URL/overrideRule/$id" -X DELETE >/dev/null
         done
       fi
     '';
