@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Prepare build environment
         uses: ./.github/actions/prepare-build-environment
@@ -28,7 +28,7 @@ jobs:
           git commit -am "deps(sources): Updated cell sources" || true
 
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v21
+        uses: DeterminateSystems/update-flake-lock@v29
         id: ufl
         with:
           token: ${{ secrets.PR_WF_ENABLED_TOKEN }}
@@ -40,6 +40,7 @@ jobs:
             automated
 
       - name: Enable auto-merge
+        if: ${{ steps.ufl.outputs.pull-request-number != '' }}
         run: |
           gh pr merge --squash --auto "$PR_NUMBER" --subject "deps(repo): update packages"
         env:
