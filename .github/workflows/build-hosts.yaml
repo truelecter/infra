@@ -23,7 +23,7 @@ jobs:
       hosts: ${{ steps.eval.outputs.hosts }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Prepare build environment
         uses: ./.github/actions/prepare-build-environment
@@ -60,7 +60,7 @@ jobs:
           sudo mount --bind /mnt/nix /nix
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Prepare build environment
         uses: ./.github/actions/prepare-build-environment
@@ -92,7 +92,7 @@ jobs:
           sudo mount --bind /mnt/nix /nix
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Prepare build environment
         uses: ./.github/actions/prepare-build-environment
