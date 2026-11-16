@@ -17,11 +17,11 @@
         "paseo": "paseo"
       },
       "locked": {
-        "lastModified": 1794632224,
-        "narHash": "sha256-KLTYW+XIeWSn+xOXlui+/Up8jmkmEAEfRBjb1bKg/zw=",
+        "lastModified": 1794839993,
+        "narHash": "sha256-7SyaBwsNUaPgcG8lclmQTCOs7AdjYJenbKtReidRQlA=",
         "owner": "truelecter",
         "repo": "ai.nix",
-        "rev": "9312e7992616f333093282d30d1d63238c591885",
+        "rev": "655bfc701ec1116b44a4e106a5ed6f7fa0bb9270",
         "type": "github"
       },
       "original": {
@@ -909,11 +909,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794312442,
-        "narHash": "sha256-IQtCkikJ9QoB+8/TgIX+AP2eM4WMz5Xra77KPbGHPDw=",
+        "lastModified": 1794832296,
+        "narHash": "sha256-lefC7MBINOwZW0hEKNbWs2WRP06zQL++2eHR+a93yVg=",
         "owner": "truelecter",
         "repo": "paseo",
-        "rev": "f94b816e890d27cd6b7716baef2c0418ae0546f2",
+        "rev": "606830fbf4a2a3396a2bb84159cf76931002821b",
         "type": "github"
       },
       "original": {
