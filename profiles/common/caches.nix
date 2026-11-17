@@ -16,5 +16,7 @@
       "workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw="
       # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" # already included in nix module
     ];
+    # nix-proxy links are lossy: large NARs need more resumes than the default 5.
+    download-attempts = 30;
   };
 }
