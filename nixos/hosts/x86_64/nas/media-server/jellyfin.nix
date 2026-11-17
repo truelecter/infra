@@ -118,6 +118,13 @@ in {
         # nix store prefetch-file --json "https://raw.githubusercontent.com/KeksBombe/jellyfin-plugin-auto-collections/4630c2c9107bcc60de7d320e051bf2b5be13a21c/manifest.json" | jq -r .hash
         hash = "sha256-COTY7wkssUqT2/i61cjmlzK3c3fdBseuLwJPhCYDQDY=";
       };
+
+      "User Management" = {
+        enabled = true;
+        url = "https://raw.githubusercontent.com/JPKribs/jellyfin-plugin-usermanagement/1ec5b5d1de5d2b034008ceca3174c1f24a98466e/manifest.json";
+        # nix store prefetch-file --json "https://raw.githubusercontent.com/JPKribs/jellyfin-plugin-usermanagement/1ec5b5d1de5d2b034008ceca3174c1f24a98466e/manifest.json" | jq -r .hash
+        hash = "sha256-mG3JLpn68RzxmmVxK6vyPpf08+vEJParN/c1Xzw7Z4k=";
+      };
     };
 
     plugins."SSO-Auth" = {
@@ -203,6 +210,39 @@ in {
         ExpressionCollections = [
           (collection "Planet Earth" ''SHOW AND TITLE "Planet Earth" AND STUDIO "BBC"'')
           (collection "Breaking Bad" ''TITLE "Breaking Bad" OR TITLE "Better Call Saul"'')
+        ];
+      };
+    };
+
+    # Default group for all non-admin users, SSO ones too; membership is rebuilt by the plugin on startup.
+    plugins."User Management" = let
+      defaultGroupId = "3f0d6c1e-8a52-4b7e-9c41-2d5e7f8a9b10";
+    in {
+      enable = true;
+      package = fromRepo {
+        version = "12.4.2.7";
+        # nix store prefetch-file --json --unpack https://github.com/JPKribs/jellyfin-plugin-usermanagement/releases/download/v12.4.2.7/jellyfin-plugin-usermanagement-12.4.2.7.zip | jq -r .hash
+        hash = "sha256-Q0NXr0uRET8tFTN4+F0FbgY5umYfC2tRpeMpc0neONQ=";
+        repository = "User Management";
+      };
+      config = {
+        DefaultGroupId = defaultGroupId;
+        Groups = [
+          {
+            Id = defaultGroupId;
+            Name = "Default";
+            Configuration = {
+              ManageAudioLanguagePreference = true;
+              AudioLanguagePreference = "OriginalLanguage";
+              ManagePlayDefaultAudioTrack = true;
+              PlayDefaultAudioTrack = false;
+              ManageSubtitleLanguagePreference = true;
+              SubtitleLanguagePreference = "eng";
+              # "Default" mode picks any default/forced track regardless of language.
+              ManageSubtitleMode = true;
+              SubtitleMode = "Smart";
+            };
+          }
         ];
       };
     };
