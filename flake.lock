@@ -17,11 +17,11 @@
         "paseo": "paseo"
       },
       "locked": {
-        "lastModified": 1794839993,
-        "narHash": "sha256-7SyaBwsNUaPgcG8lclmQTCOs7AdjYJenbKtReidRQlA=",
+        "lastModified": 1794879346,
+        "narHash": "sha256-Joc36djCl1VH4F3439aG5HBsopdmhy02nU58Wgp+dGA=",
         "owner": "truelecter",
         "repo": "ai.nix",
-        "rev": "655bfc701ec1116b44a4e106a5ed6f7fa0bb9270",
+        "rev": "99d606ffc1192862e8ca8be405ef95b1e64e5dca",
         "type": "github"
       },
       "original": {

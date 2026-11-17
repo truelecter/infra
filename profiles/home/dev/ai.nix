@@ -53,6 +53,8 @@ in {
       mcp-ready
       paseo-tools
       say
+      # Old questions[] ask, so Paseo shows multi-select questions with checkboxes (backlog #40).
+      legacy-ask
       # Terse replies; mode per session with /caveman full|high|ultracave|off.
       caveman
       gsd
