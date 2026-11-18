@@ -326,6 +326,7 @@
         imports = [
           inputs.flake-parts.flakeModules.modules
 
+          ./parts/caches.nix
           ./parts/catalog
           ./parts/ci.nix
           ./parts/nixpkgs.nix

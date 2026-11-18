@@ -13,6 +13,7 @@ policies:
       - home
       - common
       - terranix
+      - caches
       - catalog
       - catppuccin
       - deploy-rs
