@@ -25,6 +25,7 @@
           package = pkgs.opentofu.withPlugins (p: [
             p.cloudflare_cloudflare
             p.tailscale_tailscale
+            p.terraform-routeros_routeros
           ]);
           extraRuntimeInputs = [pkgs.sops pkgs.jq];
           # Runs inside workdir.
@@ -38,7 +39,8 @@
             TF_VAR_public_ips=$(jq -c .public_ips <<<"$secrets")
             TAILSCALE_API_KEY=$(jq -r .tailscale_key <<<"$secrets")
             CLOUDFLARE_API_TOKEN=$(jq -r .cloudflare_token <<<"$secrets")
-            export TF_VAR_state_passphrase TF_VAR_public_ips TAILSCALE_API_KEY CLOUDFLARE_API_TOKEN
+            ROS_PASSWORD=$(jq -r .routeros_password <<<"$secrets")
+            export TF_VAR_state_passphrase TF_VAR_public_ips TAILSCALE_API_KEY CLOUDFLARE_API_TOKEN ROS_PASSWORD
           '';
         };
 
@@ -48,6 +50,7 @@
           ./state.nix
           ./cloudflare
           ./tailscale.nix
+          ./routeros.nix
         ];
       };
     };
