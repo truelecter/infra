@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  catalog,
   ...
 }: let
   inherit (lib) types mkOption;
@@ -10,7 +11,7 @@ in {
   options.tl.matrix = {
     server-name = mkOption {
       type = types.str;
-      default = "xata.house";
+      default = catalog.domains.media;
     };
 
     homeserver-hostname = mkOption {
