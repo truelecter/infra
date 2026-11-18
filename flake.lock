@@ -491,11 +491,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794192584,
-        "narHash": "sha256-7YLNehZRvC0gvPz6lnLBt53QcT7JoiWRhtn/xRxjYm4=",
+        "lastModified": 1795043548,
+        "narHash": "sha256-5vhUxi109b7YVXF6D4f/MT1ostA5A0uGSPFCMS/WL3Y=",
         "owner": "truelecter",
         "repo": "klipper.nix",
-        "rev": "1fad482de9c7a6b2a123e34f064a32bf02239b40",
+        "rev": "e717f61cf456130bb1aa481b475f517d471f9563",
         "type": "github"
       },
       "original": {
