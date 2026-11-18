@@ -1,10 +1,14 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  catalog,
+  ...
+}: {
   services.klipper-screen = {
     enable = true;
     # package = pkgs.klipperscreen;
     settings = {
       "printer VzBot 235" = {
-        moonraker_host = "10.3.0.131";
+        moonraker_host = catalog.hosts.vzbot235.net.x290.ip;
         moonraker_port = 7125;
         extrude_distances = "5, 10, 25, 50";
         extrude_speeds = "1, 2, 5, 25";
