@@ -1,13 +1,12 @@
-# The root MikroTik router (catalog.devices.x290-router), through its REST API
-# over HTTPS. x290-router.pem is the router's self-signed `rest-api`
-# certificate, pinned instead of trusting a CA.
+# DHCP on the root router: sirius' half (catalog.networks.x290-sirius) comes
+# relayed from sirius' bridge. The router's own half stays on the factory
+# `defconf` server, pool and network.
 {
   lib,
   catalog,
   ...
 }: let
   inherit (catalog.networks) x290 x290-sirius;
-  address = catalog.devices.x290-router.net.x290.ip;
   sirius = catalog.hosts.sirius.net.x290.ip;
 
   ipToInt = ip: lib.foldl' (acc: part: acc * 256 + lib.toInt part) 0 (lib.splitString "." ip);
@@ -18,39 +17,7 @@
   reserved = lib.filterAttrs (_: n: n.net ? x290 && n.net.x290.ip != null && n.net.x290.mac != null) (catalog.hosts // catalog.devices);
   key = lib.replaceStrings ["-"] ["_"];
 in {
-  terraform.required_providers.routeros.source = "terraform-routeros/routeros";
-
-  # The password comes from ROS_PASSWORD, set from secrets/terraform.yaml.
-  provider.routeros = {
-    hosturl = "https://${address}";
-    username = "admin";
-    ca_certificate = "${./x290-router.pem}";
-  };
-
   resource = {
-    # Services always exist: creating one only sets it (`numbers` names it).
-    routeros_ip_service = {
-      www_ssl = {
-        numbers = "www-ssl";
-        port = 443;
-        certificate = "rest-api";
-        tls_version = "only-1.2";
-        disabled = false;
-      };
-      telnet = {
-        numbers = "telnet";
-        port = 23;
-        disabled = true;
-      };
-      ftp = {
-        numbers = "ftp";
-        port = 21;
-        disabled = true;
-      };
-    };
-
-    # DHCP for sirius' half, relayed by sirius from its bridge. The router's
-    # own half stays on the factory `defconf` server, pool and network.
     routeros_ip_pool.sirius = {
       name = "sirius";
       ranges = ["10.3.0.200-10.3.0.225"];

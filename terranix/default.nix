@@ -50,7 +50,7 @@
           ./state.nix
           ./cloudflare
           ./tailscale.nix
-          ./routeros.nix
+          ./routeros
         ];
       };
     };
