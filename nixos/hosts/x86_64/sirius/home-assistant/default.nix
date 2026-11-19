@@ -4,7 +4,6 @@
     ./hass
     ./mqtt.nix
     # ./matter.nix
-    ./dns.nix
   ];
 
   systemd.tmpfiles.rules = [
