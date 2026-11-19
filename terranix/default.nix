@@ -40,7 +40,8 @@
             TAILSCALE_API_KEY=$(jq -r .tailscale_key <<<"$secrets")
             CLOUDFLARE_API_TOKEN=$(jq -r .cloudflare_token <<<"$secrets")
             ROS_PASSWORD=$(jq -r .routeros_password <<<"$secrets")
-            export TF_VAR_state_passphrase TF_VAR_public_ips TAILSCALE_API_KEY CLOUDFLARE_API_TOKEN ROS_PASSWORD
+            TF_VAR_wifi_passphrase=$(sops -d --extract '["wireless290Pw"]' ../../secrets/wifi.yaml)
+            export TF_VAR_state_passphrase TF_VAR_public_ips TAILSCALE_API_KEY CLOUDFLARE_API_TOKEN ROS_PASSWORD TF_VAR_wifi_passphrase
           '';
         };
 

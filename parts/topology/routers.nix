@@ -55,9 +55,9 @@ in {
         type = "bridge";
       };
 
-      # 5 GHz, SSID Xata290.5S: sirius' uplink (see sirius/wifi.nix).
+      # Provisioned by the router's CAPsMAN, same SSIDs as the router (see
+      # terranix/routeros/wifi.nix). 5 GHz is sirius' uplink.
       interfaces.wifi1.type = "wifi";
-      # 2.4 GHz, SSID Xata290.2S.
       interfaces.wifi2.type = "wifi";
 
       connections = {

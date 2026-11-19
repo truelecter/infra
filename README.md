@@ -44,7 +44,7 @@ This flake is configured using [flake-parts](https://github.com/hercules-ci/flak
 - `/lib` - Helper functions and utilities
 - `/secrets` - Encrypted secrets (using sops-nix)
 - `/shell` - Development shell configurations
-- `/terranix` - Cloudflare DNS, Tailscale (policy file, MagicDNS, device tags) and the root MikroTik router through OpenTofu, partly derived from the host catalog
+- `/terranix` - Cloudflare DNS, Tailscale (policy file, MagicDNS, device tags) and the MikroTik router and AP through OpenTofu, partly derived from the host catalog
 
 Some modules and packages come from my separate flakes:
 
@@ -80,7 +80,7 @@ deploy --skip-checks '.#<hostname>'
 
 ### Cloudflare, Tailscale and MikroTik
 
-Run from the repository root. The Cloudflare token, the Tailscale API key, the router password, the state passphrase and the public IPs come from `secrets/terraform.yaml`. The state is committed, encrypted, in `terranix/state/terraform.tfstate`.
+Run from the repository root. The Cloudflare token, the Tailscale API key, the router password, the state passphrase and the public IPs come from `secrets/terraform.yaml`, the wifi passphrase from `secrets/wifi.yaml`. The state is committed, encrypted, in `terranix/state/terraform.tfstate`.
 
 ```bash
 nix run .#infra.plan

@@ -37,6 +37,7 @@
 in {
   imports = [
     ./dhcp.nix
+    ./wifi.nix
   ];
 
   terraform.required_providers.routeros.source = "terraform-routeros/routeros";
