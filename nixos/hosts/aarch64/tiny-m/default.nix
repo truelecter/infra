@@ -14,11 +14,6 @@
     wifi.cm4ExternalAntenna = true;
   };
 
-  networking.wireless.networks."Xata290.5S" = {
-    pskRaw = "ext:WIFI_PASSWORD";
-    priority = 100;
-  };
-
   system.stateVersion = "24.11";
 
   users.users.truelecter = {

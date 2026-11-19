@@ -16,11 +16,6 @@
     interfaces = ["wlan0"];
 
     networks = {
-      # "Xata290.5S" = {
-      #   pskRaw = "ext:WIFI_PASSWORD";
-      #   priority = 10;
-      # };
-
       "Xata290.2" = {
         pskRaw = "ext:WIFI_PASSWORD";
         priority = 5;

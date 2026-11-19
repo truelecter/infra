@@ -47,10 +47,6 @@ in {
         pskRaw = "ext:WIFI_PASSWORD";
         priority = 10;
       };
-      "Xata290.5S" = {
-        pskRaw = "ext:WIFI_PASSWORD";
-        priority = 100;
-      };
     };
 
     secretsFile = config.sops.secrets.xata-password-env.path;
