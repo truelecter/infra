@@ -1,6 +1,5 @@
-name: Prepare build environment
-description: Install Determinate Nix, Attic client, and configure Attic cache for CI
-
+description: Install Determinate Nix, Attic client, and configure Attic cache for
+  CI
 inputs:
   attic-push-token:
     description: Token for pushing to Attic (ATTIC_PUSH_TOKEN)
@@ -8,55 +7,53 @@ inputs:
   github-token:
     description: GitHub token for Nix access-tokens (typically secrets.GITHUB_TOKEN)
     required: true
-
+name: Prepare build environment
 runs:
-  using: composite
   steps:
-    # Determinate Nix, unlike upstream Nix, retries a NAR download that broke
-    # mid-stream even when the server doesn't support ranged requests (Attic
-    # NARs have no Content-Length or Accept-Ranges): it starts over and skips
-    # the bytes it already has.
-    - name: Install Nix
-      uses: DeterminateSystems/determinate-nix-action@v3
-      with:
-        github-token: ${{ inputs.github-token }}
-        diagnostic-endpoint: ""
-        summarize: false
-        extra-conf: |
-          substituters = https://nix-proxy.tlctr.me https://cache.nixos.org/
-          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk= workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw= cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= mic92.cachix.org-1:gi8IhgiT3CYZnJsaW7fxznzTkMUOn1RY4GmXdT/nXYQ= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= truelecter.cachix.org-1:bWHkQ/OM0MLHB9L6gftyaawCrEYkeZyygAcuojwslE0= nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM=
-          # 30 attempts with random delays of up to 1s, 2s, 4s ... 60s (about
-          # 24 minutes total at most) instead of 5 attempts within 1.5s: an
-          # 800 MB NAR over a lossy link can need more than 10 resumes.
-          filetransfer-retry-attempts = 30
-          filetransfer-retry-delay = 1000
-          # One HTTP/1.1 connection per transfer: a dropped connection restarts
-          # one download instead of every NAR multiplexed over a shared HTTP/2 one.
-          http2 = false
-          # Give up on stalled transfers after 1 minute instead of 5, so the
-          # retry starts sooner.
-          stalled-download-timeout = 60
+  - name: Install Nix
+    uses: DeterminateSystems/determinate-nix-action@v3
+    with:
+      diagnostic-endpoint: ''
+      extra-conf: 'substituters = https://nix-proxy.tlctr.me https://cache.nixos.org/
 
-    - name: Install Attic with chunking support
-      id: attic
-      shell: bash
-      run: |
-        attic_path=$(nix build --no-link --print-out-paths github:truelecter/attic/chunked-uploads-ranges#attic-client)
-        nix profile install "$attic_path"
-        echo "path=$attic_path" >> "$GITHUB_OUTPUT"
+        trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+        cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E=
+        cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= mic92.cachix.org-1:gi8IhgiT3CYZnJsaW7fxznzTkMUOn1RY4GmXdT/nXYQ=
+        nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4=
+        truelecter.cachix.org-1:bWHkQ/OM0MLHB9L6gftyaawCrEYkeZyygAcuojwslE0= nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM=
+        nix-proxy.tlctr.me:o0mf52dfc6glFzwRRquMmGaphNAidwF6L/q2IFyB9qk= workflows:nGqDVYKhDZxnNXIemS1/Bq2+i1wwQ6GE/xG2OIiMNDw=
 
-    - name: Setup Attic cache
-      uses: ryanccn/attic-action@v0.4.1
-      with:
-        endpoint: https://nix-cache.tlctr.me/
-        cache: workflows
-        token: ${{ inputs.attic-push-token }}
-        skip-use: true
+        filetransfer-retry-attempts = 30
 
-    # attic-action only pushes paths added after it starts, so the client
-    # installed above never lands in the cache and every job rebuilds it.
-    # nix-proxy serves the workflows cache, so later runs substitute it.
-    - name: Push Attic client to cache
-      shell: bash
-      run: |
-        attic push workflows "${{ steps.attic.outputs.path }}"
+        filetransfer-retry-delay = 1000
+
+        http2 = false
+
+        stalled-download-timeout = 60
+
+        '
+      github-token: ${{ inputs.github-token }}
+      summarize: false
+  - id: attic
+    name: Install Attic with chunking support
+    run: 'attic_path=$(nix build --no-link --print-out-paths github:truelecter/attic/chunked-uploads-ranges#attic-client)
+
+      nix profile install "$attic_path"
+
+      echo "path=$attic_path" >> "$GITHUB_OUTPUT"
+
+      '
+    shell: bash
+  - name: Setup Attic cache
+    uses: ryanccn/attic-action@v0.4.1
+    with:
+      cache: workflows
+      endpoint: https://nix-cache.tlctr.me/
+      skip-use: true
+      token: ${{ inputs.attic-push-token }}
+  - name: Push Attic client to cache
+    run: 'attic push workflows "${{ steps.attic.outputs.path }}"
+
+      '
+    shell: bash
+  using: composite

@@ -4,6 +4,7 @@
 
     ./conform.nix
     ./editorconfig.nix
+    ./github-actions.nix
     ./github-settings.nix
   ];
 
