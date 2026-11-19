@@ -93,6 +93,9 @@ in {
       # The caveman extension and the writing-style rule set the tone, so OMP's personality block
       # only adds tokens.
       personality = "none";
+      # A turn that ends with open todos gets a reminder that starts another turn, even when the
+      # open items wait on the user.
+      todo.reminders = false;
 
       # GSD skills that can't work with the store install (update, surface), don't fit this setup,
       # or only list other commands. GSD hooks call code-review, validate-phase, secure-phase,
