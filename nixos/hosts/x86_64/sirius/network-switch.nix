@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   utils,
   catalog,
   ...
@@ -10,33 +9,10 @@
   lanEth = "lan-eth";
   bridge = "br-switch";
 
-  x290 = catalog.networks.x290;
+  inherit (catalog.networks) x290 x290-sirius;
   switchAddress = catalog.hosts.sirius.net.x290.ip;
 
-  dnsOption = servers: {
-    code = 6;
-    name = "domain-name-servers";
-    data = lib.concatStringsSep ", " servers;
-  };
-
-  # Every catalog host and device with an x290 address and MAC, by address.
-  reservations = lib.pipe (catalog.hosts // catalog.devices) [
-    lib.attrValues
-    (lib.concatMap (node: lib.optional (node.net ? x290) node.net.x290))
-    (lib.filter (a: a.ip != null && a.mac != null))
-    (lib.sort (a: b: let
-      octets = ip: map lib.toInt (lib.splitString "." ip);
-    in
-      lib.compareLists lib.compare (octets a.ip) (octets b.ip) < 0))
-    (map (a:
-      {
-        hw-address = a.mac;
-        ip-address = a.ip;
-      }
-      // lib.optionalAttrs (a.dhcp.nameservers != []) {
-        option-data = [(dnsOption a.dhcp.nameservers)];
-      }))
-  ];
+  router = catalog.devices.x290-router.net.x290.ip;
 in {
   networking.useDHCP = false;
 
@@ -126,10 +102,13 @@ in {
           ];
           networkConfig = {
             ConfigureWithoutCarrier = true;
+            # The router serves DHCP for this half too (terranix/routeros.nix).
+            DHCPServer = true;
           };
+          dhcpServerConfig.RelayTarget = router;
           routes = [
             {
-              Destination = "10.3.0.128/25";
+              Destination = x290-sirius.cidr;
             }
           ];
         };
@@ -172,9 +151,6 @@ in {
           "local-fs.target"
         ];
       };
-      kea-dhcp4-server = {
-        wantedBy = [(systemdNetdev wifiAPInterface) (systemdNetdev lanEth)];
-      };
     };
   };
 
@@ -191,63 +167,6 @@ in {
   };
 
   services = {
-    kea = {
-      dhcp4 = {
-        enable = true;
-        settings = {
-          interfaces-config = {
-            interfaces = [
-              bridge
-            ];
-            service-sockets-require-all = true;
-          };
-          lease-database = {
-            name = "/var/lib/kea/dhcp4.leases";
-            persist = true;
-            type = "memfile";
-          };
-          rebind-timer = 2000;
-          renew-timer = 1000;
-
-          host-reservation-identifiers = [
-            "hw-address"
-          ];
-
-          reservations-global = true;
-          reservations-in-subnet = true;
-
-          option-data = [(dnsOption x290.nameservers)];
-
-          inherit reservations;
-
-          subnet4 = [
-            {
-              # Bridge
-              id = 1;
-              pools = [
-                {
-                  pool = "10.3.0.200 - 10.3.0.225";
-                }
-              ];
-
-              interface = bridge;
-
-              option-data = [
-                {
-                  code = 3;
-                  data = switchAddress;
-                  name = "routers";
-                }
-              ];
-
-              subnet = "${switchAddress}/${toString x290.prefixLength}";
-            }
-          ];
-          valid-lifetime = 4000;
-        };
-      };
-    };
-
     hostapd = {
       enable = true;
       radios = {

@@ -1,19 +1,12 @@
-{config, ...}: let
-  inherit (config.services.kea.dhcp4) settings;
-  inherit (builtins) concatStringsSep head length map;
-in {
+{catalog, ...}: {
   topology.self = {
     # br-switch is the homelab segment of x290, not a separate network: same
-    # subnet, but its own DHCP server.
+    # subnet, joined to the router's half by proxy ARP.
     interfaces.br-switch.network = "x290";
 
-    services.kea-dhcp4 = {
-      name = "Kea DHCP";
-      info = concatStringsSep ", " settings.interfaces-config.interfaces;
-      details = {
-        pool.text = concatStringsSep ", " (map (p: p.pool) (head settings.subnet4).pools);
-        reservations.text = toString (length settings.reservations);
-      };
+    services.dhcp-relay = {
+      name = "DHCP relay";
+      info = "br-switch -> ${catalog.devices.x290-router.net.x290.ip}";
     };
   };
 }
