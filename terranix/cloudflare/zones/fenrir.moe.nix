@@ -8,13 +8,6 @@
       ttl = 1;
       proxied = true;
     };
-    a_webhooks = {
-      type = "A";
-      name = "webhooks.fenrir.moe";
-      content = publicIp "depsos";
-      ttl = 1;
-      proxied = true;
-    };
     cname_www = {
       type = "CNAME";
       name = "www.fenrir.moe";
