@@ -44,6 +44,18 @@
         default = null;
         description = "DNS suffix of host names on this network, such as the MagicDNS tailnet name.";
       };
+
+      subnetOf = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Network this one is a part of, such as one DHCP scope of a LAN. Addresses still name the parent network.";
+      };
+
+      dhcpPool = mkOption {
+        type = types.nullOr (types.strMatching "([0-9]{1,3}\\.){3}[0-9]{1,3}-([0-9]{1,3}\\.){3}[0-9]{1,3}");
+        default = null;
+        description = "Range DHCP hands out dynamic addresses from, `first-last`.";
+      };
     };
   });
 
@@ -59,6 +71,12 @@
         type = types.nullOr macAddress;
         default = null;
         description = "MAC address. With `ip` set, the network's DHCP server reserves `ip` for it.";
+      };
+
+      privateMac = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Like `mac`, but the MAC stays out of the repository: terranix reads it from `private_macs.<node>` in secrets/terraform.yaml.";
       };
 
       dhcp.nameservers = mkOption {
@@ -204,6 +222,18 @@
     addresses
     ++ duplicates "ip" "address"
     ++ duplicates "mac" "MAC"
+    ++ map (a: "${a.node}: ${a.netName} has both mac and privateMac") (lib.filter (a: a.mac != null && a.privateMac) addresses)
+    ++ lib.concatLists (lib.mapAttrsToList (name: net: let
+      parent = cfg.networks.${net.subnetOf};
+      pool = lib.splitString "-" net.dhcpPool;
+    in
+      lib.optionals (net.subnetOf != null) (
+        if !(cfg.networks ? ${net.subnetOf})
+        then ["network ${name}: unknown parent network ${net.subnetOf}"]
+        else lib.optional (!inNetwork parent (lib.head (lib.splitString "/" net.cidr))) "network ${name}: ${net.cidr} is outside ${net.subnetOf} (${parent.cidr})"
+      )
+      ++ lib.optional (net.dhcpPool != null && !lib.all (inNetwork net) pool) "network ${name}: DHCP pool ${net.dhcpPool} is outside ${net.cidr}")
+    cfg.networks)
     ++ lib.concatLists (lib.mapAttrsToList (name: s:
       lib.optional (!(cfg.hosts ? ${s.host})) "service ${name}: unknown host ${s.host}"
       ++ lib.optional (!(nodes ? ${s.via})) "service ${name}: unknown host or device ${s.via}")

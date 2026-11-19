@@ -4,8 +4,7 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}:
-{
+}: {
   hls-js = {
     pname = "hls-js";
     version = "v1.7.4";

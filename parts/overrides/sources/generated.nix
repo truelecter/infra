@@ -4,8 +4,7 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}:
-{
+}: {
   attic = {
     pname = "attic";
     version = "4732905d3bc405b9206098d12080247fc3cf1963";

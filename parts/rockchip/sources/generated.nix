@@ -4,8 +4,7 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}:
-{
+}: {
   btt-linux-rockchip = {
     pname = "btt-linux-rockchip";
     version = "bpi-rk-6.1-rkr5.1";

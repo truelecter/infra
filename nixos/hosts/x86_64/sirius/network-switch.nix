@@ -9,7 +9,7 @@
   lanEth = "lan-eth";
   bridge = "br-switch";
 
-  inherit (catalog.networks) x290 x290-sirius;
+  inherit (catalog.networks) x290 x290-router x290-sirius;
   switchAddress = catalog.hosts.sirius.net.x290.ip;
 
   router = catalog.devices.x290-router.net.x290.ip;
@@ -90,7 +90,7 @@ in {
 
           routes = [
             {
-              Destination = "10.3.0.0/25";
+              Destination = x290-router.cidr;
             }
           ];
         };

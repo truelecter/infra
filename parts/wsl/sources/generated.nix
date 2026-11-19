@@ -4,8 +4,7 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}:
-{
+}: {
   wsl-kernel-6-6-87-2 = {
     pname = "wsl-kernel-6-6-87-2";
     version = "linux-msft-wsl-6.6.87.2";
@@ -38,7 +37,7 @@
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
-      sparseCheckout = [ ];
+      sparseCheckout = [];
       sha256 = "sha256-5bBc37jAMwsu0JZBVZ4KJ9gHCHK+OY/MGd1hZf8XZP4=";
     };
   };

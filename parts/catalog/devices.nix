@@ -7,7 +7,27 @@
 
     x290-ap = {
       description = "Mikrotik hAP ax3, access point";
-      net.x290.ip = "10.3.0.24";
+      # Static on the AP itself; the lease keeps it out of the pool.
+      net.x290 = {
+        ip = "10.3.0.24";
+        privateMac = true;
+      };
+    };
+
+    iphone = {
+      description = "iPhone";
+      net.x290 = {
+        ip = "10.3.0.15";
+        privateMac = true;
+      };
+    };
+
+    iot-3585046852 = {
+      description = "Hi-Flying Wi-Fi module, DHCP host name 3585046852";
+      net.x290 = {
+        ip = "10.3.0.16";
+        privateMac = true;
+      };
     };
 
     x290-unifi = {
