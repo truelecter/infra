@@ -72,8 +72,17 @@
 in {
   terraform.required_providers.tailscale.source = "tailscale/tailscale";
 
-  data.tailscale_device =
-    lib.mapAttrs (name: _: {name = "${name}.${domain}";}) tagged;
+  # Every catalog node on the tailnet. The plan fails when Tailscale gave one
+  # a different address than the catalog has, such as after it joined again.
+  data.tailscale_device = lib.mapAttrs (name: n: {
+    name = "${name}.${domain}";
+    lifecycle.postcondition = [
+      {
+        condition = "\${contains(self.addresses, \"${n.net.tailscale.ip}\")}";
+        error_message = "catalog has ${n.net.tailscale.ip} for ${name}, Tailscale has \${join(\", \", self.addresses)}";
+      }
+    ];
+  }) (lib.filterAttrs (_: n: n.net ? tailscale) (catalog.hosts // catalog.devices));
 
   resource = {
     tailscale_acl.policy.acl = builtins.toJSON policy;
