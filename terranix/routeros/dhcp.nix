@@ -1,7 +1,4 @@
-# DHCP on the root router for both scopes of x290 (catalog `subnetOf`):
-# x290-router on the router's bridge, and x290-sirius relayed from sirius'
-# bridge. Leases come from catalog hosts and devices with an x290 address and
-# a MAC; `privateMac` ones read theirs from `var.private_macs`.
+# Both x290 scopes: x290-router on the router's bridge, x290-sirius relayed from sirius.
 {
   lib,
   catalog,
@@ -17,6 +14,7 @@
   in
     ipToInt ip / size == ipToInt (lib.head (lib.splitString "/" net.cidr)) / size;
 
+  # Catalog nodes with an x290 address and a MAC; `privateMac` ones take it from var.private_macs.
   reserved = lib.filterAttrs (_: n: n.net ? x290 && n.net.x290.ip != null && (n.net.x290.mac != null || n.net.x290.privateMac)) (catalog.hosts // catalog.devices);
   key = lib.replaceStrings ["-"] ["_"];
 in {
@@ -68,6 +66,7 @@ in {
         gateway = router;
         netmask = x290.prefixLength;
         dns_server = x290.nameservers;
+        inherit (x290) domain;
         comment = "defconf";
       };
       sirius = {
@@ -75,6 +74,7 @@ in {
         gateway = sirius;
         netmask = x290.prefixLength;
         dns_server = x290.nameservers;
+        inherit (x290) domain;
       };
     };
 

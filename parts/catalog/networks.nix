@@ -5,6 +5,7 @@
     x290 = {
       cidr = "10.3.0.0/24";
       nameservers = [config.catalog.devices.x290-router.net.x290.ip];
+      domain = "xata";
     };
 
     # The half the router's bridge serves directly.

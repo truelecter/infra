@@ -1,7 +1,3 @@
-# The MikroTik units (catalog.devices.x290-router, x290-ap), through their
-# REST APIs over HTTPS. <unit>.pem is the unit's self-signed `rest-api`
-# certificate, pinned instead of trusting a CA. The root router is the default
-# provider, the AP is `routeros.ap`.
 {
   lib,
   catalog,
@@ -31,12 +27,27 @@
       port = 21;
       disabled = true;
     };
+    ssh = {
+      port = 22;
+      disabled = false;
+    };
+    winbox = {
+      port = 8291;
+      disabled = false;
+    };
+    www = {
+      port = 80;
+      disabled = false;
+    };
   };
 
   perUnit = f: lib.concatMapAttrs f units;
 in {
   imports = [
     ./dhcp.nix
+    ./dns.nix
+    ./firewall.nix
+    ./system.nix
     ./wifi.nix
   ];
 
@@ -48,6 +59,7 @@ in {
     {
       hosturl = "https://${catalog.devices.${name}.net.x290.ip}";
       username = "admin";
+      # The unit's self-signed `rest-api` certificate, pinned.
       ca_certificate = "${./. + "/${name}.pem"}";
     }
     // lib.optionalAttrs (u ? alias) {inherit (u) alias;})
