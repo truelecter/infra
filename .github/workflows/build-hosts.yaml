@@ -132,7 +132,7 @@ jobs:
           BUILDER_PK: ${{secrets.AARCH64_BUILDER_PK}}
           BUILDER_HOST: tl-mm4
         run: |
-          BUILDER_PORT=$(nix eval --raw ".#catalog.hosts.$BUILDER_HOST.linuxBuilder.sshPort")
+          BUILDER_PORT=$(nix eval --json ".#catalog.hosts.$BUILDER_HOST.linuxBuilder.sshPort")
 
           echo "$BUILDER_PK" | sudo tee /etc/nix/builder_ed25519 > /dev/null
           sudo chmod 600 /etc/nix/builder_ed25519
