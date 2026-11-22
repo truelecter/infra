@@ -135,6 +135,7 @@
         ]
         ++ [
           profiles.nixos.topology-common
+          profiles.nixos.mdns
           (
             {lib, ...}: {
               topology.extractors = {

@@ -16,6 +16,12 @@
 in {
   networking.useDHCP = false;
 
+  # mDNS is link-local: repeat it between the router's half and this one.
+  services.avahi = {
+    reflector = true;
+    allowInterfaces = [wifiInterface bridge];
+  };
+
   systemd = {
     network = {
       enable = true;
