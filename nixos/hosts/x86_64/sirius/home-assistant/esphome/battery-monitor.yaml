@@ -1,18 +1,25 @@
 # Battery bank monitor: Ritar packs (LINK bus via an HW-0519 RS485 module,
 # listen only) and a Victron SmartShunt (VE.Direct, listen only) on an
-# ESP32-C6 Super Mini. Enclosure: battery-monitor/enclosure.scad.
+# ESP32-C6 Super Mini.
 #
 # Wiring:
-#   HW-0519 TXD -> GPIO2      HW-0519 RXD -> 3V3 (held high, so the
-#   HW-0519 VCC -> 3V3        auto-direction module never transmits)
-#   HW-0519 GND -> GND        HW-0519 A+ / B- -> master pack LINK-IN pin 7 / pin 8
-#   VE.Direct 1 GND -> GND    VE.Direct 3 TX -> RX (GPIO17)   pins 2, 4 unconnected
-# Measure VE.Direct TX against GND first: at 5 V it needs a divider to 3.3 V.
+#   The HW-0519 labels its pins from the MCU side: RXD is its data output,
+#   TXD its data input. Its MAX485 is rated for 4.75-5.25 V, so it runs from
+#   5 V.
+#   HW-0519 VCC -> 5V         HW-0519 GND -> GND
+#   HW-0519 RXD -> 1 kΩ -> GPIO3, GPIO3 -> 2.2 kΩ -> GND (about 3.4 V high)
+#   HW-0519 TXD -> 5V (held high, so the auto-direction module never transmits)
+#   HW-0519 A+ / B- -> master pack LINK-IN pin 7 / pin 8
+#   VE.Direct 1 GND -> GND    VE.Direct 3 TX -> RX pad (GPIO17), direct: the
+#   SmartShunt uses 3.3 V logic. VE.Direct 2 RX -> GPIO18, unused (for the HEX
+#   protocol later). VE.Direct 4 (power) unconnected.
+#   The ESP must be powered from an isolated supply (a USB charger): VE.Direct
+#   GND is battery minus on the shunt's battery side.
 #
-# Build and flash: esphome run battery-monitor.yaml
-# Needs secrets.yaml next to this file (not committed) with wifi_ssid,
-# wifi_password, battery_monitor_api_key (32 bytes, base64) and
-# battery_monitor_ota_password.
+# Build and flash from the dev shell: esphome run battery-monitor.yaml
+# The `esphome` command decrypts ritar_battery_monitor.api_key and
+# .ota_password from secrets/esphome.yaml and the Wi-Fi
+# password from secrets/wifi.yaml into a temporary secrets.yaml.
 esphome:
   name: battery-monitor
   friendly_name: Battery monitor
@@ -32,14 +39,21 @@ logger:
 
 api:
   encryption:
-    key: !secret battery_monitor_api_key
+    key: !secret ritar_battery_monitor_api_key
 
 ota:
   - platform: esphome
-    password: !secret battery_monitor_ota_password
+    password: !secret ritar_battery_monitor_ota_password
+  # firmware upload from the web page, no password
+  - platform: web_server
+
+# status page, logs and firmware upload at http://<device>/, no authentication
+web_server:
+  port: 80
+  version: 3
 
 wifi:
-  ssid: !secret wifi_ssid
+  ssid: Xata290
   password: !secret wifi_password
 
 external_components:
@@ -53,7 +67,8 @@ packages:
 
 uart:
   - id: ritar_bus
-    rx_pin: GPIO2
+    rx_pin: GPIO3
+    # nothing on GPIO2: the HW-0519 input is tied high, the bus is listen only
     baud_rate: 9600
     rx_buffer_size: 512
     debug:

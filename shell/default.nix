@@ -13,6 +13,7 @@
 
       imports = [
         ./secrets
+        ./esphome.nix
         ./repo.nix
       ];
     };

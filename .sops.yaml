@@ -141,3 +141,12 @@ creation_rules:
           - *truelecter-beta
         age:
           - *nas
+
+  # ESPHome device secrets, decrypted at build time by the `esphome` dev shell command
+  - path_regex: secrets/esphome.yaml
+    key_groups:
+      - pgp:
+          - *truelecter-alpha
+          - *truelecter-beta
+        age:
+          - *squadbook
