@@ -1236,11 +1236,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795236415,
-        "narHash": "sha256-bAFaTEFemZ78Fj4Usp2hUroVVzbqU0ospO54qvNThgw=",
+        "lastModified": 1795360744,
+        "narHash": "sha256-srnCC5ZgO0E8Z6+X89F7fw9LYCFDl2iD7wKMPH1PaKc=",
         "owner": "truelecter",
         "repo": "yanms.nix",
-        "rev": "aa61ec0e00043e37b9f3d867928fa9b844a26a4d",
+        "rev": "9cb867002bbbe24cb2c84760a369d11324c56df7",
         "type": "github"
       },
       "original": {
