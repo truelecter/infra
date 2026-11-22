@@ -252,7 +252,6 @@ in {
       system-health = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {};
       tailscale-listener = {};
       todowrite2-tasks.enabled = false;
-      wide-chat = {};
       workspace-title-sync = {};
     };
   };
