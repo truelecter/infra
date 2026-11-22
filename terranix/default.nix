@@ -1,10 +1,4 @@
-# Cloudflare DNS and the Tailscale tailnet, through OpenTofu. Run from the
-# repository root: `nix run .#infra.plan`, `nix run .#infra` (apply).
-#
-# State lives in terranix/state/terraform.tfstate, encrypted with the
-# passphrase from secrets/terraform.yaml, which also holds the Tailscale API
-# key and the public IPs the DNS records point at. The Cloudflare token comes
-# from secrets/cloudflare.env.
+# Run from the repository root: `nix run .#infra.plan`, `nix run .#infra` (apply).
 {
   inputs,
   config,

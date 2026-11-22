@@ -1,5 +1,4 @@
-# OpenTofu state and plan encryption: the state is committed, so it's only
-# ever written encrypted.
+# The state is committed, so it's only ever written encrypted.
 {
   variable.state_passphrase = {
     type = "string";

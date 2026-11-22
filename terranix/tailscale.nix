@@ -1,6 +1,3 @@
-# Tailscale policy file, MagicDNS and device tags. tailscale_acl replaces the
-# whole policy file, rendered to JSON, so comments live here. Addresses come
-# from the catalog; the tailscale_device data source only gives node IDs.
 {
   lib,
   catalog,
@@ -10,7 +7,7 @@
 
   tagged = lib.filterAttrs (_: h: h.tailscale.tags != []) catalog.hosts;
 
-  # The node ID of a host's device.
+  # The node ID of a host's device; its addresses come from the catalog.
   nodeId = name: "\${data.tailscale_device.${name}.node_id}";
 
   policy = {
@@ -85,6 +82,7 @@ in {
   }) (lib.filterAttrs (_: n: n.net ? tailscale) (catalog.hosts // catalog.devices));
 
   resource = {
+    # Replaces the whole policy file; keep its comments in `policy` above.
     tailscale_acl.policy.acl = builtins.toJSON policy;
 
     tailscale_dns_preferences.tailnet.magic_dns = true;

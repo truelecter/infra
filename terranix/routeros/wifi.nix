@@ -1,8 +1,3 @@
-# Wifi on both MikroTik units, one SSID per band. The router runs CAPsMAN and
-# provisions the AP's radios as a CAP; its own radios use the same
-# configuration profiles locally, since CAPsMAN can't manage the radios of
-# the device it runs on. Same SSID, security and CAPsMAN on both units, so
-# clients roam between them (802.11r).
 {
   lib,
   catalog,
@@ -65,6 +60,7 @@ in {
       name = "xata";
       authentication_types = ["wpa2-psk" "wpa3-psk"];
       passphrase = "\${var.wifi_passphrase}";
+      # 802.11r, to roam between the router and the AP.
       ft = true;
       ft_over_ds = true;
     };
@@ -116,8 +112,8 @@ in {
       })
     radios.x290-ap;
 
-    # The router's radios use their profile locally; the AP's take theirs from
-    # CAPsMAN.
+    # The router's radios use their profile locally, since CAPsMAN can't manage
+    # the radios of the unit it runs on; the AP's take theirs from CAPsMAN.
     routeros_wifi = forRadios (unit: band: _: {
       "${key unit}_${band}" =
         {name = ifname band;}

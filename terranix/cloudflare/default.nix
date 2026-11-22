@@ -1,6 +1,4 @@
-# Cloudflare DNS records, one file per zone in ./zones, plus an A record for
-# each catalog service in the zone. Records not listed are left alone: this
-# isn't authoritative for the zones.
+# Not authoritative: records not listed here are left alone.
 {
   lib,
   catalog,
