@@ -1,0 +1,7 @@
+# Float charge A/B test (Deye "Disable Float Charge" off for one week, then on
+# for one week): keep raw states long enough to compare both weeks per pack
+# (cell max, time above 3.45 V, rest voltages, cell delta). The default is 10
+# days. Remove this file when the test is done; the recorder then purges back
+# down to 10 days.
+recorder:
+  purge_keep_days: 21
