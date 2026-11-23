@@ -19,26 +19,26 @@
   };
   wsl-xanmod-lts = {
     pname = "wsl-xanmod-lts";
-    version = "7.3.5-locietta-WSL2-xanmod1.1";
+    version = "6.18.64-locietta-WSL2-xanmod1.1-lts";
     src = fetchFromGitHub {
       owner = "Locietta";
       repo = "xanmod-kernel-WSL2";
-      rev = "7.3.5-locietta-WSL2-xanmod1.1";
+      rev = "6.18.64-locietta-WSL2-xanmod1.1-lts";
       fetchSubmodules = false;
       sha256 = "sha256-MZP3uST5k1RTD6Aow/XWRgcsp0AkM2v2Ee79M9wBX2g=";
     };
   };
   xanmod-lts = {
     pname = "xanmod-lts";
-    version = "7.3.5-xanmod1";
+    version = "6.18.64-xanmod1";
     src = fetchgit {
       url = "https://gitlab.com/xanmod/linux.git";
-      rev = "7.3.5-xanmod1";
+      rev = "6.18.64-xanmod1";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
       sparseCheckout = [];
-      sha256 = "sha256-SdqWUBVOjpOb9mXCXuEA8AZNAbIhpf5LD+f+zcvVZgM=";
+      sha256 = "sha256-QfIaXHUF46EGRQi1PI3I+j6tcFRFQ5Dbzch2LbfGblg=";
     };
   };
 }

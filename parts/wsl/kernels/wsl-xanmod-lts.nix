@@ -18,10 +18,20 @@
     if match != null
     then builtins.elemAt match 0
     else throw "Failed to extract version from ${sourceVersion}";
+
+  # Same set and order as Locietta's scripts/apply-patches.py: common patches plus
+  # LTS ones, sorted by file name. dxgkrnl (/dev/dxg, GPU) comes from these.
+  patchesIn = dir:
+    lib.mapAttrs (name: _: "${dir}/${name}")
+    (lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".patch" name) (builtins.readDir dir));
+
+  kernelPatches =
+    lib.mapAttrsToList (name: patch: {inherit name patch;})
+    (patchesIn "${srcConfig}/patches" // patchesIn "${srcConfig}/patches/LTS");
 in
   linuxManualConfig {
     pname = "linux-xanmod-wsl";
-    inherit version;
+    inherit version kernelPatches;
 
     src = srcXanmod;
     modDirVersion = "${version}-locietta-WSL2-xanmod1";
