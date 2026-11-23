@@ -1,7 +1,6 @@
 ---
-description: Markdown line-wrapping style (no hard wraps mid-sentence); applies when writing or editing Markdown files
-condition: ["**/*.{md,mdc}"]
-alwaysApply: false
+description: Markdown line-wrapping style (no hard wraps mid-sentence) for writing or editing Markdown files
+alwaysApply: true
 ---
 
 # Markdown formatting

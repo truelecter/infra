@@ -96,6 +96,9 @@ in {
       # A turn that ends with open todos gets a reminder that starts another turn, even when the
       # open items wait on the user.
       todo.reminders = false;
+      # No TTSR: a rule that interrupts a stream and retries makes OMP send an early `agent_end`,
+      # which Paseo's OMP provider takes as the turn's end and fails after its idle deadline.
+      ttsr.enabled = false;
 
       # GSD skills that can't work with the store install (update, surface), don't fit this setup,
       # or only list other commands. GSD hooks call code-review, validate-phase, secure-phase,
