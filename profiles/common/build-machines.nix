@@ -2,6 +2,7 @@
   config,
   inputs,
   catalog,
+  lib,
   ...
 }: let
   builder-username = "remote-builder";
@@ -60,11 +61,12 @@ in {
           "i686-linux"
         ];
 
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-        ];
+        supportedFeatures =
+          [
+            "nixos-test"
+            "benchmark"
+          ]
+          ++ lib.optional (config.networking.hostName == "tl-wsl") "big-parallel";
       }
     ];
   };
