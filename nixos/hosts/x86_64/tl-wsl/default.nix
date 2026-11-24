@@ -40,9 +40,14 @@
 
   system.stateVersion = "22.11";
 
-  services.openssh = {
-    enable = true;
-    ports = [2222];
+  services.openssh.enable = true;
+
+  systemd.services.wsl-eth0-mtu = {
+    wantedBy = ["multi-user.target"];
+    before = ["tailscaled.target"];
+    after = ["network.target"];
+    serviceConfig.Type = "oneshot";
+    script = "${pkgs.iproute2}/bin/ip link set eth0 mtu 1500";
   };
 
   users.users.truelecter = {
@@ -73,10 +78,17 @@
     };
   };
 
-  environment.systemPackages = [
-    pkgs.nixd
-    pkgs.alejandra
-  ];
+  environment = {
+    systemPackages = [
+      pkgs.nixd
+      pkgs.alejandra
+    ];
+
+    # Fixes missing tool via ssh, as wsl only respects session started with wsl.exe
+    extraInit = ''
+      export PATH="$PATH:/usr/lib/wsl/lib"
+    '';
+  };
 
   # boot.binfmt.emulatedSystems = ["aarch64-linux"];
 }

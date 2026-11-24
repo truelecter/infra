@@ -79,7 +79,7 @@
       [
         common.core
         common.caches
-        # common.networking.tailscale
+        common.networking.tailscale
 
         nixos.core
 
