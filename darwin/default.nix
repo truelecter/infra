@@ -20,6 +20,7 @@
         darwin.security.one-password
         darwin.messengers
         darwin.secrets
+        darwin.lan-dns
       ]
       ++ builtins.attrValues self.modules.darwin;
 
