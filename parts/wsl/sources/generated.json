@@ -56,7 +56,7 @@
             "leaveDotGit": false,
             "name": null,
             "rev": "6.18.64-xanmod1",
-            "sha256": "sha256-QfIaXHUF46EGRQi1PI3I+j6tcFRFQ5Dbzch2LbfGblg=",
+            "sha256": "sha256-yuXFJkXizzUuvN92INIz+cVkSZL+cgXWqyKiDgi1qBw=",
             "sparseCheckout": [],
             "type": "git",
             "url": "https://gitlab.com/xanmod/linux.git"
