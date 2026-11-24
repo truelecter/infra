@@ -64,6 +64,11 @@ in {
     };
   };
 
+  # Without the IOMMU a device that writes to stale addresses (seen after S3
+  # resume) silently corrupts kernel memory; with it the write faults and the
+  # DMAR log names the device.
+  boot.kernelParams = ["intel_iommu=on"];
+
   virtualisation.podman = {
     defaultNetwork.settings = {
       subnets = [
