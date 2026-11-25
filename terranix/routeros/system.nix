@@ -43,7 +43,11 @@ in {
       interface = "\${routeros_interface_bridge.${key name}.name}";
     });
 
-    routeros_ip_dhcp_client.x290_router_ether1.interface = "ether1";
+    # Only the resolvers in routeros_ip_dns, not the ISP's.
+    routeros_ip_dhcp_client.x290_router_ether1 = {
+      interface = "ether1";
+      use_peer_dns = false;
+    };
 
     routeros_ip_dns = {
       x290_router = {
@@ -78,10 +82,15 @@ in {
     routeros_tool_mac_server.x290_router.allowed_interface_list = "LAN";
     routeros_tool_mac_server_winbox.x290_router.allowed_interface_list = "LAN";
 
-    routeros_ipv6_neighbor_discovery.x290_router = {
+    # No IPv6 from the ISP, so nothing to advertise.
+    routeros_ipv6_neighbor_discovery = perUnit (_: _: {
       interface = "all";
-      advertise_dns = true;
-    };
+      disabled = true;
+    });
+
+    routeros_ip_ssh_server = perUnit (_: _: {strong_crypto = true;});
+
+    routeros_ip_smb = perUnit (_: _: {enabled = "no";});
 
     routeros_system_led_settings.x290_router.all_leds_off = "immediate";
   };

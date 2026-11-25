@@ -39,6 +39,15 @@
       port = 80;
       disabled = false;
     };
+    # REST runs over www-ssl and doesn't need these.
+    api = {
+      port = 8728;
+      disabled = true;
+    };
+    api-ssl = {
+      port = 8729;
+      disabled = true;
+    };
   };
 
   perUnit = f: lib.concatMapAttrs f units;
