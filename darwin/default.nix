@@ -77,6 +77,7 @@
                   self.overlays.latest-packages
                   self.overlays.common-external
                   inputs.ai.overlays.default
+                  inputs.credential-store-pinentry.overlays.default
                 ];
 
                 config.allowUnfree = true;

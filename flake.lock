@@ -118,6 +118,29 @@
         "type": "github"
       }
     },
+    "credential-store-pinentry": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795568183,
+        "narHash": "sha256-aHMNPixSjfzbJ1yAa5szSrB/Q7tBLpwLzEDfziTND7g=",
+        "owner": "truelecter",
+        "repo": "credential-store-pinentry",
+        "rev": "363b229cf13b334c69d228cb6837d47b5bad5a5f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "truelecter",
+        "repo": "credential-store-pinentry",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -977,6 +1000,7 @@
       "inputs": {
         "ai": "ai",
         "catppuccin": "catppuccin",
+        "credential-store-pinentry": "credential-store-pinentry",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
