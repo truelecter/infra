@@ -162,6 +162,7 @@
                   self.overlays.common-external
                   self.overlays.wsl
                   inputs.ai.overlays.default
+                  inputs.credential-store-pinentry.overlays.default
                 ];
                 config.allowUnfree = true;
               };

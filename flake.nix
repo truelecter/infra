@@ -223,6 +223,15 @@
       };
     };
 
+    # pinentry answering the OpenPGP card PIN from the macOS Keychain or Windows Credential Manager.
+    credential-store-pinentry = {
+      url = "github:truelecter/credential-store-pinentry";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
       inputs = {

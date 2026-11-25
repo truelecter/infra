@@ -68,13 +68,17 @@
 
     tl.services.win-gpg-agent = {
       enable = true;
+      gpgconf = "D:\\Soft\\Scoop\\user\\apps\\gnupg\\current\\bin\\gpgconf.exe";
       # sockets.ssh.assuan = true;
       sockets = {
         gpg.enable = false;
         extra.wslRelativePath = "S.gpg-agent";
       };
-      relayPath = "/mnt/d/Soft/wsl2-ssh-bridge.exe";
-      windowsSocketsPath = "D:/Soft/Scoop/user/apps/gnupg/current/gnupg";
+      provision = {
+        enable = true;
+        # https://github.com/baliestri/pinentry-for-windows/releases
+        pinentryFallback = "C:\\Users\\truelecter\\AppData\\Local\\Programs\\pinentry-for-windows\\pfw.x64.exe";
+      };
     };
   };
 
