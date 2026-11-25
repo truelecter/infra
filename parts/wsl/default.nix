@@ -3,6 +3,12 @@
   self,
   ...
 }: let
+  mkPackages = pkgs:
+    self.lib.importPackages {
+      nixpkgs = pkgs;
+      packages = ./packages;
+      sources = ./sources/generated.nix;
+    };
 in {
   perSystem = {
     pkgs,
@@ -34,6 +40,9 @@ in {
 
         bundles = lib.mapAttrs' (name: kernel: lib.nameValuePair "${name}-bundle" (wslBundle kernel)) kernels;
       in
-        bundles;
+        bundles // mkPackages pkgs;
     };
+
+  # Windows-side helpers used by WSL hosts
+  flake.overlays.wsl = final: _prev: mkPackages final;
 }

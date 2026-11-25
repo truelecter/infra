@@ -43,6 +43,27 @@
         },
         "version": "6.18.64-locietta-WSL2-xanmod1.1-lts"
     },
+    "wsl2-ssh-pageant": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "wsl2-ssh-pageant",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "BlackReloaded",
+            "repo": "wsl2-ssh-pageant",
+            "rev": "fba097316321ab5118d9b4bcd29bafc59d31dcda",
+            "sha256": "sha256-gBiPW2eeT3k7y8c9Dy6kCXvGVtbTzFriRs158amJ6aM=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "fba097316321ab5118d9b4bcd29bafc59d31dcda"
+    },
     "xanmod-lts": {
         "cargoLock": null,
         "date": null,

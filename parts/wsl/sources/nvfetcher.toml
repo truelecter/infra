@@ -16,3 +16,8 @@ src.from_pattern = "^([0-9]+\\.[0-9]+\\.[0-9]+).+"
 src.to_pattern = "\\1-xanmod1"
 
 fetch.git = "https://gitlab.com/xanmod/linux.git"
+
+# Unmaintained since 2022; last commit on master
+[wsl2-ssh-pageant]
+fetch.github = "BlackReloaded/wsl2-ssh-pageant"
+src.manual = "fba097316321ab5118d9b4bcd29bafc59d31dcda"

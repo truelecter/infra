@@ -29,6 +29,17 @@
       sha256 = "sha256-MZP3uST5k1RTD6Aow/XWRgcsp0AkM2v2Ee79M9wBX2g=";
     };
   };
+  wsl2-ssh-pageant = {
+    pname = "wsl2-ssh-pageant";
+    version = "fba097316321ab5118d9b4bcd29bafc59d31dcda";
+    src = fetchFromGitHub {
+      owner = "BlackReloaded";
+      repo = "wsl2-ssh-pageant";
+      rev = "fba097316321ab5118d9b4bcd29bafc59d31dcda";
+      fetchSubmodules = false;
+      sha256 = "sha256-gBiPW2eeT3k7y8c9Dy6kCXvGVtbTzFriRs158amJ6aM=";
+    };
+  };
   xanmod-lts = {
     pname = "xanmod-lts";
     version = "6.18.64-xanmod1";
