@@ -99,7 +99,7 @@ in {
     routeros_wifi_capsman.settings = {
       enabled = true;
       interfaces = ["bridge"];
-      # The AP runs a newer RouterOS than the router's long-term branch.
+      # Both units are upgraded by hand.
       upgrade_policy = "none";
     };
 
