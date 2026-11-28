@@ -37,7 +37,7 @@
     },
     "libcamera-apps": {
         "cargoLock": null,
-        "date": "2026-11-12",
+        "date": "2026-11-26",
         "extract": null,
         "name": "libcamera-apps",
         "passthru": null,
@@ -49,12 +49,12 @@
             "name": null,
             "owner": "raspberrypi",
             "repo": "libcamera-apps",
-            "rev": "7b69b7cde5612677b0eb3ee29bf24ad165a599c1",
-            "sha256": "sha256-T/1WPbqWXks0zIC3o5rUS770blhT51vdz7iS2qVx4ho=",
+            "rev": "fb3d23ffed8b4470485a8ebb4ed7d7e72196043e",
+            "sha256": "sha256-7uK56bykqQRXO47gjYzboAm7ElPmVt2dIE+tHAHLqT8=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "7b69b7cde5612677b0eb3ee29bf24ad165a599c1"
+        "version": "fb3d23ffed8b4470485a8ebb4ed7d7e72196043e"
     },
     "mediamtx": {
         "cargoLock": null,
