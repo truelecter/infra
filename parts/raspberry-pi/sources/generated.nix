@@ -4,7 +4,8 @@
   fetchurl,
   fetchFromGitHub,
   dockerTools,
-}: {
+}:
+{
   hls-js = {
     pname = "hls-js";
     version = "v1.7.4";
@@ -27,15 +28,15 @@
   };
   libcamera-apps = {
     pname = "libcamera-apps";
-    version = "7b69b7cde5612677b0eb3ee29bf24ad165a599c1";
+    version = "fb3d23ffed8b4470485a8ebb4ed7d7e72196043e";
     src = fetchFromGitHub {
       owner = "raspberrypi";
       repo = "libcamera-apps";
-      rev = "7b69b7cde5612677b0eb3ee29bf24ad165a599c1";
+      rev = "fb3d23ffed8b4470485a8ebb4ed7d7e72196043e";
       fetchSubmodules = false;
-      sha256 = "sha256-T/1WPbqWXks0zIC3o5rUS770blhT51vdz7iS2qVx4ho=";
+      sha256 = "sha256-7uK56bykqQRXO47gjYzboAm7ElPmVt2dIE+tHAHLqT8=";
     };
-    date = "2026-11-12";
+    date = "2026-11-26";
   };
   mediamtx = {
     pname = "mediamtx";
